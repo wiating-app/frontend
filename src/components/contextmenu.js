@@ -15,7 +15,7 @@ export class ContextMenu extends React.Component {
   render() {
     return(
       <ContextMenuContainer posX={this.props.x} posY={this.props.y}>
-        <a href="#" onClick={() => this.props.addMarker(this.props.x, this.props.y)}>Dodaj miejsce</a>
+        <button onClick={() => this.props.addMarker(this.props.x, this.props.y)} className="link">Dodaj miejsce</button>
       </ContextMenuContainer>
     )
   }

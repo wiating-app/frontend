@@ -25,6 +25,12 @@ const Nav = styled.nav`
   background: #fff;
   padding: 5px;
   text-align: right;
+
+  @media (max-width: 500px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 class App extends Component {
@@ -76,12 +82,6 @@ class App extends Component {
     })
 
     return false;
-  }
-
-  onSubmitMarker = (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-
   }
 
   onUpdateMarkerPosition = (x, y) => {
@@ -142,7 +142,7 @@ class App extends Component {
       <div className="App">
 
       <Nav>
-        { this.state.username && <div style={{padding: "10px 5px"}}>Witaj, { this.state.username }! <a href="#" onClick={this.onLogout}>Wyloguj</a></div> }
+        { this.state.username && <div style={{padding: "10px 5px"}}>Witaj, { this.state.username }! <button onClick={this.onLogout} className="link">Wyloguj</button></div> }
 
         { !this.state.loggedIn && <div style={{display: "inline-block"}}>
           <FacebookLogin
@@ -150,7 +150,7 @@ class App extends Component {
             fields="name,email,picture"
             callback={this.onFacebookLogin}
             render={renderProps => (
-              <button className="facebook-login" onClick={renderProps.onClick}>Zaloguj Facebookiem</button>
+              <button className="facebook-login" onClick={renderProps.onClick}><span>Zaloguj Facebookiem</span></button>
             )}
           />
 
@@ -159,7 +159,7 @@ class App extends Component {
             onSuccess={this.onGoogleLogin}
             onFailure={this.onGoogleLogin}
             render={renderProps => (
-              <button className="google-login" onClick={renderProps.onClick} disabled={renderProps.disabled}>Zaloguj z Google</button>
+              <button className="google-login" onClick={renderProps.onClick} disabled={renderProps.disabled}><span>Zaloguj z Google</span></button>
             )}
           />
         </div> }

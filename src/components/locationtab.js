@@ -95,7 +95,8 @@ export class LocationTab extends React.Component {
   openLocationTab = () => {
     this.setState({
       open: true,
-      action: false
+      action: false,
+      submitted: false
     })
   }
 
@@ -125,13 +126,13 @@ export class LocationTab extends React.Component {
     // TODO API Call
 
     this.setState({
-      submitted: true
+      submitted: true,
+      placeName: '',
+      placeDescription: ''
     })
   }
 
   render() {
-
-
     return(
       <LocationTabContainer className={(this.state.open ? 'active' : 'hidden')}>
         <CloseButton onClick={this.closeLocationTab}></CloseButton>
