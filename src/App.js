@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 import './App.css';
 
+import { Auth } from './auth';
 
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 
@@ -10,6 +11,8 @@ import GoogleLogin from 'react-google-login';
 import Map from './components/map.jsx';
 import ContextMenu from './components/contextmenu.js';
 import LocationTab from './components/locationtab.js';
+
+const auth = new Auth();
 
 const Nav = styled.nav`
   position: absolute;
@@ -89,23 +92,47 @@ class App extends Component {
   }
 
   onFacebookLogin = (response) => {
-    console.log(response);
+    console.log('AUTH RESPONSE', response);
 
     if(response.name) {
       this.setState({
         username: response.name,
         loggedIn: true
       })
+
+      auth.logIn(response.name);
     }
   }
 
   onGoogleLogin = (response) => {
-    console.log(response);
+    console.log('AUTH RESPONSE', response);
 
     if(response.profileObj) {
       this.setState({
         username: response.profileObj.givenName,
         loggedIn: true
+      })
+
+      auth.logIn(response.profileObj.givenName);
+    }
+  }
+
+  onLogout = () => {
+    auth.logOut();
+
+    this.setState({
+      loggedIn: false,
+      username: false
+    })
+  }
+
+  componentDidMount = () => {
+    const logged = auth.getLoggedStatus();
+
+    if(logged) {
+      this.setState({
+        loggedIn: true,
+        username: logged
       })
     }
   }
@@ -115,7 +142,7 @@ class App extends Component {
       <div className="App">
 
       <Nav>
-        { this.state.username && <div style={{padding: "10px 5px"}}>Witaj, { this.state.username }!</div> }
+        { this.state.username && <div style={{padding: "10px 5px"}}>Witaj, { this.state.username }! <a href="#" onClick={this.onLogout}>Wyloguj</a></div> }
 
         { !this.state.loggedIn && <div style={{display: "inline-block"}}>
           <FacebookLogin
