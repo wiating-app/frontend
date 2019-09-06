@@ -1,6 +1,8 @@
 import React from 'react';
 import { API } from '../api';
 
+import { strings } from '../lang/strings.js';
+
 const api = new API();
 
 const SCRIPT_LOADING_NONE = 'NONE',
@@ -205,7 +207,7 @@ export class Map extends React.Component {
     if (this.state.scriptLoadingState === SCRIPT_LOADING_DONE) {
       return <div id="map" style={{height:"100%"}}></div>;
     } else {
-      return (<div style={{textAlign: "center", paddingTop: 20}}>Ładowanie mapy...</div>);
+      return (<div style={{textAlign: "center", paddingTop: 20}}>{ strings.map.loading }</div>);
     }
   }
 }

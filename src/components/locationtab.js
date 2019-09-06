@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Dropzone from 'react-dropzone'
 
 import { roundLatLng } from '../utils/helpers.js';
+import { strings } from '../lang/strings.js';
 
 const LocationTabContainer = styled.div`
   position: absolute;
@@ -147,33 +148,33 @@ export class LocationTab extends React.Component {
 
         { this.state.action && <div style={{padding: "20px"}}>
           { !this.state.submitted && <div>
-            <h2>Dodaj nowe miejsce</h2>
+            <h2>{ strings.markerForm.heading }</h2>
 
             <Form onSubmit={this.onSubmitLocation}>
               <Form.Group controlId="placeLocation">
-                <Form.Label>Położenie</Form.Label>
+                <Form.Label>{ strings.markerForm.location }</Form.Label>
                 <p>{ roundLatLng(this.props.addMarkerX) } { roundLatLng(this.props.addMarkerY) }</p>
               </Form.Group>
 
               <Form.Group controlId="placeName">
-                <Form.Label>Nazwa miejsca</Form.Label>
+                <Form.Label>{ strings.markerForm.place }</Form.Label>
                 <Form.Control type="text" placeholder="" value={this.state.placeName} onChange={this.updatePlaceName} name="name" />
               </Form.Group>
 
               <Form.Group controlId="placeDescription">
-                <Form.Label>Opis miejsca</Form.Label>
+                <Form.Label>{ strings.markerForm.description }</Form.Label>
                 <Form.Control as="textarea" rows="5" value={this.state.placeDescription} onChange={this.updatePlaceDescription} name="description"/>
               </Form.Group>
 
               <Form.Group controlId="placeImage">
-                <Form.Label>Wgraj zdjęcie</Form.Label>
+                <Form.Label>{ strings.markerForm.upload }</Form.Label>
 
                 <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
                   {({getRootProps, getInputProps}) => (
                     <section>
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
-                        <p>Przeciągnij i upuść plik tutaj lub kliknij aby wybrać</p>
+                        <p>{ strings.markerForm.uploadDescription }</p>
                       </div>
                     </section>
                   )}
@@ -181,15 +182,15 @@ export class LocationTab extends React.Component {
               </Form.Group>
 
               <Button variant="primary" type="submit">
-                Zapisz
+                { strings.markerForm.cta }
               </Button>
             </Form>
           </div>
           }
 
             { this.state.submitted && <div>
-                <h3>Dzięki!</h3>
-                <p>Punkt został dodany i będzie widoczny po akceptacji moderatora.</p>
+                <h3>{ strings.markerForm.thankYouHeading }</h3>
+                <p>{ strings.markerForm.thankYouMessage }</p>
               </div>
             }
         </div> }

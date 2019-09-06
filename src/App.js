@@ -12,10 +12,12 @@ import Map from './components/map.jsx';
 import ContextMenu from './components/contextmenu.js';
 import LocationTab from './components/locationtab.js';
 
+import { strings } from './lang/strings.js';
+
 const auth = new Auth();
 
 const Nav = styled.nav`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 55px;
@@ -142,7 +144,7 @@ class App extends Component {
       <div className="App">
 
       <Nav>
-        { this.state.username && <div style={{padding: "10px 5px"}}>Witaj, { this.state.username }! <button onClick={this.onLogout} className="link">Wyloguj</button></div> }
+        { this.state.username && <div style={{padding: "10px 5px"}}>{ strings.auth.welcome }, { this.state.username }! <button onClick={this.onLogout} className="link">{ strings.auth.logout }</button></div> }
 
         { !this.state.loggedIn && <div style={{display: "inline-block"}}>
           <FacebookLogin
@@ -150,7 +152,7 @@ class App extends Component {
             fields="name,email,picture"
             callback={this.onFacebookLogin}
             render={renderProps => (
-              <button className="facebook-login" onClick={renderProps.onClick}><span>Zaloguj Facebookiem</span></button>
+              <button className="facebook-login" onClick={renderProps.onClick}><span>{ strings.auth.fbLogin }</span></button>
             )}
           />
 
@@ -159,7 +161,7 @@ class App extends Component {
             onSuccess={this.onGoogleLogin}
             onFailure={this.onGoogleLogin}
             render={renderProps => (
-              <button className="google-login" onClick={renderProps.onClick} disabled={renderProps.disabled}><span>Zaloguj z Google</span></button>
+              <button className="google-login" onClick={renderProps.onClick} disabled={renderProps.disabled}><span>{ strings.auth.googleLogin }</span></button>
             )}
           />
         </div> }
