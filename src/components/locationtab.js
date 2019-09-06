@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+import Dropzone from 'react-dropzone'
+
 import { roundLatLng } from '../utils/helpers.js';
 
 const LocationTabContainer = styled.div`
@@ -16,7 +18,7 @@ const LocationTabContainer = styled.div`
   left: -400px;
   top: 0;
   box-shadow: 0, 0, 5px rgba(0,0,0,0.3);
-  padding-top: 40px;
+  padding-top: 55px;
   box-sizing: border-box;
   transition: left .5s ease;
   overflow: auto;
@@ -42,7 +44,7 @@ const Text = styled.p`
 const CloseButton = styled.a`
   position: absolute;
   right: 10px;
-  top: 50px;
+  top: 65px;
   width: 32px;
   height: 32px;
   opacity: 0.7;
@@ -106,6 +108,8 @@ export class LocationTab extends React.Component {
   }
 
   render() {
+
+
     return(
       <LocationTabContainer className={(this.state.open ? 'active' : 'hidden')}>
         <CloseButton onClick={this.closeLocationTab}></CloseButton>
@@ -122,7 +126,7 @@ export class LocationTab extends React.Component {
           <h2>Dodaj nowe miejsce</h2>
 
           <Form onSubmit={this.props.onSubmitLocation}>
-            <Form.Group controlId="placeName">
+            <Form.Group controlId="placeLocation">
               <Form.Label>Położenie</Form.Label>
               <p>{ roundLatLng(this.props.addMarkerX) } { roundLatLng(this.props.addMarkerY) }</p>
             </Form.Group>
@@ -136,6 +140,22 @@ export class LocationTab extends React.Component {
               <Form.Label>Opis miejsca</Form.Label>
               <Form.Control as="textarea" rows="5" value={this.state.placeDescription} />
             </Form.Group>
+
+            <Form.Group controlId="placeImage">
+              <Form.Label>Wgraj zdjęcie</Form.Label>
+
+              <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+                {({getRootProps, getInputProps}) => (
+                  <section>
+                    <div {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      <p>Przeciągnij i upuść plik tutaj lub kliknij aby wybrać</p>
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+            </Form.Group>
+
             <Button variant="primary" type="submit">
               Zapisz
             </Button>

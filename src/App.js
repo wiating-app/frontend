@@ -91,17 +91,23 @@ class App extends Component {
   onFacebookLogin = (response) => {
     console.log(response);
 
-    this.setState({
-      loggedIn: true
-    })
+    if(response.name) {
+      this.setState({
+        username: response.name,
+        loggedIn: true
+      })
+    }
   }
 
   onGoogleLogin = (response) => {
     console.log(response);
 
-    this.setState({
-      loggedIn: true
-    })
+    if(response.profileObj) {
+      this.setState({
+        username: response.profileObj.givenName,
+        loggedIn: true
+      })
+    }
   }
 
   render() {
@@ -109,32 +115,54 @@ class App extends Component {
       <div className="App">
 
       <Nav>
-        <FacebookLogin
-          appId="2545536718903046"
-          fields="name,email,picture"
-          callback={this.onFacebookLogin}
-          render={renderProps => (
-            <button className="facebook-login" onClick={renderProps.onClick}>Zaloguj Facebookiem</button>
-          )}
-        />
+        { this.state.username && <div style={{padding: "10px 5px"}}>Witaj, { this.state.username }!</div> }
 
-        <GoogleLogin
-          clientId="830454575016-d15tp0282j2b2bogjei234vamumvhc62.apps.googleusercontent.com"
-          onSuccess={this.onGoogleLogin}
-          onFailure={this.onGoogleLogin}
-          render={renderProps => (
-            <button className="google-login" onClick={renderProps.onClick} disabled={renderProps.disabled}>Zaloguj z Google</button>
-          )}
-        />
+        { !this.state.loggedIn && <div style={{display: "inline-block"}}>
+          <FacebookLogin
+            appId="2545536718903046"
+            fields="name,email,picture"
+            callback={this.onFacebookLogin}
+            render={renderProps => (
+              <button className="facebook-login" onClick={renderProps.onClick}>Zaloguj Facebookiem</button>
+            )}
+          />
+
+          <GoogleLogin
+            clientId="830454575016-d15tp0282j2b2bogjei234vamumvhc62.apps.googleusercontent.com"
+            onSuccess={this.onGoogleLogin}
+            onFailure={this.onGoogleLogin}
+            render={renderProps => (
+              <button className="google-login" onClick={renderProps.onClick} disabled={renderProps.disabled}>Zaloguj z Google</button>
+            )}
+          />
+        </div> }
       </Nav>
 
-      <div style={{boxSizing: 'border-box', paddingTop: 40, height: "100vh", position: "relative"}}>
-        <Map onContextMenuClose={this.closeContextMenu} onContextMenu={this.openContextMenu} openLocationTab={this.openLocationTab} onUpdateMarkerPosition={this.onUpdateMarkerPosition} ref="map" />
-        <LocationTab open={this.state.locationTabOpen} location={this.state.currentLocation} addMarkerX={this.state.addMarkerX} addMarkerY={this.state.addMarkerY} ref="tab"/>
+      <div style={{boxSizing: 'border-box', paddingTop: 55, height: "100vh", position: "relative"}}>
+        <Map
+          onContextMenuClose={this.closeContextMenu}
+          onContextMenu={this.openContextMenu}
+          openLocationTab={this.openLocationTab}
+          onUpdateMarkerPosition={this.onUpdateMarkerPosition}
+          isLoggedIn={this.state.loggedIn}
+          ref="map"
+        />
+
+        <LocationTab
+          open={this.state.locationTabOpen}
+          location={this.state.currentLocation}
+          addMarkerX={this.state.addMarkerX}
+          addMarkerY={this.state.addMarkerY}
+          ref="tab"
+        />
       </div>
 
-      { this.state.contextMenuOpen && <ContextMenu addMarker={this.addMarker} x={this.state.contextMenuX} y={this.state.contextMenuY} /> }
-
+      { this.state.contextMenuOpen &&
+        <ContextMenu
+          addMarker={this.addMarker}
+          x={this.state.contextMenuX}
+          y={this.state.contextMenuY}
+        /> }
 
       </div>
     );

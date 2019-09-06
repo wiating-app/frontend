@@ -97,7 +97,9 @@ export class Map extends React.Component {
       // Create map object
       const m = new window.SMap(window.JAK.gel("map"), center, 13);
       m.addDefaultLayer(window.SMap.DEF_TURIST).enable();
-      m.addDefaultControls();
+
+      // Mouse control setup
+      m.addControl(new window.SMap.Control.Mouse(window.SMap.MOUSE_PAN | window.SMap.MOUSE_WHEEL | window.SMap.MOUSE_ZOOM, {minDriftSpeed:1/0}));
 
       // Zoom setup
       m.addControl(new window.SMap.Control.Zoom({}, { titles: ["Przybliż", "Oddal"], showZoomMenu: false }), {right: "17px", top: "17px"});
@@ -114,8 +116,10 @@ export class Map extends React.Component {
 
       // Open context menu
       m.getSignals().addListener(window, "map-contextmenu", function click(e) {
+        if(map.props.isLoggedIn) {
           const coords = window.SMap.Coords.fromEvent(e.data.event, m);
           map.props.onContextMenu(e.data.event.clientX, e.data.event.clientY, coords.x, coords.y);
+        }
       });
 
       // Close context menu on map click
@@ -143,11 +147,14 @@ export class Map extends React.Component {
         const marker = e.target;
         const id = marker.getId();
 
-        map.props.openLocationTab(map.state.points[id]._source)
+        if(map.state.points[id]) {
+          map.state.newMarkerLayer.removeAll();
+          map.props.openLocationTab(map.state.points[id]._source)
 
-        // Center map on marker
-        const newCenter = window.SMap.Coords.fromWGS84(marker._coords.x, marker._coords.y);
-        m.setCenter(newCenter, true);
+          // Center map on marker
+          const newCenter = window.SMap.Coords.fromWGS84(marker._coords.x, marker._coords.y);
+          m.setCenter(newCenter, true);
+        }
       });
 
       this.setState({
@@ -198,7 +205,7 @@ export class Map extends React.Component {
     if (this.state.scriptLoadingState === SCRIPT_LOADING_DONE) {
       return <div id="map" style={{height:"100%"}}></div>;
     } else {
-      return (<div>Ładowanie mapy...</div>);
+      return (<div style={{textAlign: "center", paddingTop: 20}}>Ładowanie mapy...</div>);
     }
   }
 }
