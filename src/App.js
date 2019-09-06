@@ -15,11 +15,13 @@ const Nav = styled.nav`
   position: absolute;
   top: 0;
   left: 0;
-  height: 40px;
+  height: 55px;
   z-index: 999;
   width: 100%;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
   background: #fff;
+  padding: 5px;
+  text-align: right;
 `;
 
 class App extends Component {
@@ -108,21 +110,20 @@ class App extends Component {
 
       <Nav>
         <FacebookLogin
-          appId="2545536718903046" //APP ID NOT CREATED YET
+          appId="2545536718903046"
           fields="name,email,picture"
           callback={this.onFacebookLogin}
           render={renderProps => (
-            <button onClick={renderProps.onClick}>Zaloguj z Google</button>
+            <button className="facebook-login" onClick={renderProps.onClick}>Zaloguj Facebookiem</button>
           )}
         />
 
         <GoogleLogin
-          clientId="" //CLIENTID NOT CREATED YET
-          buttonText="LOGIN WITH GOOGLE"
+          clientId="830454575016-d15tp0282j2b2bogjei234vamumvhc62.apps.googleusercontent.com"
           onSuccess={this.onGoogleLogin}
           onFailure={this.onGoogleLogin}
           render={renderProps => (
-            <button onClick={renderProps.onClick} disabled={renderProps.disabled}>Zaloguj Facebookiem</button>
+            <button className="google-login" onClick={renderProps.onClick} disabled={renderProps.disabled}>Zaloguj z Google</button>
           )}
         />
       </Nav>
