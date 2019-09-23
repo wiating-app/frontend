@@ -154,13 +154,11 @@ export class LocationTab extends React.Component {
 
     await api.addPoint(data);
 
-    /*
     this.setState({
       submitted: true,
       placeName: '',
       placeDescription: ''
     })
-    */
   }
 
   onChangeWater = (e) => {
