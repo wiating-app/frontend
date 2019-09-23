@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.2.3",
+    "auth0-js-react": "^6.8.7",
     "bootstrap": "^4.3.1",
     "react": "^16.9.0",
+    "react-auth0-components": "^1.0.1",
     "react-bootstrap": "^1.0.0-beta.12",
     "react-dom": "^16.9.0",
     "react-dropzone": "^10.1.8",
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^5.0.5",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
     "styled-components": "^4.3.2"
   },

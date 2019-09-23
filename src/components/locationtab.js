@@ -6,8 +6,12 @@ import Button from 'react-bootstrap/Button';
 
 import Dropzone from 'react-dropzone'
 
+import { API } from '../api';
+
 import { roundLatLng } from '../utils/helpers.js';
 import { strings } from '../lang/strings.js';
+
+const api = new API();
 
 const LocationTabContainer = styled.div`
   position: absolute;
@@ -121,15 +125,53 @@ export class LocationTab extends React.Component {
     })
   }
 
-  onSubmitLocation = (e) => {
+  onSubmitLocation = async (e) => {
     e.preventDefault();
 
-    // TODO API Call
+    //await api.getMapPoints(50, 50, 50, 50);
 
+    let data = {
+      name: e.target.elements.placeName.value,
+      description: e.target.elements.placeDescription.value,
+      lat: this.props.addMarkerY,
+      lon: this.props.addMarkerX,
+      type: e.target.elements.placeType.value.toLowerCase(),
+      water_exists: e.target.elements.placeWater.checked,
+      fire_exists: e.target.elements.placeFire.checked
+    }
+
+    if(data.water_exists) {
+      data.water_comment = e.target.elements.placeWaterDescription.value
+    } else {
+      data.water_comment = '';
+    }
+
+    if(data.fire_exists) {
+      data.fire_comment = e.target.elements.placeFireDescription.value
+    } else {
+      data.fire_comment = '';
+    }
+
+    await api.addPoint(data);
+
+    /*
     this.setState({
       submitted: true,
       placeName: '',
       placeDescription: ''
+    })
+    */
+  }
+
+  onChangeWater = (e) => {
+    this.setState({
+      hasWater: e.target.checked
+    })
+  }
+
+  onChangeFire = (e) => {
+    this.setState({
+      hasFire: e.target.checked
     })
   }
 
@@ -153,7 +195,7 @@ export class LocationTab extends React.Component {
             <Form onSubmit={this.onSubmitLocation}>
               <Form.Group controlId="placeLocation">
                 <Form.Label>{ strings.markerForm.location }</Form.Label>
-                <p>{ roundLatLng(this.props.addMarkerX) } { roundLatLng(this.props.addMarkerY) }</p>
+                <p>{ roundLatLng(this.props.addMarkerY) } { roundLatLng(this.props.addMarkerX) }</p>
               </Form.Group>
 
               <Form.Group controlId="placeName">
@@ -165,6 +207,35 @@ export class LocationTab extends React.Component {
                 <Form.Label>{ strings.markerForm.description }</Form.Label>
                 <Form.Control as="textarea" rows="5" value={this.state.placeDescription} onChange={this.updatePlaceDescription} name="description"/>
               </Form.Group>
+
+              <Form.Group controlId="placeType">
+                <Form.Label>{ strings.markerForm.description }</Form.Label>
+                <Form.Control as="select">
+                  <option>Wiata</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId="placeWater">
+                <Form.Check type="checkbox" label="Dostęp do wody" onChange={this.onChangeWater} />
+              </Form.Group>
+
+              { this.state.hasWater && <Form.Group controlId="placeWaterDescription">
+                <Form.Label>{ strings.markerForm.description }</Form.Label>
+                <Form.Control as="textarea" rows="5" value={this.state.placeDescription} onChange={this.updatePlaceDescription} name="description"/>
+              </Form.Group> }
+
+              <Form.Group controlId="placeFire">
+                <Form.Check type="checkbox" label="Dostęp do ognia" onChange={this.onChangeFire} />
+              </Form.Group>
+
+              { this.state.hasFire && <Form.Group controlId="placeFireDescription">
+                <Form.Label>{ strings.markerForm.description }</Form.Label>
+                <Form.Control as="textarea" rows="5" value={this.state.placeDescription} onChange={this.updatePlaceDescription} name="description"/>
+              </Form.Group> }
 
               <Form.Group controlId="placeImage">
                 <Form.Label>{ strings.markerForm.upload }</Form.Label>

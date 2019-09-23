@@ -1,39 +1,46 @@
 import React, { Component } from 'react';
-import styled from 'styled-components'
 import './App.css';
 
 import { Auth } from './auth';
 
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-
-import GoogleLogin from 'react-google-login';
-
 import Map from './components/map.jsx';
 import ContextMenu from './components/contextmenu.js';
 import LocationTab from './components/locationtab.js';
+import { useAuth0 } from './react-auth0-wrapper';
 
-import { strings } from './lang/strings.js';
+import NavBar from "./components/navbar";
 
 const auth = new Auth();
 
-const Nav = styled.nav`
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 55px;
-  z-index: 999;
-  width: 100%;
-  box-shadow: 0 0 5px rgba(0,0,0,0.3);
-  background: #fff;
-  padding: 5px;
-  text-align: right;
 
-  @media (max-width: 500px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+function AuthComponent(props) {
+  const { loading, getTokenSilently, user } = useAuth0();
+  const logged = auth.getLoggedStatus();
+
+  if (loading) {
+    return (
+      <div>Loading...</div>
+    );
   }
-`;
+
+  console.log('uu', user)
+
+  if (!logged) {
+    getTokenSilently().then((token) => {
+      console.log('my token', token)
+      props.onLogin(user.name,);
+      auth.logIn(user.name, token)
+    })
+  } else {
+    getTokenSilently().then((token) => {
+        console.log('ttt', token)
+    })
+  }
+
+  return (
+    <NavBar state={props.state} onLogout={props.onLogout}/>
+  )
+}
 
 class App extends Component {
 
@@ -75,15 +82,13 @@ class App extends Component {
     this.refs.tab.openLocationTab();
   }
 
-  addMarker = (x, y) => {
+  addMarker = async (x, y) => {
     this.refs.map.addMarker(this.state.addMarkerX, this.state.addMarkerY);
     this.refs.tab.showMarkerForm();
 
     this.setState({
       contextMenuOpen: false
     })
-
-    return false;
   }
 
   onUpdateMarkerPosition = (x, y) => {
@@ -93,30 +98,11 @@ class App extends Component {
     })
   }
 
-  onFacebookLogin = (response) => {
-    console.log('AUTH RESPONSE', response);
-
-    if(response.name) {
-      this.setState({
-        username: response.name,
-        loggedIn: true
-      })
-
-      auth.logIn(response.name);
-    }
-  }
-
-  onGoogleLogin = (response) => {
-    console.log('AUTH RESPONSE', response);
-
-    if(response.profileObj) {
-      this.setState({
-        username: response.profileObj.givenName,
-        loggedIn: true
-      })
-
-      auth.logIn(response.profileObj.givenName);
-    }
+  onLogin = (name) => {
+    this.setState({
+      loggedIn: true,
+      username: name
+    })
   }
 
   onLogout = () => {
@@ -134,7 +120,7 @@ class App extends Component {
     if(logged) {
       this.setState({
         loggedIn: true,
-        username: logged
+        username: logged.user
       })
     }
   }
@@ -143,29 +129,7 @@ class App extends Component {
     return (
       <div className="App">
 
-      <Nav>
-        { this.state.username && <div style={{padding: "10px 5px"}}>{ strings.auth.welcome }, { this.state.username }! <button onClick={this.onLogout} className="link">{ strings.auth.logout }</button></div> }
-
-        { !this.state.loggedIn && <div style={{display: "inline-block"}}>
-          <FacebookLogin
-            appId="2545536718903046"
-            fields="name,email,picture"
-            callback={this.onFacebookLogin}
-            render={renderProps => (
-              <button className="facebook-login" onClick={renderProps.onClick}><span>{ strings.auth.fbLogin }</span></button>
-            )}
-          />
-
-          <GoogleLogin
-            clientId="830454575016-d15tp0282j2b2bogjei234vamumvhc62.apps.googleusercontent.com"
-            onSuccess={this.onGoogleLogin}
-            onFailure={this.onGoogleLogin}
-            render={renderProps => (
-              <button className="google-login" onClick={renderProps.onClick} disabled={renderProps.disabled}><span>{ strings.auth.googleLogin }</span></button>
-            )}
-          />
-        </div> }
-      </Nav>
+      <AuthComponent onLogin={this.onLogin} onLogout={this.onLogout} state={this.state}/>
 
       <div style={{boxSizing: 'border-box', paddingTop: 55, height: "100vh", position: "relative"}}>
         <Map

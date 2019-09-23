@@ -9,8 +9,8 @@ export class Auth {
     return false;
   };
 
-  logIn = (user) => {
-    localStorage.setItem('currentUser', JSON.stringify(user));
+  logIn = (user, token) => {
+    localStorage.setItem('currentUser', JSON.stringify({user, token}));
   }
 
   logOut = () => {
