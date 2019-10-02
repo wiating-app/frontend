@@ -7,6 +7,7 @@ import Map from './components/map.jsx';
 import ContextMenu from './components/contextmenu.js';
 import LocationTab from './components/locationtab.js';
 import { useAuth0 } from './react-auth0-wrapper';
+import { geolocated } from "react-geolocated";
 
 import NavBar from "./components/navbar";
 
@@ -22,8 +23,6 @@ function AuthComponent(props) {
       <div>Loading...</div>
     );
   }
-
-  console.log('uu', user)
 
   if (!logged) {
     getTokenSilently().then((token) => {
@@ -79,7 +78,7 @@ class App extends Component {
       currentLocation: point
     })
 
-    this.refs.tab.openLocationTab();
+    this.refs.tab.openLocationTab(point.id);
   }
 
   addMarker = async (x, y) => {
@@ -89,6 +88,11 @@ class App extends Component {
     this.setState({
       contextMenuOpen: false
     })
+  }
+
+  refreshMap = async () => {
+    this.refs.map.clearAddMarker();
+    this.refs.map.loadMapMarkers();
   }
 
   onUpdateMarkerPosition = (x, y) => {
@@ -138,6 +142,7 @@ class App extends Component {
           openLocationTab={this.openLocationTab}
           onUpdateMarkerPosition={this.onUpdateMarkerPosition}
           isLoggedIn={this.state.loggedIn}
+          initCoords={this.props.coords}
           ref="map"
         />
 
@@ -146,7 +151,9 @@ class App extends Component {
           location={this.state.currentLocation}
           addMarkerX={this.state.addMarkerX}
           addMarkerY={this.state.addMarkerY}
+          refreshMap={this.refreshMap}
           ref="tab"
+          loggedIn={this.state.loggedIn}
         />
       </div>
 
@@ -162,4 +169,9 @@ class App extends Component {
   }
 }
 
-export default App;
+export default geolocated({
+    positionOptions: {
+        enableHighAccuracy: false,
+    },
+    userDecisionTimeout: 5000,
+})(App);

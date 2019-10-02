@@ -43,14 +43,10 @@ export class API {
   addPoint = async (data) => {
     const logged = auth.getLoggedStatus();
 
-    console.log('got logged', logged)
-
     if(logged) {
       const response = await this.postObject(data, 'http://13.59.76.17/wiating/add_point', {
         headers: { Authorization: "Bearer " + logged.token }
       });
-
-      console.log('rr', response.body)
 
       return response.body;
     } else {
@@ -69,12 +65,6 @@ export class API {
         lon: lbx
       }
     }, 'http://13.59.76.17/wiating/get_points');
-
-    //const response = await this.getObject(
-    //  `/data.json`
-    //);
-
-    console.log(response)
 
     console.info('API: Load points from API lbx: ' + lbx + ' lby: ' + lby + ' rtx: ' + rtx + ' rty: ' + rty)
 

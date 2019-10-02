@@ -7,7 +7,6 @@ import * as serviceWorker from './serviceWorker';
 import { Auth0Provider } from "./react-auth0-wrapper";
 
 const onRedirectCallback = appState => {
-  console.log(appState)
   window.history.replaceState(
     {},
     document.title,

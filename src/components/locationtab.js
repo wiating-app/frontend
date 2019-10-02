@@ -3,8 +3,10 @@ import styled from 'styled-components'
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-
 import Dropzone from 'react-dropzone'
+import { Carousel } from 'react-responsive-carousel';
+
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import { API } from '../api';
 
@@ -44,6 +46,11 @@ const DescriptionContainer = styled.div`
 const Text = styled.p`
   margin: 0;
   text-align: left;
+`;
+
+const Label = styled.p`
+  margin-bottom: 0;
+  margin-top: 15px;
 `;
 
 const CloseButton = styled.a`
@@ -87,7 +94,10 @@ export class LocationTab extends React.Component {
     this.state = {
      open: false,
      placeName: '',
-     placeDescription: ''
+     placeDescription: '',
+     fireDescription: '',
+     waterDescription: '',
+     selectedPoint: ''
     };
   }
 
@@ -97,11 +107,12 @@ export class LocationTab extends React.Component {
     })
   }
 
-  openLocationTab = () => {
+  openLocationTab = (id) => {
     this.setState({
       open: true,
       action: false,
-      submitted: false
+      submitted: false,
+      selectedPoint: id
     })
   }
 
@@ -125,10 +136,20 @@ export class LocationTab extends React.Component {
     })
   }
 
+  updateWaterDescription = (e) => {
+    this.setState({
+      waterDescription: e.target.value
+    })
+  }
+
+  updateFireDescription = (e) => {
+    this.setState({
+      fireDescription: e.target.value
+    })
+  }
+
   onSubmitLocation = async (e) => {
     e.preventDefault();
-
-    //await api.getMapPoints(50, 50, 50, 50);
 
     let data = {
       name: e.target.elements.placeName.value,
@@ -157,8 +178,12 @@ export class LocationTab extends React.Component {
     this.setState({
       submitted: true,
       placeName: '',
-      placeDescription: ''
+      placeDescription: '',
+      fireDescription: '',
+      waterDescription: ''
     })
+
+    this.props.refreshMap();
   }
 
   onChangeWater = (e) => {
@@ -173,28 +198,72 @@ export class LocationTab extends React.Component {
     })
   }
 
+  onEditClick = () => {
+    this.setState({
+      submitted: false,
+      action: 'edit',
+      placeName: this.props.location.name,
+      placeDescription: this.props.location.description,
+      fireDescription: this.props.location.fire.comment,
+      waterDescription: this.props.location.water.comment,
+      hasWater: this.props.location.water.exists,
+      hasFire: this.props.location.fire.exists
+    })
+  }
+
   render() {
+    let water, fire;
+
+    if(this.props.location) {
+      if(this.props.location.water.exists) {
+        water = "Tak"
+      } else {
+        water = "Nie"
+      }
+
+      if(this.props.location.fire.exists) {
+        fire = "Tak"
+      } else {
+        fire = "Nie"
+      }
+    }
+
     return(
       <LocationTabContainer className={(this.state.open ? 'active' : 'hidden')}>
         <CloseButton onClick={this.closeLocationTab}></CloseButton>
 
         { this.props.location && !this.state.action && <div>
-          <Image src="https://lh5.googleusercontent.com/-68keLBRSsV4/T-c50F3J-cI/AAAAAAAADfI/NXFoKwiUPeE/s640/DSC_1919.JPG"/>
+          {this.props.location.images && this.props.location.images.length > 1 &&
+          <Carousel showArrows={true} emulateTouch={true}>
+            {this.props.location.images.map((image) => {
+              const url = "http://13.59.76.17/img/"+this.state.selectedPoint+"/" + image.name
+              return <img src={url}/>
+            })}
+          </Carousel> }
+
+          {!this.props.location.images && <Image src="/no-image.png"/> }
 
           <DescriptionContainer>
+            {this.props.loggedIn && <button onClick={this.onEditClick}>Edytuj</button> }
+
             <Text>{ this.props.location.name }</Text>
+            <Label>Dostęp do wody: <strong>{ water }</strong></Label>
+            { this.props.location.water.exists && <Text>{ this.props.location.water.comment }</Text>}
+            <Label>Dostęp do ognia: <strong>{ fire }</strong></Label>
+            { this.props.location.fire.exists && <Text>{ this.props.location.fire.comment }</Text>}
           </DescriptionContainer>
         </div> }
 
         { this.state.action && <div style={{padding: "20px"}}>
           { !this.state.submitted && <div>
-            <h2>{ strings.markerForm.heading }</h2>
+            <h2>{ strings.markerForm.heading[this.state.action] }</h2>
 
             <Form onSubmit={this.onSubmitLocation}>
-              <Form.Group controlId="placeLocation">
+
+              { this.state.action == "addMarker" && <Form.Group controlId="placeLocation">
                 <Form.Label>{ strings.markerForm.location }</Form.Label>
                 <p>{ roundLatLng(this.props.addMarkerY) } { roundLatLng(this.props.addMarkerX) }</p>
-              </Form.Group>
+              </Form.Group> }
 
               <Form.Group controlId="placeName">
                 <Form.Label>{ strings.markerForm.place }</Form.Label>
@@ -218,21 +287,21 @@ export class LocationTab extends React.Component {
               </Form.Group>
 
               <Form.Group controlId="placeWater">
-                <Form.Check type="checkbox" label="Dostęp do wody" onChange={this.onChangeWater} />
+                <Form.Check type="checkbox" label="Dostęp do wody" onChange={this.onChangeWater} defaultChecked={this.state.hasWater } />
               </Form.Group>
 
               { this.state.hasWater && <Form.Group controlId="placeWaterDescription">
                 <Form.Label>{ strings.markerForm.description }</Form.Label>
-                <Form.Control as="textarea" rows="5" value={this.state.placeDescription} onChange={this.updatePlaceDescription} name="description"/>
+                <Form.Control as="textarea" rows="5" value={this.state.waterDescription} onChange={this.updateWaterDescription} name="description"/>
               </Form.Group> }
 
               <Form.Group controlId="placeFire">
-                <Form.Check type="checkbox" label="Dostęp do ognia" onChange={this.onChangeFire} />
+                <Form.Check type="checkbox" label="Dostęp do ognia" onChange={this.onChangeFire} defaultChecked={this.state.hasFire}/>
               </Form.Group>
 
               { this.state.hasFire && <Form.Group controlId="placeFireDescription">
                 <Form.Label>{ strings.markerForm.description }</Form.Label>
-                <Form.Control as="textarea" rows="5" value={this.state.placeDescription} onChange={this.updatePlaceDescription} name="description"/>
+                <Form.Control as="textarea" rows="5" value={this.state.fireDescription} onChange={this.updateFireDescription} name="description"/>
               </Form.Group> }
 
               <Form.Group controlId="placeImage">

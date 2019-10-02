@@ -52,6 +52,10 @@ export class Map extends React.Component {
     this.state.map.setCenter(position, true);
   }
 
+  clearAddMarker = () => {
+    this.state.newMarkerLayer.removeAll();
+  }
+
   // TODO: center on marker on panning (?)
   updateMarkerPosition = () => {
     if(this.state.addMarker) {
@@ -89,8 +93,15 @@ export class Map extends React.Component {
 
     window.Loader.async = true;
     window.Loader.load(null, {poi: this.props.poi}, async () => {
+
+      let center;
+
       // Default map center
-      const center = window.SMap.Coords.fromWGS84(16.844417, 50.39805);
+      if(this.props.initCoords) {
+        center = window.SMap.Coords.fromWGS84(this.props.initCoords.longitude, this.props.initCoords.latitude);
+      } else {
+        center = window.SMap.Coords.fromWGS84(16.844417, 50.39805);
+      }
 
       this.setState({
         scriptLoadingState: SCRIPT_LOADING_DONE,
@@ -150,8 +161,12 @@ export class Map extends React.Component {
         const id = marker.getId();
 
         if(map.state.points[id]) {
+          let point = map.state.points[id]._source;
+
+          point.id = map.state.points[id]._id
+
           map.state.newMarkerLayer.removeAll();
-          map.props.openLocationTab(map.state.points[id]._source)
+          map.props.openLocationTab(point)
 
           // Center map on marker
           const newCenter = window.SMap.Coords.fromWGS84(marker._coords.x, marker._coords.y);
