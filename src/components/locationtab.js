@@ -40,7 +40,16 @@ const Image = styled.img`
 `;
 
 const DescriptionContainer = styled.div`
-  padding: 25px;
+  padding: 10px 25px 25px 25px;
+`;
+
+const LocationName = styled.h3`
+
+`;
+
+const ActionBar = styled.div`
+  display: flex;
+  margin-bottom: 10px;
 `;
 
 const Text = styled.p`
@@ -107,13 +116,20 @@ export class LocationTab extends React.Component {
     })
   }
 
-  openLocationTab = (id) => {
-    this.setState({
+  openLocationTab = (point) => {
+    let state = {
       open: true,
       action: false,
-      submitted: false,
-      selectedPoint: id
-    })
+      submitted: false
+    }
+
+    if(point) {
+      state.selectedPoint = point.id;
+      state.selectedPointLat = point.location.lat;
+      state.selectedPointLon = point.location.lon;
+    }
+
+    this.setState(state)
   }
 
   showMarkerForm = () => {
@@ -173,7 +189,14 @@ export class LocationTab extends React.Component {
       data.fire_comment = '';
     }
 
-    await api.addPoint(data);
+    if(this.state.action === 'edit') {
+      data.id = this.state.selectedPoint
+      data.lat = this.state.selectedPointLat
+      data.lon = this.state.selectedPointLon
+      await api.updatePoint(data);
+    } else {
+      await api.addPoint(data);
+    }
 
     this.setState({
       submitted: true,
@@ -195,6 +218,17 @@ export class LocationTab extends React.Component {
   onChangeFire = (e) => {
     this.setState({
       hasFire: e.target.checked
+    })
+  }
+
+  onImageUpload = async (files) => {
+    const image = await api.uploadImages(this.state.selectedPoint, files);
+
+    this.props.refreshMap();
+
+    this.setState({
+      submitted: true,
+      action: 'upload'
     })
   }
 
@@ -241,12 +275,35 @@ export class LocationTab extends React.Component {
             })}
           </Carousel> }
 
-          {!this.props.location.images && <Image src="/no-image.png"/> }
+          {!this.props.location.images &&
+          <Dropzone onDrop={this.onImageUpload}>
+            {({getRootProps, getInputProps}) => (
+              <section>
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <Image src="/no-image.png"/>
+                </div>
+              </section>
+            )}
+          </Dropzone> }
 
           <DescriptionContainer>
-            {this.props.loggedIn && <button onClick={this.onEditClick}>Edytuj</button> }
+            {this.props.loggedIn && <ActionBar>
+              <Button variant="secondary" onClick={this.onEditClick} style={{marginRight: 10}}>Edytuj</Button>
+              <Dropzone onDrop={this.onImageUpload}>
+                {({getRootProps, getInputProps}) => (
+                  <section>
+                    <div {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      <Button variant="secondary">Dodaj zdjęcie</Button>
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+            </ActionBar> }
 
-            <Text>{ this.props.location.name }</Text>
+            <LocationName>{ this.props.location.name }</LocationName>
+            <Text>{ this.props.location.description }</Text>
             <Label>Dostęp do wody: <strong>{ water }</strong></Label>
             { this.props.location.water.exists && <Text>{ this.props.location.water.comment }</Text>}
             <Label>Dostęp do ognia: <strong>{ fire }</strong></Label>
@@ -303,21 +360,6 @@ export class LocationTab extends React.Component {
                 <Form.Label>{ strings.markerForm.description }</Form.Label>
                 <Form.Control as="textarea" rows="5" value={this.state.fireDescription} onChange={this.updateFireDescription} name="description"/>
               </Form.Group> }
-
-              <Form.Group controlId="placeImage">
-                <Form.Label>{ strings.markerForm.upload }</Form.Label>
-
-                <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
-                  {({getRootProps, getInputProps}) => (
-                    <section>
-                      <div {...getRootProps()}>
-                        <input {...getInputProps()} />
-                        <p>{ strings.markerForm.uploadDescription }</p>
-                      </div>
-                    </section>
-                  )}
-                </Dropzone>
-              </Form.Group>
 
               <Button variant="primary" type="submit">
                 { strings.markerForm.cta }

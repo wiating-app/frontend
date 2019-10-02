@@ -78,7 +78,7 @@ class App extends Component {
       currentLocation: point
     })
 
-    this.refs.tab.openLocationTab(point.id);
+    this.refs.tab.openLocationTab(point);
   }
 
   addMarker = async (x, y) => {

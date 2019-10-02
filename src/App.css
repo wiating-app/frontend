@@ -105,3 +105,12 @@ button.link {
 button.link:hover {
   text-decoration: underline;
 }
+
+.App .carousel .thumbs-wrapper {
+  margin: 10px 0 0 0;
+}
+
+.App .carousel .thumbs {
+  margin-bottom: 0;
+  padding-left: 20px;
+}

@@ -40,6 +40,16 @@ export class API {
       body: JSON.stringify(obj)
     });
 
+  uploadObject = (obj, endPoint, options = {}) =>
+    this.getObject(endPoint, {
+      method: 'POST',
+      ...options,
+      headers: {
+        ...options.headers
+      },
+      body: obj
+    });
+
   addPoint = async (data) => {
     const logged = auth.getLoggedStatus();
 
@@ -49,6 +59,41 @@ export class API {
       });
 
       return response.body;
+    } else {
+      return false;
+    }
+  }
+
+  updatePoint = async (data) => {
+    const logged = auth.getLoggedStatus();
+
+    if(logged) {
+      const response = await this.postObject(data, 'http://13.59.76.17/wiating/modify_point', {
+        headers: { Authorization: "Bearer " + logged.token }
+      });
+
+      return response.body;
+    } else {
+      return false;
+    }
+  }
+
+  uploadImages = async (point, images) => {
+    const logged = auth.getLoggedStatus();
+
+    let data = new FormData()
+    data.append('file', images[0])
+
+    console.log(data)
+
+    if(logged) {
+      const response = await this.uploadObject(data, 'http://13.59.76.17/wiating/add_image/' + point, {
+        headers: { Authorization: "Bearer " + logged.token }
+      });
+
+      console.log(response)
+
+      return response;
     } else {
       return false;
     }
