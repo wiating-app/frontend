@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Dropzone from 'react-dropzone'
 import { Carousel } from 'react-responsive-carousel';
+import validator from 'validator';
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -139,7 +140,13 @@ export class LocationTab extends React.Component {
     this.openLocationTab();
 
     this.setState({
-      action: 'addMarker'
+      action: 'addMarker',
+       placeName: '',
+       placeDescription: '',
+       fireDescription: '',
+       waterDescription: '',
+       selectedPoint: '',
+       errors: {}
     })
   }
 
@@ -190,6 +197,48 @@ export class LocationTab extends React.Component {
       data.fire_comment = e.target.elements.placeFireDescription.value
     } else {
       data.fire_comment = '';
+    }
+
+    let errors = {};
+
+    if(!validator.isLength(data.name, {min:5, max: 20})) {
+      errors.name = "min 5 max 20 znaków"
+    }
+
+    if(!data.name.split(' ').every(function (word) { return validator.isAlphanumeric(word, 'pl-PL'); })) {
+      errors.name = "dozwolone tylko litery i cyfry"
+    }
+
+    if(data.name === '') {
+      errors.name = "pole nie może być puste"
+    }
+
+    if(!validator.isLength(data.description, {min:40, max: 1000})) {
+      errors.description = "min 40 max 1000 znaków"
+    }
+
+    if(data.description === '') {
+      errors.description = "pole nie może być puste"
+    }
+
+    if(data.water_exists && data.water_comment !== '') {
+      if(!validator.isLength(data.water_comment, {min:40, max: 1000})) {
+        errors.water_comment = "min 40 max 1000 znaków"
+      }
+    }
+
+    if(data.fire_exists && data.fire_comment !== '') {
+      if(!validator.isLength(data.fire_comment, {min:40, max: 1000})) {
+        errors.fire_comment = "min 40 max 1000 znaków"
+      }
+    }
+
+    if(Object.keys(errors).length !== 0) {
+      this.setState({
+        errors: errors
+      })
+
+      return false;
     }
 
     if(this.state.action === 'edit') {
@@ -318,16 +367,24 @@ export class LocationTab extends React.Component {
 
               <Form.Group controlId="placeName">
                 <Form.Label>{ strings.markerForm.place }</Form.Label>
-                <Form.Control type="text" placeholder="" value={this.state.placeName} onChange={this.updatePlaceName} name="name" />
+                <Form.Control type="text" placeholder="" value={this.state.placeName} onChange={this.updatePlaceName} name="name" isInvalid={!!this.state.errors.name}/>
+
+                <Form.Control.Feedback type="invalid">
+                  {this.state.errors.name}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="placeDescription">
                 <Form.Label>{ strings.markerForm.description }</Form.Label>
-                <Form.Control as="textarea" rows="5" value={this.state.placeDescription} onChange={this.updatePlaceDescription} name="description"/>
+                <Form.Control as="textarea" rows="5" value={this.state.placeDescription} onChange={this.updatePlaceDescription} name="description" isInvalid={!!this.state.errors.description}/>
+
+                <Form.Control.Feedback type="invalid">
+                  {this.state.errors.description}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="placeType">
-                <Form.Label>{ strings.markerForm.description }</Form.Label>
+                <Form.Label>{ strings.markerForm.type }</Form.Label>
                 <Form.Control as="select">
                   <option>Wiata</option>
                   <option>2</option>
@@ -342,8 +399,12 @@ export class LocationTab extends React.Component {
               </Form.Group>
 
               { this.state.hasWater && <Form.Group controlId="placeWaterDescription">
-                <Form.Label>{ strings.markerForm.description }</Form.Label>
-                <Form.Control as="textarea" rows="5" value={this.state.waterDescription} onChange={this.updateWaterDescription} name="description"/>
+                <Form.Label>{ strings.markerForm.waterDescription }</Form.Label>
+                <Form.Control as="textarea" rows="5" value={this.state.waterDescription} onChange={this.updateWaterDescription} name="description" isInvalid={!!this.state.errors.water_comment}/>
+
+                <Form.Control.Feedback type="invalid">
+                  {this.state.errors.water_comment}
+                </Form.Control.Feedback>
               </Form.Group> }
 
               <Form.Group controlId="placeFire">
@@ -351,8 +412,12 @@ export class LocationTab extends React.Component {
               </Form.Group>
 
               { this.state.hasFire && <Form.Group controlId="placeFireDescription">
-                <Form.Label>{ strings.markerForm.description }</Form.Label>
-                <Form.Control as="textarea" rows="5" value={this.state.fireDescription} onChange={this.updateFireDescription} name="description"/>
+                <Form.Label>{ strings.markerForm.fireDescription }</Form.Label>
+                <Form.Control as="textarea" rows="5" value={this.state.fireDescription} onChange={this.updateFireDescription} name="description" isInvalid={!!this.state.errors.fire_comment}/>
+
+                <Form.Control.Feedback type="invalid">
+                  {this.state.errors.fire_comment}
+                </Form.Control.Feedback>
               </Form.Group> }
 
               <Button variant="primary" type="submit">
