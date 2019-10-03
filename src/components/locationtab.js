@@ -64,13 +64,15 @@ const Label = styled.p`
 
 const CloseButton = styled.a`
   position: absolute;
-  right: 10px;
-  top: 65px;
   width: 32px;
   height: 32px;
-  opacity: 0.7;
   z-index: 1;
   cursor: pointer;
+  background: #fff;
+  opacity: 1;
+  right: 0;
+  top: 55px;
+  z-index: 5;
 
   &:hover {
     opacity: 1;
@@ -79,8 +81,9 @@ const CloseButton = styled.a`
   &:before, &:after {
     position: absolute;
     left: 15px;
+    top: 5px;
     content: ' ';
-    height: 33px;
+    height: 20px;
     width: 2px;
     background-color: #333;
   }
