@@ -1,9 +1,11 @@
 import React from 'react';
 import { API } from '../api';
+import { Auth } from '../auth';
 
 import { strings } from '../lang/strings.js';
 
 const api = new API();
+const auth = new Auth();
 
 const SCRIPT_LOADING_NONE = 'NONE',
       SCRIPT_LOADING_RUNNING = 'RUNNING',
@@ -97,7 +99,14 @@ export class Map extends React.Component {
       let center;
 
       // Default map center
-      if(this.props.initCoords) {
+      const position = auth.getStoredPosition();
+
+      let zoom = 13;
+
+      if(position) {
+        center = window.SMap.Coords.fromWGS84(position[0], position[1]);
+        zoom = position[2];
+      } else if(this.props.initCoords) {
         center = window.SMap.Coords.fromWGS84(this.props.initCoords.longitude, this.props.initCoords.latitude);
       } else {
         center = window.SMap.Coords.fromWGS84(16.844417, 50.39805);
@@ -108,7 +117,7 @@ export class Map extends React.Component {
       })
 
       // Create map object
-      const m = new window.SMap(window.JAK.gel("map"), center, 13);
+      const m = new window.SMap(window.JAK.gel("map"), center, zoom);
       m.addDefaultLayer(window.SMap.DEF_TURIST).enable();
 
       // Mouse control setup
@@ -143,6 +152,10 @@ export class Map extends React.Component {
       // Reload map markers on viewport change
       m.getSignals().addListener(window, "map-redraw", function() {
         map.loadMapMarkers();
+
+        const pos = map.state.map.getCenter();
+        const zoom = map.state.map.getZoom();
+        auth.setStoredPosition(pos.x, pos.y, zoom);
       });
 
       m.getSignals().addListener(window, "marker-drag-move", function(e) {
@@ -157,8 +170,11 @@ export class Map extends React.Component {
 
       // On marker click
       m.getSignals().addListener(this, "marker-click", function(e) {
+        console.log('click')
         const marker = e.target;
-        const id = marker.getId();
+        let id = marker.getId();
+
+        if(id<1) id = 0;
 
         if(map.state.points[id]) {
           let point = map.state.points[id]._source;

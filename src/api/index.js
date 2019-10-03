@@ -84,14 +84,10 @@ export class API {
     let data = new FormData()
     data.append('file', images[0])
 
-    console.log(data)
-
     if(logged) {
       const response = await this.uploadObject(data, 'http://13.59.76.17/wiating/add_image/' + point, {
         headers: { Authorization: "Bearer " + logged.token }
       });
-
-      console.log(response)
 
       return response;
     } else {
@@ -111,7 +107,7 @@ export class API {
       }
     }, 'http://13.59.76.17/wiating/get_points');
 
-    console.info('API: Load points from API lbx: ' + lbx + ' lby: ' + lby + ' rtx: ' + rtx + ' rty: ' + rty)
+    //console.info('API: Load points from API lbx: ' + lbx + ' lby: ' + lby + ' rtx: ' + rtx + ' rty: ' + rty)
 
     return response.points;
   };

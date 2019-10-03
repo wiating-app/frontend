@@ -222,7 +222,7 @@ export class LocationTab extends React.Component {
   }
 
   onImageUpload = async (files) => {
-    const image = await api.uploadImages(this.state.selectedPoint, files);
+    await api.uploadImages(this.state.selectedPoint, files);
 
     this.props.refreshMap();
 
@@ -267,25 +267,16 @@ export class LocationTab extends React.Component {
         <CloseButton onClick={this.closeLocationTab}></CloseButton>
 
         { this.props.location && !this.state.action && <div>
-          {this.props.location.images && this.props.location.images.length > 1 &&
+          {this.props.location.images &&
           <Carousel showArrows={true} emulateTouch={true}>
             {this.props.location.images.map((image) => {
               const url = "http://13.59.76.17/img/"+this.state.selectedPoint+"/" + image.name
-              return <img src={url}/>
+              return <img src={url} alt=""/>
             })}
           </Carousel> }
 
           {!this.props.location.images &&
-          <Dropzone onDrop={this.onImageUpload}>
-            {({getRootProps, getInputProps}) => (
-              <section>
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <Image src="/no-image.png"/>
-                </div>
-              </section>
-            )}
-          </Dropzone> }
+          <Image src="/no-image.png"/> }
 
           <DescriptionContainer>
             {this.props.loggedIn && <ActionBar>
@@ -317,7 +308,7 @@ export class LocationTab extends React.Component {
 
             <Form onSubmit={this.onSubmitLocation}>
 
-              { this.state.action == "addMarker" && <Form.Group controlId="placeLocation">
+              { this.state.action === "addMarker" && <Form.Group controlId="placeLocation">
                 <Form.Label>{ strings.markerForm.location }</Form.Label>
                 <p>{ roundLatLng(this.props.addMarkerY) } { roundLatLng(this.props.addMarkerX) }</p>
               </Form.Group> }

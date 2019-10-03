@@ -26,13 +26,8 @@ function AuthComponent(props) {
 
   if (!logged) {
     getTokenSilently().then((token) => {
-      console.log('my token', token)
       props.onLogin(user.name,);
       auth.logIn(user.name, token)
-    })
-  } else {
-    getTokenSilently().then((token) => {
-        console.log('ttt', token)
     })
   }
 
