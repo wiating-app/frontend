@@ -270,7 +270,7 @@ export class LocationTab extends React.Component {
           {this.props.location.images &&
           <Carousel showArrows={true} emulateTouch={true}>
             {this.props.location.images.map((image) => {
-              const url = "http://13.59.76.17/img/"+this.state.selectedPoint+"/" + image.name
+              const url = "https://wiating-dev.s3.eu-central-1.amazonaws.com/"+this.state.selectedPoint+"/" + image.name
               return <img src={url} alt=""/>
             })}
           </Carousel> }
