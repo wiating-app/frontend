@@ -98,6 +98,19 @@ const CloseButton = styled.a`
   }
 `;
 
+const SearchResult = styled.div`
+  padding: 5px 20px;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0,0,0,0.05);
+  }
+`;
+
+const SearchResults = styled.div`
+  padding: 20px 0;
+;`
+
 
 export class LocationTab extends React.Component {
 
@@ -261,6 +274,21 @@ export class LocationTab extends React.Component {
     this.props.refreshMap();
   }
 
+  search = async (phrase) => {
+    this.openLocationTab();
+
+    const result = await api.search(phrase);
+
+    this.setState({
+      action: "search",
+      searchResults: result
+    })
+  }
+
+  focusPoint = (point) => {
+    this.props.focusPoint(point);
+  }
+
   onChangeWater = (e) => {
     this.setState({
       hasWater: e.target.checked
@@ -318,12 +346,21 @@ export class LocationTab extends React.Component {
       <LocationTabContainer className={(this.state.open ? 'active' : 'hidden')}>
         <CloseButton onClick={this.closeLocationTab}></CloseButton>
 
+        { this.state.action && this.state.action === 'search' && <SearchResults>
+          {this.state.searchResults && this.state.searchResults.map((point, index) => {
+            return <SearchResult onClick={() => this.focusPoint(point._source)} key={index}>
+                <h5>{ point._source.name}</h5>
+                <p>{ point._source.description}</p>
+              </SearchResult>
+          })}
+        </SearchResults> }
+
         { this.props.location && !this.state.action && <div>
           {this.props.location.images &&
           <Carousel showArrows={true} emulateTouch={true}>
-            {this.props.location.images.map((image) => {
-              const url = "https://wiating-dev.s3.eu-central-1.amazonaws.com/"+this.state.selectedPoint+"/" + image.name
-              return <img src={url} alt=""/>
+            {this.props.location.images.map((image, i) => {
+              const url = process.env.REACT_APP_S3_URL + '/' + this.state.selectedPoint + '/' + image.name
+              return <img key={i} src={url} alt=""/>
             })}
           </Carousel> }
 
@@ -354,7 +391,7 @@ export class LocationTab extends React.Component {
           </DescriptionContainer>
         </div> }
 
-        { this.state.action && <div style={{padding: "20px"}}>
+        { this.state.action && this.state.action !== 'search' && <div style={{padding: "20px"}}>
           { !this.state.submitted && <div>
             <h2>{ strings.markerForm.heading[this.state.action] }</h2>
 

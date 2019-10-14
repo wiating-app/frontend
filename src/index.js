@@ -18,8 +18,8 @@ const onRedirectCallback = appState => {
 
 ReactDOM.render(
     <Auth0Provider
-      domain="merito.eu.auth0.com"
-      client_id="IpMRzFHzBdQzKfGYqLOqo0XBtzc4SWee"
+      domain={process.env.REACT_APP_AUTH_DOMAIN}
+      client_id={process.env.REACT_APP_AUTH_CLIENT}
       redirect_uri={window.location.origin}
       onRedirectCallback={onRedirectCallback}
       responseType="token id_token"

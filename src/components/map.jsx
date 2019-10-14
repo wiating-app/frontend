@@ -89,6 +89,11 @@ export class Map extends React.Component {
     })
   }
 
+  setMapCenter = (posX, posY) => {
+    const newCenter = window.SMap.Coords.fromWGS84(posY, posX);
+    this.state.map.setCenter(newCenter, true);
+  }
+
   // Setup map on script loaded
   onScriptLoaded() {
     const map = this;
@@ -170,7 +175,6 @@ export class Map extends React.Component {
 
       // On marker click
       m.getSignals().addListener(this, "marker-click", function(e) {
-        console.log('click')
         const marker = e.target;
         let id = marker.getId();
 

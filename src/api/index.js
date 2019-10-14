@@ -54,7 +54,7 @@ export class API {
     const logged = auth.getLoggedStatus();
 
     if(logged) {
-      const response = await this.postObject(data, 'http://13.59.76.17/wiating/add_point', {
+      const response = await this.postObject(data, process.env.REACT_APP_API_URL + '/wiating/add_point', {
         headers: { Authorization: "Bearer " + logged.token }
       });
 
@@ -68,7 +68,7 @@ export class API {
     const logged = auth.getLoggedStatus();
 
     if(logged) {
-      const response = await this.postObject(data, 'http://13.59.76.17/wiating/modify_point', {
+      const response = await this.postObject(data, process.env.REACT_APP_API_URL + '/wiating/modify_point', {
         headers: { Authorization: "Bearer " + logged.token }
       });
 
@@ -85,7 +85,7 @@ export class API {
     data.append('file', images[0])
 
     if(logged) {
-      const response = await this.uploadObject(data, 'http://13.59.76.17/wiating/add_image/' + point, {
+      const response = await this.uploadObject(data, process.env.REACT_APP_API_URL + '/wiating/add_image/' + point, {
         headers: { Authorization: "Bearer " + logged.token }
       });
 
@@ -105,9 +105,15 @@ export class API {
         lat: lby,
         lon: lbx
       }
-    }, 'http://13.59.76.17/wiating/get_points');
+    }, process.env.REACT_APP_API_URL + '/wiating/get_points');
 
-    //console.info('API: Load points from API lbx: ' + lbx + ' lby: ' + lby + ' rtx: ' + rtx + ' rty: ' + rty)
+    return response.points;
+  };
+
+  search = async (phrase) => {
+    const response = await this.postObject({
+      phrase: phrase
+    }, process.env.REACT_APP_API_URL + '/wiating/search_points');
 
     return response.points;
   };

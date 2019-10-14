@@ -32,7 +32,7 @@ function AuthComponent(props) {
   }
 
   return (
-    <NavBar state={props.state} onLogout={props.onLogout}/>
+    <NavBar state={props.state} onLogout={props.onLogout} onSearch={props.onSearch}/>
   )
 }
 
@@ -113,6 +113,14 @@ class App extends Component {
     })
   }
 
+  onSearch = async (phrase) => {
+    this.refs.tab.search(phrase);
+  }
+
+  focusPoint = (point) => {
+    this.refs.map.setMapCenter(point.location.lat, point.location.lon);
+  }
+
   componentDidMount = () => {
     const logged = auth.getLoggedStatus();
 
@@ -128,7 +136,7 @@ class App extends Component {
     return (
       <div className="App">
 
-      <AuthComponent onLogin={this.onLogin} onLogout={this.onLogout} state={this.state}/>
+      <AuthComponent onLogin={this.onLogin} onLogout={this.onLogout} onSearch={this.onSearch} state={this.state}/>
 
       <div style={{boxSizing: 'border-box', paddingTop: 55, height: "100vh", position: "relative"}}>
         <Map
@@ -147,6 +155,7 @@ class App extends Component {
           addMarkerX={this.state.addMarkerX}
           addMarkerY={this.state.addMarkerY}
           refreshMap={this.refreshMap}
+          focusPoint={this.focusPoint}
           ref="tab"
           loggedIn={this.state.loggedIn}
         />
