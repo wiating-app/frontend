@@ -4,6 +4,16 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### Before running
+
+Copy .env.sample to .env , update constants there:
+
+REACT_APP_API_URL - backend API URL
+REACT_APP_S3_URL - S3 URL for images
+REACT_APP_AUTH_DOMAIN - Auth0 domain name
+REACT_APP_AUTH_CLIENT - Auth0 client id
+
+
 ### `npm start`
 
 Runs the app in the development mode.<br>

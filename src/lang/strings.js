@@ -1,4 +1,6 @@
 export const strings = {
+  yes: "Tak",
+  no: "Nie",
   markerForm: {
     heading: {
       addMarker: "Dodaj nowe miejsce",
@@ -15,6 +17,14 @@ export const strings = {
     cta: "Zapisz",
     thankYouHeading: "Dzięki!",
     thankYouMessage: "Punkt został dodany i będzie widoczny po akceptacji moderatora."
+  },
+  marker: {
+    waterAccess: "Dostęp do wody",
+    fireAccess: "Dostęp do ognia"
+  },
+  actions: {
+    edit: "Edytuj",
+    addPhoto: "Dodaj zdjęcie"
   },
   map: {
     loading: "Ładowanie mapy...",

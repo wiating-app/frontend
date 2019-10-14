@@ -330,15 +330,15 @@ export class LocationTab extends React.Component {
 
     if(this.props.location) {
       if(this.props.location.water.exists) {
-        water = "Tak"
+        water = strings.yes
       } else {
-        water = "Nie"
+        water = strings.no
       }
 
       if(this.props.location.fire.exists) {
-        fire = "Tak"
+        fire = strings.yes
       } else {
-        fire = "Nie"
+        fire = strings.no
       }
     }
 
@@ -369,13 +369,13 @@ export class LocationTab extends React.Component {
 
           <DescriptionContainer>
             {this.props.loggedIn && <ActionBar>
-              <Button variant="secondary" onClick={this.onEditClick} style={{marginRight: 10}}>Edytuj</Button>
+              <Button variant="secondary" onClick={this.onEditClick} style={{marginRight: 10}}>{strings.actions.edit}</Button>
               <Dropzone onDrop={this.onImageUpload}>
                 {({getRootProps, getInputProps}) => (
                   <section>
                     <div {...getRootProps()}>
                       <input {...getInputProps()} />
-                      <Button variant="secondary">Dodaj zdjęcie</Button>
+                      <Button variant="secondary">{strings.actions.addPhoto}</Button>
                     </div>
                   </section>
                 )}
@@ -432,7 +432,7 @@ export class LocationTab extends React.Component {
               </Form.Group>
 
               <Form.Group controlId="placeWater">
-                <Form.Check type="checkbox" label="Dostęp do wody" onChange={this.onChangeWater} defaultChecked={this.state.hasWater } />
+                <Form.Check type="checkbox" label={strings.marker.waterAccess} onChange={this.onChangeWater} defaultChecked={this.state.hasWater } />
               </Form.Group>
 
               { this.state.hasWater && <Form.Group controlId="placeWaterDescription">
@@ -445,7 +445,7 @@ export class LocationTab extends React.Component {
               </Form.Group> }
 
               <Form.Group controlId="placeFire">
-                <Form.Check type="checkbox" label="Dostęp do ognia" onChange={this.onChangeFire} defaultChecked={this.state.hasFire}/>
+                <Form.Check type="checkbox" label={strings.marker.fireAccess} onChange={this.onChangeFire} defaultChecked={this.state.hasFire}/>
               </Form.Group>
 
               { this.state.hasFire && <Form.Group controlId="placeFireDescription">
