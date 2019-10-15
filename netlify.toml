@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "dist"
+  publish = "build"
 
 [context.production.environment]
   REACT_APP_API_URL = "http://13.59.76.17"
