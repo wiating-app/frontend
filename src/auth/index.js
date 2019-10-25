@@ -1,33 +1,33 @@
 export class Auth {
   getLoggedStatus = () => {
-    const user = localStorage.getItem('currentUser');
+    const user = localStorage.getItem('currentUser')
 
-    if(user) {
-      return JSON.parse(user);
+    if (user) {
+      return JSON.parse(user)
     }
 
-    return false;
+    return false
   };
 
   logIn = (user, token) => {
-    localStorage.setItem('currentUser', JSON.stringify({user, token}));
+    localStorage.setItem('currentUser', JSON.stringify({ user, token }))
   }
 
   logOut = () => {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser')
   }
 
   getStoredPosition = () => {
-    const position = localStorage.getItem('lastPosition');
+    const position = localStorage.getItem('lastPosition')
 
-    if(position) {
-      return position.split(';');
+    if (position) {
+      return position.split(';')
     } else {
-      return false;
+      return false
     }
   }
 
   setStoredPosition = (lat, lng, zoom) => {
-    localStorage.setItem('lastPosition', lat+';'+lng+';'+zoom);
+    localStorage.setItem('lastPosition', lat + ';' + lng + ';' + zoom)
   }
 }
