@@ -324,6 +324,13 @@ export class LocationTab extends React.Component {
     })
   }
 
+  componentDidUpdate(prevProps) {
+    const { searchPhrase } = this.props
+    if (prevProps.searchPhrase !== searchPhrase) {
+      this.search(searchPhrase)
+    }
+  }
+
   render() {
     let water, fire
 

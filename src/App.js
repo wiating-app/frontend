@@ -1,180 +1,85 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './App.css'
-
-import { Auth } from './auth'
-
-import Map from './components/map.jsx'
-import ContextMenu from './components/contextmenu.js'
-import LocationTab from './components/locationtab.js'
 import { useAuth0 } from './react-auth0-wrapper'
-import { geolocated } from 'react-geolocated'
 
-import NavBar from './components/navbar'
+import MapContainer from './containers/MapContainer'
+import ContextMenu from './components/ContextMenu'
+import LocationTabContainer from './containers/LocationTabContainer'
+import NavBarContainer from './containers/NavBarContainer'
 
-const auth = new Auth()
 
+const App = () => {
+  const [showContextMenu, setShowContextMenu] = React.useState()
+  const [showLocationTab, setShowLocationTab] = React.useState()
+  const [clickedPosition, setClickedPosition] = React.useState({})
+  const [selectedLocation, setSelectedLocation] = React.useState({})
+  const [searchPhrase, setSearchPhrase] = React.useState()
 
-function AuthComponent(props) {
-  const { loading, getTokenSilently, user } = useAuth0()
-  const logged = auth.getLoggedStatus()
-
-  if (loading) {
-    return (
-      <div>Loading...</div>
-    )
+  const openContextMenu = (x, y, px, py) => {
+    setClickedPosition({ x, y })
+    setShowContextMenu(true)
+    setSelectedLocation({ px, py })
   }
 
-  if (!logged) {
+  const openLocationTab = point => {
+    setShowLocationTab(true)
+    setSelectedLocation(point)
+
+    refs.tab.openLocationTab(point)
+  }
+
+  const addMarker = async (x, y) => {
+    refs.map.addMarker(selectedLocation.x, selectedLocation.y)
+    refs.tab.showMarkerForm()
+
+    setShowContextMenu(false)
+  }
+
+  const refreshMap = async () => {
+    refs.map.clearAddMarker()
+    refs.map.loadMapMarkers()
+  }
+
+  const { isLoggedIn, getTokenSilently, login, user } = useAuth0()
+  if (!isLoggedIn) {
     getTokenSilently().then((token) => {
-      props.onLogin(user.name,)
-      auth.logIn(user.name, token)
+      login(user.name, token)
     })
   }
 
   return (
-    <NavBar state={props.state} onLogout={props.onLogout} onSearch={props.onSearch} />
+    <div className='App'>
+
+      <NavBarContainer onSearch={phrase => setSearchPhrase(phrase)} />
+
+      <div style={{ boxSizing: 'border-box', paddingTop: 55, height: '100vh', position: 'relative' }}>
+        <MapContainer
+          onContextMenuClose={() => setShowContextMenu(false)}
+          onContextMenu={params => openContextMenu(params)}
+          openLocationTab={point => openLocationTab(point)}
+          onUpdateMarkerPosition={coordinates => setSelectedLocation(coordinates)}
+        />
+
+        <LocationTabContainer
+          open={showLocationTab}
+          location={selectedLocation}
+          addMarkerX={clickedPosition.x}
+          addMarkerY={clickedPosition.y}
+          refreshMap={() => refreshMap()}
+          focusPoint={point => refs.map.setMapCenter(point.location.lat, point.location.lon)}
+          searchPhrase={searchPhrase}
+        />
+      </div>
+
+      {showContextMenu &&
+        <ContextMenu
+          addMarker={coordinates => addMarker(coordinates)}
+          coordinates={clickedPosition}
+        />
+      }
+
+    </div>
   )
 }
 
-class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      loggedIn: false,
-      contextMenuX: 0,
-      contextMenuY: 0,
-      contextMenuOpen: false,
-      addMarkerX: 0,
-      addMarkerY: 0,
-    }
-  }
-
-  openContextMenu = (x, y, px, py) => {
-    this.setState({
-      contextMenuX: x,
-      contextMenuY: y,
-      addMarkerX: px,
-      addMarkerY: py,
-      contextMenuOpen: true,
-    })
-  }
-
-  closeContextMenu = (x, y) => {
-    this.setState({
-      contextMenuOpen: false,
-    })
-  }
-
-  openLocationTab = (point) => {
-    this.setState({
-      locationTabOpen: true,
-      currentLocation: point,
-    })
-
-    this.refs.tab.openLocationTab(point)
-  }
-
-  addMarker = async (x, y) => {
-    this.refs.map.addMarker(this.state.addMarkerX, this.state.addMarkerY)
-    this.refs.tab.showMarkerForm()
-
-    this.setState({
-      contextMenuOpen: false,
-    })
-  }
-
-  refreshMap = async () => {
-    this.refs.map.clearAddMarker()
-    this.refs.map.loadMapMarkers()
-  }
-
-  onUpdateMarkerPosition = (x, y) => {
-    this.setState({
-      addMarkerX: x,
-      addMarkerY: y,
-    })
-  }
-
-  onLogin = (name) => {
-    this.setState({
-      loggedIn: true,
-      username: name,
-    })
-  }
-
-  onLogout = () => {
-    auth.logOut()
-
-    this.setState({
-      loggedIn: false,
-      username: false,
-    })
-  }
-
-  onSearch = async (phrase) => {
-    this.refs.tab.search(phrase)
-  }
-
-  focusPoint = (point) => {
-    this.refs.map.setMapCenter(point.location.lat, point.location.lon)
-  }
-
-  componentDidMount = () => {
-    const logged = auth.getLoggedStatus()
-
-    if (logged) {
-      this.setState({
-        loggedIn: true,
-        username: logged.user,
-      })
-    }
-  }
-
-  render() {
-    return (
-      <div className='App'>
-
-        <AuthComponent onLogin={this.onLogin} onLogout={this.onLogout} onSearch={this.onSearch} state={this.state} />
-
-        <div style={{ boxSizing: 'border-box', paddingTop: 55, height: '100vh', position: 'relative' }}>
-          <Map
-            onContextMenuClose={this.closeContextMenu}
-            onContextMenu={this.openContextMenu}
-            openLocationTab={this.openLocationTab}
-            onUpdateMarkerPosition={this.onUpdateMarkerPosition}
-            isLoggedIn={this.state.loggedIn}
-            initCoords={this.props.coords}
-            ref='map'
-          />
-
-          <LocationTab
-            open={this.state.locationTabOpen}
-            location={this.state.currentLocation}
-            addMarkerX={this.state.addMarkerX}
-            addMarkerY={this.state.addMarkerY}
-            refreshMap={this.refreshMap}
-            focusPoint={this.focusPoint}
-            ref='tab'
-            loggedIn={this.state.loggedIn}
-          />
-        </div>
-
-        {this.state.contextMenuOpen &&
-          <ContextMenu
-            addMarker={this.addMarker}
-            x={this.state.contextMenuX}
-            y={this.state.contextMenuY}
-          />}
-
-      </div>
-    )
-  }
-}
-
-export default geolocated({
-  positionOptions: {
-    enableHighAccuracy: false,
-  },
-  userDecisionTimeout: 5000,
-})(App)
+export default App

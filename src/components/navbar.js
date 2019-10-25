@@ -1,5 +1,4 @@
 import React from 'react'
-import { useAuth0 } from '../react-auth0-wrapper'
 import styled from 'styled-components'
 import { strings } from '../lang/strings.js'
 import Form from 'react-bootstrap/Form'
@@ -31,13 +30,6 @@ const SearchBox = styled.div`
 `
 
 const NavBar = (props) => {
-  const { loginWithRedirect, logout } = useAuth0()
-
-  const onLogout = () => {
-    props.onLogout()
-    logout()
-  }
-
   const onSearch = (e) => {
     e.preventDefault()
     props.onSearch(e.target.elements.search.value)
@@ -53,14 +45,18 @@ const NavBar = (props) => {
           </Form.Group>
         </Form>
       </SearchBox>
-      {props.state.username && <div style={{ padding: '10px 5px' }}>{strings.auth.welcome}, {props.state.username}! <button onClick={() => onLogout()} className='link'>{strings.auth.logout}</button></div>}
+      {props.user
+        ? <div style={{ padding: '10px 5px' }}>
+          {strings.auth.welcome}, {props.user.name && props.user.name}!
+          <button onClick={() => props.logout()} className='link'>{strings.auth.logout}</button>
+        </div>
 
-      {!props.state.username &&
-        <div style={{ padding: '10px 5px' }}>
+        : <div style={{ padding: '10px 5px' }}>
           <button
-            onClick={() => loginWithRedirect({})} className='link'
+            onClick={() => props.loginWithRedirect({})} className='link'
           >Zaloguj</button>
-        </div>}
+        </div>
+      }
     </Nav>
   )
 }

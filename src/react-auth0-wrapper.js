@@ -2,11 +2,14 @@
 import React, { useState, useEffect, useContext } from 'react'
 import createAuth0Client from '@auth0/auth0-spa-js'
 
+
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname)
 
-export const Auth0Context = React.createContext()
+const Auth0Context = React.createContext()
+
 export const useAuth0 = () => useContext(Auth0Context)
+
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
@@ -75,10 +78,29 @@ export const Auth0Provider = ({
         loginWithPopup,
         handleRedirectCallback,
         getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
-        loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
+        loginWithRedirect: p => {
+          auth0Client.loginWithRedirect(p)
+          const { user, token } = p
+          localStorage.setItem('currentUser', JSON.stringify({ user, token }))
+        },
         getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
         getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-        logout: (...p) => auth0Client.logout(...p),
+        logout: (...p) => {
+          auth0Client.logout(...p)
+          localStorage.removeItem('currentUser')
+        },
+        isLoggedIn: localStorage.getItem('currentUser'),
+        getLoggedStatus: () => {
+          const user = localStorage.getItem('currentUser')
+          return user ? JSON.parse(user) : false
+        },
+        getStoredPosition: () => {
+          const position = localStorage.getItem('lastPosition')
+          return position ? position.split(';') : false
+        },
+        setStoredPosition: (lat, lng, zoom) => {
+          localStorage.setItem('lastPosition', lat + ';' + lng + ';' + zoom)
+        },
       }}
     >
       {children}

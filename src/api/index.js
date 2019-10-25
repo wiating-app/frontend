@@ -1,32 +1,35 @@
-import { timeoutPromise } from '../utils/promise.js';
-import { Auth } from '../auth';
+import { timeoutPromise } from '../utils/promise.js'
 
-const auth = new Auth();
+// TODO: Probably it will be deleted after data loading logic will be moved to containers.
+const getLoggedStatus = () => {
+  const user = localStorage.getItem('currentUser')
+  return user ? JSON.parse(user) : false
+}
 
 export class API {
   constructor(endPoints = {}, getToken = () => {}) {
-    this.endPoints = endPoints;
-    this.getToken = getToken;
+    this.endPoints = endPoints
+    this.getToken = getToken
   }
 
   get = (endPoint, options = {}) => {
-    const promise = fetch(`${endPoint}${options.query || ''}`, options);
+    const promise = fetch(`${endPoint}${options.query || ''}`, options)
     if (options.timeout) {
-      return timeoutPromise(promise, options.timeout);
+      return timeoutPromise(promise, options.timeout)
     }
 
-    return promise;
+    return promise
   };
 
   getObject = async (endPoint, options) => {
-    const response = await this.get(endPoint, options);
-    return response.json();
+    const response = await this.get(endPoint, options)
+    return response.json()
   };
 
   post = (endPoint, options = {}) =>
     this.get(endPoint, {
       method: 'POST',
-      ...options
+      ...options,
     });
 
   postObject = (obj, endPoint, options = {}) =>
@@ -35,9 +38,9 @@ export class API {
       ...options,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        ...options.headers
+        ...options.headers,
       },
-      body: JSON.stringify(obj)
+      body: JSON.stringify(obj),
     });
 
   uploadObject = (obj, endPoint, options = {}) =>
@@ -45,53 +48,53 @@ export class API {
       method: 'POST',
       ...options,
       headers: {
-        ...options.headers
+        ...options.headers,
       },
-      body: obj
+      body: obj,
     });
 
   addPoint = async (data) => {
-    const logged = auth.getLoggedStatus();
+    const logged = getLoggedStatus()
 
-    if(logged) {
+    if (logged) {
       const response = await this.postObject(data, process.env.REACT_APP_API_URL + '/wiating/add_point', {
-        headers: { Authorization: "Bearer " + logged.token }
-      });
+        headers: { Authorization: 'Bearer ' + logged.token },
+      })
 
-      return response.body;
+      return response.body
     } else {
-      return false;
+      return false
     }
   }
 
   updatePoint = async (data) => {
-    const logged = auth.getLoggedStatus();
+    const logged = getLoggedStatus()
 
-    if(logged) {
+    if (logged) {
       const response = await this.postObject(data, process.env.REACT_APP_API_URL + '/wiating/modify_point', {
-        headers: { Authorization: "Bearer " + logged.token }
-      });
+        headers: { Authorization: 'Bearer ' + logged.token },
+      })
 
-      return response.body;
+      return response.body
     } else {
-      return false;
+      return false
     }
   }
 
   uploadImages = async (point, images) => {
-    const logged = auth.getLoggedStatus();
+    const logged = getLoggedStatus()
 
-    let data = new FormData()
+    const data = new FormData()
     data.append('file', images[0])
 
-    if(logged) {
+    if (logged) {
       const response = await this.uploadObject(data, process.env.REACT_APP_API_URL + '/wiating/add_image/' + point, {
-        headers: { Authorization: "Bearer " + logged.token }
-      });
+        headers: { Authorization: 'Bearer ' + logged.token },
+      })
 
-      return response;
+      return response
     } else {
-      return false;
+      return false
     }
   }
 
@@ -99,22 +102,22 @@ export class API {
     const response = await this.postObject({
       top_right: {
         lat: rty,
-        lon: rtx
+        lon: rtx,
       },
       bottom_left: {
         lat: lby,
-        lon: lbx
-      }
-    }, process.env.REACT_APP_API_URL + '/wiating/get_points');
+        lon: lbx,
+      },
+    }, process.env.REACT_APP_API_URL + '/wiating/get_points')
 
-    return response.points;
+    return response.points
   };
 
   search = async (phrase) => {
     const response = await this.postObject({
-      phrase: phrase
-    }, process.env.REACT_APP_API_URL + '/wiating/search_points');
+      phrase: phrase,
+    }, process.env.REACT_APP_API_URL + '/wiating/search_points')
 
-    return response.points;
+    return response.points
   };
 }

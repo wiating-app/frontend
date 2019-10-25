@@ -1,11 +1,9 @@
 import React from 'react'
 import { API } from '../api'
-import { Auth } from '../auth'
 
 import { strings } from '../lang/strings.js'
 
 const api = new API()
-const auth = new Auth()
 
 const SCRIPT_LOADING_NONE = 'NONE'
 const SCRIPT_LOADING_RUNNING = 'RUNNING'
@@ -66,6 +64,7 @@ export class Map extends React.Component {
     }
   }
 
+  // TODO: Move loading of markers to MapContainer.
   loadMapMarkers = async (lbx, lby, rtx, rty) => {
     const viewport = this.state.map.getViewport()
     const points = await api.getMapPoints(viewport.lbx, viewport.lby, viewport.rtx, viewport.rty)
@@ -102,7 +101,7 @@ export class Map extends React.Component {
       let center
 
       // Default map center
-      const position = auth.getStoredPosition()
+      const position = map.props.getStoredPosition()
 
       let zoom = 13
 
@@ -158,7 +157,7 @@ export class Map extends React.Component {
 
         const pos = map.state.map.getCenter()
         const zoom = map.state.map.getZoom()
-        auth.setStoredPosition(pos.x, pos.y, zoom)
+        map.props.setStoredPosition(pos.x, pos.y, zoom)
       })
 
       m.getSignals().addListener(window, 'marker-drag-move', function(e) {
