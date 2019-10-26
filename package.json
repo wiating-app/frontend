@@ -13,6 +13,7 @@
     "react-geolocated": "^3.0.1",
     "react-responsive-carousel": "^3.1.50",
     "react-router-dom": "^5.0.1",
+    "react-standalone-form": "^0.6.10",
     "styled-components": "^4.3.2",
     "validator": "^11.1.0"
   },

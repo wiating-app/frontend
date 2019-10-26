@@ -1,11 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
+import Form, {
+  Input,
+  TextArea,
+  FormButton,
+  Select,
+  Checkbox,
+} from 'react-standalone-form'
 
-import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Dropzone from 'react-dropzone'
 import { Carousel } from 'react-responsive-carousel'
-import validator from 'validator'
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
@@ -118,26 +123,8 @@ export class LocationTab extends React.Component {
 
     this.state = {
       content: props.content,
-      placeName: '',
-      placeDescription: '',
-      fireDescription: '',
-      waterDescription: '',
       selectedPoint: '',
     }
-  }
-
-  showMarkerForm = () => {
-    this.openLocationTab()
-
-    this.setState({
-      content: 'addMarker',
-      placeName: '',
-      placeDescription: '',
-      fireDescription: '',
-      waterDescription: '',
-      selectedPoint: '',
-      errors: {},
-    })
   }
 
   updatePlaceName = (e) => {
@@ -164,75 +151,15 @@ export class LocationTab extends React.Component {
     })
   }
 
-  onSubmitLocation = async (e) => {
-    e.preventDefault()
-
+  onSubmitLocation = async fields => {
     const data = {
-      name: e.target.elements.placeName.value,
-      description: e.target.elements.placeDescription.value,
+      ...fields,
       lat: this.props.addMarkerY,
       lon: this.props.addMarkerX,
-      type: e.target.elements.placeType.value.toLowerCase(),
-      water_exists: e.target.elements.placeWater.checked,
-      fire_exists: e.target.elements.placeFire.checked,
     }
 
-    if (data.water_exists) {
-      data.water_comment = e.target.elements.placeWaterDescription.value
-    } else {
-      data.water_comment = ''
-    }
-
-    if (data.fire_exists) {
-      data.fire_comment = e.target.elements.placeFireDescription.value
-    } else {
-      data.fire_comment = ''
-    }
-
-    const errors = {}
-
-    if (!validator.isLength(data.name, { min: 5, max: 20 })) {
-      errors.name = 'min 5 max 20 znaków'
-    }
-
-    if (!data.name.split(' ').every(function(word) { return validator.isAlphanumeric(word, 'pl-PL') })) {
-      errors.name = 'dozwolone tylko litery i cyfry'
-    }
-
-    if (data.name === '') {
-      errors.name = 'pole nie może być puste'
-    }
-
-    if (!validator.isLength(data.description, { min: 40, max: 1000 })) {
-      errors.description = 'min 40 max 1000 znaków'
-    }
-
-    if (data.description === '') {
-      errors.description = 'pole nie może być puste'
-    }
-
-    if (data.water_exists && data.water_comment !== '') {
-      if (!validator.isLength(data.water_comment, { min: 40, max: 1000 })) {
-        errors.water_comment = 'min 40 max 1000 znaków'
-      }
-    }
-
-    if (data.fire_exists && data.fire_comment !== '') {
-      if (!validator.isLength(data.fire_comment, { min: 40, max: 1000 })) {
-        errors.fire_comment = 'min 40 max 1000 znaków'
-      }
-    }
-
-    if (Object.keys(errors).length !== 0) {
-      this.setState({
-        errors: errors,
-      })
-
-      return false
-    }
-
-    if (this.state.content === 'edit') {
-      data.id = this.state.selectedPoint
+    if (this.state.content === 'editMarker') {
+      data.id = this.props.selectedLocation
       data.lat = this.props.selectedLocation.x
       data.lon = this.props.selectedLocation.y
       await api.updatePoint(data)
@@ -240,18 +167,12 @@ export class LocationTab extends React.Component {
       await api.addPoint(data)
     }
 
-    this.setState({
-      submitted: true,
-      placeName: '',
-      placeDescription: '',
-      fireDescription: '',
-      waterDescription: '',
-    })
+    this.setState({ content: 'markerSubmitted' })
 
     this.props.refreshMap()
   }
 
-  search = async (phrase) => {
+  search = async phrase => {
     this.openLocationTab()
 
     const result = await api.search(phrase)
@@ -264,18 +185,6 @@ export class LocationTab extends React.Component {
 
   focusPoint = (point) => {
     this.props.focusPoint(point)
-  }
-
-  onChangeWater = (e) => {
-    this.setState({
-      hasWater: e.target.checked,
-    })
-  }
-
-  onChangeFire = (e) => {
-    this.setState({
-      hasFire: e.target.checked,
-    })
   }
 
   onImageUpload = async (files) => {
@@ -386,75 +295,84 @@ export class LocationTab extends React.Component {
           {!this.state.submitted && <div>
             <h2>{strings.markerForm.heading[this.state.content]}</h2>
 
-            <Form onSubmit={this.onSubmitLocation}>
+            <Form
+              fields={[
+                'name',
+                'description',
+                'type',
+                'water_exists',
+                'placeWaterDescription',
+                'fire_exists',
+                'placeFireDescription',
+              ]}
+              required={[
+                'placeName',
+                'placeDescription',
+                'placeType',
+              ]}
+            >
 
-              {this.state.content === 'addMarker' && <Form.Group controlId='placeLocation'>
-                <Form.Label>{strings.markerForm.location}</Form.Label>
-                <p>{roundLatLng(this.props.addMarkerY)} {roundLatLng(this.props.addMarkerX)}</p>
-              </Form.Group>}
+              {this.state.content === 'addMarker' &&
+                <>
+                  <h3>{strings.markerForm.location}</h3>
+                  <p>{roundLatLng(this.props.addMarkerY)} {roundLatLng(this.props.addMarkerX)}</p>
+                </>
+              }
 
-              <Form.Group controlId='placeName'>
-                <Form.Label>{strings.markerForm.place}</Form.Label>
-                <Form.Control type='text' placeholder='' value={this.state.placeName} onChange={this.updatePlaceName} name='name' isInvalid={!!this.state.errors.name} />
+              <Input
+                name='name'
+                label={strings.markerForm.place}
+                min={5}
+              />
 
-                <Form.Control.Feedback type='invalid'>
-                  {this.state.errors.name}
-                </Form.Control.Feedback>
-              </Form.Group>
+              <TextArea
+                name='description'
+                label={strings.markerForm.description}
+                rows={5}
+                min={40}
+              />
 
-              <Form.Group controlId='placeDescription'>
-                <Form.Label>{strings.markerForm.description}</Form.Label>
-                <Form.Control as='textarea' rows='5' value={this.state.placeDescription} onChange={this.updatePlaceDescription} name='description' isInvalid={!!this.state.errors.description} />
+              <Select
+                name='type'
+                label={strings.markerForm.type}
+                options={['Wiata', '2', '3', '4', '5']}
+              />
 
-                <Form.Control.Feedback type='invalid'>
-                  {this.state.errors.description}
-                </Form.Control.Feedback>
-              </Form.Group>
+              <Checkbox
+                name='water_exists'
+                label={strings.marker.waterAccess}
+              />
 
-              <Form.Group controlId='placeType'>
-                <Form.Label>{strings.markerForm.type}</Form.Label>
-                <Form.Control as='select'>
-                  <option>Wiata</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </Form.Control>
-              </Form.Group>
+              {this.state.hasWater &&
+                <TextArea
+                  name='water_description'
+                  label={strings.markerForm.waterDescription}
+                  rows={5}
+                  min={40}
+                />
+              }
 
-              <Form.Group controlId='placeWater'>
-                <Form.Check type='checkbox' label={strings.marker.waterAccess} onChange={this.onChangeWater} defaultChecked={this.state.hasWater} />
-              </Form.Group>
+              <Checkbox
+                name='fire_exists'
+                label={strings.marker.fireAccess}
+              />
 
-              {this.state.hasWater && <Form.Group controlId='placeWaterDescription'>
-                <Form.Label>{strings.markerForm.waterDescription}</Form.Label>
-                <Form.Control as='textarea' rows='5' value={this.state.waterDescription} onChange={this.updateWaterDescription} name='description' isInvalid={!!this.state.errors.water_comment} />
+              {this.state.hasFire &&
+                <TextArea
+                  name='fire_description'
+                  label={strings.markerForm.fireDescription}
+                  rows={5}
+                  min={40}
+                />
+              }
 
-                <Form.Control.Feedback type='invalid'>
-                  {this.state.errors.water_comment}
-                </Form.Control.Feedback>
-              </Form.Group>}
-
-              <Form.Group controlId='placeFire'>
-                <Form.Check type='checkbox' label={strings.marker.fireAccess} onChange={this.onChangeFire} defaultChecked={this.state.hasFire} />
-              </Form.Group>
-
-              {this.state.hasFire && <Form.Group controlId='placeFireDescription'>
-                <Form.Label>{strings.markerForm.fireDescription}</Form.Label>
-                <Form.Control as='textarea' rows='5' value={this.state.fireDescription} onChange={this.updateFireDescription} name='description' isInvalid={!!this.state.errors.fire_comment} />
-
-                <Form.Control.Feedback type='invalid'>
-                  {this.state.errors.fire_comment}
-                </Form.Control.Feedback>
-              </Form.Group>}
-
-              <Button variant='primary' type='submit'>
-                {strings.markerForm.cta}
-              </Button>
+              <FormButton
+                callback={fields => this.onSubmitLocation(fields)}
+              >{strings.markerForm.cta}</FormButton>
             </Form>
           </div>}
 
-          {this.state.submitted &&
+          {this.state.content === 'markerSubmitted' &&
             <div>
               <h3>{strings.markerForm.thankYouHeading}</h3>
               <p>{strings.markerForm.thankYouMessage}</p>

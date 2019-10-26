@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { strings } from '../lang/strings.js'
-import Form from 'react-bootstrap/Form'
+import Form, { Input } from 'react-standalone-form'
 
 const Nav = styled.nav`
   position: fixed;
@@ -30,19 +30,14 @@ const SearchBox = styled.div`
 `
 
 const NavBar = (props) => {
-  const onSearch = (e) => {
-    e.preventDefault()
-    props.onSearch(e.target.elements.search.value)
-    e.target.elements.search.value = ''
-  }
-
   return (
     <Nav>
       <SearchBox>
-        <Form onSubmit={onSearch}>
-          <Form.Group controlId='formBasicEmail'>
-            <Form.Control type='text' placeholder='Szukaj' name='search' />
-          </Form.Group>
+        <Form fields={['phrase']} callbackOnChange={fields => props.onSearch(fields.phrase)}>
+          <Input
+            name='phrase'
+            placeholder='Szukaj'
+          />
         </Form>
       </SearchBox>
       {props.user
