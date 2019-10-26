@@ -14,12 +14,10 @@ import { Carousel } from 'react-responsive-carousel'
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
-import { API } from '../api'
 
 import { roundLatLng } from '../utils/helpers.js'
 import { strings } from '../lang/strings.js'
 
-const api = new API()
 
 const LocationTabContainer = styled.div`
   position: absolute;
@@ -123,64 +121,7 @@ export class LocationTab extends React.Component {
 
     this.state = {
       content: props.content,
-      selectedPoint: '',
     }
-  }
-
-  updatePlaceName = (e) => {
-    this.setState({
-      placeName: e.target.value,
-    })
-  }
-
-  updatePlaceDescription = (e) => {
-    this.setState({
-      placeDescription: e.target.value,
-    })
-  }
-
-  updateWaterDescription = (e) => {
-    this.setState({
-      waterDescription: e.target.value,
-    })
-  }
-
-  updateFireDescription = (e) => {
-    this.setState({
-      fireDescription: e.target.value,
-    })
-  }
-
-  onSubmitLocation = async fields => {
-    const data = {
-      ...fields,
-      lat: this.props.addMarkerY,
-      lon: this.props.addMarkerX,
-    }
-
-    if (this.state.content === 'editMarker') {
-      data.id = this.props.selectedLocation
-      data.lat = this.props.selectedLocation.x
-      data.lon = this.props.selectedLocation.y
-      await api.updatePoint(data)
-    } else {
-      await api.addPoint(data)
-    }
-
-    this.setState({ content: 'markerSubmitted' })
-
-    this.props.refreshMap()
-  }
-
-  search = async phrase => {
-    this.openLocationTab()
-
-    const result = await api.search(phrase)
-
-    this.setState({
-      content: 'search',
-      searchResults: result,
-    })
   }
 
   focusPoint = (point) => {
@@ -188,7 +129,7 @@ export class LocationTab extends React.Component {
   }
 
   onImageUpload = async (files) => {
-    await api.uploadImages(this.state.selectedPoint, files)
+    await api.uploadImages(this.props.selectedLocation, files)
 
     this.props.refreshMap()
 
@@ -201,7 +142,7 @@ export class LocationTab extends React.Component {
   onEditClick = () => {
     this.setState({
       submitted: false,
-      content: 'edit',
+      content: 'editMarker',
       placeName: this.props.location.name,
       placeDescription: this.props.location.description,
       fireDescription: this.props.location.fire.comment,
@@ -241,11 +182,11 @@ export class LocationTab extends React.Component {
     return (
 
       <LocationTabContainer className={(this.state.content ? 'active' : 'hidden')}>
-        <CloseButton onClick={() => this.props.closeLocationTab} />
+        <CloseButton onClick={() => this.props.closeLocationTab()} />
 
-        {this.state.content && this.state.content === 'search' &&
+        {this.state.content === 'searchResults' &&
           <SearchResults>
-            {this.state.searchResults && this.state.searchResults.map((point, index) =>
+            {this.props.searchResults && this.props.searchResults.map((point, index) =>
               <SearchResult onClick={() => this.focusPoint(point._source)} key={index}>
                 <h5>{point._source.name}</h5>
                 <p>{point._source.description}</p>
@@ -253,7 +194,7 @@ export class LocationTab extends React.Component {
             )}
           </SearchResults>}
 
-        {this.props.location && !this.state.content &&
+        {this.state.content === 'markerInfo' &&
           <div>
             {this.props.location.images &&
               <Carousel showArrows emulateTouch>
@@ -291,8 +232,8 @@ export class LocationTab extends React.Component {
             </DescriptionContainer>
           </div>}
 
-        {this.state.content && this.state.content !== 'search' && <div style={{ padding: '20px' }}>
-          {!this.state.submitted && <div>
+        {['addMarker', 'editMarker'].includes(this.state.content) &&
+          <div style={{ padding: '20px' }}>
             <h2>{strings.markerForm.heading[this.state.content]}</h2>
 
             <Form
@@ -315,7 +256,7 @@ export class LocationTab extends React.Component {
               {this.state.content === 'addMarker' &&
                 <>
                   <h3>{strings.markerForm.location}</h3>
-                  <p>{roundLatLng(this.props.addMarkerY)} {roundLatLng(this.props.addMarkerX)}</p>
+                  <p>{roundLatLng(this.props.selectedLocation.lat)} {roundLatLng(this.props.selectedLocation.lon)}</p>
                 </>
               }
 
@@ -340,7 +281,7 @@ export class LocationTab extends React.Component {
 
               <Checkbox
                 name='water_exists'
-                label={strings.marker.waterAccess}
+                text={strings.marker.waterAccess}
               />
 
               {this.state.hasWater &&
@@ -354,7 +295,7 @@ export class LocationTab extends React.Component {
 
               <Checkbox
                 name='fire_exists'
-                label={strings.marker.fireAccess}
+                text={strings.marker.fireAccess}
               />
 
               {this.state.hasFire &&
@@ -367,17 +308,19 @@ export class LocationTab extends React.Component {
               }
 
               <FormButton
-                callback={fields => this.onSubmitLocation(fields)}
+                callback={fields => this.props.onSubmitLocation(fields)}
               >{strings.markerForm.cta}</FormButton>
             </Form>
-          </div>}
+          </div>
+        }
 
-          {this.state.content === 'markerSubmitted' &&
-            <div>
-              <h3>{strings.markerForm.thankYouHeading}</h3>
-              <p>{strings.markerForm.thankYouMessage}</p>
-            </div>}
-        </div>}
+        {/* TODO: Change it to notification */}
+        {this.state.content === 'markerSubmitted' &&
+          <div>
+            <h3>{strings.markerForm.thankYouHeading}</h3>
+            <p>{strings.markerForm.thankYouMessage}</p>
+          </div>
+        }
       </LocationTabContainer>
     )
   }

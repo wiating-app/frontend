@@ -1,9 +1,11 @@
 import React from 'react'
+import { API } from '../api'
 import { useAuth0 } from '../react-auth0-wrapper'
 import NavBar from '../components/NavBar'
 
+const api = new API()
 
-const NavBarContainer = props => {
+const NavBarContainer = ({ setSearchResults }) => {
   const {
     loading,
     loginWithRedirect,
@@ -17,9 +19,14 @@ const NavBarContainer = props => {
     )
   }
 
+  const onSearch = async phrase => {
+    const result = await api.search(phrase)
+    setSearchResults(result)
+  }
+
   return (
     <NavBar
-      onSearch={phrase => props.onSearch(phrase)}
+      onSearch={phrase => onSearch(phrase)}
       loginWithRedirect={loginWithRedirect}
       user={user}
       logout={logout}

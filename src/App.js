@@ -11,9 +11,9 @@ import NavBarContainer from './containers/NavBarContainer'
 const App = () => {
   const [showContextMenu, setShowContextMenu] = React.useState()
   const [locationTabContent, setLocationTabContent] = React.useState()
-  const [clickedPosition, setClickedPosition] = React.useState({})
+  const [contextMenuPosition, setContextMenuPosition] = React.useState({})
   const [selectedLocation, setSelectedLocation] = React.useState()
-  const [searchPhrase, setSearchPhrase] = React.useState()
+  const [searchResults, setSearchResults] = React.useState()
 
   const { isLoggedIn, getTokenSilently, login, user } = useAuth0()
 
@@ -26,18 +26,21 @@ const App = () => {
   return (
     <div className='App'>
 
-      <NavBarContainer onSearch={phrase => setSearchPhrase(phrase)} />
+      <NavBarContainer setSearchResults={results => {
+        setSearchResults(results)
+        setLocationTabContent('searchResults')
+      }} />
 
       <div style={{ boxSizing: 'border-box', paddingTop: 55, height: '100vh', position: 'relative' }}>
         <MapContainer
-          openContextMenu={(x, y, px, py) => {
-            setClickedPosition({ x, y })
+          openContextMenu={(x, y, lat, lon) => {
+            setContextMenuPosition({ x, y })
             setShowContextMenu(true)
-            // setSelectedLocation({ px, py })
+            setSelectedLocation({ lat, lon })
           }}
           closeContextMenu={() => setShowContextMenu(false)}
           openLocationTab={point => {
-            setLocationTabContent(true)
+            setLocationTabContent('markerInfo')
             setSelectedLocation(point)
           }}
           onUpdateMarkerPosition={coordinates => setSelectedLocation(coordinates)}
@@ -47,14 +50,12 @@ const App = () => {
           content={locationTabContent}
           selectedLocation={selectedLocation}
           closeLocationTab={() => setLocationTabContent(false)}
-          addMarkerX={clickedPosition.x}
-          addMarkerY={clickedPosition.y}
+          searchResults={searchResults}
           refreshMap={async () => {
             refs.map.clearAddMarker()
             refs.map.loadMapMarkers()
           }}
           focusPoint={point => refs.map.setMapCenter(point.location.lat, point.location.lon)}
-          searchPhrase={searchPhrase}
         />
       </div>
 
@@ -65,8 +66,7 @@ const App = () => {
             setShowContextMenu(false)
             // refs.map.addMarker(selectedLocation.x, selectedLocation.y) TODO: Convert ref
           }}
-
-          coordinates={clickedPosition}
+          coordinates={contextMenuPosition}
         />
       }
 
