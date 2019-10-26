@@ -16,7 +16,7 @@ const ContextMenu = props => {
   const { x = 0, y = 0 } = props.coordinates
   return (
     <ContextMenuContainer posX={x} posY={y}>
-      <button onClick={() => addMarker(this.props.x, this.props.y)} className='link'>{strings.map.add}</button>
+      <button onClick={() => props.addMarker(x, y)} className='link'>{strings.map.add}</button>
     </ContextMenuContainer>
   )
 }

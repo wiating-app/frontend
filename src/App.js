@@ -10,37 +10,13 @@ import NavBarContainer from './containers/NavBarContainer'
 
 const App = () => {
   const [showContextMenu, setShowContextMenu] = React.useState()
-  const [showLocationTab, setShowLocationTab] = React.useState()
+  const [locationTabContent, setLocationTabContent] = React.useState()
   const [clickedPosition, setClickedPosition] = React.useState({})
-  const [selectedLocation, setSelectedLocation] = React.useState({})
+  const [selectedLocation, setSelectedLocation] = React.useState()
   const [searchPhrase, setSearchPhrase] = React.useState()
 
-  const openContextMenu = (x, y, px, py) => {
-    setClickedPosition({ x, y })
-    setShowContextMenu(true)
-    setSelectedLocation({ px, py })
-  }
-
-  const openLocationTab = point => {
-    setShowLocationTab(true)
-    setSelectedLocation(point)
-
-    refs.tab.openLocationTab(point)
-  }
-
-  const addMarker = async (x, y) => {
-    refs.map.addMarker(selectedLocation.x, selectedLocation.y)
-    refs.tab.showMarkerForm()
-
-    setShowContextMenu(false)
-  }
-
-  const refreshMap = async () => {
-    refs.map.clearAddMarker()
-    refs.map.loadMapMarkers()
-  }
-
   const { isLoggedIn, getTokenSilently, login, user } = useAuth0()
+
   if (!isLoggedIn) {
     getTokenSilently().then((token) => {
       login(user.name, token)
@@ -54,18 +30,29 @@ const App = () => {
 
       <div style={{ boxSizing: 'border-box', paddingTop: 55, height: '100vh', position: 'relative' }}>
         <MapContainer
-          onContextMenuClose={() => setShowContextMenu(false)}
-          onContextMenu={params => openContextMenu(params)}
-          openLocationTab={point => openLocationTab(point)}
+          openContextMenu={(x, y, px, py) => {
+            setClickedPosition({ x, y })
+            setShowContextMenu(true)
+            // setSelectedLocation({ px, py })
+          }}
+          closeContextMenu={() => setShowContextMenu(false)}
+          openLocationTab={point => {
+            setLocationTabContent(true)
+            setSelectedLocation(point)
+          }}
           onUpdateMarkerPosition={coordinates => setSelectedLocation(coordinates)}
         />
 
         <LocationTabContainer
-          open={showLocationTab}
-          location={selectedLocation}
+          content={locationTabContent}
+          selectedLocation={selectedLocation}
+          closeLocationTab={() => setLocationTabContent(false)}
           addMarkerX={clickedPosition.x}
           addMarkerY={clickedPosition.y}
-          refreshMap={() => refreshMap()}
+          refreshMap={async () => {
+            refs.map.clearAddMarker()
+            refs.map.loadMapMarkers()
+          }}
           focusPoint={point => refs.map.setMapCenter(point.location.lat, point.location.lon)}
           searchPhrase={searchPhrase}
         />
@@ -73,7 +60,12 @@ const App = () => {
 
       {showContextMenu &&
         <ContextMenu
-          addMarker={coordinates => addMarker(coordinates)}
+          addMarker={async (x, y) => {
+            setLocationTabContent('addMarker')
+            setShowContextMenu(false)
+            // refs.map.addMarker(selectedLocation.x, selectedLocation.y) TODO: Convert ref
+          }}
+
           coordinates={clickedPosition}
         />
       }

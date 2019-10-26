@@ -6,14 +6,8 @@ const LocationTabContainer = props => {
   const { isLoggedIn } = useAuth0()
   return (
     <LocationTab
-      open={props.showLocationTab}
-      location={props.selectedLocation}
-      addMarkerX={props.addMarkerX}
-      addMarkerY={props.addMarkerY}
-      refreshMap={props.refreshMap}
-      focusPoint={props.focusPoint}
-      searchPhrase={props.searchPhrase}
       loggedIn={isLoggedIn}
+      {...props}
     />
   )
 }

@@ -142,13 +142,13 @@ export class Map extends React.Component {
       m.getSignals().addListener(window, 'map-contextmenu', function click(e) {
         if (map.props.isLoggedIn) {
           const coords = window.SMap.Coords.fromEvent(e.data.event, m)
-          map.props.onContextMenu(e.data.event.clientX, e.data.event.clientY, coords.x, coords.y)
+          map.props.openContextMenu(e.data.event.clientX, e.data.event.clientY, coords.x, coords.y)
         }
       })
 
       // Close context menu on map click
       m.getSignals().addListener(window, 'map-click', function() {
-        map.props.onContextMenuClose()
+        map.props.closeContextMenu()
       })
 
       // Reload map markers on viewport change

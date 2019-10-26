@@ -117,7 +117,7 @@ export class LocationTab extends React.Component {
     super(props)
 
     this.state = {
-      open: false,
+      content: props.content,
       placeName: '',
       placeDescription: '',
       fireDescription: '',
@@ -126,33 +126,11 @@ export class LocationTab extends React.Component {
     }
   }
 
-  closeLocationTab = () => {
-    this.setState({
-      open: false,
-    })
-  }
-
-  openLocationTab = (point) => {
-    const state = {
-      open: true,
-      action: false,
-      submitted: false,
-    }
-
-    if (point) {
-      state.selectedPoint = point.id
-      state.selectedPointLat = point.location.lat
-      state.selectedPointLon = point.location.lon
-    }
-
-    this.setState(state)
-  }
-
   showMarkerForm = () => {
     this.openLocationTab()
 
     this.setState({
-      action: 'addMarker',
+      content: 'addMarker',
       placeName: '',
       placeDescription: '',
       fireDescription: '',
@@ -253,10 +231,10 @@ export class LocationTab extends React.Component {
       return false
     }
 
-    if (this.state.action === 'edit') {
+    if (this.state.content === 'edit') {
       data.id = this.state.selectedPoint
-      data.lat = this.state.selectedPointLat
-      data.lon = this.state.selectedPointLon
+      data.lat = this.props.selectedLocation.x
+      data.lon = this.props.selectedLocation.y
       await api.updatePoint(data)
     } else {
       await api.addPoint(data)
@@ -279,7 +257,7 @@ export class LocationTab extends React.Component {
     const result = await api.search(phrase)
 
     this.setState({
-      action: 'search',
+      content: 'search',
       searchResults: result,
     })
   }
@@ -307,14 +285,14 @@ export class LocationTab extends React.Component {
 
     this.setState({
       submitted: true,
-      action: 'upload',
+      content: 'upload',
     })
   }
 
   onEditClick = () => {
     this.setState({
       submitted: false,
-      action: 'edit',
+      content: 'edit',
       placeName: this.props.location.name,
       placeDescription: this.props.location.description,
       fireDescription: this.props.location.fire.comment,
@@ -325,9 +303,12 @@ export class LocationTab extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { searchPhrase } = this.props
+    const { searchPhrase, content } = this.props
     if (prevProps.searchPhrase !== searchPhrase) {
       this.search(searchPhrase)
+    }
+    if (prevProps.content !== content) {
+      this.setState({ content })
     }
   }
 
@@ -349,10 +330,11 @@ export class LocationTab extends React.Component {
     }
 
     return (
-      <LocationTabContainer className={(this.state.open ? 'active' : 'hidden')}>
-        <CloseButton onClick={this.closeLocationTab} />
 
-        {this.state.action && this.state.action === 'search' &&
+      <LocationTabContainer className={(this.state.content ? 'active' : 'hidden')}>
+        <CloseButton onClick={() => this.props.closeLocationTab} />
+
+        {this.state.content && this.state.content === 'search' &&
           <SearchResults>
             {this.state.searchResults && this.state.searchResults.map((point, index) =>
               <SearchResult onClick={() => this.focusPoint(point._source)} key={index}>
@@ -362,7 +344,7 @@ export class LocationTab extends React.Component {
             )}
           </SearchResults>}
 
-        {this.props.location && !this.state.action &&
+        {this.props.location && !this.state.content &&
           <div>
             {this.props.location.images &&
               <Carousel showArrows emulateTouch>
@@ -400,13 +382,13 @@ export class LocationTab extends React.Component {
             </DescriptionContainer>
           </div>}
 
-        {this.state.action && this.state.action !== 'search' && <div style={{ padding: '20px' }}>
+        {this.state.content && this.state.content !== 'search' && <div style={{ padding: '20px' }}>
           {!this.state.submitted && <div>
-            <h2>{strings.markerForm.heading[this.state.action]}</h2>
+            <h2>{strings.markerForm.heading[this.state.content]}</h2>
 
             <Form onSubmit={this.onSubmitLocation}>
 
-              {this.state.action === 'addMarker' && <Form.Group controlId='placeLocation'>
+              {this.state.content === 'addMarker' && <Form.Group controlId='placeLocation'>
                 <Form.Label>{strings.markerForm.location}</Form.Label>
                 <p>{roundLatLng(this.props.addMarkerY)} {roundLatLng(this.props.addMarkerX)}</p>
               </Form.Group>}
