@@ -1,7 +1,9 @@
 import React from 'react'
-import { useAuth0 } from '../react-auth0-wrapper'
+import { API } from '../api'
+import { useAuth0 } from '../auth0'
 import LocationTab from '../components/LocationTab'
 
+const api = new API()
 
 const LocationTabContainer = ({
   content,

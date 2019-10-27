@@ -1,6 +1,6 @@
 import React from 'react'
 import { API } from '../api'
-import { useAuth0 } from '../react-auth0-wrapper'
+import { useAuth0 } from '../auth0'
 import Map from '../components/Map'
 
 const api = new API()

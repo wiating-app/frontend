@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import Form, {
+import Form from 'react-standalone-form'
+import {
   Input,
   TextArea,
   FormButton,
   Select,
   Checkbox,
-} from 'react-standalone-form'
+} from 'react-standalone-form-mui'
 
 import Button from 'react-bootstrap/Button'
 import Dropzone from 'react-dropzone'
@@ -29,7 +30,6 @@ const LocationTabContainer = styled.div`
   left: -400px;
   top: 0;
   box-shadow: 0, 0, 5px rgba(0,0,0,0.3);
-  padding-top: 55px;
   box-sizing: border-box;
   transition: left .5s ease;
   overflow: auto;
@@ -75,7 +75,7 @@ const CloseButton = styled.a`
   background: #fff;
   opacity: 1;
   right: 0;
-  top: 55px;
+  top: 0;
   z-index: 5;
 
   &:hover {
@@ -128,6 +128,7 @@ const LocationTab = props => {
     <LocationTabContainer className={(content ? 'active' : 'hidden')}>
       <CloseButton onClick={() => props.closeLocationTab()} />
 
+      {console.log('searchResults: ', props.searchResults)}
       {content === 'searchResults' &&
         <SearchResults>
           {props.searchResults && props.searchResults.map((point, index) =>

@@ -1,6 +1,5 @@
 import React from 'react'
 import './App.css'
-import { useAuth0 } from './react-auth0-wrapper'
 
 import MapContainer from './containers/MapContainer'
 import ContextMenu from './components/ContextMenu'
@@ -17,14 +16,6 @@ const App = () => {
 
   const mapRef = React.useRef()
 
-  const { isLoggedIn, getTokenSilently, login, user } = useAuth0()
-
-  if (!isLoggedIn) {
-    getTokenSilently().then((token) => {
-      login(user.name, token)
-    })
-  }
-
   return (
     <div className='App'>
 
@@ -33,7 +24,7 @@ const App = () => {
         setLocationTabContent('searchResults')
       }} />
 
-      <div style={{ boxSizing: 'border-box', paddingTop: 55, height: '100vh', position: 'relative' }}>
+      <div style={{ boxSizing: 'border-box', height: '100vh', position: 'relative' }}>
         <MapContainer
           openContextMenu={(x, y, coords) => {
             setContextMenuPosition({ x, y })
