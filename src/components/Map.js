@@ -6,6 +6,7 @@ const Map = React.forwardRef((props, ref) => {
   const [mapInstance, setMapInstance] = React.useState()
   const [layer, setLayer] = React.useState()
   const [newMarkerLayer, setNewMarkerLayer] = React.useState()
+  const [markerId, setMarkerId] = React.useState()
 
   React.useEffect(() => {
     // Load map script.
@@ -96,21 +97,8 @@ const Map = React.forwardRef((props, ref) => {
       map.getSignals().addListener(this, 'marker-click', function(e) {
         const marker = e.target
         let id = marker.getId()
-
         if (id < 1) id = 0
-
-        if (map.state.props[id]) {
-          const point = map.props.points[id]._source
-
-          point.id = map.props.points[id]._id
-
-          // newMarkerLayer.removeAll()
-          props.openLocationTab(point)
-
-          // Center map on marker
-          const newCenter = window.SMap.Coords.fromWGS84(marker._coords.x, marker._coords.y)
-          map.setCenter(newCenter, true)
-        }
+        setMarkerId(id)
       })
 
       setMapInstance(map)
@@ -125,6 +113,21 @@ const Map = React.forwardRef((props, ref) => {
     const viewport = mapInstance.getViewport()
     props.loadMapMarkers(viewport)
   }
+
+  React.useEffect(() => {
+    if (markerId) {
+      // Open Location details when new marker id is recieved.
+      const point = props.points[markerId]._source
+      point.id = props.points[markerId]._id
+
+      newMarkerLayer.removeAll()
+      props.openLocationTab(point)
+
+      // Center map on marker
+      const newCenter = window.SMap.Coords.fromWGS84(point.location.lon, point.location.lat)
+      mapInstance.setCenter(newCenter, true)
+    }
+  }, [markerId])
 
   React.useEffect(() => {
     // Process markers after new points are fetched.

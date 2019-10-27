@@ -114,195 +114,176 @@ const SearchResults = styled.div`
   padding: 20px 0;
 ;`
 
+const LocationTab = props => {
+  const [content, setContent] = React.useState()
+  const [hasWater, setHasWater] = React.useState()
+  const [hasFire, setHasFire] = React.useState()
 
-export class LocationTab extends React.Component {
-  constructor(props) {
-    super(props)
+  React.useEffect(() => {
+    setContent(props.content)
+  }, [props.content])
 
-    this.state = {
-      content: props.content,
-    }
-  }
+  return (
 
-  focusPoint = (posY, posX) => {
-    this.props.setMapCenter(posY, posX)
-  }
+    <LocationTabContainer className={(content ? 'active' : 'hidden')}>
+      <CloseButton onClick={() => props.closeLocationTab()} />
 
-  componentDidUpdate(prevProps) {
-    const { searchPhrase, content, selectedLocation } = this.props
-    if (prevProps.searchPhrase !== searchPhrase) {
-      this.search(searchPhrase)
-    }
-    if (prevProps.content !== content) {
-      this.setState({ content })
-    }
-    if (prevProps.selectedLocation !== selectedLocation) {
-      this.setState({ content })
-    }
-  }
+      {content === 'searchResults' &&
+        <SearchResults>
+          {props.searchResults && props.searchResults.map((point, index) =>
+            <SearchResult onClick={() => props.setMapCenter(point._source)} key={index}>
+              <h5>{point._source.name}</h5>
+              <p>{point._source.description}</p>
+            </SearchResult>
+          )}
+        </SearchResults>}
 
-  render() {
-    let water, fire
+      {content === 'markerInfo' && props.selectedLocation &&
+        <div>
+          {props.selectedLocation.images &&
+            <Carousel showArrows emulateTouch>
+              {props.selectedLocation.images.map((image, i) => {
+                const url = process.env.REACT_APP_S3_URL + '/' + props.selectedLocation + '/' + image.name
+                return <img key={i} src={url} alt='' />
+              })}
+            </Carousel>}
 
-    if (this.props.location) {
-      if (this.props.location.water.exists) {
-        water = strings.yes
-      } else {
-        water = strings.no
+          {!props.selectedLocation.images &&
+            <Image src='/no-image.png' />}
+
+          <DescriptionContainer>
+            {props.loggedIn &&
+              <ActionBar>
+                <Button variant='secondary' onClick={() => setContent('editMarker')} style={{ marginRight: 10 }}>{strings.actions.edit}</Button>
+                <Dropzone onDrop={files => props.onImageUpload(files)}>
+                  {({ getRootProps, getInputProps }) => (
+                    <section>
+                      <div {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <Button variant='secondary'>{strings.actions.addPhoto}</Button>
+                      </div>
+                    </section>
+                  )}
+                </Dropzone>
+              </ActionBar>}
+
+            <LocationName>{props.selectedLocation.name}</LocationName>
+            <Text>{props.selectedLocation.description}</Text>
+
+            <Label>Dostęp do wody: <strong>
+              {props.selectedLocation.water && props.selectedLocation.water.exists ? strings.yes : strings.no}
+            </strong></Label>
+            {props.selectedLocation.water.exists && <Text>{props.selectedLocation.water.comment}</Text>}
+            <Label>Dostęp do ognia: <strong>
+              {props.selectedLocation.fire && props.selectedLocation.fire.exists ? strings.yes : strings.no}
+            </strong></Label>
+            {props.selectedLocation.fire.exists && <Text>{props.selectedLocation.fire.comment}</Text>}
+          </DescriptionContainer>
+        </div>
       }
 
-      if (this.props.location.fire.exists) {
-        fire = strings.yes
-      } else {
-        fire = strings.no
-      }
-    }
+      {['addMarker', 'editMarker'].includes(content) &&
+        <div style={{ padding: '20px' }}>
+          <h2>{strings.markerForm.heading[content]}</h2>
 
-    return (
+          <Form
+            fields={[
+              'name',
+              'description',
+              'type',
+              'water_exists',
+              'water_description',
+              'fire_exists',
+              'fire_description',
+            ]}
+            required={[
+              'placeName',
+              'placeDescription',
+              'placeType',
+            ]}
+            callbackOnChange={fields => {
+              setHasWater(fields.water_exists)
+              setHasFire(fields.fire_exists)
+            }}
+          >
 
-      <LocationTabContainer className={(this.state.content ? 'active' : 'hidden')}>
-        <CloseButton onClick={() => this.props.closeLocationTab()} />
+            {content === 'addMarker' &&
+              <>
+                <h3>{strings.markerForm.location}</h3>
+                <p>{roundLatLng(props.selectedLocation.lat)} {roundLatLng(props.selectedLocation.lon)}</p>
+              </>
+            }
 
-        {this.state.content === 'searchResults' &&
-          <SearchResults>
-            {this.props.searchResults && this.props.searchResults.map((point, index) =>
-              <SearchResult onClick={() => this.focusPoint(point._source)} key={index}>
-                <h5>{point._source.name}</h5>
-                <p>{point._source.description}</p>
-              </SearchResult>
-            )}
-          </SearchResults>}
+            <Input
+              name='name'
+              label={strings.markerForm.place}
+              min={5}
+              initialValue={props.selectedLocation.name}
+            />
 
-        {this.state.content === 'markerInfo' &&
-          <div>
-            {this.props.location.images &&
-              <Carousel showArrows emulateTouch>
-                {this.props.location.images.map((image, i) => {
-                  const url = process.env.REACT_APP_S3_URL + '/' + this.state.selectedPoint + '/' + image.name
-                  return <img key={i} src={url} alt='' />
-                })}
-              </Carousel>}
+            <TextArea
+              name='description'
+              label={strings.markerForm.description}
+              rows={5}
+              min={40}
+              initialValue={props.selectedLocation.description}
+            />
 
-            {!this.props.location.images &&
-              <Image src='/no-image.png' />}
+            <Select
+              name='type'
+              label={strings.markerForm.type}
+              options={['Wiata', '2', '3', '4', '5']}
+              initialValue={props.selectedLocation.type}
+            />
 
-            <DescriptionContainer>
-              {this.props.loggedIn &&
-                <ActionBar>
-                  <Button variant='secondary' onClick={this.setState({ content: 'editMarker' })} style={{ marginRight: 10 }}>{strings.actions.edit}</Button>
-                  <Dropzone onDrop={files => this.props.onImageUpload(files)}>
-                    {({ getRootProps, getInputProps }) => (
-                      <section>
-                        <div {...getRootProps()}>
-                          <input {...getInputProps()} />
-                          <Button variant='secondary'>{strings.actions.addPhoto}</Button>
-                        </div>
-                      </section>
-                    )}
-                  </Dropzone>
-                </ActionBar>}
+            <Checkbox
+              name='water_exists'
+              text={strings.marker.waterAccess}
+              initialValue={props.selectedLocation.water.exists}
+            />
 
-              <LocationName>{this.props.location.name}</LocationName>
-              <Text>{this.props.location.description}</Text>
-              <Label>Dostęp do wody: <strong>{water}</strong></Label>
-              {this.props.location.water.exists && <Text>{this.props.location.water.comment}</Text>}
-              <Label>Dostęp do ognia: <strong>{fire}</strong></Label>
-              {this.props.location.fire.exists && <Text>{this.props.location.fire.comment}</Text>}
-            </DescriptionContainer>
-          </div>}
-
-        {['addMarker', 'editMarker'].includes(this.state.content) &&
-          <div style={{ padding: '20px' }}>
-            <h2>{strings.markerForm.heading[this.state.content]}</h2>
-
-            <Form
-              fields={[
-                'name',
-                'description',
-                'type',
-                'water_exists',
-                'placeWaterDescription',
-                'fire_exists',
-                'placeFireDescription',
-              ]}
-              required={[
-                'placeName',
-                'placeDescription',
-                'placeType',
-              ]}
-            >
-
-              {this.state.content === 'addMarker' &&
-                <>
-                  <h3>{strings.markerForm.location}</h3>
-                  <p>{roundLatLng(this.props.selectedLocation.lat)} {roundLatLng(this.props.selectedLocation.lon)}</p>
-                </>
-              }
-
-              <Input
-                name='name'
-                label={strings.markerForm.place}
-                min={5}
-              />
-
+            {hasWater &&
               <TextArea
-                name='description'
-                label={strings.markerForm.description}
+                name='water_description'
+                label={strings.markerForm.waterDescription}
                 rows={5}
                 min={40}
+                initialValue={props.selectedLocation.water.comment}
               />
+            }
 
-              <Select
-                name='type'
-                label={strings.markerForm.type}
-                options={['Wiata', '2', '3', '4', '5']}
+            <Checkbox
+              name='fire_exists'
+              text={strings.marker.fireAccess}
+              initialValue={props.selectedLocation.fire.exists}
+            />
+
+            {hasFire &&
+              <TextArea
+                name='fire_description'
+                label={strings.markerForm.fireDescription}
+                rows={5}
+                min={40}
+                initialValue={props.selectedLocation.fire.comment}
               />
+            }
 
-              <Checkbox
-                name='water_exists'
-                text={strings.marker.waterAccess}
-              />
+            <FormButton
+              callback={fields => props.onSubmitLocation(fields)}
+            >{strings.markerForm.cta}</FormButton>
+          </Form>
+        </div>
+      }
 
-              {this.state.hasWater &&
-                <TextArea
-                  name='water_description'
-                  label={strings.markerForm.waterDescription}
-                  rows={5}
-                  min={40}
-                />
-              }
-
-              <Checkbox
-                name='fire_exists'
-                text={strings.marker.fireAccess}
-              />
-
-              {this.state.hasFire &&
-                <TextArea
-                  name='fire_description'
-                  label={strings.markerForm.fireDescription}
-                  rows={5}
-                  min={40}
-                />
-              }
-
-              <FormButton
-                callback={fields => this.props.onSubmitLocation(fields)}
-              >{strings.markerForm.cta}</FormButton>
-            </Form>
-          </div>
-        }
-
-        {/* TODO: Change it to notification */}
-        {this.state.content === 'markerSubmitted' &&
-          <div>
-            <h3>{strings.markerForm.thankYouHeading}</h3>
-            <p>{strings.markerForm.thankYouMessage}</p>
-          </div>
-        }
-      </LocationTabContainer>
-    )
-  }
+      {/* TODO: Change it to notification */}
+      {content === 'markerSubmitted' &&
+        <div>
+          <h3>{strings.markerForm.thankYouHeading}</h3>
+          <p>{strings.markerForm.thankYouMessage}</p>
+        </div>
+      }
+    </LocationTabContainer>
+  )
 }
 
 export default LocationTab

@@ -4,7 +4,7 @@ export const strings = {
   markerForm: {
     heading: {
       addMarker: "Dodaj nowe miejsce",
-      edit: "Edytuj miejsce"
+      editMarker: "Edytuj miejsce"
     },
     location: "Położenie",
     place: "Nazwa miejsca",
