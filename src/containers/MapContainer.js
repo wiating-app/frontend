@@ -22,13 +22,12 @@ const MapContainer = React.forwardRef((props, ref) => {
   React.useImperativeHandle(ref, () => ({
     clearAddMarker() {
       alert('clearAddMarker()')
-      // mapRef.current.addMarker(coordinates)
     },
     loadMapMarkers() {
       alert('loadMapMarkers()')
     },
-    setMapCenter() {
-      alert('setMapCenter()')
+    setMapCenter(posY, posX) {
+      mapRef.current.setMapCenter(posY, posX)
     },
   }))
 

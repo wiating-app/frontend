@@ -35,10 +35,10 @@ const App = () => {
 
       <div style={{ boxSizing: 'border-box', paddingTop: 55, height: '100vh', position: 'relative' }}>
         <MapContainer
-          openContextMenu={(x, y, lat, lon) => {
+          openContextMenu={(x, y, coords) => {
             setContextMenuPosition({ x, y })
             setShowContextMenu(true)
-            setSelectedLocation({ lat, lon })
+            setSelectedLocation({ lat: coords.x, lon: coords.y })
           }}
           closeContextMenu={() => setShowContextMenu(false)}
           openLocationTab={point => {
@@ -58,17 +58,19 @@ const App = () => {
             mapRef.current.clearAddMarker()
             mapRef.current.loadMapMarkers()
           }}
-          focusPoint={point => mapRef.current.setMapCenter(point.location.lat, point.location.lon)}
+          setMapCenter={(posY, posX) => mapRef.current.setMapCenter(posY, posX)}
         />
       </div>
 
       {showContextMenu &&
         <ContextMenu
-          addMarker={async (x, y) => {
+          addMarker={async () => {
             setLocationTabContent('addMarker')
             setShowContextMenu(false)
+            mapRef.current.setMapCenter(selectedLocation.lon, selectedLocation.lat)
           }}
-          coordinates={contextMenuPosition}
+          position={contextMenuPosition}
+          selectedLocation={selectedLocation}
         />
       }
 

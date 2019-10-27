@@ -124,16 +124,19 @@ export class LocationTab extends React.Component {
     }
   }
 
-  focusPoint = (point) => {
-    this.props.focusPoint(point)
+  focusPoint = (posY, posX) => {
+    this.props.setMapCenter(posY, posX)
   }
 
   componentDidUpdate(prevProps) {
-    const { searchPhrase, content } = this.props
+    const { searchPhrase, content, selectedLocation } = this.props
     if (prevProps.searchPhrase !== searchPhrase) {
       this.search(searchPhrase)
     }
     if (prevProps.content !== content) {
+      this.setState({ content })
+    }
+    if (prevProps.selectedLocation !== selectedLocation) {
       this.setState({ content })
     }
   }

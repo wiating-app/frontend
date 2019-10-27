@@ -13,7 +13,7 @@ const ContextMenuContainer = styled.div`
 `
 
 const ContextMenu = props => {
-  const { x = 0, y = 0 } = props.coordinates
+  const { x = 0, y = 0 } = props.position
   return (
     <ContextMenuContainer posX={x} posY={y}>
       <button onClick={() => props.addMarker(x, y)} className='link'>{strings.map.add}</button>

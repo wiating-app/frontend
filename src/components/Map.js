@@ -62,7 +62,7 @@ const Map = React.forwardRef((props, ref) => {
       map.getSignals().addListener(window, 'map-contextmenu', function click(e) {
         if (props.isLoggedIn) {
           const coords = window.SMap.Coords.fromEvent(e.data.event, map)
-          props.openContextMenu(e.data.event.clientX, e.data.event.clientY, coords.x, coords.y)
+          props.openContextMenu(e.data.event.clientX, e.data.event.clientY, coords)
           addMarker(coords)
         }
       })
@@ -149,8 +149,9 @@ const Map = React.forwardRef((props, ref) => {
     loadMapMarkers() {
       alert('loadMapMarkers()')
     },
-    setMapCenter() {
-      alert('setMapCenter()')
+    setMapCenter(posX, posY) {
+      const newCenter = window.SMap.Coords.fromWGS84(posY, posX)
+      mapInstance.setCenter(newCenter, true)
     },
   }))
 
@@ -171,18 +172,10 @@ const Map = React.forwardRef((props, ref) => {
 
     // Add marker to layer
     newMarkerLayer.addMarker(marker)
-
-    // Center map on marker
-    mapInstance.setCenter(position, true)
   }
 
   const clearAddMarker = () => {
     newMarkerLayer.removeAll()
-  }
-
-  const setMapCenter = (posX, posY) => {
-    const newCenter = window.SMap.Coords.fromWGS84(posY, posX)
-    mapInstance.setCenter(newCenter, true)
   }
 
   return (
