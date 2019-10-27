@@ -1,6 +1,7 @@
 import React from 'react'
 import { strings } from '../lang/strings.js'
 
+
 const Map = React.forwardRef((props, ref) => {
   const [mapInstance, setMapInstance] = React.useState()
   const [layer, setLayer] = React.useState()
@@ -144,10 +145,10 @@ const Map = React.forwardRef((props, ref) => {
 
   React.useImperativeHandle(ref, () => ({
     clearAddMarker() {
-      alert('clearAddMarker()')
+      newMarkerLayer.removeAll()
     },
     loadMapMarkers() {
-      alert('loadMapMarkers()')
+      loadMapMarkers()
     },
     setMapCenter(posX, posY) {
       const newCenter = window.SMap.Coords.fromWGS84(posY, posX)
@@ -172,10 +173,6 @@ const Map = React.forwardRef((props, ref) => {
 
     // Add marker to layer
     newMarkerLayer.addMarker(marker)
-  }
-
-  const clearAddMarker = () => {
-    newMarkerLayer.removeAll()
   }
 
   return (

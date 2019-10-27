@@ -52,7 +52,10 @@ const App = () => {
         <LocationTabContainer
           content={locationTabContent}
           selectedLocation={selectedLocation}
-          closeLocationTab={() => setLocationTabContent(false)}
+          closeLocationTab={() => {
+            setLocationTabContent(false)
+            mapRef.current.clearAddMarker()
+          }}
           searchResults={searchResults}
           refreshMap={async () => {
             mapRef.current.clearAddMarker()
