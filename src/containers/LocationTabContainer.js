@@ -28,10 +28,17 @@ const LocationTabContainer = ({
     refreshMap()
   }
 
+  const onImageUpload = async files => {
+    await api.uploadImages(this.props.selectedLocation, files)
+
+    refreshMap()
+  }
+
   return (
     <LocationTab
       loggedIn={isLoggedIn}
       onSubmitLocation={fields => onSubmitLocation(fields)}
+      onImageUpload={files => onImageUpload(files)}
       selectedLocation={selectedLocation}
       content={content}
       {...otherProps}

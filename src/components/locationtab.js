@@ -128,30 +128,6 @@ export class LocationTab extends React.Component {
     this.props.focusPoint(point)
   }
 
-  onImageUpload = async (files) => {
-    await api.uploadImages(this.props.selectedLocation, files)
-
-    this.props.refreshMap()
-
-    this.setState({
-      submitted: true,
-      content: 'upload',
-    })
-  }
-
-  onEditClick = () => {
-    this.setState({
-      submitted: false,
-      content: 'editMarker',
-      placeName: this.props.location.name,
-      placeDescription: this.props.location.description,
-      fireDescription: this.props.location.fire.comment,
-      waterDescription: this.props.location.water.comment,
-      hasWater: this.props.location.water.exists,
-      hasFire: this.props.location.fire.exists,
-    })
-  }
-
   componentDidUpdate(prevProps) {
     const { searchPhrase, content } = this.props
     if (prevProps.searchPhrase !== searchPhrase) {
@@ -210,8 +186,8 @@ export class LocationTab extends React.Component {
             <DescriptionContainer>
               {this.props.loggedIn &&
                 <ActionBar>
-                  <Button variant='secondary' onClick={this.onEditClick} style={{ marginRight: 10 }}>{strings.actions.edit}</Button>
-                  <Dropzone onDrop={this.onImageUpload}>
+                  <Button variant='secondary' onClick={this.setState({ content: 'editMarker' })} style={{ marginRight: 10 }}>{strings.actions.edit}</Button>
+                  <Dropzone onDrop={files => this.props.onImageUpload(files)}>
                     {({ getRootProps, getInputProps }) => (
                       <section>
                         <div {...getRootProps()}>

@@ -15,6 +15,8 @@ const App = () => {
   const [selectedLocation, setSelectedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState()
 
+  const mapRef = React.useRef()
+
   const { isLoggedIn, getTokenSilently, login, user } = useAuth0()
 
   if (!isLoggedIn) {
@@ -44,6 +46,7 @@ const App = () => {
             setSelectedLocation(point)
           }}
           onUpdateMarkerPosition={coordinates => setSelectedLocation(coordinates)}
+          ref={mapRef}
         />
 
         <LocationTabContainer
@@ -52,10 +55,10 @@ const App = () => {
           closeLocationTab={() => setLocationTabContent(false)}
           searchResults={searchResults}
           refreshMap={async () => {
-            refs.map.clearAddMarker()
-            refs.map.loadMapMarkers()
+            mapRef.current.clearAddMarker()
+            mapRef.current.loadMapMarkers()
           }}
-          focusPoint={point => refs.map.setMapCenter(point.location.lat, point.location.lon)}
+          focusPoint={point => mapRef.current.setMapCenter(point.location.lat, point.location.lon)}
         />
       </div>
 
@@ -64,7 +67,6 @@ const App = () => {
           addMarker={async (x, y) => {
             setLocationTabContent('addMarker')
             setShowContextMenu(false)
-            // refs.map.addMarker(selectedLocation.x, selectedLocation.y) TODO: Convert ref
           }}
           coordinates={contextMenuPosition}
         />
