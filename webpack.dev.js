@@ -7,14 +7,4 @@ module.exports = merge(common, {
   devServer: {
     port: 3000,
   },
-
-  module: {
-    rules: [
-      // Enable support for loading fronthack-scripts.
-      {
-        test: /\.exec\.js$/,
-        use: ['script-loader'],
-      },
-    ],
-  },
 })
