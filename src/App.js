@@ -38,6 +38,7 @@ const App = () => {
         }}
         setMapCenter={(posY, posX) => mapRef.current.setMapCenter(posY, posX)}
         setSelectedLocation={location => setSelectedLocation(location)}
+        setLocationTabContent={content => setLocationTabContent(content)}
       />
 
       <MapContainer
@@ -50,6 +51,9 @@ const App = () => {
         openLocationTab={point => {
           setLocationTabContent('markerInfo')
           setSelectedLocation(point)
+        }}
+        unsetCurrentLocation={() => {
+          setLocationTabContent(null)
         }}
         onUpdateMarkerPosition={coordinates => setSelectedLocation(coordinates)}
         ref={mapRef}

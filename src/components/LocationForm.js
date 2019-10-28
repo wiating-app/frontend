@@ -69,7 +69,7 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
           name='water_description'
           label={strings.markerForm.waterDescription}
           min={40}
-          initialValue={selectedLocation && selectedLocation.water.comment}
+          initialValue={selectedLocation && selectedLocation.water && selectedLocation.water.comment}
           multiline
         />
       }
@@ -85,7 +85,7 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
           name='fire_description'
           label={strings.markerForm.fireDescription}
           min={40}
-          initialValue={selectedLocation && selectedLocation.fire.comment}
+          initialValue={selectedLocation && selectedLocation.fire && selectedLocation.fire.comment}
           multiline
         />
       }

@@ -16,7 +16,6 @@
     "react-router-dom": "^5.0.1",
     "react-standalone-form": "^0.6.10",
     "react-standalone-form-mui": "^0.0.3",
-    "styled-components": "^4.3.2",
     "validator": "^11.1.0"
   },
   "scripts": {

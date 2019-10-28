@@ -22,7 +22,7 @@ const LocationInfo = ({ selectedLocation }) =>
       >Brak dostępu do wody</Typography>
     }
 
-    {selectedLocation.water.exists &&
+    {selectedLocation.water && selectedLocation.water.exists &&
       <Typography
         variant='body2'
         gutterBottom
@@ -37,7 +37,7 @@ const LocationInfo = ({ selectedLocation }) =>
         color='textSecondary'
       >Brak dostępu do ognia</Typography>
     }
-    {selectedLocation.fire.exists &&
+    {selectedLocation.fire && selectedLocation.fire.exists &&
       <Typography
         variant='body2'
         gutterBottom

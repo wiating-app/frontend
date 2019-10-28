@@ -65,6 +65,7 @@ const Map = React.forwardRef((props, ref) => {
         if (props.isLoggedIn) {
           const coords = window.SMap.Coords.fromEvent(e.data.event, map)
           props.openContextMenu(e.data.event.clientX, e.data.event.clientY, coords)
+          props.unsetCurrentLocation()
           addMarker(coords)
         }
       })

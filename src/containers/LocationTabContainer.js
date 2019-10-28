@@ -29,6 +29,7 @@ const LocationTabContainer = ({
       await api.addPoint(data)
       closeLocationTab()
     }
+    setLocationTabContent('markerInfo')
 
     refreshMap()
   }

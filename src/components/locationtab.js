@@ -1,10 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
 import {
   Drawer,
   Button,
   IconButton,
   ButtonGroup,
+  Typography,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Close } from '@material-ui/icons'
@@ -25,15 +25,21 @@ const LocationTab = ({
   setMapCenter,
   setSelectedLocation,
   loggedIn,
+  onSubmitLocation,
   onImageUpload,
 }) => {
   const [content, setContent] = React.useState()
+  const classes = useStyles()
+
+  React.useEffect(() => {
+    if (['addMarker', 'editMarker'].includes(content)) {
+      setContent('markerInfo')
+    }
+  }, [selectedLocation])
 
   React.useEffect(() => {
     setContent(retrievedContent)
   }, [retrievedContent])
-
-  const classes = useStyles()
 
   return (
     <Drawer
@@ -96,27 +102,18 @@ const LocationTab = ({
 
         {['addMarker', 'editMarker'].includes(content) &&
           <div className={classes.content}>
-            <h2>{strings.markerForm.heading[content]}</h2>
+            <Typography variant='h4' gutterBottom>{strings.markerForm.heading[content]}</Typography>
 
             {content === 'addMarker' &&
-              <>
-                <h3>{strings.markerForm.location}</h3>
-                <p>{roundLatLng(selectedLocation.lat)} {roundLatLng(selectedLocation.lon)}</p>
-              </>
+              <Typography gutterBottom>
+                <strong>{strings.markerForm.location}:</strong> {roundLatLng(selectedLocation.lat)} {roundLatLng(selectedLocation.lon)}
+              </Typography>
             }
             <LocationForm
               selectedLocation={selectedLocation}
               onSubmitLocation={() => onSubmitLocation()}
               cancel={() => setContent('markerInfo')}
             />
-          </div>
-        }
-
-        {/* TODO: Change it to notification */}
-        {content === 'markerSubmitted' &&
-          <div>
-            <h3>{strings.markerForm.thankYouHeading}</h3>
-            <p>{strings.markerForm.thankYouMessage}</p>
           </div>
         }
       </div>
