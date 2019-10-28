@@ -12,22 +12,10 @@ import Dropzone from 'react-dropzone'
 import LocationForm from './LocationForm'
 import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
+import SearchResults from './SearchResults'
 import { roundLatLng } from '../utils/helpers.js'
 import { strings } from '../lang/strings.js'
 
-
-const SearchResult = styled.div`
-  padding: 5px 20px;
-  cursor: pointer;
-
-  &:hover {
-    background: rgba(0,0,0,0.05);
-  }
-`
-
-const SearchResults = styled.div`
-  padding: 20px 0;
-;`
 
 const LocationTab = ({
   selectedLocation,
@@ -66,14 +54,8 @@ const LocationTab = ({
           onClick={() => closeLocationTab()}
         ><Close /></IconButton>
         {content === 'searchResults' &&
-          <SearchResults>
-            {searchResults && searchResults.map((point, index) =>
-              <SearchResult onClick={() => setMapCenter(point._source)} key={index}>
-                <h5>{point._source.name}</h5>
-                <p>{point._source.description}</p>
-              </SearchResult>
-            )}
-          </SearchResults>}
+          <SearchResults items={searchResults} setMapCenter={setMapCenter} />
+        }
 
         {content === 'markerInfo' && selectedLocation &&
           <>
@@ -150,6 +132,8 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     padding: theme.spacing(2),
+    boxShadow: theme.shadows[1],
+    position: 'relative',
   },
   close: {
     position: 'absolute',
@@ -158,7 +142,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.mobileStepper,
     backgroundColor: 'rgba(255, 255, 255, 0.67)',
     '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
     },
   },
   actions: {
