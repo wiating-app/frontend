@@ -179,7 +179,7 @@ const Map = React.forwardRef((props, ref) => {
   }
 
   return (
-    <div id='map' style={{ height: '100%' }}>
+    <div id='map' style={props.style}>
       {(!mapInstance || !layer) &&
         <div style={{ textAlign: 'center', paddingTop: 20 }}>{strings.map.loading}</div>
       }

@@ -11,7 +11,7 @@ import Dropdown from './Dropdown'
 const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
   const classes = useStyles()
   return (
-    <AppBar position='static'>
+    <AppBar position='relative' className={classes.root}>
       <Toolbar>
         <Typography variant='h6' className={classes.title}>Wiating</Typography>
         <div className={classes.searchWrapper}>
@@ -50,6 +50,9 @@ const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
 
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
   searchWrapper: {
     flexGrow: 1,
   },

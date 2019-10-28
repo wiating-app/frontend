@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-
+import Layout from './components/Layout'
 import MapContainer from './containers/MapContainer'
 import ContextMenu from './components/ContextMenu'
 import LocationTabContainer from './containers/LocationTabContainer'
@@ -17,44 +17,43 @@ const App = () => {
   const mapRef = React.useRef()
 
   return (
-    <div className='App'>
-
+    <Layout appBar={
       <NavBarContainer setSearchResults={results => {
         setSearchResults(results)
         setLocationTabContent('searchResults')
       }} />
+    }>
 
-      <div style={{ boxSizing: 'border-box', height: '100vh', position: 'relative' }}>
-        <MapContainer
-          openContextMenu={(x, y, coords) => {
-            setContextMenuPosition({ x, y })
-            setShowContextMenu(true)
-            setSelectedLocation({ lat: coords.x, lon: coords.y })
-          }}
-          closeContextMenu={() => setShowContextMenu(false)}
-          openLocationTab={point => {
-            setLocationTabContent('markerInfo')
-            setSelectedLocation(point)
-          }}
-          onUpdateMarkerPosition={coordinates => setSelectedLocation(coordinates)}
-          ref={mapRef}
-        />
+      <LocationTabContainer
+        content={locationTabContent}
+        selectedLocation={selectedLocation}
+        closeLocationTab={() => {
+          setLocationTabContent(false)
+          mapRef.current.clearAddMarker()
+        }}
+        searchResults={searchResults}
+        refreshMap={async () => {
+          mapRef.current.clearAddMarker()
+          mapRef.current.loadMapMarkers()
+        }}
+        setMapCenter={(posY, posX) => mapRef.current.setMapCenter(posY, posX)}
+      />
 
-        <LocationTabContainer
-          content={locationTabContent}
-          selectedLocation={selectedLocation}
-          closeLocationTab={() => {
-            setLocationTabContent(false)
-            mapRef.current.clearAddMarker()
-          }}
-          searchResults={searchResults}
-          refreshMap={async () => {
-            mapRef.current.clearAddMarker()
-            mapRef.current.loadMapMarkers()
-          }}
-          setMapCenter={(posY, posX) => mapRef.current.setMapCenter(posY, posX)}
-        />
-      </div>
+      <MapContainer
+        openContextMenu={(x, y, coords) => {
+          setContextMenuPosition({ x, y })
+          setShowContextMenu(true)
+          setSelectedLocation({ lat: coords.x, lon: coords.y })
+        }}
+        closeContextMenu={() => setShowContextMenu(false)}
+        openLocationTab={point => {
+          setLocationTabContent('markerInfo')
+          setSelectedLocation(point)
+        }}
+        onUpdateMarkerPosition={coordinates => setSelectedLocation(coordinates)}
+        ref={mapRef}
+        style={{ flexGrow: 1 }}
+      />
 
       {showContextMenu &&
         <ContextMenu
@@ -68,7 +67,7 @@ const App = () => {
         />
       }
 
-    </div>
+    </Layout>
   )
 }
 

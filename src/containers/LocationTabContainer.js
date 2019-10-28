@@ -9,6 +9,7 @@ const LocationTabContainer = ({
   content,
   selectedLocation,
   refreshMap,
+  closeLocationTab,
   ...otherProps
 }) => {
   const { isLoggedIn } = useAuth0()
@@ -23,8 +24,10 @@ const LocationTabContainer = ({
 
     if (content === 'editMarker') {
       await api.updatePoint({ id: selectedLocation.id, ...data })
+      closeLocationTab()
     } else {
       await api.addPoint(data)
+      closeLocationTab()
     }
 
     refreshMap()
@@ -43,6 +46,7 @@ const LocationTabContainer = ({
       onImageUpload={files => onImageUpload(files)}
       selectedLocation={selectedLocation}
       content={content}
+      closeLocationTab={closeLocationTab}
       {...otherProps}
     />
   )
