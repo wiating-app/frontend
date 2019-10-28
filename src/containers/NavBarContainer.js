@@ -5,7 +5,10 @@ import NavBar from '../components/NavBar'
 
 const api = new API()
 
-const NavBarContainer = ({ setSearchResults }) => {
+const NavBarContainer = ({
+  setSearchResults,
+  setLocationTabContent,
+}) => {
   const {
     loading,
     loginWithRedirect,
@@ -20,8 +23,13 @@ const NavBarContainer = ({ setSearchResults }) => {
   }
 
   const onSearch = async phrase => {
-    const result = await api.search(phrase)
-    setSearchResults(result)
+    if (phrase) {
+      const results = await api.search(phrase)
+      setSearchResults(results)
+      setLocationTabContent('searchResults')
+    } else {
+      setLocationTabContent(null)
+    }
   }
 
   return (

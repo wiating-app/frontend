@@ -1,11 +1,11 @@
 import React from 'react'
 import { AppBar, Toolbar, Typography, Button, Avatar } from '@material-ui/core'
-import { fade, makeStyles } from '@material-ui/core/styles'
-import { ArrowDropDown, Search } from '@material-ui/icons'
+import { makeStyles } from '@material-ui/core/styles'
+import { ArrowDropDown } from '@material-ui/icons'
 import Form from 'react-standalone-form'
-import { Input } from 'react-standalone-form-mui'
 import { strings } from '../lang/strings.js'
 import Dropdown from './Dropdown'
+import SearchInput from './SearchInput'
 
 
 const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
@@ -14,21 +14,17 @@ const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
     <AppBar position='relative' className={classes.root}>
       <Toolbar>
         <Typography variant='h6' className={classes.title}>Wiating</Typography>
-        <div className={classes.searchWrapper}>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}><Search /></div>
-            <Form
-              fields={['phrase']}
-              callbackOnChange={fields => onSearch(fields.phrase)}
-            >
-              <Input
-                name='phrase'
-                placeholder='Szukaj'
-                noBottomGutter
-              />
-            </Form>
-          </div>
-        </div>
+        <Form
+          fields={['phrase']}
+          callbackOnChange={fields => onSearch(fields.phrase)}
+        >
+          <SearchInput
+            name='phrase'
+            placeholder='Szukaj'
+            noBottomGutter
+          />
+        </Form>
+        <div className={classes.grow} />
         {user
           ? <Dropdown items={[
             { label: strings.auth.logout, onClick: () => logout() },
@@ -57,35 +53,14 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    marginLeft: theme.spacing(2),
-    paddingLeft: theme.spacing(7),
     maxWidth: 240,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    left: 0,
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   name: {
     marginLeft: theme.spacing(1),
     textTransform: 'none',
+  },
+  grow: {
+    flexGrow: 1,
   },
 }))
 

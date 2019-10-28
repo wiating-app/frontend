@@ -18,10 +18,10 @@ const App = () => {
 
   return (
     <Layout appBar={
-      <NavBarContainer setSearchResults={results => {
-        setSearchResults(results)
-        setLocationTabContent('searchResults')
-      }} />
+      <NavBarContainer
+        setSearchResults={results => setSearchResults(results)}
+        setLocationTabContent={content => setLocationTabContent(content)}
+      />
     }>
 
       <LocationTabContainer
