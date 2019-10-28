@@ -11,7 +11,12 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Home } from '@material-ui/icons'
 
-const SearchResults = ({ items, setMapCenter }) => {
+const SearchResults = ({
+  items,
+  setMapCenter,
+  setSelectedLocation,
+  setContent,
+}) => {
   const classes = useStyles()
   return (
     <List>
@@ -20,7 +25,12 @@ const SearchResults = ({ items, setMapCenter }) => {
           <React.Fragment key={index}>
             <ListItem
               className={classes.item}
-              onClick={() => setMapCenter(item._source)}
+              onClick={() => {
+                const { lat, lon } = item._source.location
+                setContent('markerInfo')
+                setSelectedLocation(item._source)
+                setMapCenter(lat, lon)
+              }}
             >
               <ListItemAvatar>
                 <Avatar><Home /></Avatar>

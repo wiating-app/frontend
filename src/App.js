@@ -37,6 +37,7 @@ const App = () => {
           mapRef.current.loadMapMarkers()
         }}
         setMapCenter={(posY, posX) => mapRef.current.setMapCenter(posY, posX)}
+        setSelectedLocation={location => setSelectedLocation(location)}
       />
 
       <MapContainer

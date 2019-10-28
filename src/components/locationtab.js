@@ -23,6 +23,7 @@ const LocationTab = ({
   closeLocationTab,
   searchResults,
   setMapCenter,
+  setSelectedLocation,
   loggedIn,
   onImageUpload,
 }) => {
@@ -54,7 +55,12 @@ const LocationTab = ({
           onClick={() => closeLocationTab()}
         ><Close /></IconButton>
         {content === 'searchResults' &&
-          <SearchResults items={searchResults} setMapCenter={setMapCenter} />
+          <SearchResults
+            items={searchResults}
+            setMapCenter={setMapCenter}
+            setSelectedLocation={location => setSelectedLocation(location)}
+            setContent={content => setContent(content)}
+          />
         }
 
         {content === 'markerInfo' && selectedLocation &&
