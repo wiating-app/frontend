@@ -9,11 +9,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Close } from '@material-ui/icons'
 import Dropzone from 'react-dropzone'
-import { Carousel } from 'react-responsive-carousel'
-
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
-
 import LocationForm from './LocationForm'
+import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
 import { roundLatLng } from '../utils/helpers.js'
 import { strings } from '../lang/strings.js'
@@ -80,22 +77,10 @@ const LocationTab = ({
 
         {content === 'markerInfo' && selectedLocation &&
           <>
-            {selectedLocation.images
-              ? <Carousel showArrows emulateTouch>
-                {selectedLocation.images.map((image, i) => {
-                  const url = process.env.REACT_APP_S3_URL + '/' + selectedLocation.id + '/' + image.name
-                  return (
-                    <div key={i} className={classes.imageWrapper}>
-                      <img src={url} alt='' className={classes.image} />
-                    </div>
-                  )
-                })}
-              </Carousel>
-              : <div className={classes.imageWrapper}>
-                <img src='/no-image.png' alt='No image' className={classes.image} />
-              </div>
-            }
-
+            <LocationImages
+              images={selectedLocation.images}
+              id={selectedLocation.id}
+            />
             <div className={classes.content}>
               {loggedIn &&
                 <ButtonGroup size='small' className={classes.actions}>
@@ -175,14 +160,6 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.8)',
     },
-  },
-  imageWrapper: {
-    height: 240,
-  },
-  image: {
-    objectFit: 'cover',
-    width: '100%',
-    height: '100%',
   },
   actions: {
     marginBottom: theme.spacing(),
