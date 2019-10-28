@@ -132,11 +132,15 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   inner: {
     position: 'relative',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   content: {
     padding: theme.spacing(2),
     boxShadow: theme.shadows[1],
     position: 'relative',
+    flexGrow: 1,
   },
   close: {
     position: 'absolute',
