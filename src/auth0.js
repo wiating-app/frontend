@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useSnackbar } from 'notistack'
 import createAuth0Client from '@auth0/auth0-spa-js'
 
 
@@ -13,6 +14,7 @@ export const Auth0Provider = ({
   const [auth0, setAuth0] = useState()
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState()
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     const initAuth0 = async () => {
@@ -35,6 +37,7 @@ export const Auth0Provider = ({
         const completeUser = { ...user, token }
         localStorage.setItem('currentUser', JSON.stringify(completeUser))
         setUser(completeUser)
+        enqueueSnackbar('Zalogowano pomyślnie', { variant: 'success' })
       } else {
         // Retrieve user from local storage on page init.
         const currentUser = localStorage.getItem('currentUser')

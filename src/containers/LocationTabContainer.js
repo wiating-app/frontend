@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSnackbar } from 'notistack'
 import { API } from '../api'
 import { useAuth0 } from '../auth0'
 import LocationTab from '../components/LocationTab'
@@ -13,6 +14,7 @@ const LocationTabContainer = ({
   ...otherProps
 }) => {
   const { isLoggedIn } = useAuth0()
+  const { enqueueSnackbar } = useSnackbar()
 
   const onSubmitLocation = async fields => {
     const { lat, lon } = selectedLocation
@@ -22,21 +24,26 @@ const LocationTabContainer = ({
       lon,
     }
 
-    if (content === 'editMarker') {
-      await api.updatePoint({ id: selectedLocation.id, ...data })
-      closeLocationTab()
-    } else {
-      await api.addPoint(data)
-      closeLocationTab()
+    try {
+      if (content === 'editMarker') {
+        const response = await api.updatePoint({ id: selectedLocation.id, ...data })
+        console.log('response: ', response)
+        enqueueSnackbar('Marker zaktualizowany', { variant: 'success' })
+      } else {
+        const response = await api.addPoint(data)
+        console.log('response: ', response)
+        enqueueSnackbar('Dodano nowy marker', { variant: 'success' })
+      }
+      setLocationTabContent('markerInfo')
+      refreshMap()
+    } catch (error) {
+      enqueueSnackbar('Nie udało się zapisać markera. Błąd bazy.', { variant: 'error' })
     }
-    setLocationTabContent('markerInfo')
-
-    refreshMap()
   }
 
   const onImageUpload = async files => {
-    await api.uploadImages(this.props.selectedLocation, files)
-
+    await api.uploadImages(selectedLocation, files)
+    setLocationTabContent('markerInfo')
     refreshMap()
   }
 
