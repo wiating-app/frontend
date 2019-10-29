@@ -4,7 +4,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin')
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
-const Dotenv = require('dotenv-webpack')
 
 
 module.exports = {
@@ -70,8 +69,6 @@ module.exports = {
     }),
 
     new WebpackCleanupPlugin(),
-
-    new Dotenv(),
 
   ],
 }
