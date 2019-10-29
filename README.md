@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/db4e98df-270a-4e20-b996-9216b581a2e5/deploy-status)](https://app.netlify.com/sites/wiating/deploys)
+
 ## Available Scripts
 
 In the project directory, you can run:
