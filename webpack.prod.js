@@ -1,6 +1,7 @@
 const merge = require('webpack-merge')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const MinifyPlugin = require('babel-minify-webpack-plugin')
+const { WebpackBundleSizeAnalyzerPlugin } = require('webpack-bundle-size-analyzer')
 const common = require('./webpack.common.js')
 
 module.exports = merge(common, {
@@ -9,5 +10,6 @@ module.exports = merge(common, {
   plugins: [
     new OptimizeCssAssetsPlugin(),
     new MinifyPlugin(),
+    new WebpackBundleSizeAnalyzerPlugin('./plain-report.txt'),
   ],
 })

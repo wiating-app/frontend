@@ -20,8 +20,8 @@ module.exports = {
 
       {
         test: /\.(js|jsx)$/,
-        include: path.join(__dirname, '/src'),
-        use: ['babel-loader'],
+        include: path.join(__dirname, 'src'),
+        use: 'babel-loader',
       },
 
       {
@@ -46,6 +46,8 @@ module.exports = {
   },
 
   plugins: [
+    new WebpackCleanupPlugin(),
+
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
@@ -60,15 +62,12 @@ module.exports = {
     ]),
 
     new ManifestPlugin({
-      fileName: 'asset-manifest.json',
+      filename: 'asset-manifest.json',
     }),
 
     new GenerateSW({
       clientsClaim: true,
       exclude: [/asset-manifest\.json$/],
     }),
-
-    new WebpackCleanupPlugin(),
-
   ],
 }
