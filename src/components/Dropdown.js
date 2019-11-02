@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@material-ui/core'
 
-const Dropdown = ({ children, items}) => {
+const Dropdown = ({ children, items }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
 
   const handleClick = event => {
@@ -26,6 +26,7 @@ const Dropdown = ({ children, items}) => {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
