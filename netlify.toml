@@ -2,7 +2,7 @@
   command = "npm run build"
   publish = "build"
 
-[redirects]
+[[redirects]]
   from = "/api/*"
   to = "http://13.59.76.17"
   status = 200
