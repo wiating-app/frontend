@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Close } from '@material-ui/icons'
 import Dropzone from 'react-dropzone'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import LocationForm from './LocationForm'
 import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
@@ -53,7 +54,7 @@ const LocationTab = ({
       onClose={() => closeLocationTab()}
     >
       <div className={classes.toolbar} />
-      <div className={classes.inner}>
+      <PerfectScrollbar className={classes.inner}>
         <IconButton
           size='small'
           className={classes.close}
@@ -116,7 +117,7 @@ const LocationTab = ({
             />
           </div>
         }
-      </div>
+      </PerfectScrollbar>
     </Drawer>
   )
 }
