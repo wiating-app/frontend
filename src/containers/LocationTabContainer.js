@@ -23,7 +23,7 @@ const LocationTabContainer = ({
       lat,
       lon,
     }
-    console.log('editExisting: ', editExisting)
+    console.log('data: ', data)
 
     try {
       if (editExisting) {

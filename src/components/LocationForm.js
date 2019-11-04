@@ -21,9 +21,9 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
         'description',
         'type',
         'water_exists',
-        'water_description',
+        'water_comment',
         'fire_exists',
-        'fire_description',
+        'fire_comment',
       ]}
       required={[
         'placeName',
@@ -66,7 +66,7 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
 
       {hasWater &&
         <Input
-          name='water_description'
+          name='water_comment'
           label={strings.markerForm.waterDescription}
           min={40}
           initialValue={selectedLocation && selectedLocation.water && selectedLocation.water.comment}
@@ -82,7 +82,7 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
 
       {hasFire &&
         <Input
-          name='fire_description'
+          name='fire_comment'
           label={strings.markerForm.fireDescription}
           min={40}
           initialValue={selectedLocation && selectedLocation.fire && selectedLocation.fire.comment}
