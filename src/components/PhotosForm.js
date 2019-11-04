@@ -9,7 +9,6 @@ import {
 import { strings } from '../lang/strings.js'
 
 const PhotosForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
-  console.log('selectedLocation: ', selectedLocation.images.map(image => image.name))
   return (
     <Form fields={['files']} allRequired>
       <MultiImageUpload
