@@ -38,6 +38,7 @@ const LocationTabContainer = ({
       setLocationTabContent('markerInfo')
       refreshMap()
     } catch (error) {
+      console.log('error: ', error)
       enqueueSnackbar('Nie udało się zapisać markera.', { variant: 'error' })
     }
   }

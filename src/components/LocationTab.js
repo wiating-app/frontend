@@ -14,7 +14,7 @@ import LocationForm from './LocationForm'
 import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
 import SearchResults from './SearchResults'
-import { roundLatLng } from '../utils/helpers.js'
+import { roundLatLng } from '../utils/helpers'
 import { strings } from '../lang/strings.js'
 
 
