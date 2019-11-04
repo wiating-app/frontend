@@ -23,6 +23,7 @@ const LocationTabContainer = ({
       lat,
       lon,
     }
+    console.log('data: ', data);
 
     try {
       if (content === 'editMarker') {

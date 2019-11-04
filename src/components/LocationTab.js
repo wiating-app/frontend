@@ -111,7 +111,7 @@ const LocationTab = ({
             }
             <LocationForm
               selectedLocation={selectedLocation}
-              onSubmitLocation={() => onSubmitLocation()}
+              onSubmitLocation={fields => onSubmitLocation(fields)}
               cancel={() => setContent('markerInfo')}
             />
           </div>
