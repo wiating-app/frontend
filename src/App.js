@@ -46,7 +46,7 @@ const App = () => {
         openContextMenu={(x, y, coords) => {
           setContextMenuPosition({ x, y })
           setShowContextMenu(true)
-          setSelectedLocation({ location: { lat: coords.x, lon: coords.y } })
+          setSelectedLocation({ location: { lon: coords.x, lat: coords.y } })
         }}
         closeContextMenu={() => setShowContextMenu(false)}
         openLocationTab={point => {
