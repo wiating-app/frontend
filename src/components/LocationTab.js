@@ -20,7 +20,7 @@ import { strings } from '../lang/strings.js'
 
 const LocationTab = ({
   selectedLocation,
-  content: retrievedContent,
+  content: contentProp,
   closeLocationTab,
   searchResults,
   setMapCenter,
@@ -39,8 +39,8 @@ const LocationTab = ({
   }, [selectedLocation])
 
   React.useEffect(() => {
-    setContent(retrievedContent)
-  }, [retrievedContent])
+    setContent(contentProp)
+  }, [contentProp])
 
   return (
     <Drawer
@@ -112,7 +112,7 @@ const LocationTab = ({
             }
             <LocationForm
               selectedLocation={selectedLocation}
-              onSubmitLocation={fields => onSubmitLocation(fields)}
+              onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
               cancel={() => setContent('markerInfo')}
             />
           </div>

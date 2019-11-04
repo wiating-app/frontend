@@ -16,16 +16,17 @@ const LocationTabContainer = ({
   const { isLoggedIn } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
 
-  const onSubmitLocation = async fields => {
+  const onSubmitLocation = async (fields, editExisting) => {
     const { lat, lon } = selectedLocation.location
     const data = {
       ...fields,
       lat,
       lon,
     }
+    console.log('editExisting: ', editExisting)
 
     try {
-      if (content === 'editMarker') {
+      if (editExisting) {
         const response = await api.updatePoint({ id: selectedLocation.id, ...data })
         console.log('response: ', response)
         enqueueSnackbar('Marker zaktualizowany', { variant: 'success' })
@@ -50,7 +51,7 @@ const LocationTabContainer = ({
   return (
     <LocationTab
       loggedIn={isLoggedIn}
-      onSubmitLocation={fields => onSubmitLocation(fields)}
+      onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
       onImageUpload={files => onImageUpload(files)}
       selectedLocation={selectedLocation}
       content={content}

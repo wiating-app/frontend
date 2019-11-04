@@ -95,7 +95,7 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
         <FormButton
           variant='contained'
           color='primary'
-          callback={fields => onSubmitLocation(fields)}
+          callback={fields => onSubmitLocation(fields, !!selectedLocation.id)}
         >{strings.markerForm.cta}</FormButton>
       </FormActions>
     </Form>
