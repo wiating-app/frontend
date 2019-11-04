@@ -17,13 +17,12 @@ const LocationTabContainer = ({
   const { enqueueSnackbar } = useSnackbar()
 
   const onSubmitLocation = async fields => {
-    const { lat, lon } = selectedLocation
+    const { lat, lon } = selectedLocation.location
     const data = {
       ...fields,
       lat,
       lon,
     }
-    console.log('data: ', data);
 
     try {
       if (content === 'editMarker') {
@@ -38,7 +37,7 @@ const LocationTabContainer = ({
       setLocationTabContent('markerInfo')
       refreshMap()
     } catch (error) {
-      enqueueSnackbar('Nie udało się zapisać markera. Błąd bazy.', { variant: 'error' })
+      enqueueSnackbar('Nie udało się zapisać markera.', { variant: 'error' })
     }
   }
 

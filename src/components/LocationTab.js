@@ -107,7 +107,7 @@ const LocationTab = ({
 
             {content === 'addMarker' &&
               <Typography gutterBottom>
-                <strong>{strings.markerForm.location}:</strong> {roundLatLng(selectedLocation.lat)} {roundLatLng(selectedLocation.lon)}
+                <strong>{strings.markerForm.location}:</strong> {roundLatLng(selectedLocation.location.lat)} {roundLatLng(selectedLocation.location.lon)}
               </Typography>
             }
             <LocationForm

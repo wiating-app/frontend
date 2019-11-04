@@ -46,7 +46,7 @@ const App = () => {
         openContextMenu={(x, y, coords) => {
           setContextMenuPosition({ x, y })
           setShowContextMenu(true)
-          setSelectedLocation({ lat: coords.x, lon: coords.y })
+          setSelectedLocation({ location: { lat: coords.x, lon: coords.y } })
         }}
         closeContextMenu={() => setShowContextMenu(false)}
         openLocationTab={point => {
@@ -56,7 +56,7 @@ const App = () => {
         unsetCurrentLocation={() => {
           setLocationTabContent(null)
         }}
-        onUpdateMarkerPosition={coordinates => setSelectedLocation(coordinates)}
+        onUpdateMarkerPosition={location => setSelectedLocation({ location })}
         ref={mapRef}
         style={{ flexGrow: 1 }}
       />
@@ -66,7 +66,8 @@ const App = () => {
           addMarker={async () => {
             setLocationTabContent('addMarker')
             setShowContextMenu(false)
-            mapRef.current.setMapCenter(selectedLocation.lon, selectedLocation.lat)
+            const { lon, lat } = selectedLocation.location
+            mapRef.current.setMapCenter(lon, lat)
           }}
           position={contextMenuPosition}
           selectedLocation={selectedLocation}
