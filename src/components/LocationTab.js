@@ -8,9 +8,9 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Close } from '@material-ui/icons'
-import Dropzone from 'react-dropzone'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import LocationForm from './LocationForm'
+import PhotosForm from './PhotosForm'
 import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
 import SearchResults from './SearchResults'
@@ -82,18 +82,9 @@ const LocationTab = ({
                   <Button
                     onClick={() => setContent('editMarker')}
                   >{strings.actions.edit}</Button>
-                  <Button>
-                    <Dropzone onDrop={files => onImageUpload(files)}>
-                      {({ getRootProps, getInputProps }) => (
-                        <section>
-                          <div {...getRootProps()}>
-                            <input {...getInputProps()} />
-                            {strings.actions.addPhoto}
-                          </div>
-                        </section>
-                      )}
-                    </Dropzone>
-                  </Button>
+                  <Button
+                    onClick={() => setContent('editPhotos')}
+                  >{strings.actions.editPhotos}</Button>
                 </ButtonGroup>
               }
               <LocationInfo selectedLocation={selectedLocation} />
@@ -113,6 +104,17 @@ const LocationTab = ({
             <LocationForm
               selectedLocation={selectedLocation}
               onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
+              cancel={() => setContent('markerInfo')}
+            />
+          </div>
+        }
+
+        {content === 'editPhotos' &&
+          <div className={classes.content}>
+            <Typography variant='h4' gutterBottom>{strings.actions.editPhotos}</Typography>
+            <PhotosForm
+              selectedLocation={selectedLocation}
+              onSubmitLocation={files => onImageUpload(files)}
               cancel={() => setContent('markerInfo')}
             />
           </div>

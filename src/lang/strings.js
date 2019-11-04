@@ -24,7 +24,7 @@ export const strings = {
   },
   actions: {
     edit: 'Edytuj',
-    addPhoto: 'Dodaj zdjęcie',
+    editPhotos: 'Zmień zdjęcia',
   },
   map: {
     loading: 'Ładowanie mapy...',

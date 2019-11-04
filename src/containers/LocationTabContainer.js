@@ -44,9 +44,9 @@ const LocationTabContainer = ({
   }
 
   const onImageUpload = async files => {
-    await api.uploadImages(selectedLocation, files)
-    setLocationTabContent('markerInfo')
-    refreshMap()
+    console.log('files: ', files)
+    // await api.uploadImages(selectedLocation.id, files)
+    // refreshMap()
   }
 
   return (
