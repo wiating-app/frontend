@@ -1,9 +1,7 @@
 import React from 'react'
-import { API } from '../api'
+import api from '../api'
 import { useAuth0 } from '../auth0'
 import NavBar from '../components/NavBar'
-
-const api = new API()
 
 const NavBarContainer = ({
   setSearchResults,
@@ -24,8 +22,8 @@ const NavBarContainer = ({
 
   const onSearch = async phrase => {
     if (phrase) {
-      const results = await api.search(phrase)
-      setSearchResults(results)
+      const { data: { points } } = await api.post('search_points', { phrase })
+      setSearchResults(points)
       setLocationTabContent('searchResults')
     } else {
       setLocationTabContent(null)

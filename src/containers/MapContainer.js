@@ -1,9 +1,7 @@
 import React from 'react'
-import { API } from '../api'
+import api from '../api'
 import { useAuth0 } from '../auth0'
 import Map from '../components/Map'
-
-const api = new API()
 
 const MapContainer = React.forwardRef((props, ref) => {
   const [points, setPoints] = React.useState()
@@ -14,8 +12,18 @@ const MapContainer = React.forwardRef((props, ref) => {
     getStoredPosition,
   } = useAuth0()
 
-  const loadMapMarkers = async viewport => {
-    const points = await api.getMapPoints(viewport.lbx, viewport.lby, viewport.rtx, viewport.rty)
+  const loadMapMarkers = async ({ lbx, lby, rtx, rty }) => {
+    const { data: { points }, ...rest } = await api.post('get_points', {
+      top_right: {
+        lat: rty,
+        lon: rtx,
+      },
+      bottom_left: {
+        lat: lby,
+        lon: lbx,
+      },
+    })
+    console.log('headers: ', rest.headers);
     setPoints(points)
   }
 

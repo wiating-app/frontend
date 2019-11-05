@@ -1,10 +1,9 @@
 import React from 'react'
 import { useSnackbar } from 'notistack'
-import { API } from '../api'
+import api from '../api'
 import { useAuth0 } from '../auth0'
 import LocationTab from '../components/LocationTab'
 
-const api = new API()
 
 const LocationTabContainer = ({
   content,
@@ -29,12 +28,13 @@ const LocationTabContainer = ({
 
     try {
       if (editExisting) {
-        const response = await api.updatePoint({ id: selectedLocation.id, ...data })
-        console.log('response: ', response)
+        const { id } = selectedLocation
+        const { data: { body } } = await api.post('modify_point', { id, ...data })
+        console.log('response: ', body)
         enqueueSnackbar('Marker zaktualizowany', { variant: 'success' })
       } else {
-        const response = await api.addPoint(data)
-        console.log('response: ', response)
+        const { data: { body } } = await api.post('add_point', data)
+        console.log('response: ', body)
         enqueueSnackbar('Dodano nowy marker', { variant: 'success' })
       }
       setLocationTabContent('markerInfo')
@@ -47,7 +47,7 @@ const LocationTabContainer = ({
 
   const onImageUpload = async files => {
     console.log('files: ', files)
-    // await api.uploadImages(selectedLocation.id, files)
+    // await api.post(`add_image/${selectedLocation.id}`, files)
     // refreshMap()
   }
 
