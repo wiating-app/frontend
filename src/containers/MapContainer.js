@@ -13,7 +13,7 @@ const MapContainer = React.forwardRef((props, ref) => {
   } = useAuth0()
 
   const loadMapMarkers = async ({ lbx, lby, rtx, rty }) => {
-    const { data: { points }, ...rest } = await api.post('get_points', {
+    const { data: { points } } = await api.post('get_points', {
       top_right: {
         lat: rty,
         lon: rtx,
@@ -23,7 +23,6 @@ const MapContainer = React.forwardRef((props, ref) => {
         lon: lbx,
       },
     })
-    console.log('headers: ', rest.headers);
     setPoints(points)
   }
 

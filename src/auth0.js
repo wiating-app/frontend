@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useSnackbar } from 'notistack'
 import createAuth0Client from '@auth0/auth0-spa-js'
+import api from './api'
 
 
 const Auth0Context = React.createContext()
@@ -36,6 +37,7 @@ export const Auth0Provider = ({
         const token = await auth0FromHook.getTokenSilently()
         const completeUser = { ...user, token }
         localStorage.setItem('currentUser', JSON.stringify(completeUser))
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
         setUser(completeUser)
         enqueueSnackbar('Zalogowano pomyślnie', { variant: 'success' })
       } else {
@@ -60,6 +62,7 @@ export const Auth0Provider = ({
         },
         logout: p => {
           auth0.logout(p)
+          api.defaults.headers.common['Authorization'] = null
           localStorage.removeItem('currentUser')
         },
         setStoredPosition: (lat, lng, zoom) => {
