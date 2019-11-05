@@ -40,16 +40,22 @@ const LocationTabContainer = ({
       setLocationTabContent('markerInfo')
       refreshMap()
     } catch (error) {
-      console.log('error: ', error)
+      console.error(error)
       enqueueSnackbar('Nie udało się zapisać markera.', { variant: 'error' })
     }
   }
 
   const onImageUpload = async files => {
-    const data = new FormData()
-    data.append('file', files[0])
-    await api.post(`add_image/${selectedLocation.id}`, files)
-    refreshMap()
+    try {
+      const data = new FormData()
+      data.append('file', files[0])
+      await api.post(`add_image/${selectedLocation.id}`, files)
+      refreshMap()
+      enqueueSnackbar('Dodano nowe zdjęcie.', { variant: 'success' })
+    } catch (error) {
+      console.error(error)
+      enqueueSnackbar('Nie udało się zapisać zdjęcia.', { variant: 'error' })
+    }
   }
 
   return (
