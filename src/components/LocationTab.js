@@ -9,8 +9,9 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import Dropzone from 'react-dropzone'
 import LocationForm from './LocationForm'
-import PhotosForm from './PhotosForm'
+// import PhotosForm from './PhotosForm'
 import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
 import SearchResults from './SearchResults'
@@ -82,9 +83,18 @@ const LocationTab = ({
                   <Button
                     onClick={() => setContent('editMarker')}
                   >{strings.actions.edit}</Button>
-                  <Button
-                    onClick={() => setContent('editPhotos')}
-                  >{strings.actions.editPhotos}</Button>
+                  <Button>
+                    <Dropzone onDrop={files => onImageUpload(files)}>
+                      {({ getRootProps, getInputProps }) => (
+                        <section>
+                          <div {...getRootProps()}>
+                            <input {...getInputProps()} />
+                            {strings.actions.addPhoto}
+                          </div>
+                        </section>
+                      )}
+                    </Dropzone>
+                  </Button>
                 </ButtonGroup>
               }
               <LocationInfo selectedLocation={selectedLocation} />
@@ -109,7 +119,7 @@ const LocationTab = ({
           </div>
         }
 
-        {content === 'editPhotos' &&
+        {/* {content === 'editPhotos' &&
           <div className={classes.content}>
             <Typography variant='h4' gutterBottom>{strings.actions.editPhotos}</Typography>
             <PhotosForm
@@ -118,7 +128,7 @@ const LocationTab = ({
               cancel={() => setContent('markerInfo')}
             />
           </div>
-        }
+        } */}
       </PerfectScrollbar>
     </Drawer>
   )

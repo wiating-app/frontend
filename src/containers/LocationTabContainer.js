@@ -46,9 +46,10 @@ const LocationTabContainer = ({
   }
 
   const onImageUpload = async files => {
-    console.log('files: ', files)
-    // await api.post(`add_image/${selectedLocation.id}`, files)
-    // refreshMap()
+    const data = new FormData()
+    data.append('file', files[0])
+    await api.post(`add_image/${selectedLocation.id}`, files)
+    refreshMap()
   }
 
   return (
