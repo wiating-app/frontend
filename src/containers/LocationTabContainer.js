@@ -20,6 +20,8 @@ const LocationTabContainer = ({
     const { lat, lon } = selectedLocation.location
     const data = {
       ...fields,
+      water_exists: fields.water_exists || false,
+      fire_exists: fields.fire_exists || false,
       lat,
       lon,
     }
