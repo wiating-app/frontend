@@ -49,7 +49,7 @@ const LocationTabContainer = ({
     try {
       const data = new FormData()
       data.append('file', files[0])
-      await api.post(`add_image/${selectedLocation.id}`, files)
+      await api.post(`add_image/${selectedLocation.id}`, data)
       refreshMap()
       enqueueSnackbar('Dodano nowe zdjęcie.', { variant: 'success' })
     } catch (error) {
