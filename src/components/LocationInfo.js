@@ -4,71 +4,73 @@ import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
 
 
-const LocationInfo = ({ selectedLocation }) =>
-  <>
-    <Typography
-      variant='h5'
-    >{selectedLocation.name}</Typography>
-
-    <Typography
-      variant='body2'
-      color='textSecondary'
-      gutterBottom
-    >{locationTypes[selectedLocation.type]} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}</Typography>
-
-    <Typography
-      variant='body1'
-      gutterBottom
-    >{selectedLocation.description}</Typography>
-
-    <div>
+const LocationInfo = ({ selectedLocation }) => {
+  const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
+  return (
+    <>
       <Typography
-        variant='subtitle2'
-        component='span'
-      >Dostęp do wody: </Typography>
+        variant='h5'
+      >{selectedLocation.name}</Typography>
 
-      {selectedLocation.water &&
-        <Typography
-          variant='body2'
-          gutterBottom
-          component='span'
-        >
-          {!selectedLocation.water.exists
-            ? 'Brak.'
-            : selectedLocation.water.comment || 'Jest.'
-          }
-        </Typography>
-      }
-    </div>
-
-    <div>
       <Typography
-        variant='subtitle2'
-        component='span'
-      >Dostęp do ognia: </Typography>
+        variant='body2'
+        color='textSecondary'
+        gutterBottom
+      >{locationTypes[selectedLocation.type]} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}</Typography>
 
-      {selectedLocation.fire &&
+      <Typography
+        variant='body1'
+        gutterBottom
+      >{selectedLocation.description}</Typography>
+
+      <div>
         <Typography
-          variant='body2'
-          gutterBottom
+          variant='subtitle2'
           component='span'
-        >
-          {!selectedLocation.fire.exists
-            ? 'Brak.'
-            : selectedLocation.fire.comment || 'Jest.'
-          }
-        </Typography>
-      }
-    </div>
+        >Dostęp do wody: </Typography>
 
-    {selectedLocation.created_timestamp &&
+        {selectedLocation.water &&
+          <Typography
+            variant='body2'
+            gutterBottom
+            component='span'
+          >
+            {!selectedLocation.water.exists
+              ? 'Brak.'
+              : selectedLocation.water.comment || 'Jest.'
+            }
+          </Typography>
+        }
+      </div>
+
+      <div>
+        <Typography
+          variant='subtitle2'
+          component='span'
+        >Dostęp do ognia: </Typography>
+
+        {selectedLocation.fire &&
+          <Typography
+            variant='body2'
+            gutterBottom
+            component='span'
+          >
+            {!selectedLocation.fire.exists
+              ? 'Brak.'
+              : selectedLocation.fire.comment || 'Jest.'
+            }
+          </Typography>
+        }
+      </div>
+
       <Typography
         component='div'
         variant='caption'
         align='right'
         color='textSecondary'
-      ><br />Ostatnia aktualizacja: {formatDate(selectedLocation.created_timestamp)}</Typography>
-    }
-  </>
+      ><br />Ostatnia aktualizacja: {formatDate(updatedAt)}</Typography>
+    </>
+  )
+}
 
 export default LocationInfo
