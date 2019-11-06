@@ -10,6 +10,7 @@ const LocationTabContainer = ({
   selectedLocation,
   refreshMap,
   closeLocationTab,
+  setLocationTabContent,
   ...otherProps
 }) => {
   const { isLoggedIn } = useAuth0()

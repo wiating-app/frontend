@@ -27,6 +27,7 @@ const App = () => {
 
       <LocationTabContainer
         content={locationTabContent}
+        setLocationTabContent={content => setLocationTabContent(content)}
         selectedLocation={selectedLocation}
         closeLocationTab={() => {
           setLocationTabContent(false)
