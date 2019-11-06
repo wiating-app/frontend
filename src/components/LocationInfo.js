@@ -63,12 +63,14 @@ const LocationInfo = ({ selectedLocation }) => {
         }
       </div>
 
-      <Typography
-        component='div'
-        variant='caption'
-        align='right'
-        color='textSecondary'
-      ><br />Ostatnia aktualizacja: {formatDate(updatedAt)}</Typography>
+      {updatedAt &&
+        <Typography
+          component='div'
+          variant='caption'
+          align='right'
+          color='textSecondary'
+        ><br />Ostatnia aktualizacja: {formatDate(updatedAt)}</Typography>
+      }
     </>
   )
 }

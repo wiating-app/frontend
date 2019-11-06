@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Close } from '@material-ui/icons'
+import { Close, ViewList } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import Dropzone from 'react-dropzone'
 import LocationForm from './LocationForm'
@@ -77,6 +77,14 @@ const LocationTab = ({
               images={selectedLocation.images}
               id={selectedLocation.id}
             />
+            {searchResults &&
+              <Button
+                onClick={() => setContent('searchResults')}
+                className={classes.backToSearch}
+                variant='contained'
+                size='small'
+              ><ViewList /> Powrót do wyników</Button>
+            }
             <div className={classes.content}>
               {loggedIn &&
                 <ButtonGroup size='small' className={classes.actions}>
@@ -164,6 +172,12 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.9)',
     },
+  },
+  backToSearch: {
+    position: 'absolute',
+    top: theme.spacing(1),
+    left: theme.spacing(1),
+    zIndex: theme.zIndex.mobileStepper,
   },
   actions: {
     marginBottom: theme.spacing(),

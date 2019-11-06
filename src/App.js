@@ -42,7 +42,6 @@ const App = () => {
         }}
         setMapCenter={(posY, posX) => mapRef.current.setMapCenter(posY, posX)}
         setSelectedLocation={location => setSelectedLocation(location)}
-        setLocationTabContent={content => setLocationTabContent(content)}
       />
 
       <MapContainer
@@ -50,9 +49,11 @@ const App = () => {
           setContextMenuPosition({ x, y })
           setShowContextMenu(true)
           setSelectedLocation({ location: { lon: coords.x, lat: coords.y } })
+          setSearchResults(null)
         }}
         closeContextMenu={() => setShowContextMenu(false)}
         openLocationTab={point => {
+          setSearchResults(null)
           setLocationTabContent('markerInfo')
           setSelectedLocation(point)
         }}
@@ -70,7 +71,7 @@ const App = () => {
             setLocationTabContent('addMarker')
             setShowContextMenu(false)
             const { lon, lat } = selectedLocation.location
-            mapRef.current.setMapCenter(lon, lat)
+            mapRef.current.setMapCenter(lat, lon)
           }}
           position={contextMenuPosition}
           selectedLocation={selectedLocation}
