@@ -26,10 +26,10 @@ const SearchResults = ({
             <ListItem
               className={classes.item}
               onClick={() => {
-                const { lat, lon } = item._source.location
+                const { lon, lat } = item._source.location
                 setContent('markerInfo')
                 setSelectedLocation(item._source)
-                setMapCenter(lat, lon)
+                setMapCenter(lon, lat)
               }}
             >
               <ListItemAvatar>

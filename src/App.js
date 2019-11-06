@@ -72,7 +72,7 @@ const App = () => {
             setLocationTabContent('addMarker')
             setShowContextMenu(false)
             const { lon, lat } = selectedLocation.location
-            mapRef.current.setMapCenter(lat, lon)
+            mapRef.current.setMapCenter(lon, lat)
           }}
           position={contextMenuPosition}
           selectedLocation={selectedLocation}

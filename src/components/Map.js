@@ -66,7 +66,7 @@ const Map = React.forwardRef((props, ref) => {
           const coords = window.SMap.Coords.fromEvent(e.data.event, map)
           props.openContextMenu(e.data.event.clientX, e.data.event.clientY, coords)
           props.unsetCurrentLocation()
-          setNewMarker(lon, lat)
+          setNewMarker(coords.x, coords.y)
         }
       })
 
