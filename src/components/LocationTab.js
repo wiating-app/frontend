@@ -25,6 +25,7 @@ const LocationTab = ({
   closeLocationTab,
   searchResults,
   setMapCenter,
+  setNewMarker,
   setSelectedLocation,
   loggedIn,
   onSubmitLocation,
@@ -33,11 +34,11 @@ const LocationTab = ({
   const [content, setContent] = React.useState()
   const classes = useStyles()
 
-  React.useEffect(() => {
-    if (['addMarker', 'editMarker'].includes(content)) {
-      setContent('markerInfo')
-    }
-  }, [selectedLocation])
+  // React.useEffect(() => {
+  //   if (['addMarker', 'editMarker'].includes(content)) {
+  //     setContent('markerInfo')
+  //   }
+  // }, [selectedLocation])
 
   React.useEffect(() => {
     setContent(contentProp)
@@ -122,6 +123,8 @@ const LocationTab = ({
             <LocationForm
               selectedLocation={selectedLocation}
               onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
+              setMapCenter={(lon, lat) => setMapCenter(lon, lat)}
+              setNewMarker={(lon, lat) => setNewMarker(lon, lat)}
               cancel={() => setContent('markerInfo')}
             />
           </div>

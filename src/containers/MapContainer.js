@@ -30,11 +30,14 @@ const MapContainer = React.forwardRef((props, ref) => {
     clearAddMarker() {
       mapRef.current.clearAddMarker()
     },
+    setNewMarker(lon, lat) {
+      mapRef.current.setNewMarker(lon, lat)
+    },
     loadMapMarkers() {
       mapRef.current.loadMapMarkers()
     },
-    setMapCenter(posY, posX) {
-      mapRef.current.setMapCenter(posY, posX)
+    setMapCenter(lon, lat) {
+      mapRef.current.setMapCenter(lon, lat)
     },
   }))
 

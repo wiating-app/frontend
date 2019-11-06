@@ -17,7 +17,7 @@ const LocationTabContainer = ({
   const { enqueueSnackbar } = useSnackbar()
 
   const onSubmitLocation = async (fields, editExisting) => {
-    const { lat, lon } = selectedLocation.location
+    const [lat, lon] = fields.location.split(', ')
     const data = {
       ...fields,
       water_exists: fields.water_exists || false,

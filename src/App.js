@@ -40,7 +40,8 @@ const App = () => {
           console.log('before loadMapMarkers')
           await mapRef.current.loadMapMarkers()
         }}
-        setMapCenter={(posY, posX) => mapRef.current.setMapCenter(posY, posX)}
+        setMapCenter={(lon, lat) => mapRef.current.setMapCenter(lon, lat)}
+        setNewMarker={(lon, lat) => mapRef.current.setNewMarker(lon, lat)}
         setSelectedLocation={location => setSelectedLocation(location)}
       />
 
@@ -57,10 +58,10 @@ const App = () => {
           setLocationTabContent('markerInfo')
           setSelectedLocation(point)
         }}
-        unsetCurrentLocation={() => {
-          setLocationTabContent(null)
+        unsetCurrentLocation={() => setLocationTabContent(null)}
+        onUpdateMarkerPosition={(lon, lat) => {
+          setSelectedLocation({ ...selectedLocation, location: { lon, lat } })
         }}
-        onUpdateMarkerPosition={location => setSelectedLocation({ location })}
         ref={mapRef}
         style={{ flexGrow: 1 }}
       />

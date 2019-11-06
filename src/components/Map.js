@@ -66,7 +66,7 @@ const Map = React.forwardRef((props, ref) => {
           const coords = window.SMap.Coords.fromEvent(e.data.event, map)
           props.openContextMenu(e.data.event.clientX, e.data.event.clientY, coords)
           props.unsetCurrentLocation()
-          addMarker(coords)
+          setNewMarker(lon, lat)
         }
       })
 
@@ -151,16 +151,19 @@ const Map = React.forwardRef((props, ref) => {
     clearAddMarker() {
       newMarkerLayer.removeAll()
     },
+    setNewMarker(lon, lat) {
+      setNewMarker(lon, lat)
+    },
     loadMapMarkers() {
       loadMapMarkers()
     },
-    setMapCenter(posX, posY) {
-      const newCenter = window.SMap.Coords.fromWGS84(posY, posX)
+    setMapCenter(lon, lat) {
+      const newCenter = window.SMap.Coords.fromWGS84(lon, lat)
       mapInstance.setCenter(newCenter, true)
     },
   }))
 
-  const addMarker = coords => {
+  const setNewMarker = (lon, lat) => {
     // Clear existing markers
     newMarkerLayer.removeAll()
 
@@ -169,7 +172,7 @@ const Map = React.forwardRef((props, ref) => {
     const image = window.JAK.mel('img', { src: '/pin2.svg' })
     pointer.appendChild(image)
 
-    const position = window.SMap.Coords.fromWGS84(coords.x, coords.y)
+    const position = window.SMap.Coords.fromWGS84(lon, lat)
 
     // Create marker
     const marker = new window.SMap.Marker(position, 'newPointMarker', { url: pointer })

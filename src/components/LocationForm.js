@@ -12,7 +12,13 @@ import { strings } from '../lang/strings.js'
 import locationTypes from '../utils/locationTypes'
 
 
-const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
+const LocationForm = ({
+  selectedLocation,
+  onSubmitLocation,
+  setMapCenter,
+  setNewMarker,
+  cancel,
+}) => {
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
 
@@ -22,6 +28,7 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
         'name',
         'description',
         'type',
+        'location',
         'water_exists',
         'water_comment',
         'fire_exists',
@@ -31,10 +38,16 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
         'name',
         'description',
         'type',
+        'location',
       ]}
       callbackOnChange={fields => {
         setHasWater(fields.water_exists)
         setHasFire(fields.fire_exists)
+        const location = fields.location.split(', ')
+        if (selectedLocation.location.lat !== location[0] || selectedLocation.location.lon !== location[1]) {
+          setMapCenter(location[1], location[0])
+          setNewMarker(location[1], location[0])
+        }
       }}
     >
 
@@ -58,6 +71,14 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
         label={strings.markerForm.type}
         options={Object.entries(locationTypes).map(([value, label]) => ({ value, label }))}
         initialValue={selectedLocation && selectedLocation.type}
+      />
+
+      <Input
+        name='location'
+        label={strings.markerForm.coordinates}
+        min={5}
+        initialValue={selectedLocation && `${selectedLocation.location.lat}, ${selectedLocation.location.lon}`}
+        help='Format: 00.0000, 00.0000'
       />
 
       <Checkbox

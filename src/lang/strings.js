@@ -10,6 +10,7 @@ export const strings = {
     place: 'Nazwa miejsca',
     type: 'Typ miejsca',
     description: 'Opis miejsca',
+    coordinates: 'Współrzędne geograficzne',
     waterDescription: 'Opis dostępu do wody (opcjonalnie)',
     fireDescription: 'Opis dostępu do ognia (opcjonalnie)',
     upload: 'Wgraj zdjęcie',
