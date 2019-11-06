@@ -34,8 +34,10 @@ const App = () => {
         }}
         searchResults={searchResults}
         refreshMap={async () => {
-          mapRef.current.clearAddMarker()
-          mapRef.current.loadMapMarkers()
+          console.log('before clearAddMarker')
+          await mapRef.current.clearAddMarker()
+          console.log('before loadMapMarkers')
+          await mapRef.current.loadMapMarkers()
         }}
         setMapCenter={(posY, posX) => mapRef.current.setMapCenter(posY, posX)}
         setSelectedLocation={location => setSelectedLocation(location)}
