@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography } from '@material-ui/core'
 import { roundLatLng } from '../utils/helpers'
+import locationTypes from '../utils/locationTypes'
 
 
 const LocationInfo = ({ selectedLocation }) =>
@@ -12,7 +13,7 @@ const LocationInfo = ({ selectedLocation }) =>
     <Typography
       variant='body2'
       gutterBottom
-    >{roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}</Typography>
+    >{locationTypes[selectedLocation.type]} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}</Typography>
 
     <Typography
       variant='body1'

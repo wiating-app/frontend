@@ -9,6 +9,8 @@ import {
   FormActions,
 } from 'react-standalone-form-mui'
 import { strings } from '../lang/strings.js'
+import locationTypes from '../utils/locationTypes'
+
 
 const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
   const [hasWater, setHasWater] = React.useState()
@@ -26,9 +28,9 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
         'fire_comment',
       ]}
       required={[
-        'placeName',
-        'placeDescription',
-        'placeType',
+        'name',
+        'description',
+        'type',
       ]}
       callbackOnChange={fields => {
         setHasWater(fields.water_exists)
@@ -54,7 +56,7 @@ const LocationForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
       <Select
         name='type'
         label={strings.markerForm.type}
-        options={['Wiata', '2', '3', '4', '5']}
+        options={Object.entries(locationTypes).map(([value, label]) => ({ value, label }))}
         initialValue={selectedLocation && selectedLocation.type}
       />
 
