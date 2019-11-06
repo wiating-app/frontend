@@ -1,6 +1,6 @@
 import React from 'react'
 import { Typography } from '@material-ui/core'
-import { roundLatLng } from '../utils/helpers'
+import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
 
 
@@ -12,6 +12,7 @@ const LocationInfo = ({ selectedLocation }) =>
 
     <Typography
       variant='body2'
+      color='textSecondary'
       gutterBottom
     >{locationTypes[selectedLocation.type]} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}</Typography>
 
@@ -59,6 +60,15 @@ const LocationInfo = ({ selectedLocation }) =>
         </Typography>
       }
     </div>
+
+    {selectedLocation.created_timestamp &&
+      <Typography
+        component='div'
+        variant='caption'
+        align='right'
+        color='textSecondary'
+      ><br />Ostatnia aktualizacja: {formatDate(selectedLocation.created_timestamp)}</Typography>
+    }
   </>
 
 export default LocationInfo
