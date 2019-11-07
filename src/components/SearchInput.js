@@ -26,7 +26,12 @@ const SearchInput = ({
         }}
         inputProps={{ 'aria-label': 'search' }}
         defaultValue={value}
-        onKeyPress={e => e.key === 'Enter' && e.preventDefault()}
+        onKeyPress={e => {
+          if (e.key === 'Enter') {
+            e.preventDefault()
+            setValue(name, e.target.value, required)
+          }
+        }}
         onChange={e => setValue(name, e.target.value, required)}
       />
     </div>
