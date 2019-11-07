@@ -7,9 +7,13 @@ const LocationImages = ({ images, id }) => {
   const classes = useStyles()
   return (
     images
-      ? <Carousel showArrows emulateTouch>
+      ? <Carousel
+        showArrows
+        emulateTouch
+        showThumbs={false}
+      >
         {images.map((image, i) => {
-          const url = process.env.REACT_APP_S3_URL + '/' + id + '/' + image.name
+          const url = `${process.env.REACT_APP_S3_URL}/${id}/${image.name.replace('.jpg', '_m.jpg')}`
           return (
             <div key={i} className={classes.imageWrapper}>
               <img src={url} alt='' className={classes.image} />
