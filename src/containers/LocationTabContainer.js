@@ -48,13 +48,14 @@ const LocationTabContainer = ({
         const { id } = selectedLocation
         const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
         console.log('response: ', _id, _source)
+        setSelectedLocation({ id: _id, ..._source })
         enqueueSnackbar('Marker zaktualizowany', { variant: 'success' })
       } else {
         const { data: { _id, _source } } = await api.post('add_point', data)
         console.log('response: ', _id, _source)
+        setSelectedLocation({ id: _id, ..._source })
         enqueueSnackbar('Dodano nowy marker', { variant: 'success' })
       }
-      setSelectedLocation({ id: _id, ..._source })
       setLocationTabContent('markerInfo')
       refreshMap()
     } catch (error) {
