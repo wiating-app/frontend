@@ -22,7 +22,9 @@ const LocationTabContainer = ({
       name,
       description,
       type,
+      water_exists,
       water_comment,
+      fire_exists,
       fire_comment,
     } = fields
     const [lat, lon] = fields.location.split(', ')
@@ -33,22 +35,22 @@ const LocationTabContainer = ({
       lat: parseFloat(lat),
       lon: parseFloat(lon),
       type,
-      water_exists: fields.water_exists || false,
-      water_comment,
-      fire_exists: fields.fire_exists || false,
-      fire_comment,
+      water_exists: water_exists || false,
+      water_comment: water_exists ? water_comment : false,
+      fire_exists: fire_exists || false,
+      fire_comment: fire_exists ? fire_comment : false,
     }
     console.log('data: ', data)
 
     try {
       if (editExisting) {
         const { id } = selectedLocation
-        const { data: { body } } = await api.post('modify_point', { id, ...data })
-        console.log('response: ', body)
+        const { data: response } = await api.post('modify_point', { id, ...data })
+        console.log('response: ', response)
         enqueueSnackbar('Marker zaktualizowany', { variant: 'success' })
       } else {
-        const { data: { body } } = await api.post('add_point', data)
-        console.log('response: ', body)
+        const { data: response } = await api.post('add_point', data)
+        console.log('response: ', response)
         enqueueSnackbar('Dodano nowy marker', { variant: 'success' })
       }
       setLocationTabContent('markerInfo')
