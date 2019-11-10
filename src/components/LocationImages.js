@@ -9,7 +9,7 @@ import 'react-image-gallery/styles/css/image-gallery.css'
 
 const LocationImages = ({ images, id }) => {
   const classes = useStyles()
-  const [openModal, setOpenModal] = React.useState()
+  const [openModal, setOpenModal] = React.useState(false)
 
   const preparedImages = images
     ? images.map(image => ({
@@ -68,12 +68,12 @@ const useStyles = makeStyles(theme => ({
   },
   modalContent: {
     width: '80vw',
-    height: '80vh',
-    marginTop: '7vw',
+    marginTop: '5vw',
     marginLeft: '10vw',
+    backgroundColor: 'white',
     '& .image-gallery-image': {
       maxWidth: '80vw',
-      maxHeight: '80vh',
+      maxHeight: '70vh',
     },
   },
 }))
