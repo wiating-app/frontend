@@ -8,6 +8,7 @@ import LocationTab from '../components/LocationTab'
 const LocationTabContainer = ({
   content,
   selectedLocation,
+  setSelectedLocation,
   refreshMap,
   closeLocationTab,
   setLocationTabContent,
@@ -45,14 +46,15 @@ const LocationTabContainer = ({
     try {
       if (editExisting) {
         const { id } = selectedLocation
-        const { data: response } = await api.post('modify_point', { id, ...data })
-        console.log('response: ', response)
+        const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
+        console.log('response: ', _id, _source)
         enqueueSnackbar('Marker zaktualizowany', { variant: 'success' })
       } else {
-        const { data: response } = await api.post('add_point', data)
-        console.log('response: ', response)
+        const { data: { _id, _source } } = await api.post('add_point', data)
+        console.log('response: ', _id, _source)
         enqueueSnackbar('Dodano nowy marker', { variant: 'success' })
       }
+      setSelectedLocation({ id: _id, ..._source })
       setLocationTabContent('markerInfo')
       refreshMap()
     } catch (error) {
@@ -80,7 +82,9 @@ const LocationTabContainer = ({
       onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
       onImageUpload={files => onImageUpload(files)}
       selectedLocation={selectedLocation}
+      setSelectedLocation={location => setSelectedLocation(location)}
       content={content}
+      setLocationTabContent={content => setLocationTabContent(content)}
       closeLocationTab={closeLocationTab}
       {...otherProps}
     />

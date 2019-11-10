@@ -14,6 +14,7 @@ const App = () => {
   const [contextMenuPosition, setContextMenuPosition] = React.useState({})
   const [selectedLocation, setSelectedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState()
+  console.log('locationTabContent: ', locationTabContent);
 
   const mapRef = React.useRef()
 

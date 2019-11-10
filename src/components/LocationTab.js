@@ -21,7 +21,8 @@ import { strings } from '../lang/strings.js'
 
 const LocationTab = ({
   selectedLocation,
-  content: contentProp,
+  content,
+  setLocationTabContent,
   closeLocationTab,
   searchResults,
   setMapCenter,
@@ -31,18 +32,7 @@ const LocationTab = ({
   onSubmitLocation,
   onImageUpload,
 }) => {
-  const [content, setContent] = React.useState()
   const classes = useStyles()
-
-  // React.useEffect(() => {
-  //   if (['addMarker', 'editMarker'].includes(content)) {
-  //     setContent('markerInfo')
-  //   }
-  // }, [selectedLocation])
-
-  React.useEffect(() => {
-    setContent(contentProp)
-  }, [contentProp])
 
   return (
     <Drawer
@@ -68,7 +58,7 @@ const LocationTab = ({
             items={searchResults}
             setMapCenter={setMapCenter}
             setSelectedLocation={location => setSelectedLocation(location)}
-            setContent={content => setContent(content)}
+            setLocationTabContent={content => setLocationTabContent(content)}
           />
         }
 
@@ -80,7 +70,7 @@ const LocationTab = ({
             />
             {searchResults &&
               <Button
-                onClick={() => setContent('searchResults')}
+                onClick={() => setLocationTabContent('searchResults')}
                 className={classes.backToSearch}
                 variant='contained'
                 size='small'
@@ -90,7 +80,7 @@ const LocationTab = ({
               {loggedIn &&
                 <ButtonGroup size='small' className={classes.actions}>
                   <Button
-                    onClick={() => setContent('editMarker')}
+                    onClick={() => setLocationTabContent('editMarker')}
                   >{strings.actions.edit}</Button>
                   <Button>
                     <Dropzone onDrop={files => onImageUpload(files)}>
@@ -125,7 +115,7 @@ const LocationTab = ({
               onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
               setMapCenter={(lon, lat) => setMapCenter(lon, lat)}
               setNewMarker={(lon, lat) => setNewMarker(lon, lat)}
-              cancel={() => setContent('markerInfo')}
+              cancel={() => setLocationTabContent('markerInfo')}
             />
           </div>
         }
@@ -136,7 +126,7 @@ const LocationTab = ({
             <PhotosForm
               selectedLocation={selectedLocation}
               onSubmitLocation={files => onImageUpload(files)}
-              cancel={() => setContent('markerInfo')}
+              cancel={() => setLocationTabContent('markerInfo')}
             />
           </div>
         } */}

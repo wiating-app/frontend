@@ -15,7 +15,7 @@ const SearchResults = ({
   items,
   setMapCenter,
   setSelectedLocation,
-  setContent,
+  setLocationTabContent,
 }) => {
   const classes = useStyles()
   return (
@@ -27,7 +27,7 @@ const SearchResults = ({
               className={classes.item}
               onClick={() => {
                 const { lon, lat } = item._source.location
-                setContent('markerInfo')
+                setLocationTabContent('markerInfo')
                 setSelectedLocation(item._source)
                 setMapCenter(lon, lat)
               }}
