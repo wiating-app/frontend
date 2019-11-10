@@ -17,13 +17,26 @@ const LocationTabContainer = ({
   const { enqueueSnackbar } = useSnackbar()
 
   const onSubmitLocation = async (fields, editExisting) => {
+    /* eslint-disable camelcase */
+    const {
+      name,
+      description,
+      type,
+      water_comment,
+      fire_comment,
+    } = fields
     const [lat, lon] = fields.location.split(', ')
+
     const data = {
-      ...fields,
+      name,
+      description,
+      lat: parseFloat(lat),
+      lon: parseFloat(lon),
+      type,
       water_exists: fields.water_exists || false,
+      water_comment,
       fire_exists: fields.fire_exists || false,
-      lat,
-      lon,
+      fire_comment,
     }
     console.log('data: ', data)
 
