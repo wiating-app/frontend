@@ -71,10 +71,10 @@ const LocationTabContainer = ({
       const file = files[0]
       Resizer.imageFileResizer(
         file,
-        2048, // Maximum width
-        2048, // Maximum height
+        1152, // Maximum width
+        1152, // Maximum height
         'JPEG', // Format
-        60, // Quality 1-100
+        80, // Quality 1-100
         0, // Rotation
         async uri => {
           const decoded = dataUriToBuffer(uri)

@@ -72,8 +72,14 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '10vw',
     backgroundColor: 'white',
     '& .image-gallery-image': {
-      maxWidth: '80vw',
-      maxHeight: '70vh',
+      width: '80vw',
+      height: '70vh',
+      backgroundColor: theme.palette.grey[900],
+      '& img': {
+        objectFit: 'contain',
+        width: '100%',
+        height: '100%',
+      },
     },
   },
 }))
