@@ -78,7 +78,7 @@ const LocationTabContainer = ({
         0, // Rotation
         async uri => {
           const decoded = dataUriToBuffer(uri)
-          const resizedFile = new File(decoded, file.name, { type: file.type })
+          const resizedFile = new File([decoded], file.name, { type: file.type })
           const data = new FormData()
           data.append('file', resizedFile)
           await api.post(`add_image/${selectedLocation.id}`, data)
