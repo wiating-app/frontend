@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSnackbar } from 'notistack'
+import Resizer from 'react-image-file-resizer'
 import api from '../api'
 import { useAuth0 } from '../auth0'
 import LocationTab from '../components/LocationTab'
@@ -64,13 +65,25 @@ const LocationTabContainer = ({
     }
   }
 
-  const onImageUpload = async files => {
+  const onImageUpload = files => {
     try {
-      const data = new FormData()
-      data.append('file', files[0])
-      await api.post(`add_image/${selectedLocation.id}`, data)
-      refreshMap()
-      enqueueSnackbar('Dodano nowe zdjęcie.', { variant: 'success' })
+      const file = files[0]
+      Resizer.imageFileResizer(
+        file,
+        2048, // Maximum width
+        2048, // Maximum height
+        'JPEG', // Format
+        80, // Quality 1-100
+        0, // Rotation
+        async uri => {
+          const resizedFile = new File([uri], file.name, { type: file.type })
+          const data = new FormData()
+          data.append('file', resizedFile)
+          await api.post(`add_image/${selectedLocation.id}`, data)
+          refreshMap()
+          enqueueSnackbar('Dodano nowe zdjęcie.', { variant: 'success' })
+        },
+      )
     } catch (error) {
       console.error(error)
       enqueueSnackbar('Nie udało się zapisać zdjęcia.', { variant: 'error' })

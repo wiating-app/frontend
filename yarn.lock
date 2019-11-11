@@ -6733,6 +6733,11 @@ react-easy-swipe@^0.0.16:
   dependencies:
     prop-types "^15.5.8"
 
+react-image-file-resizer@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-image-file-resizer/-/react-image-file-resizer-0.2.1.tgz#ee081bd41798ff960eea1a56b1a86ba317fecf11"
+  integrity sha512-uvhNj2NKMUraVKIrsmPNZgWn34b7fjEcuWAyMXUrVb06gedNtOalOBxVwXYocd4KnZRFv2/ilmAE4KEzIkj4aA==
+
 react-image-gallery@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/react-image-gallery/-/react-image-gallery-0.9.1.tgz#3ac75af700ce671d82aae1e2ad8226c0e1379ad1"
