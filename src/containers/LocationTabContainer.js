@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSnackbar } from 'notistack'
 import Resizer from 'react-image-file-resizer'
+import dataUriToBuffer from 'data-uri-to-buffer'
 import api from '../api'
 import { useAuth0 } from '../auth0'
 import LocationTab from '../components/LocationTab'
@@ -76,7 +77,8 @@ const LocationTabContainer = ({
         80, // Quality 1-100
         0, // Rotation
         async uri => {
-          const resizedFile = new File([uri], file.name, { type: file.type })
+          const decoded = dataUriToBuffer(uri)
+          const resizedFile = new File(decoded, file.name, { type: file.type })
           const data = new FormData()
           data.append('file', resizedFile)
           await api.post(`add_image/${selectedLocation.id}`, data)
