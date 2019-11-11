@@ -3,13 +3,11 @@ import {
   Drawer,
   Button,
   IconButton,
-  ButtonGroup,
   Typography,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Close, ViewList } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import Dropzone from 'react-dropzone'
 import LocationForm from './LocationForm'
 // import PhotosForm from './PhotosForm'
 import LocationImages from './LocationImages'
@@ -77,26 +75,12 @@ const LocationTab = ({
               ><ViewList /> Powrót do wyników</Button>
             }
             <div className={classes.content}>
-              {loggedIn &&
-                <ButtonGroup size='small' className={classes.actions}>
-                  <Button
-                    onClick={() => setLocationTabContent('editMarker')}
-                  >{strings.actions.edit}</Button>
-                  <Button>
-                    <Dropzone onDrop={files => onImageUpload(files)}>
-                      {({ getRootProps, getInputProps }) => (
-                        <section>
-                          <div {...getRootProps()}>
-                            <input {...getInputProps()} />
-                            {strings.actions.addPhoto}
-                          </div>
-                        </section>
-                      )}
-                    </Dropzone>
-                  </Button>
-                </ButtonGroup>
-              }
-              <LocationInfo selectedLocation={selectedLocation} />
+              <LocationInfo
+                selectedLocation={selectedLocation}
+                loggedIn={loggedIn}
+                onImageUpload={files => onImageUpload(files)}
+                setLocationTabContent={content => setLocationTabContent(content)}
+              />
             </div>
           </>
         }
@@ -171,9 +155,6 @@ const useStyles = makeStyles(theme => ({
     top: theme.spacing(1),
     left: theme.spacing(1),
     zIndex: theme.zIndex.mobileStepper,
-  },
-  actions: {
-    marginBottom: theme.spacing(),
   },
 }))
 
