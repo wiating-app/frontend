@@ -52,7 +52,10 @@ const App = () => {
           setSelectedLocation({ location: { lon: coords.x, lat: coords.y } })
           setSearchResults(null)
         }}
-        closeContextMenu={() => setShowContextMenu(false)}
+        closeContextMenu={() => {
+          setShowContextMenu(false)
+          mapRef.current.clearAddMarker()
+        }}
         openLocationTab={point => {
           setSearchResults(null)
           setLocationTabContent('markerInfo')
