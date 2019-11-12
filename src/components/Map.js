@@ -6,10 +6,11 @@ const Map = React.forwardRef((props, ref) => {
   const [mapInstance, setMapInstance] = React.useState()
   const [layer, setLayer] = React.useState()
   const [newMarkerLayer, setNewMarkerLayer] = React.useState()
-  const [markerId, setMarkerId] = React.useState()
+  const [currentPointId, setCurrentPointId] = React.useState()
+
 
   React.useEffect(() => {
-    // Load map script.
+    // Load map script. PHASE 1/2.
     const scriptElement = document.createElement('script')
     scriptElement.setAttribute('src', 'https://api.mapy.cz/loader.js')
     scriptElement.addEventListener('load', () => {
@@ -28,6 +29,7 @@ const Map = React.forwardRef((props, ref) => {
         } else {
           center = SMap.Coords.fromWGS84(16.844417, 50.39805)
         }
+
         // Create map instance and save it to state
         const _mapInstance = new SMap(JAK.gel('map'), center, zoom)
         setMapInstance(_mapInstance)
@@ -42,10 +44,12 @@ const Map = React.forwardRef((props, ref) => {
     document.head.appendChild(scriptElement)
   }, [])
 
+
   React.useEffect(() => {
     if (mapInstance && newMarkerLayer) {
-      // Configure additional map features that require map itself, after map
-      // instance is lsaved to state.
+      // Load map script. PHASE 2/2.
+      // After map instance is saved to state, configure additional map features
+      // that require map itself.
       let map = mapInstance
       map.addDefaultLayer(SMap.DEF_TURIST).enable()
 
@@ -89,46 +93,19 @@ const Map = React.forwardRef((props, ref) => {
         props.onUpdateMarkerPosition(coords.x, coords.y)
       })
 
-      // Map panning action
-      map.getSignals().addListener(window, 'map-pan', function(e) {
-        // updateMarkerPosition(); // TODO check UX behaviour
-      })
-
       // On marker click
       map.getSignals().addListener(this, 'marker-click', function(e) {
-        const marker = e.target
-        let id = marker.getId()
-        if (id < 1) id = 0
-        setMarkerId(id)
+        const id = e.target.getId()
+        setCurrentPointId(null)
+        setCurrentPointId(id)
       })
 
       setMapInstance(map)
       setLayer(layer)
-
-      // Initial load markers
       loadMapMarkers()
     }
   }, [mapInstance, newMarkerLayer])
 
-  const loadMapMarkers = () => {
-    const viewport = mapInstance.getViewport()
-    props.loadMapMarkers(viewport)
-  }
-
-  React.useEffect(() => {
-    if (markerId) {
-      // Open Location details when new marker id is recieved.
-      const point = props.points[markerId]._source
-      point.id = props.points[markerId]._id
-
-      newMarkerLayer.removeAll()
-      props.openLocationTab(point)
-
-      // Center map on marker
-      const newCenter = window.SMap.Coords.fromWGS84(point.location.lon, point.location.lat)
-      mapInstance.setCenter(newCenter, true)
-    }
-  }, [markerId])
 
   React.useEffect(() => {
     // Process markers after new points are fetched.
@@ -147,6 +124,24 @@ const Map = React.forwardRef((props, ref) => {
     }
   }, [props.points, layer])
 
+
+  React.useEffect(() => {
+    if (currentPointId) {
+      const { _source: point } = props.points[currentPointId]
+
+      newMarkerLayer.removeAll()
+
+      // Open Location tab.
+      props.openLocationTab(point)
+
+      // Center map on marker
+      const newCenter = window.SMap.Coords.fromWGS84(point.location.lon, point.location.lat)
+      mapInstance.setCenter(newCenter, true)
+    }
+  }, [currentPointId])
+
+
+  // Handle refs.
   React.useImperativeHandle(ref, () => ({
     clearAddMarker() {
       newMarkerLayer.removeAll()
@@ -162,6 +157,13 @@ const Map = React.forwardRef((props, ref) => {
       mapInstance.setCenter(newCenter, true)
     },
   }))
+
+
+  const loadMapMarkers = () => {
+    const viewport = mapInstance.getViewport()
+    props.loadMapMarkers(viewport)
+  }
+
 
   const setNewMarker = (lon, lat) => {
     // Clear existing markers
@@ -181,6 +183,7 @@ const Map = React.forwardRef((props, ref) => {
     // Add marker to layer
     newMarkerLayer.addMarker(marker)
   }
+
 
   return (
     <div id='map' style={props.style}>
