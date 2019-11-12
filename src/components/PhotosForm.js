@@ -16,7 +16,7 @@ const PhotosForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
         mdHeight='160px'
         spacing={1}
         initialValue={selectedLocation && selectedLocation.images &&
-          selectedLocation.images.map(image => `${process.env.REACT_APP_S3_URL}/${selectedLocation.id}/${image.name}`)
+          selectedLocation.images.map(image => `${process.env.REACT_APP_CDN_URL}/${selectedLocation.id}/${image.name}`)
         }
       />
       <FormActions>
