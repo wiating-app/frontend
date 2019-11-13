@@ -127,7 +127,8 @@ const Map = React.forwardRef((props, ref) => {
 
   React.useEffect(() => {
     if (currentPointId) {
-      const { _source: point } = props.points[currentPointId]
+      const { _id: id, _source } = props.points[currentPointId]
+      const point = { id, ..._source }
 
       newMarkerLayer.removeAll()
 
