@@ -81,8 +81,10 @@ const LocationTabContainer = ({
           const resizedFile = new File([decoded], file.name, { type: file.type })
           const data = new FormData()
           data.append('file', resizedFile)
-          const response = await api.post(`add_image/${selectedLocation.id}`, data)
-          console.log('response: ', response)
+          const { data: { _id, _source } } = await api.post(`add_image/${selectedLocation.id}`, data)
+          console.log('response: ', _id, _source)
+          setSelectedLocation({ id: _id, ..._source })
+          setLocationTabContent('markerInfo')
           refreshMap()
           enqueueSnackbar('Dodano nowe zdjęcie.', { variant: 'success' })
         },
