@@ -8,6 +8,7 @@ import {
 } from 'react-leaflet'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import ContextMenu from './ContextMenu'
 import { makeStyles } from '@material-ui/core/styles'
 
 
@@ -16,6 +17,7 @@ const Map = React.forwardRef((props, ref) => {
   const [layer, setLayer] = React.useState()
   const [newMarkerLayer, setNewMarkerLayer] = React.useState()
   const [currentPointId, setCurrentPointId] = React.useState()
+  const [contextMenuPosition, setContextMenuPosition] = React.useState()
 
   const mapRef = React.useRef()
 
@@ -132,7 +134,7 @@ const Map = React.forwardRef((props, ref) => {
       zoom={props.zoom}
       maxZoom={18}
       onMoveEnd={() => loadMapMarkers()}
-      onClick={() => {}} // TODO: Open contextual menu.
+      onClick={e => setContextMenuPosition(e.latlng)}
     >
       <TileLayer
         url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
@@ -151,6 +153,16 @@ const Map = React.forwardRef((props, ref) => {
           onClick={() => {}} // TODO: Open Location Tab.
         />
       })}
+      {contextMenuPosition &&
+        <Popup
+          position={contextMenuPosition}
+          closeButton={false}
+          keepInView
+          className={classes.popup}
+        >
+          <ContextMenu addMarker={() => props.addMarker()} />
+        </Popup>
+      }
     </MapComponent>
   )
 })
@@ -167,6 +179,17 @@ const useStyles = makeStyles(theme => ({
   condensed: {
     [theme.breakpoints.up('sm')]: {
       marginBottom: '70vh',
+    },
+  },
+  popup: {
+    '& .leaflet-popup-content-wrapper': {
+      backgroundColor: 'transparent',
+      border: 'none',
+    },
+    '& .leaflet-popup-content': {
+      margin: 0,
+      borderRadius: 0,
+      border: 'none',
     },
   },
 }))

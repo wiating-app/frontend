@@ -5,9 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { strings } from '../lang/strings.js'
 
 
-const ContextMenu = ({ position, addMarker }) => {
-  const { x = 0, y = 0 } = position
-  const classes = useStyles(position)
+const ContextMenu = ({ addMarker }) => {
+  const classes = useStyles()
   return (
     <Paper className={classes.root}>
       <MenuList>
@@ -21,10 +20,7 @@ const ContextMenu = ({ position, addMarker }) => {
 
 const useStyles = makeStyles({
   root: {
-    position: 'absolute',
     zIndex: 99,
-    left: position => position.x,
-    top: position => position.y,
   },
 })
 

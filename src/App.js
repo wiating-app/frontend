@@ -3,15 +3,12 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import Layout from './components/Layout'
 import MapContainer from './containers/MapContainer'
-import ContextMenu from './components/ContextMenu'
 import LocationTabContainer from './containers/LocationTabContainer'
 import NavBarContainer from './containers/NavBarContainer'
 
 
 const App = () => {
-  const [showContextMenu, setShowContextMenu] = React.useState()
   const [locationTabContent, setLocationTabContent] = React.useState()
-  const [contextMenuPosition, setContextMenuPosition] = React.useState({})
   const [selectedLocation, setSelectedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState()
 
@@ -47,14 +44,8 @@ const App = () => {
 
       <MapContainer
         openContextMenu={(x, y, coords) => {
-          setContextMenuPosition({ x, y })
-          setShowContextMenu(true)
           setSelectedLocation({ location: { lon: coords.x, lat: coords.y } })
           setSearchResults(null)
-        }}
-        closeContextMenu={() => {
-          setShowContextMenu(false)
-          mapRef.current.clearAddMarker()
         }}
         openLocationTab={point => {
           setSearchResults(null)
@@ -62,25 +53,17 @@ const App = () => {
           setSelectedLocation(point)
         }}
         unsetCurrentLocation={() => setLocationTabContent(null)}
+        addMarker={async () => {
+          setLocationTabContent('addMarker')
+          const { lon, lat } = selectedLocation.location
+          mapRef.current.setMapCenter(lon, lat)
+        }}
         onUpdateMarkerPosition={(lon, lat) => {
           setSelectedLocation({ ...selectedLocation, location: { lon, lat } })
         }}
         condensed={!!locationTabContent}
         ref={mapRef}
       />
-
-      {showContextMenu &&
-        <ContextMenu
-          addMarker={async () => {
-            setLocationTabContent('addMarker')
-            setShowContextMenu(false)
-            const { lon, lat } = selectedLocation.location
-            mapRef.current.setMapCenter(lon, lat)
-          }}
-          position={contextMenuPosition}
-          selectedLocation={selectedLocation}
-        />
-      }
 
     </Layout>
   )
