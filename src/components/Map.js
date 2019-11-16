@@ -1,4 +1,6 @@
 import React from 'react'
+import classNames from 'classnames'
+import { makeStyles } from '@material-ui/core/styles'
 import { strings } from '../lang/strings.js'
 
 
@@ -8,6 +10,7 @@ const Map = React.forwardRef((props, ref) => {
   const [newMarkerLayer, setNewMarkerLayer] = React.useState()
   const [currentPointId, setCurrentPointId] = React.useState()
 
+  const classes = useStyles()
 
   React.useEffect(() => {
     // Load map script. PHASE 1/2.
@@ -187,12 +190,27 @@ const Map = React.forwardRef((props, ref) => {
 
 
   return (
-    <div id='map' style={props.style}>
+    <div id='map' className={classNames(classes.root, { [classes.condensed] : props.condensed })}>
       {(!mapInstance || !layer) &&
-        <div style={{ textAlign: 'center', paddingTop: 20 }}>{strings.map.loading}</div>
+        <div className={classes.loading}>{strings.map.loading}</div>
       }
     </div>
   )
 })
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  condensed: {
+    [theme.breakpoints.up('sm')]: {
+      marginBottom: '70vh',
+    },
+  },
+  loading: {
+    textAlign: 'center',
+    paddingTop: 20,
+  },
+}))
 
 export default Map

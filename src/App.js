@@ -65,8 +65,8 @@ const App = () => {
         onUpdateMarkerPosition={(lon, lat) => {
           setSelectedLocation({ ...selectedLocation, location: { lon, lat } })
         }}
+        condensed={!!locationTabContent}
         ref={mapRef}
-        style={{ flexGrow: 1 }}
       />
 
       {showContextMenu &&

@@ -5,7 +5,8 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Close, ViewList } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import LocationForm from './LocationForm'
@@ -31,12 +32,14 @@ const LocationTab = ({
   onImageUpload,
 }) => {
   const classes = useStyles()
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
   return (
     <Drawer
       open={!!content}
       variant='persistent'
-      anchor='left'
+      anchor={matches ? 'left' : 'bottom'}
       className={classes.drawer}
       classes={{
         paper: classes.drawerPaper,
@@ -121,13 +124,21 @@ const LocationTab = ({
 
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
-    width: 400,
-    boxShadow: theme.shadows[2],
+    height: '70vh',
+    boxShadow: theme.shadows[3],
+    marginTop: '30vh',
+    [theme.breakpoints.up('sm')]: {
+      width: 400,
+      height: '100%',
+      marginTop: 0,
+    },
   },
   drawer: {
     flexShrink: 0,
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    [theme.breakpoints.up('sm')]: theme.mixins.toolbar,
+  },
   inner: {
     position: 'relative',
     height: '100%',
