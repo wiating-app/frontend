@@ -58,6 +58,10 @@ const useStyles = makeStyles(theme => ({
   name: {
     marginLeft: theme.spacing(1),
     textTransform: 'none',
+    whiteSpace: 'nowrap',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
   grow: {
     flexGrow: 1,
