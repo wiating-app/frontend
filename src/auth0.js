@@ -65,12 +65,12 @@ export const Auth0Provider = ({
           api.defaults.headers.common['Authorization'] = null
           localStorage.removeItem('currentUser')
         },
-        setStoredPosition: (lat, lng, zoom) => {
-          localStorage.setItem('lastPosition', lat + ';' + lng + ';' + zoom)
+        setStoredPosition: position => {
+          localStorage.setItem('lastPosition', JSON.stringify(position))
         },
         getStoredPosition: () => {
           const position = localStorage.getItem('lastPosition')
-          return position ? position.split(';') : false
+          return position ? JSON.parse(position) : false
         },
       }}
     >

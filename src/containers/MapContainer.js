@@ -5,6 +5,8 @@ import Map from '../components/Map'
 
 const MapContainer = React.forwardRef((props, ref) => {
   const [points, setPoints] = React.useState()
+  const [initalPosition, setInitalPosition] = React.useState()
+
   const mapRef = React.useRef()
   const {
     isLoggedIn,
@@ -12,15 +14,16 @@ const MapContainer = React.forwardRef((props, ref) => {
     getStoredPosition,
   } = useAuth0()
 
-  const loadMapMarkers = async ({ lbx, lby, rtx, rty }) => {
+  const loadMapMarkers = async bounds => {
+    const { _northEast, _southWest } = bounds
     const { data: { points } } = await api.post('get_points', {
       top_right: {
-        lat: rty,
-        lon: rtx,
+        lat: _northEast.lat,
+        lon: _northEast.lng,
       },
       bottom_left: {
-        lat: lby,
-        lon: lbx,
+        lat: _southWest.lat,
+        lon: _southWest.lng,
       },
     })
     setPoints(points)
@@ -41,13 +44,19 @@ const MapContainer = React.forwardRef((props, ref) => {
     },
   }))
 
+  React.useEffect(() => {
+    const position = getStoredPosition()
+    position && setInitalPosition(position)
+  }, [])
+
   return (
     <Map
       isLoggedIn={isLoggedIn}
       setStoredPosition={setStoredPosition}
-      getStoredPosition={getStoredPosition}
       loadMapMarkers={viewport => loadMapMarkers(viewport)}
       points={points}
+      center={initalPosition && initalPosition.center}
+      zoom={initalPosition && initalPosition.zoom}
       {...props}
       ref={mapRef}
     />
