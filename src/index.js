@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { SnackbarProvider } from 'notistack'
+import { CssBaseline } from '@material-ui/core'
+import { ThemeProvider } from '@material-ui/core/styles'
 import { FormThemeProvider } from 'react-standalone-form'
 import App from './App'
 import { Auth0Provider } from './auth0'
 import * as serviceWorker from './serviceWorker'
-import { CssBaseline } from '@material-ui/core'
+import theme from './theme'
 
 
 ReactDOM.render(
@@ -19,7 +21,9 @@ ReactDOM.render(
     >
       <FormThemeProvider>
         <CssBaseline />
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </FormThemeProvider>
     </Auth0Provider>
   </SnackbarProvider>, document.getElementById('root'))
