@@ -98,7 +98,10 @@ const Map = React.forwardRef((props, ref) => {
 
       // On marker click
       map.getSignals().addListener(this, 'marker-click', function(e) {
-        const id = e.target.getId()
+        let id = e.target.getId()
+
+        if ( id < 1 ) id = 0; // Hack for invalid ID returned from mapy.cz API
+
         setCurrentPointId(null)
         setCurrentPointId(id)
       })
@@ -129,7 +132,7 @@ const Map = React.forwardRef((props, ref) => {
 
 
   React.useEffect(() => {
-    if (currentPointId) {
+    if (currentPointId != null) {
       const { _id: id, _source } = props.points[currentPointId]
       const point = { id, ..._source }
 
