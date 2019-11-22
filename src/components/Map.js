@@ -1,5 +1,4 @@
 import React from 'react'
-import classNames from 'classnames'
 import {
   Map as MapComponent,
   Marker,
@@ -50,35 +49,11 @@ const Map = React.forwardRef((props, ref) => {
         props.onUpdateMarkerPosition(coords.x, coords.y)
       })
 
-      // On marker click
-      map.getSignals().addListener(this, 'marker-click', function(e) {
-        const id = e.target.getId()
-        setCurrentPointId(null)
-        setCurrentPointId(id)
-      })
-
       setMapInstance(map)
       setLayer(layer)
       loadMapMarkers()
     }
   }, [mapInstance, newMarkerLayer])
-
-
-  React.useEffect(() => {
-    if (currentPointId) {
-      const { _id: id, _source } = props.points[currentPointId]
-      const point = { id, ..._source }
-
-      newMarkerLayer.removeAll()
-
-      // Open Location tab.
-      props.openLocationTab(point)
-
-      // Center map on marker
-      const newCenter = window.SMap.Coords.fromWGS84(point.location.lon, point.location.lat)
-      mapInstance.setCenter(newCenter, true)
-    }
-  }, [currentPointId])
 
 
   // Handle refs.
@@ -93,8 +68,7 @@ const Map = React.forwardRef((props, ref) => {
       loadMapMarkers()
     },
     setMapCenter(lon, lat) {
-      const newCenter = window.SMap.Coords.fromWGS84(lon, lat)
-      mapInstance.setCenter(newCenter, true)
+      mapRef.current.leafletElement.setView([lat, lon], 8)
     },
   }))
 
@@ -129,7 +103,7 @@ const Map = React.forwardRef((props, ref) => {
   return (
     <MapComponent
       ref={mapRef}
-      className={classNames(classes.root, { [classes.condensed]: props.condensed })}
+      className={classes.root}
       center={props.center}
       zoom={props.zoom}
       maxZoom={18}
@@ -150,7 +124,12 @@ const Map = React.forwardRef((props, ref) => {
             iconAnchor: [15, 30],
           })}
           position={[lat, lon]}
-          onClick={() => {}} // TODO: Open Location Tab.
+          onClick={() => {
+            const { _id: id, _source } = item
+            const point = { id, ..._source }
+            props.openLocationTab(point)
+            mapRef.current.leafletElement.setView([lat, lon])
+          }}
         />
       })}
       {contextMenuPosition &&
@@ -175,11 +154,6 @@ Map.defaultProps = {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-  },
-  condensed: {
-    [theme.breakpoints.up('sm')]: {
-      marginBottom: '70vh',
-    },
   },
   popup: {
     '& .leaflet-popup-content-wrapper': {
