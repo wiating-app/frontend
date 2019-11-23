@@ -69,8 +69,13 @@ export const Auth0Provider = ({
           localStorage.setItem('lastPosition', JSON.stringify(position))
         },
         getStoredPosition: () => {
-          const position = localStorage.getItem('lastPosition')
-          return position ? JSON.parse(position) : false
+          try {
+            const position = localStorage.getItem('lastPosition')
+            return position ? JSON.parse(position) : false
+          } catch (error) {
+            localStorage.removeItem('currentUser')
+            return false
+          }
         },
       }}
     >
