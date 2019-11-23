@@ -71,6 +71,7 @@ const Map = React.forwardRef((props, ref) => {
             const point = { id, ..._source }
             props.openLocationTab(point)
             setActiveMarker([lat, lon])
+            mapRef.current.leafletElement.setView([lat, lon])
             setContextMenu(null)
           }}
         />
