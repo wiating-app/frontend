@@ -15,8 +15,7 @@ import locationTypes from '../utils/locationTypes'
 const LocationForm = ({
   selectedLocation,
   onSubmitLocation,
-  setMapCenter,
-  setNewMarker,
+  setActiveMarker,
   cancel,
 }) => {
   const [hasWater, setHasWater] = React.useState()
@@ -45,8 +44,7 @@ const LocationForm = ({
         setHasFire(fields.fire_exists)
         const location = fields.location.split(', ')
         if (selectedLocation.location.lat !== location[0] || selectedLocation.location.lon !== location[1]) {
-          setMapCenter(location[1], location[0])
-          setNewMarker(location[1], location[0])
+          setActiveMarker(location)
         }
       }}
     >

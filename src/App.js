@@ -28,35 +28,26 @@ const App = () => {
         selectedLocation={selectedLocation}
         closeLocationTab={() => {
           setLocationTabContent(false)
-          mapRef.current.clearAddMarker()
+          mapRef.current.setActiveMarker(null)
         }}
         searchResults={searchResults}
         refreshMap={async () => {
-          console.log('before clearAddMarker')
-          await mapRef.current.clearAddMarker()
-          console.log('before loadMapMarkers')
           await mapRef.current.loadMapMarkers()
         }}
-        setMapCenter={(lon, lat) => mapRef.current.setMapCenter(lon, lat)}
-        setNewMarker={(lon, lat) => mapRef.current.setNewMarker(lon, lat)}
+        setActiveMarker={coords => mapRef.current.setActiveMarker(coords)}
         setSelectedLocation={location => setSelectedLocation(location)}
       />
 
       <MapContainer
-        openContextMenu={(x, y, coords) => {
-          setSelectedLocation({ location: { lon: coords.x, lat: coords.y } })
-          setSearchResults(null)
-        }}
         openLocationTab={point => {
           setSearchResults(null)
           setLocationTabContent('markerInfo')
           setSelectedLocation(point)
         }}
-        unsetCurrentLocation={() => setLocationTabContent(null)}
-        addMarker={async () => {
+        closeTab={() => setLocationTabContent(null)}
+        openAddMarkerTab={({ lat, lng: lon }) => {
+          setSelectedLocation({ location: { lat, lon } })
           setLocationTabContent('addMarker')
-          const { lon, lat } = selectedLocation.location
-          mapRef.current.setMapCenter(lon, lat)
         }}
         onUpdateMarkerPosition={(lon, lat) => {
           setSelectedLocation({ ...selectedLocation, location: { lon, lat } })

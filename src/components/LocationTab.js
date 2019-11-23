@@ -14,7 +14,6 @@ import LocationForm from './LocationForm'
 import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
 import SearchResults from './SearchResults'
-import { roundLatLng } from '../utils/helpers'
 import { strings } from '../lang/strings.js'
 
 
@@ -24,8 +23,7 @@ const LocationTab = ({
   setLocationTabContent,
   closeLocationTab,
   searchResults,
-  setMapCenter,
-  setNewMarker,
+  setActiveMarker,
   setSelectedLocation,
   loggedIn,
   onSubmitLocation,
@@ -57,7 +55,7 @@ const LocationTab = ({
         {content === 'searchResults' &&
           <SearchResults
             items={searchResults}
-            setMapCenter={setMapCenter}
+            setActiveMarker={setActiveMarker}
             setSelectedLocation={location => setSelectedLocation(location)}
             setLocationTabContent={content => setLocationTabContent(content)}
           />
@@ -91,17 +89,10 @@ const LocationTab = ({
         {['addMarker', 'editMarker'].includes(content) &&
           <div className={classes.content}>
             <Typography variant='h4' gutterBottom>{strings.markerForm.heading[content]}</Typography>
-
-            {content === 'addMarker' &&
-              <Typography gutterBottom>
-                <strong>{strings.markerForm.location}:</strong> {roundLatLng(selectedLocation.location.lat)} {roundLatLng(selectedLocation.location.lon)}
-              </Typography>
-            }
             <LocationForm
               selectedLocation={selectedLocation}
               onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
-              setMapCenter={(lon, lat) => setMapCenter(lon, lat)}
-              setNewMarker={(lon, lat) => setNewMarker(lon, lat)}
+              setActiveMarker={location => setActiveMarker(location)}
               cancel={() => setLocationTabContent('markerInfo')}
             />
           </div>
@@ -124,9 +115,8 @@ const LocationTab = ({
 
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
-    height: '70vh',
+    height: '100vh',
     boxShadow: theme.shadows[3],
-    marginTop: '30vh',
     [theme.breakpoints.up('sm')]: {
       width: 400,
       height: '100%',
@@ -136,9 +126,7 @@ const useStyles = makeStyles(theme => ({
   drawer: {
     flexShrink: 0,
   },
-  toolbar: {
-    [theme.breakpoints.up('sm')]: theme.mixins.toolbar,
-  },
+  toolbar: theme.mixins.toolbar,
   inner: {
     position: 'relative',
     height: '100%',

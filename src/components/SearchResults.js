@@ -13,7 +13,7 @@ import { Home } from '@material-ui/icons'
 
 const SearchResults = ({
   items,
-  setMapCenter,
+  setActiveMarker,
   setSelectedLocation,
   setLocationTabContent,
 }) => {
@@ -29,7 +29,7 @@ const SearchResults = ({
                 const { lon, lat } = item._source.location
                 setLocationTabContent('markerInfo')
                 setSelectedLocation(item._source)
-                setMapCenter(lon, lat)
+                setActiveMarker([lon, lat])
               }}
             >
               <ListItemAvatar>

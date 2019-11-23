@@ -11,7 +11,7 @@ const ContextMenu = ({ addMarker }) => {
     <Paper className={classes.root}>
       <MenuList>
         <MenuItem
-          onClick={() => addMarker(x, y)}
+          onClick={addMarker}
         >{strings.map.add}</MenuItem>
       </MenuList>
     </Paper>

@@ -85,7 +85,6 @@ const LocationTabContainer = ({
           console.log('response: ', _id, _source)
           setSelectedLocation({ id: _id, ..._source })
           setLocationTabContent('markerInfo')
-          refreshMap()
           enqueueSnackbar('Dodano nowe zdjęcie.', { variant: 'success' })
         },
       )
