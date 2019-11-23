@@ -46,7 +46,7 @@ const MapContainer = React.forwardRef((props, ref) => {
   return (
     <Map
       isLoggedIn={isLoggedIn}
-      setStoredPosition={setStoredPosition}
+      setStoredPosition={coords => setStoredPosition(coords)}
       loadMapMarkers={viewport => loadMapMarkers(viewport)}
       points={points}
       center={initalPosition && initalPosition.center}

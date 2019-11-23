@@ -27,15 +27,11 @@ const Map = React.forwardRef((props, ref) => {
     },
   }))
 
-  const loadMapMarkers = () => {
-    const bounds = mapRef.current.leafletElement.getBounds()
-    props.setStoredPosition(mapRef.current.viewport)
+  const loadMapMarkers = async () => {
+    const bounds = await mapRef.current.leafletElement.getBounds()
     props.loadMapMarkers(bounds)
+    props.setStoredPosition(mapRef.current.viewport)
   }
-
-  React.useEffect(() => {
-    loadMapMarkers()
-  }, [])
 
 
   return (
@@ -45,6 +41,7 @@ const Map = React.forwardRef((props, ref) => {
       center={props.center}
       zoom={props.zoom}
       maxZoom={18}
+      onLoad={() => loadMapMarkers()}
       onMoveEnd={() => loadMapMarkers()}
       onClick={e => {
         setActiveMarker(contextMenu ? null : e.latlng)
