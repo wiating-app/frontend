@@ -4,6 +4,8 @@ import {
   Marker,
   Popup,
   TileLayer,
+  ZoomControl,
+  ScaleControl,
 } from 'react-leaflet'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -41,7 +43,8 @@ const Map = React.forwardRef((props, ref) => {
       center={props.center}
       zoom={props.zoom}
       maxZoom={18}
-      onLoad={() => loadMapMarkers()}
+      zoomControl={false}
+      whenReady={() => loadMapMarkers()}
       onMoveEnd={() => loadMapMarkers()}
       onClick={e => {
         setActiveMarker(contextMenu ? null : e.latlng)
@@ -96,6 +99,8 @@ const Map = React.forwardRef((props, ref) => {
           }} />
         </Popup>
       }
+      <ZoomControl position='topright' />
+      <ScaleControl position='bottomright' imperial={false} />
     </MapComponent>
   )
 })
