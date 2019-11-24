@@ -10,18 +10,25 @@ import SearchInput from './SearchInput'
 
 const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
   const classes = useStyles()
+  const [searchLoading, setSearchLoading] = React.useState()
+
   return (
     <AppBar position='relative' className={classes.root}>
       <Toolbar>
         <Typography variant='h6' className={classes.title}>Wiating</Typography>
         <Form
           fields={['phrase']}
-          callbackOnChange={fields => onSearch(fields.phrase)}
+          callbackOnChange={async fields => {
+            setSearchLoading(true)
+            await onSearch(fields.phrase)
+            setSearchLoading(false)
+          }}
         >
           <SearchInput
             name='phrase'
             placeholder='Szukaj'
             noBottomGutter
+            loading={searchLoading}
           />
         </Form>
         <div className={classes.grow} />

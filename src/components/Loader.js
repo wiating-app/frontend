@@ -6,7 +6,7 @@ const Loader = () =>
     type='spinningBubbles'
     width={18}
     height={18}
-    color='inherit'
+    color='white'
   />
 
 export default Loader

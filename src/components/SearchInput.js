@@ -3,6 +3,8 @@ import { withFormControl } from 'react-standalone-form'
 import { InputBase } from '@material-ui/core'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
+import Loader from './Loader'
+
 
 const SearchInput = ({
   name,
@@ -10,12 +12,13 @@ const SearchInput = ({
   required,
   setValue,
   placeholder,
+  loading,
 }) => {
   const classes = useStyles()
   return (
     <div className={classes.search}>
       <div className={classes.searchIcon}>
-        <Search />
+        {loading ? <Loader /> : <Search />}
       </div>
       <InputBase
         name={name}
