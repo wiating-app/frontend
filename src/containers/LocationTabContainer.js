@@ -71,8 +71,8 @@ const LocationTabContainer = ({
       const file = files[0]
       Resizer.imageFileResizer(
         file,
-        1152, // Maximum width
-        1152, // Maximum height
+        1080, // Maximum width
+        1080, // Maximum height
         'JPEG', // Format
         80, // Quality 1-100
         0, // Rotation
