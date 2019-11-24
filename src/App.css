@@ -4,6 +4,11 @@
   z-index: 1;
 }
 
+/* Hide Status of react-image-gallery item */
+.carousel-status {
+  display: none;
+}
+
 h2 {
   margin-bottom: 1em;
 }
