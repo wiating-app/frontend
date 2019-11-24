@@ -18,6 +18,7 @@ const LocationForm = ({
   setActiveMarker,
   cancel,
 }) => {
+  const [loading, setLoading] = React.useState()
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
 
@@ -116,7 +117,12 @@ const LocationForm = ({
         <FormButton
           variant='contained'
           color='primary'
-          callback={fields => onSubmitLocation(fields, !!selectedLocation.id)}
+          callback={async fields => {
+            setLoading(true)
+            await onSubmitLocation(fields, !!selectedLocation.id)
+            setLoading(false)
+          }}
+          loading={loading}
         >{strings.markerForm.cta}</FormButton>
       </FormActions>
     </Form>
