@@ -26,9 +26,10 @@ const SearchResults = ({
             <ListItem
               className={classes.item}
               onClick={() => {
-                const { lon, lat } = item._source.location
+                const { _id, _source } = item
+                const { lon, lat } = _source.location
                 setLocationTabContent('markerInfo')
-                setSelectedLocation(item._source)
+                setSelectedLocation({ id: _id, ..._source })
                 setActiveMarker([lon, lat])
               }}
             >
