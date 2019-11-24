@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Dropzone from 'react-dropzone'
+import Loader from './Loader'
 import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
 import { strings } from '../lang/strings.js'
@@ -18,6 +19,7 @@ const LocationInfo = ({
   onImageUpload,
 }) => {
   const classes = useStyles()
+  const [imagesLoading, setImagesLoading] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
   return (
     <div className={classes.root}>
@@ -97,18 +99,25 @@ const LocationInfo = ({
             <Button
               onClick={() => setLocationTabContent('editMarker')}
             >{strings.actions.edit}</Button>
-            <Button>
-              <Dropzone onDrop={files => onImageUpload(files)}>
-                {({ getRootProps, getInputProps }) => (
-                  <section>
-                    <div {...getRootProps()}>
-                      <input {...getInputProps()} />
-                      {strings.actions.addPhoto}
-                    </div>
-                  </section>
-                )}
-              </Dropzone>
-            </Button>
+            {imagesLoading
+              ? <Button disabled>{strings.actions.addPhoto} <Loader /></Button>
+              : <Button>
+                <Dropzone onDrop={async files => {
+                  setImagesLoading(true)
+                  await onImageUpload(files)
+                  setImagesLoading(false)
+                }}>
+                  {({ getRootProps, getInputProps }) => (
+                    <section>
+                      <div {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        {strings.actions.addPhoto}
+                      </div>
+                    </section>
+                  )}
+                </Dropzone>
+              </Button>
+            }
           </ButtonGroup>
         }
       </div>

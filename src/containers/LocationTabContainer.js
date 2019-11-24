@@ -66,10 +66,10 @@ const LocationTabContainer = ({
     }
   }
 
-  const onImageUpload = files => {
+  const onImageUpload = async files => {
     try {
       const file = files[0]
-      Resizer.imageFileResizer(
+      await Resizer.imageFileResizer(
         file,
         1080, // Maximum width
         1080, // Maximum height
