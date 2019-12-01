@@ -8,7 +8,15 @@ import SearchInput from './SearchInput'
 import Text from './Text'
 
 
-const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
+const NavBar = ({
+  user,
+  logout,
+  loginWithRedirect,
+  onSearch,
+  language,
+  languages,
+  setLanguage,
+}) => {
   const classes = useStyles()
   const [searchLoading, setSearchLoading] = React.useState()
 
@@ -32,6 +40,16 @@ const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
           />
         </Form>
         <div className={classes.grow} />
+        <Dropdown
+          items={languages.map(lang => ({
+            label: lang.toUpperCase(),
+            onClick: () => setLanguage(lang),
+          }))}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+        >{language.toUpperCase()}</Dropdown>
         {user
           ? <Dropdown items={[
             { label: <Text id='auth.logout' />, onClick: () => logout() },

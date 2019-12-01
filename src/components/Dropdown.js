@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@material-ui/core'
 
-const Dropdown = ({ children, items }) => {
+const Dropdown = ({ children, items, anchorOrigin }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
 
   const handleClick = event => {
@@ -27,10 +27,7 @@ const Dropdown = ({ children, items }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
         getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+        anchorOrigin={anchorOrigin}
       >
         {items.map((item, index) =>
           <MenuItem key={index} onClick={() => {
@@ -41,6 +38,13 @@ const Dropdown = ({ children, items }) => {
       </Menu>
     </div>
   )
+}
+
+Dropdown.defaultProps = {
+  anchorOrigin: {
+    vertical: 'bottom',
+    horizontal: 'right',
+  },
 }
 
 export default Dropdown
