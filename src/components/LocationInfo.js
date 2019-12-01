@@ -9,7 +9,7 @@ import Dropzone from 'react-dropzone'
 import Loader from './Loader'
 import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
-import texts from '../utils/texts'
+import Text from './Text'
 
 
 const LocationInfo = ({
@@ -43,7 +43,7 @@ const LocationInfo = ({
           <Typography
             variant='subtitle2'
             component='span'
-          >Dostęp do wody: </Typography>
+          ><Text id='locationInfo.waterAccess' />: </Typography>
 
           {selectedLocation.water &&
             <Typography
@@ -63,7 +63,7 @@ const LocationInfo = ({
           <Typography
             variant='subtitle2'
             component='span'
-          >Dostęp do ognia: </Typography>
+          ><Text id='locationInfo.waterAccess' />: </Typography>
 
           {selectedLocation.fire &&
             <Typography
@@ -72,9 +72,9 @@ const LocationInfo = ({
               component='span'
             >
               {!selectedLocation.fire.exists
-                ? 'Brak.'
-                : selectedLocation.fire.comment || 'Jest.'
-              }
+                ? <Text id='none' />
+                : selectedLocation.fire.comment || <Text id='is' />
+              }.
             </Typography>
           }
         </div>
@@ -88,7 +88,7 @@ const LocationInfo = ({
             variant='caption'
             align='right'
             color='textSecondary'
-          >Ostatnia aktualizacja: {formatDate(updatedAt)}</Typography>
+          ><Text id='locationInfo.lastUpdate' />: {formatDate(updatedAt)}</Typography>
         }
         {loggedIn &&
           <ButtonGroup
@@ -98,9 +98,9 @@ const LocationInfo = ({
           >
             <Button
               onClick={() => setLocationTabContent('editMarker')}
-            >{texts.actions.edit}</Button>
+            ><Text id='actions.edit' /></Button>
             {imagesLoading
-              ? <Button disabled>{texts.actions.addPhoto} <Loader /></Button>
+              ? <Button disabled><Text id='actions.addPhoto' /> <Loader /></Button>
               : <Button>
                 <Dropzone onDrop={async files => {
                   setImagesLoading(true)
@@ -111,7 +111,7 @@ const LocationInfo = ({
                     <section>
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
-                        {texts.actions.addPhoto}
+                        <Text id='actions.addPhoto' />
                       </div>
                     </section>
                   )}

@@ -5,6 +5,7 @@ import dataUriToBuffer from 'data-uri-to-buffer'
 import api from '../api'
 import { useAuth0 } from '../auth0'
 import LocationTab from '../components/LocationTab'
+import Text from '../components/Text'
 
 
 const LocationTabContainer = ({
@@ -51,18 +52,18 @@ const LocationTabContainer = ({
         const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
         console.log('response: ', _id, _source)
         setSelectedLocation({ id: _id, ..._source })
-        enqueueSnackbar('Marker zaktualizowany', { variant: 'success' })
+        enqueueSnackbar(<Text id='markerUpdated' />, { variant: 'success' })
       } else {
         const { data: { _id, _source } } = await api.post('add_point', data)
         console.log('response: ', _id, _source)
         setSelectedLocation({ id: _id, ..._source })
-        enqueueSnackbar('Dodano nowy marker', { variant: 'success' })
+        enqueueSnackbar(<Text id='newMarkerAdded' />, { variant: 'success' })
       }
       setLocationTabContent('markerInfo')
       refreshMap()
     } catch (error) {
       console.error(error)
-      enqueueSnackbar('Nie udało się zapisać markera.', { variant: 'error' })
+      enqueueSnackbar(<Text id='couldNotSaveMarker' />, { variant: 'error' })
     }
   }
 
@@ -85,12 +86,12 @@ const LocationTabContainer = ({
           console.log('response: ', _id, _source)
           setSelectedLocation({ id: _id, ..._source })
           setLocationTabContent('markerInfo')
-          enqueueSnackbar('Dodano nowe zdjęcie.', { variant: 'success' })
+          enqueueSnackbar(<Text id='photoAdded' />, { variant: 'success' })
         },
       )
     } catch (error) {
       console.error(error)
-      enqueueSnackbar('Nie udało się zapisać zdjęcia.', { variant: 'error' })
+      enqueueSnackbar(<Text id='couldNotSavePhoto' />, { variant: 'error' })
     }
   }
 

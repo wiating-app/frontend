@@ -14,7 +14,7 @@ import LocationForm from './LocationForm'
 import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
 import SearchResults from './SearchResults'
-import texts from '../utils/texts'
+import Text from './Text'
 
 
 const LocationTab = ({
@@ -88,7 +88,9 @@ const LocationTab = ({
 
         {['addMarker', 'editMarker'].includes(content) &&
           <div className={classes.content}>
-            <Typography variant='h4' gutterBottom>{texts.markerForm.heading[content]}</Typography>
+            <Typography variant='h4' gutterBottom>
+              <Text id={`markerForm.heading.${content}`} />
+            </Typography>
             <LocationForm
               selectedLocation={selectedLocation}
               onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
@@ -100,7 +102,7 @@ const LocationTab = ({
 
         {/* {content === 'editPhotos' &&
           <div className={classes.content}>
-            <Typography variant='h4' gutterBottom>{texts.actions.editPhotos}</Typography>
+            <Typography variant='h4' gutterBottom>{<Text id='actions.editPhotos}</Typography>
             <PhotosForm
               selectedLocation={selectedLocation}
               onSubmitLocation={files => onImageUpload(files)}

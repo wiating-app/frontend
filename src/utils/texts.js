@@ -2,6 +2,15 @@ export default {
   pl: {
     yes: 'Tak',
     no: 'Nie',
+    is: 'Jest',
+    none: 'Brak',
+    cancel: 'Anuluj',
+    locationInfo: {
+      fireAccess: 'Dostęp do ognia',
+      waterAccess: 'Dostęp do wody',
+      lastUpdate: 'Ostatnia aktualizacja',
+    },
+    noResults: 'Nic nie znaleziono',
     markerForm: {
       heading: {
         addMarker: 'Dodaj nowe miejsce',
@@ -20,10 +29,11 @@ export default {
       thankYouHeading: 'Dzięki!',
       thankYouMessage: 'Punkt został dodany i będzie widoczny po akceptacji moderatora.',
     },
-    marker: {
-      waterAccess: 'Dostęp do wody',
-      fireAccess: 'Dostęp do ognia',
-    },
+    markerUpdated: 'Marker zaktualizowany.',
+    newMarkerAdded: 'Dodano nowy marker.',
+    couldNotSaveMarker: 'Nie udało się zapisać markera.',
+    photoAdded: 'Dodano nowe zdjęcie.',
+    couldNotSavePhoto: 'Nie udało się zapisać zdjęcia.',
     actions: {
       edit: 'Edytuj',
       addPhoto: 'Dodaj zdjęcie',
@@ -41,8 +51,16 @@ export default {
     },
   },
   en: {
-    yes: 'Tak',
-    no: 'Nie',
+    yes: 'Yes',
+    no: 'No',
+    is: 'Is available',
+    none: 'None',
+    cancel: 'Cancel',
+    locationInfo: {
+      fireAccess: 'Access to fire',
+      waterAccess: 'Access to water',
+    },
+    noResults: 'No results',
     markerForm: {
       heading: {
         addMarker: 'Dodaj nowe miejsce',
@@ -65,6 +83,11 @@ export default {
       waterAccess: 'Dostęp do wody',
       fireAccess: 'Dostęp do ognia',
     },
+    markerUpdated: 'Marker zaktualizowany.',
+    newMarkerAdded: 'Dodano nowy marker.',
+    couldNotSaveMarker: 'Nie udało się zapisać markera.',
+    photoAdded: 'Dodano nowe zdjęcie.',
+    couldNotSavePhoto: 'Nie udało się zapisać zdjęcia.',
     actions: {
       edit: 'Edytuj',
       addPhoto: 'Dodaj zdjęcie',

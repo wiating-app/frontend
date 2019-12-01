@@ -1,8 +1,7 @@
 import React from 'react'
 import { Paper, MenuList, MenuItem } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-
-import texts from '../utils/texts'
+import Text from './Text'
 
 
 const ContextMenu = ({ addMarker }) => {
@@ -12,7 +11,7 @@ const ContextMenu = ({ addMarker }) => {
       <MenuList>
         <MenuItem
           onClick={addMarker}
-        >{texts.map.add}</MenuItem>
+        ><Text id='map.add' /></MenuItem>
       </MenuList>
     </Paper>
   )

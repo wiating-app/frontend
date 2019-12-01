@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Home } from '@material-ui/icons'
+import Text from './Text'
 
 const SearchResults = ({
   items,
@@ -41,7 +42,7 @@ const SearchResults = ({
             <Divider variant='inset' component='li' />
           </React.Fragment>
         )
-        : <Typography variant='subtitle1' align='center'>Nic nie znaleziono</Typography>
+        : <Typography variant='subtitle1' align='center'><Text id='noResults' /></Typography>
       }
     </List>
   )
