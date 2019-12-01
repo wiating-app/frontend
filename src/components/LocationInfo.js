@@ -9,7 +9,7 @@ import Dropzone from 'react-dropzone'
 import Loader from './Loader'
 import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
-import { strings } from '../lang/strings.js'
+import texts from '../utils/texts'
 
 
 const LocationInfo = ({
@@ -98,9 +98,9 @@ const LocationInfo = ({
           >
             <Button
               onClick={() => setLocationTabContent('editMarker')}
-            >{strings.actions.edit}</Button>
+            >{texts.actions.edit}</Button>
             {imagesLoading
-              ? <Button disabled>{strings.actions.addPhoto} <Loader /></Button>
+              ? <Button disabled>{texts.actions.addPhoto} <Loader /></Button>
               : <Button>
                 <Dropzone onDrop={async files => {
                   setImagesLoading(true)
@@ -111,7 +111,7 @@ const LocationInfo = ({
                     <section>
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
-                        {strings.actions.addPhoto}
+                        {texts.actions.addPhoto}
                       </div>
                     </section>
                   )}

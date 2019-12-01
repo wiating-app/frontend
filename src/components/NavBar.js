@@ -3,9 +3,10 @@ import { AppBar, Toolbar, Typography, Button, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown } from '@material-ui/icons'
 import Form from 'react-standalone-form'
-import { strings } from '../lang/strings.js'
+import texts from '../utils/texts'
 import Dropdown from './Dropdown'
 import SearchInput from './SearchInput'
+import Text from './Text'
 
 
 const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
@@ -34,7 +35,7 @@ const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
         <div className={classes.grow} />
         {user
           ? <Dropdown items={[
-            { label: strings.auth.logout, onClick: () => logout() },
+            { label: <Text id='auth.logout' />, onClick: () => logout() },
           ]}>
             <Avatar alt={user.name} src={user.picture}
             >{!user.picture && `${user.given_name.charAt(0)}${user.family_name.charAt(0)}`}</Avatar>
@@ -44,7 +45,7 @@ const NavBar = ({ user, logout, loginWithRedirect, onSearch }) => {
           : <Button
             color='inherit'
             onClick={() => loginWithRedirect({})}
-          >{strings.auth.login}</Button>
+          ><Text id='auth.login' /></Button>
         }
       </Toolbar>
     </AppBar>

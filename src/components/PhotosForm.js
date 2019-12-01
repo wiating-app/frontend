@@ -6,7 +6,7 @@ import {
   FormButton,
   FormActions,
 } from 'react-standalone-form-mui'
-import { strings } from '../lang/strings.js'
+import texts from '../utils/texts'
 
 const PhotosForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
   return (
@@ -25,7 +25,7 @@ const PhotosForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
           variant='contained'
           color='primary'
           callback={fields => onSubmitLocation(fields.files)}
-        >{strings.markerForm.cta}</FormButton>
+        >{texts.markerForm.cta}</FormButton>
       </FormActions>
     </Form>
   )

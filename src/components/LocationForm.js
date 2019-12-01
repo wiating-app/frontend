@@ -8,7 +8,7 @@ import {
   Checkbox,
   FormActions,
 } from 'react-standalone-form-mui'
-import { strings } from '../lang/strings.js'
+import texts from '../utils/texts'
 import locationTypes from '../utils/locationTypes'
 
 
@@ -52,14 +52,14 @@ const LocationForm = ({
 
       <Input
         name='name'
-        label={strings.markerForm.place}
+        label={texts.markerForm.place}
         min={5}
         initialValue={selectedLocation && selectedLocation.name}
       />
 
       <Input
         name='description'
-        label={strings.markerForm.description}
+        label={texts.markerForm.description}
         min={40}
         initialValue={selectedLocation && selectedLocation.description}
         multiline
@@ -67,14 +67,14 @@ const LocationForm = ({
 
       <Select
         name='type'
-        label={strings.markerForm.type}
+        label={texts.markerForm.type}
         options={Object.entries(locationTypes).map(([value, label]) => ({ value, label }))}
         initialValue={selectedLocation && selectedLocation.type}
       />
 
       <Input
         name='location'
-        label={strings.markerForm.coordinates}
+        label={texts.markerForm.coordinates}
         min={5}
         initialValue={selectedLocation && `${selectedLocation.location.lat}, ${selectedLocation.location.lon}`}
         help='Format: 00.0000, 00.0000'
@@ -82,14 +82,14 @@ const LocationForm = ({
 
       <Checkbox
         name='water_exists'
-        text={strings.marker.waterAccess}
+        text={texts.marker.waterAccess}
         initialValue={selectedLocation && selectedLocation.water && selectedLocation.water.exists}
       />
 
       {hasWater &&
         <Input
           name='water_comment'
-          label={strings.markerForm.waterDescription}
+          label={texts.markerForm.waterDescription}
           min={40}
           initialValue={selectedLocation && selectedLocation.water && selectedLocation.water.comment}
           multiline
@@ -98,14 +98,14 @@ const LocationForm = ({
 
       <Checkbox
         name='fire_exists'
-        text={strings.marker.fireAccess}
+        text={texts.marker.fireAccess}
         initialValue={selectedLocation && selectedLocation.fire && selectedLocation.fire.exists}
       />
 
       {hasFire &&
         <Input
           name='fire_comment'
-          label={strings.markerForm.fireDescription}
+          label={texts.markerForm.fireDescription}
           min={40}
           initialValue={selectedLocation && selectedLocation.fire && selectedLocation.fire.comment}
           multiline
@@ -123,7 +123,7 @@ const LocationForm = ({
             setLoading(false)
           }}
           loading={loading}
-        >{strings.markerForm.cta}</FormButton>
+        >{texts.markerForm.cta}</FormButton>
       </FormActions>
     </Form>
   )
