@@ -13,6 +13,16 @@ export default {
       waterAccess: 'Dostęp do wody',
       lastUpdate: 'Ostatnia aktualizacja',
     },
+    locationType: {
+      hut: 'Chatka',
+      hutFireplace: 'Chatka z paleniskiem',
+      shed: 'Wiata',
+      waterSource: 'Źródło',
+      cave: 'Jaskinia',
+      pasture: 'Paśnik',
+      pulpit: 'Ambona',
+      tower: 'Wieża widokowa',
+    },
     noResults: 'Nic nie znaleziono',
     markerForm: {
       heading: {
@@ -44,6 +54,7 @@ export default {
       logout: 'Wyloguj',
     },
   },
+
   en: {
     yes: 'Yes',
     no: 'No',
@@ -56,6 +67,16 @@ export default {
       fireAccess: 'Access to fire',
       waterAccess: 'Access to water',
       lastUpdate: 'Last update',
+    },
+    locationType: {
+      hut: 'Hut',
+      hutFireplace: 'Hut with a fireplace',
+      shed: 'Shed',
+      waterSource: 'Water source',
+      cave: 'Cave',
+      pasture: 'Pasture',
+      pulpit: 'Pulpit',
+      tower: 'Observation Tower',
     },
     noResults: 'No results',
     markerForm: {

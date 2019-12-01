@@ -21,18 +21,20 @@ const LocationInfo = ({
   const classes = useStyles()
   const [imagesLoading, setImagesLoading] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
+  const type = locationTypes[selectedLocation.type]
   return (
     <div className={classes.root}>
       <div className={classes.main}>
         <Typography
           variant='h5'
         >{selectedLocation.name}</Typography>
-
         <Typography
           variant='body2'
           color='textSecondary'
           gutterBottom
-        >{locationTypes[selectedLocation.type]} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}</Typography>
+        >
+          {type && <Text id={type} />} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}
+        </Typography>
 
         <Typography
           variant='body1'

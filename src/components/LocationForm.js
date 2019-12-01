@@ -68,7 +68,9 @@ const LocationForm = ({
       <Select
         name='type'
         label={<Text id='markerForm.type' />}
-        options={Object.entries(locationTypes).map(([value, label]) => ({ value, label }))}
+        options={Object.entries(locationTypes).map(([value, label]) => {
+          return { value, label: <Text id={label} /> }
+        })}
         initialValue={selectedLocation && selectedLocation.type}
       />
 

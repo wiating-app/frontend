@@ -1,10 +1,10 @@
 export default {
-  HUT: 'Chatka',
-  HUT_FIREPLACE: ' Chatka z paleniskiem',
-  SHED: 'Wiata',
-  WATER_SOURCE: 'Źródło',
-  CAVE: 'Jaskinia',
-  PASTURE: 'Paśnik',
-  PULPIT: 'Ambona',
-  TOWER: 'Wieża widokowa',
+  HUT: 'locationType.hut',
+  HUT_FIREPLACE: 'locationType.hutFireplace',
+  SHED: 'locationType.shed',
+  WATER_SOURCE: 'locationType.waterSource',
+  CAVE: 'locationType.cave',
+  PASTURE: 'locationType.pasture',
+  PULPIT: 'locationType.pulpit',
+  TOWER: 'locationType.tower',
 }
