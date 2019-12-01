@@ -2,18 +2,16 @@ import React from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import {
   Drawer,
-  Button,
   IconButton,
 } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { Close, ViewList } from '@material-ui/icons'
+import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import LocationForm from './LocationForm'
 // import PhotosForm from './PhotosForm'
-import LocationImages from './LocationImages'
-import LocationInfo from './LocationInfo'
 import SearchResults from './SearchResults'
+import SelectedLocationContainer from '../containers/SelectedLocationContainer'
 
 
 const LocationTab = ({
@@ -22,9 +20,7 @@ const LocationTab = ({
   searchResults,
   setActiveMarker,
   setSelectedLocation,
-  loggedIn,
   onSubmitLocation,
-  onImageUpload,
   location,
   history,
 }) => {
@@ -75,29 +71,7 @@ const LocationTab = ({
           </Route>
 
           <Route exact path='/location/:id'> {/* markerInfo */}
-            {selectedLocation &&
-              <>
-                <LocationImages
-                  images={selectedLocation.images}
-                  id={selectedLocation.id}
-                />
-                {searchResults &&
-                  <Button
-                    onClick={() => history.push('/search')}
-                    className={classes.backToSearch}
-                    variant='contained'
-                    size='small'
-                  ><ViewList /> Powrót do wyników</Button>
-                }
-                <div className={classes.content}>
-                  <LocationInfo
-                    selectedLocation={selectedLocation}
-                    loggedIn={loggedIn}
-                    onImageUpload={files => onImageUpload(files)}
-                  />
-                </div>
-              </>
-            }
+            <SelectedLocationContainer />
           </Route>
 
           <Route exact path='/location/:id/edit'> {/* editMarker */}

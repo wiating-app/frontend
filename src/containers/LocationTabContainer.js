@@ -1,10 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import Resizer from 'react-image-file-resizer'
-import dataUriToBuffer from 'data-uri-to-buffer'
 import api from '../api'
-import { useAuth0 } from '../auth0'
 import LocationTab from '../components/LocationTab'
 import Text from '../components/Text'
 
@@ -17,7 +14,6 @@ const LocationTabContainer = ({
   history,
   ...otherProps
 }) => {
-  const { isLoggedIn } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
 
   const onSubmitLocation = async (fields, editExisting) => {
@@ -68,37 +64,8 @@ const LocationTabContainer = ({
     }
   }
 
-  const onImageUpload = async files => {
-    try {
-      const file = files[0]
-      await Resizer.imageFileResizer(
-        file,
-        1080, // Maximum width
-        1080, // Maximum height
-        'JPEG', // Format
-        80, // Quality 1-100
-        0, // Rotation
-        async uri => {
-          const decoded = dataUriToBuffer(uri)
-          const resizedFile = new File([decoded], file.name, { type: file.type })
-          const data = new FormData()
-          data.append('file', resizedFile)
-          const { data: { _id, _source } } = await api.post(`add_image/${selectedLocation.id}`, data)
-          console.log('response: ', _id, _source)
-          setSelectedLocation({ id: _id, ..._source })
-          history.push(`/location/${_id}`)
-          enqueueSnackbar(<Text id='notifications.photoAdded' />, { variant: 'success' })
-        },
-      )
-    } catch (error) {
-      console.error(error)
-      enqueueSnackbar(<Text id='notifications.couldNotSavePhoto' />, { variant: 'error' })
-    }
-  }
-
   return (
     <LocationTab
-      loggedIn={isLoggedIn}
       onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
       onImageUpload={files => onImageUpload(files)}
       selectedLocation={selectedLocation}
