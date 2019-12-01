@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import {
   Typography,
   Button,
@@ -15,7 +16,6 @@ import Text from './Text'
 const LocationInfo = ({
   loggedIn,
   selectedLocation,
-  setLocationTabContent,
   onImageUpload,
 }) => {
   const classes = useStyles()
@@ -99,7 +99,8 @@ const LocationInfo = ({
             align='right'
           >
             <Button
-              onClick={() => setLocationTabContent('editMarker')}
+              component={Link}
+              to={`/location/${selectedLocation.id}/edit`}
             ><Text id='actions.edit' /></Button>
             {imagesLoading
               ? <Button disabled><Text id='actions.addPhoto' /> <Loader /></Button>

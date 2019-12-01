@@ -16,7 +16,7 @@ const SearchResults = ({
   items,
   setActiveMarker,
   setSelectedLocation,
-  setLocationTabContent,
+  history,
 }) => {
   const classes = useStyles()
   return (
@@ -29,7 +29,7 @@ const SearchResults = ({
               onClick={() => {
                 const { _id, _source } = item
                 const { lon, lat } = _source.location
-                setLocationTabContent('markerInfo')
+                history.push(`/location/${_id}`)
                 setSelectedLocation({ id: _id, ..._source })
                 setActiveMarker([lon, lat])
               }}

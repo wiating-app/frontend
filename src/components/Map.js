@@ -47,8 +47,10 @@ const Map = React.forwardRef((props, ref) => {
       whenReady={() => loadMapMarkers()}
       onMoveEnd={() => loadMapMarkers()}
       onClick={e => {
-        setActiveMarker(contextMenu ? null : e.latlng)
-        setContextMenu(!contextMenu)
+        if (props.isLoggedIn) {
+          setActiveMarker(contextMenu ? null : e.latlng)
+          setContextMenu(!contextMenu)
+        }
         props.closeTab()
       }}
     >

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import Form from 'react-standalone-form'
 import {
   Input,
@@ -17,12 +17,16 @@ const LocationForm = ({
   onSubmitLocation,
   setActiveMarker,
   cancel,
+  isNew,
 }) => {
   const [loading, setLoading] = React.useState()
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
 
-  return (
+  return <>
+    <Typography variant='h4' gutterBottom>
+      <Text id={`markerForm.heading.${isNew ? 'addMarker' : 'editMarker'}`} />
+    </Typography>
     <Form
       fields={[
         'name',
@@ -128,7 +132,7 @@ const LocationForm = ({
         ><Text id='save' /></FormButton>
       </FormActions>
     </Form>
-  )
+  </>
 }
 
 export default LocationForm

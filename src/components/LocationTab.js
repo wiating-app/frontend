@@ -1,9 +1,9 @@
 import React from 'react'
+import { Switch, Route, Link } from 'react-router-dom'
 import {
   Drawer,
   Button,
   IconButton,
-  Typography,
 } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -14,13 +14,10 @@ import LocationForm from './LocationForm'
 import LocationImages from './LocationImages'
 import LocationInfo from './LocationInfo'
 import SearchResults from './SearchResults'
-import Text from './Text'
 
 
 const LocationTab = ({
   selectedLocation,
-  content,
-  setLocationTabContent,
   closeLocationTab,
   searchResults,
   setActiveMarker,
@@ -28,6 +25,8 @@ const LocationTab = ({
   loggedIn,
   onSubmitLocation,
   onImageUpload,
+  location,
+  history,
 }) => {
   const classes = useStyles()
   const theme = useTheme()
@@ -35,7 +34,7 @@ const LocationTab = ({
 
   return (
     <Drawer
-      open={!!content}
+      open={location.pathname.startsWith('/location') || location.pathname.startsWith('/search')}
       variant='persistent'
       anchor={matches ? 'left' : 'bottom'}
       className={classes.drawer}
@@ -50,66 +49,79 @@ const LocationTab = ({
           size='small'
           className={classes.close}
           aria-label='close'
-          onClick={() => closeLocationTab()}
+          component={Link}
+          to='/'
         ><Close /></IconButton>
-        {content === 'searchResults' &&
-          <SearchResults
-            items={searchResults}
-            setActiveMarker={setActiveMarker}
-            setSelectedLocation={location => setSelectedLocation(location)}
-            setLocationTabContent={content => setLocationTabContent(content)}
-          />
-        }
 
-        {content === 'markerInfo' && selectedLocation &&
-          <>
-            <LocationImages
-              images={selectedLocation.images}
-              id={selectedLocation.id}
+        <Switch>
+          <Route exact path='/search'> {/* searchResults */}
+            <SearchResults
+              items={searchResults}
+              setActiveMarker={setActiveMarker}
+              setSelectedLocation={location => setSelectedLocation(location)}
+              history={history}
             />
-            {searchResults &&
-              <Button
-                onClick={() => setLocationTabContent('searchResults')}
-                className={classes.backToSearch}
-                variant='contained'
-                size='small'
-              ><ViewList /> Powrót do wyników</Button>
-            }
+          </Route>
+
+          <Route exact path='/location/new'> {/* addMarker */}
             <div className={classes.content}>
-              <LocationInfo
-                selectedLocation={selectedLocation}
-                loggedIn={loggedIn}
-                onImageUpload={files => onImageUpload(files)}
-                setLocationTabContent={content => setLocationTabContent(content)}
+              <LocationForm
+                onSubmitLocation={fields => onSubmitLocation(fields)}
+                setActiveMarker={location => setActiveMarker(location)}
+                cancel={() => history.goBack()}
+                isNew
               />
             </div>
-          </>
-        }
+          </Route>
 
-        {['addMarker', 'editMarker'].includes(content) &&
-          <div className={classes.content}>
-            <Typography variant='h4' gutterBottom>
-              <Text id={`markerForm.heading.${content}`} />
-            </Typography>
-            <LocationForm
-              selectedLocation={selectedLocation}
-              onSubmitLocation={(fields, editExisting) => onSubmitLocation(fields, editExisting)}
-              setActiveMarker={location => setActiveMarker(location)}
-              cancel={() => setLocationTabContent('markerInfo')}
-            />
-          </div>
-        }
+          <Route exact path='/location/:id'> {/* markerInfo */}
+            {selectedLocation &&
+              <>
+                <LocationImages
+                  images={selectedLocation.images}
+                  id={selectedLocation.id}
+                />
+                {searchResults &&
+                  <Button
+                    onClick={() => history.push('/search')}
+                    className={classes.backToSearch}
+                    variant='contained'
+                    size='small'
+                  ><ViewList /> Powrót do wyników</Button>
+                }
+                <div className={classes.content}>
+                  <LocationInfo
+                    selectedLocation={selectedLocation}
+                    loggedIn={loggedIn}
+                    onImageUpload={files => onImageUpload(files)}
+                  />
+                </div>
+              </>
+            }
+          </Route>
 
-        {/* {content === 'editPhotos' &&
-          <div className={classes.content}>
-            <Typography variant='h4' gutterBottom>{<Text id='actions.editPhotos}</Typography>
-            <PhotosForm
-              selectedLocation={selectedLocation}
-              onSubmitLocation={files => onImageUpload(files)}
-              cancel={() => setLocationTabContent('markerInfo')}
-            />
-          </div>
-        } */}
+          <Route exact path='/location/:id/edit'> {/* editMarker */}
+            <div className={classes.content}>
+              <LocationForm
+                selectedLocation={selectedLocation}
+                onSubmitLocation={fields => onSubmitLocation(fields, true)}
+                setActiveMarker={location => setActiveMarker(location)}
+                cancel={() => history.goBack()}
+              />
+            </div>
+          </Route>
+
+          {/* {content === 'editPhotos' &&
+            <div className={classes.content}>
+              <Typography variant='h4' gutterBottom>{<Text id='actions.editPhotos}</Typography>
+              <PhotosForm
+                selectedLocation={selectedLocation}
+                onSubmitLocation={files => onImageUpload(files)}
+                cancel={() => setLocationTabContent('markerInfo')}
+              />
+            </div>
+          } */}
+        </Switch>
       </PerfectScrollbar>
     </Drawer>
   )

@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import Resizer from 'react-image-file-resizer'
 import dataUriToBuffer from 'data-uri-to-buffer'
@@ -9,12 +10,11 @@ import Text from '../components/Text'
 
 
 const LocationTabContainer = ({
-  content,
   selectedLocation,
   setSelectedLocation,
   refreshMap,
   closeLocationTab,
-  setLocationTabContent,
+  history,
   ...otherProps
 }) => {
   const { isLoggedIn } = useAuth0()
@@ -52,14 +52,15 @@ const LocationTabContainer = ({
         const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
         console.log('response: ', _id, _source)
         setSelectedLocation({ id: _id, ..._source })
+        history.push(`/location/${_id}`)
         enqueueSnackbar(<Text id='notifications.markerUpdated' />, { variant: 'success' })
       } else {
         const { data: { _id, _source } } = await api.post('add_point', data)
         console.log('response: ', _id, _source)
         setSelectedLocation({ id: _id, ..._source })
+        history.push(`/location/${_id}`)
         enqueueSnackbar(<Text id='notifications.newMarkerAdded' />, { variant: 'success' })
       }
-      setLocationTabContent('markerInfo')
       refreshMap()
     } catch (error) {
       console.error(error)
@@ -85,7 +86,7 @@ const LocationTabContainer = ({
           const { data: { _id, _source } } = await api.post(`add_image/${selectedLocation.id}`, data)
           console.log('response: ', _id, _source)
           setSelectedLocation({ id: _id, ..._source })
-          setLocationTabContent('markerInfo')
+          history.push(`/location/${_id}`)
           enqueueSnackbar(<Text id='notifications.photoAdded' />, { variant: 'success' })
         },
       )
@@ -102,12 +103,11 @@ const LocationTabContainer = ({
       onImageUpload={files => onImageUpload(files)}
       selectedLocation={selectedLocation}
       setSelectedLocation={location => setSelectedLocation(location)}
-      content={content}
-      setLocationTabContent={content => setLocationTabContent(content)}
       closeLocationTab={closeLocationTab}
+      history={history}
       {...otherProps}
     />
   )
 }
 
-export default LocationTabContainer
+export default withRouter(LocationTabContainer)

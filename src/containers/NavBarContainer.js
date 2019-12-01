@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import api from '../api'
 import { useAuth0 } from '../auth0'
 import NavBar from '../components/NavBar'
@@ -6,10 +7,7 @@ import { LanguageContext } from '../containers/TranslationsProvider'
 
 const languages = ['pl', 'en']
 
-const NavBarContainer = ({
-  setSearchResults,
-  setLocationTabContent,
-}) => {
+const NavBarContainer = ({ setSearchResults, history }) => {
   const [language, setLanguage] = React.useContext(LanguageContext)
   const {
     loading,
@@ -28,9 +26,9 @@ const NavBarContainer = ({
     if (phrase) {
       const { data: { points } } = await api.post('search_points', { phrase })
       setSearchResults(points)
-      setLocationTabContent('searchResults')
+      history.push('/search')
     } else {
-      setLocationTabContent(null)
+      history.push('/')
     }
   }
 
@@ -47,4 +45,4 @@ const NavBarContainer = ({
   )
 }
 
-export default NavBarContainer
+export default withRouter(NavBarContainer)
