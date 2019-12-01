@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useSnackbar } from 'notistack'
 import createAuth0Client from '@auth0/auth0-spa-js'
 import api from './api'
+import Text from './components/Text'
 
 
 const Auth0Context = React.createContext()
@@ -39,7 +40,7 @@ export const Auth0Provider = ({
         localStorage.setItem('currentUser', JSON.stringify(completeUser))
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`
         setUser(completeUser)
-        enqueueSnackbar('Zalogowano pomyślnie', { variant: 'success' })
+        enqueueSnackbar(<Text id='auth.loginSuccessful' />, { variant: 'success' })
       } else {
         // Retrieve user from local storage on page init.
         const currentUser = localStorage.getItem('currentUser')
@@ -81,5 +82,5 @@ export const Auth0Provider = ({
     >
       {children}
     </Auth0Context.Provider>
-    : <div>Loading...</div>
+    : <div><Text id='loading' />...</div>
 }

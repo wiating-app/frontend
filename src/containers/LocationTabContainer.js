@@ -52,18 +52,18 @@ const LocationTabContainer = ({
         const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
         console.log('response: ', _id, _source)
         setSelectedLocation({ id: _id, ..._source })
-        enqueueSnackbar(<Text id='markerUpdated' />, { variant: 'success' })
+        enqueueSnackbar(<Text id='notifications.markerUpdated' />, { variant: 'success' })
       } else {
         const { data: { _id, _source } } = await api.post('add_point', data)
         console.log('response: ', _id, _source)
         setSelectedLocation({ id: _id, ..._source })
-        enqueueSnackbar(<Text id='newMarkerAdded' />, { variant: 'success' })
+        enqueueSnackbar(<Text id='notifications.newMarkerAdded' />, { variant: 'success' })
       }
       setLocationTabContent('markerInfo')
       refreshMap()
     } catch (error) {
       console.error(error)
-      enqueueSnackbar(<Text id='couldNotSaveMarker' />, { variant: 'error' })
+      enqueueSnackbar(<Text id='notifications.couldNotSaveMarker' />, { variant: 'error' })
     }
   }
 
@@ -86,12 +86,12 @@ const LocationTabContainer = ({
           console.log('response: ', _id, _source)
           setSelectedLocation({ id: _id, ..._source })
           setLocationTabContent('markerInfo')
-          enqueueSnackbar(<Text id='photoAdded' />, { variant: 'success' })
+          enqueueSnackbar(<Text id='notifications.photoAdded' />, { variant: 'success' })
         },
       )
     } catch (error) {
       console.error(error)
-      enqueueSnackbar(<Text id='couldNotSavePhoto' />, { variant: 'error' })
+      enqueueSnackbar(<Text id='notifications.couldNotSavePhoto' />, { variant: 'error' })
     }
   }
 

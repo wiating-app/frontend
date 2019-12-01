@@ -34,7 +34,7 @@ const NavBar = ({
         >
           <SearchInput
             name='phrase'
-            placeholder='Szukaj'
+            // placeholder={<Text id='search' />} TODO: Placeholder translation support.
             noBottomGutter
             loading={searchLoading}
           />

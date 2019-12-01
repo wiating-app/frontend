@@ -74,7 +74,7 @@ const LocationForm = ({
 
       <Input
         name='location'
-        label={<Text id='markerForm.coordinates' />}
+        label={<Text id='markerForm.location' />}
         min={5}
         initialValue={selectedLocation && `${selectedLocation.location.lat}, ${selectedLocation.location.lon}`}
         help='Format: 00.0000, 00.0000'
@@ -82,7 +82,7 @@ const LocationForm = ({
 
       <Checkbox
         name='water_exists'
-        text={<Text id='marker.waterAccess' />}
+        text={<Text id='locationInfo.waterAccess' />}
         initialValue={selectedLocation && selectedLocation.water && selectedLocation.water.exists}
       />
 
@@ -98,7 +98,7 @@ const LocationForm = ({
 
       <Checkbox
         name='fire_exists'
-        text={<Text id='marker.fireAccess' />}
+        text={<Text id='locationInfo.fireAccess' />}
         initialValue={selectedLocation && selectedLocation.fire && selectedLocation.fire.exists}
       />
 
@@ -123,7 +123,7 @@ const LocationForm = ({
             setLoading(false)
           }}
           loading={loading}
-        ><Text id='markerForm.cta' /></FormButton>
+        ><Text id='save' /></FormButton>
       </FormActions>
     </Form>
   )
