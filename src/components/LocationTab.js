@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route, Link, withRouter } from 'react-router-dom'
 import {
   Drawer,
   IconButton,
@@ -8,19 +8,18 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import LocationForm from './LocationForm'
 // import PhotosForm from './PhotosForm'
 import SearchResults from './SearchResults'
 import SelectedLocationContainer from '../containers/SelectedLocationContainer'
+import LocationFormContainer from '../containers/LocationFormContainer'
 
 
 const LocationTab = ({
-  selectedLocation,
+  cachedLocation,
   closeLocationTab,
   searchResults,
   setActiveMarker,
-  setSelectedLocation,
-  onSubmitLocation,
+  setCachedLocation,
   location,
   history,
 }) => {
@@ -50,37 +49,44 @@ const LocationTab = ({
         ><Close /></IconButton>
 
         <Switch>
-          <Route exact path='/search'> {/* searchResults */}
+          <Route exact path='/search'>
             <SearchResults
               items={searchResults}
               setActiveMarker={setActiveMarker}
-              setSelectedLocation={location => setSelectedLocation(location)}
+              setCachedLocation={location => {
+                setCachedLocation(location)
+                history.push(`/location/${location.id}`)
+              }}
               history={history}
             />
           </Route>
 
-          <Route exact path='/location/new'> {/* addMarker */}
+          <Route exact path='/location/new'>
             <div className={classes.content}>
-              <LocationForm
-                onSubmitLocation={fields => onSubmitLocation(fields)}
+              <LocationFormContainer
+                cachedLocation={cachedLocation}
+                setCachedLocation={setCachedLocation}
                 setActiveMarker={location => setActiveMarker(location)}
-                cancel={() => history.goBack()}
                 isNew
               />
             </div>
           </Route>
 
-          <Route exact path='/location/:id'> {/* markerInfo */}
-            <SelectedLocationContainer />
+          <Route exact path='/location/:id'>
+            <SelectedLocationContainer
+              cachedLocation={cachedLocation}
+              setCachedLocation={setCachedLocation}
+              showBackToSearch={!!searchResults}
+              classes={classes}
+            />
           </Route>
 
-          <Route exact path='/location/:id/edit'> {/* editMarker */}
+          <Route exact path='/location/:id/edit'>
             <div className={classes.content}>
-              <LocationForm
-                selectedLocation={selectedLocation}
-                onSubmitLocation={fields => onSubmitLocation(fields, true)}
+              <LocationFormContainer
+                cachedLocation={cachedLocation}
+                setCachedLocation={setCachedLocation}
                 setActiveMarker={location => setActiveMarker(location)}
-                cancel={() => history.goBack()}
               />
             </div>
           </Route>
@@ -89,7 +95,7 @@ const LocationTab = ({
             <div className={classes.content}>
               <Typography variant='h4' gutterBottom>{<Text id='actions.editPhotos}</Typography>
               <PhotosForm
-                selectedLocation={selectedLocation}
+                locationData={cachedLocation}
                 onSubmitLocation={files => onImageUpload(files)}
                 cancel={() => setLocationTabContent('markerInfo')}
               />
@@ -145,4 +151,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default LocationTab
+export default withRouter(LocationTab)

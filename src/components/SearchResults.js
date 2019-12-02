@@ -15,7 +15,7 @@ import Text from './Text'
 const SearchResults = ({
   items,
   setActiveMarker,
-  setSelectedLocation,
+  setCachedLocation,
   history,
 }) => {
   const classes = useStyles()
@@ -30,7 +30,7 @@ const SearchResults = ({
                 const { _id, _source } = item
                 const { lon, lat } = _source.location
                 history.push(`/location/${_id}`)
-                setSelectedLocation({ id: _id, ..._source })
+                setCachedLocation({ id: _id, ..._source })
                 setActiveMarker([lon, lat])
               }}
             >

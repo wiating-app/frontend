@@ -4,13 +4,12 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import Layout from './components/Layout'
 import MapContainer from './containers/MapContainer'
-import LocationTabContainer from './containers/LocationTabContainer'
+import LocationTab from './components/LocationTab'
 import NavBarContainer from './containers/NavBarContainer'
 
 
 const App = ({ history }) => {
-  const [locationTabContent, setLocationTabContent] = React.useState()
-  const [selectedLocation, setSelectedLocation] = React.useState()
+  const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState()
 
   const mapRef = React.useRef()
@@ -22,11 +21,10 @@ const App = ({ history }) => {
       />
     }>
 
-      <LocationTabContainer
-        setLocationTabContent={content => setLocationTabContent(content)}
-        selectedLocation={selectedLocation}
+      <LocationTab
+        cachedLocation={cachedLocation}
+        setCachedLocation={setCachedLocation}
         closeLocationTab={() => {
-          // setLocationTabContent(false)
           mapRef.current.setActiveMarker(null)
           history.push('/')
         }}
@@ -35,27 +33,21 @@ const App = ({ history }) => {
           await mapRef.current.loadMapMarkers()
         }}
         setActiveMarker={coords => mapRef.current.setActiveMarker(coords)}
-        setSelectedLocation={location => {
-          history.push(`/location/${location.id}`)
-          setSelectedLocation(location)
-        }}
       />
 
       <MapContainer
         openLocationTab={point => {
           setSearchResults(null)
-          setLocationTabContent('markerInfo')
-          setSelectedLocation(point)
+          setCachedLocation(point)
           history.push(`/location/${point.id}`)
         }}
-        closeTab={() => setLocationTabContent(null)}
+        closeTab={() => history.push('/')}
         openAddMarkerTab={({ lat, lng: lon }) => {
-          setSelectedLocation({ location: { lat, lon } })
-          setLocationTabContent('addMarker')
+          setCachedLocation({ location: { lat, lon } })
           history.push('/location/new')
         }}
         onUpdateMarkerPosition={(lon, lat) => {
-          setSelectedLocation({ ...selectedLocation, location: { lon, lat } })
+          setCachedLocation({ ...cachedLocation, location: { lon, lat } })
         }}
         ref={mapRef}
       />

@@ -11,27 +11,46 @@ import LocationInfo from '../components/LocationInfo'
 import Loader from '../components/Loader'
 
 
-const SelectedLocationContainer = ({ match, history }) => {
+const SelectedLocationContainer = ({
+  cachedLocation,
+  setCachedLocation,
+  showBackToSearch,
+  match,
+  history,
+  classes,
+}) => {
   const { params: { id } } = match
   const { isLoggedIn } = useAuth0()
-  const [loading, setLoading] = React.useState(true)
   const [location, setLocation] = React.useState()
+  const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
 
+  // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
-    const handleAsync = async () => {
-      setLoading(true)
-      try {
-        const { data } = await api.post('get_point', { id })
-        console.log('data: ', data);
-        setLocation(data)
-      } catch (error) {
-        setError(true)
+    if (cachedLocation) {
+      setLocation(cachedLocation)
+    } else {
+      const handleAsync = async () => {
+        try {
+          const { data: { _id, _source } } = await api.post('get_point', { id })
+          const newData = { id: _id, ..._source }
+          setLocation(newData)
+          setCachedLocation(newData)
+        } catch (error) {
+          setError(true)
+        }
+        setLoading(false)
       }
-      setLoading(false)
+      handleAsync()
     }
-    handleAsync()
   }, [])
+
+  // Listen for updates of cached location eg. when navigating on a map.
+  React.useEffect(() => {
+    if (location && location.id !== cachedLocation.id) {
+      setLocation(cachedLocation)
+    }
+  }, [cachedLocation])
 
   const onImageUpload = async files => {
     try {
@@ -50,7 +69,9 @@ const SelectedLocationContainer = ({ match, history }) => {
           data.append('file', resizedFile)
           const { data: { _id, _source } } = await api.post(`add_image/${selectedLocation.id}`, data)
           console.log('response: ', _id, _source)
-          setSelectedLocation({ id: _id, ..._source })
+          const newData = { id: _id, ..._source }
+          setLocation(newData)
+          setCachedLocation(newData)
           history.push(`/location/${_id}`)
           enqueueSnackbar(<Text id='notifications.photoAdded' />, { variant: 'success' })
         },
@@ -71,7 +92,7 @@ const SelectedLocationContainer = ({ match, history }) => {
             images={location.images}
             id={id}
           />
-          {searchResults &&
+          {showBackToSearch &&
             <Button
               onClick={() => history.push('/search')}
               className={classes.backToSearch}
@@ -79,13 +100,11 @@ const SelectedLocationContainer = ({ match, history }) => {
               size='small'
             ><ViewList /> Powrót do wyników</Button>
           }
-          <div className={classes.content}>
-            <LocationInfo
-              selectedLocation={location}
-              loggedIn={isLoggedIn}
-              onImageUpload={files => onImageUpload(files)}
-            />
-          </div>
+          <LocationInfo
+            selectedLocation={location}
+            loggedIn={isLoggedIn}
+            onImageUpload={files => onImageUpload(files)}
+          />
         </>
   )
 }

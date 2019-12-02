@@ -131,9 +131,11 @@ const LocationInfo = ({
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    padding: theme.spacing(2),
+    boxShadow: theme.shadows[1],
+    flexGrow: 1,
   },
   main: {
     flexGrow: 1,

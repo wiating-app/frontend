@@ -13,9 +13,9 @@ import locationTypes from '../utils/locationTypes'
 
 
 const LocationForm = ({
-  selectedLocation,
+  locationData,
   onSubmitLocation,
-  setActiveMarker,
+  setCachedLocation,
   cancel,
   isNew,
 }) => {
@@ -48,8 +48,8 @@ const LocationForm = ({
         setHasWater(fields.water_exists)
         setHasFire(fields.fire_exists)
         const location = fields.location.split(', ')
-        if (selectedLocation.location.lat !== location[0] || selectedLocation.location.lon !== location[1]) {
-          setActiveMarker(location)
+        if (locationData.location.lat !== location[0] || locationData.location.lon !== location[1]) {
+          setCachedLocation(location)
         }
       }}
     >
@@ -58,14 +58,14 @@ const LocationForm = ({
         name='name'
         label={<Text id='markerForm.place' />}
         min={5}
-        initialValue={selectedLocation && selectedLocation.name}
+        initialValue={locationData && locationData.name}
       />
 
       <Input
         name='description'
         label={<Text id='markerForm.description' />}
         min={40}
-        initialValue={selectedLocation && selectedLocation.description}
+        initialValue={locationData && locationData.description}
         multiline
       />
 
@@ -75,21 +75,21 @@ const LocationForm = ({
         options={Object.entries(locationTypes).map(([value, label]) => {
           return { value, label: <Text id={label} /> }
         })}
-        initialValue={selectedLocation && selectedLocation.type}
+        initialValue={locationData && locationData.type}
       />
 
       <Input
         name='location'
         label={<Text id='markerForm.location' />}
         min={5}
-        initialValue={selectedLocation && `${selectedLocation.location.lat}, ${selectedLocation.location.lon}`}
+        initialValue={locationData && `${locationData.location.lat}, ${locationData.location.lon}`}
         help='Format: 00.0000, 00.0000'
       />
 
       <Checkbox
         name='water_exists'
         text={<Text id='locationInfo.waterAccess' />}
-        initialValue={selectedLocation && selectedLocation.water && selectedLocation.water.exists}
+        initialValue={locationData && locationData.water && locationData.water.exists}
       />
 
       {hasWater &&
@@ -97,7 +97,7 @@ const LocationForm = ({
           name='water_comment'
           label={<Text id='markerForm.waterDescription' />}
           min={40}
-          initialValue={selectedLocation && selectedLocation.water && selectedLocation.water.comment}
+          initialValue={locationData && locationData.water && locationData.water.comment}
           multiline
         />
       }
@@ -105,7 +105,7 @@ const LocationForm = ({
       <Checkbox
         name='fire_exists'
         text={<Text id='locationInfo.fireAccess' />}
-        initialValue={selectedLocation && selectedLocation.fire && selectedLocation.fire.exists}
+        initialValue={locationData && locationData.fire && locationData.fire.exists}
       />
 
       {hasFire &&
@@ -113,7 +113,7 @@ const LocationForm = ({
           name='fire_comment'
           label={<Text id='markerForm.fireDescription' />}
           min={40}
-          initialValue={selectedLocation && selectedLocation.fire && selectedLocation.fire.comment}
+          initialValue={locationData && locationData.fire && locationData.fire.comment}
           multiline
         />
       }
@@ -125,7 +125,7 @@ const LocationForm = ({
           color='primary'
           callback={async fields => {
             setLoading(true)
-            await onSubmitLocation(fields, !!selectedLocation.id)
+            await onSubmitLocation(fields, !!locationData.id)
             setLoading(false)
           }}
           loading={loading}

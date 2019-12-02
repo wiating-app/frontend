@@ -8,15 +8,15 @@ import {
 } from 'react-standalone-form-mui'
 import Text from './Text'
 
-const PhotosForm = ({ selectedLocation, onSubmitLocation, cancel }) => {
+const PhotosForm = ({ locationData, onSubmitLocation, cancel }) => {
   return (
     <Form fields={['files']} allRequired>
       <MultiImageUpload
         name='files'
         mdHeight='160px'
         spacing={1}
-        initialValue={selectedLocation && selectedLocation.images &&
-          selectedLocation.images.map(image => `${process.env.REACT_APP_CDN_URL}/${selectedLocation.id}/${image.name}`)
+        initialValue={locationData && locationData.images &&
+          locationData.images.map(image => `${process.env.REACT_APP_CDN_URL}/${locationData.id}/${image.name}`)
         }
       />
       <FormActions>
