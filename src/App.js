@@ -13,7 +13,7 @@ import SelectedLocationContainer from './containers/SelectedLocationContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
 
 
-const App = ({ history }) => {
+const App = ({ history, location }) => {
   const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState()
 

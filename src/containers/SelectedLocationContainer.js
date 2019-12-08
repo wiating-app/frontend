@@ -41,11 +41,9 @@ const SelectedLocationContainer = ({
     }
   }, [])
 
-  // Listen for updates of cached location eg. when navigating on a map.
+  // Update the component if cached location changes.
   React.useEffect(() => {
-    if (location && location.id !== cachedLocation.id) {
-      setLocation(cachedLocation)
-    }
+    setLocation(cachedLocation)
   }, [cachedLocation])
 
   const onImageUpload = async files => {
