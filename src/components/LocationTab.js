@@ -8,6 +8,7 @@ import {
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Close, ViewList } from '@material-ui/icons'
+import Text from './Text'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 
@@ -16,7 +17,6 @@ const LocationTab = ({
   backToSearch,
   children,
   location,
-  history,
 }) => {
   const classes = useStyles()
   const theme = useTheme()
@@ -47,7 +47,7 @@ const LocationTab = ({
             className={classes.backToSearch}
             variant='contained'
             size='small'
-          ><ViewList /> Powrót do wyników</Button>
+          ><ViewList /> <Text id='backToResults' /></Button>
         }
 
         {children}

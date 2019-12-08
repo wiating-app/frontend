@@ -8,6 +8,7 @@ export default {
     cancel: 'Anuluj',
     loading: 'Ładowanie',
     search: 'Szukaj',
+    backToResults: 'Powrót do wyników',
     locationInfo: {
       fireAccess: 'Dostęp do ognia',
       waterAccess: 'Dostęp do wody',
@@ -63,6 +64,7 @@ export default {
     cancel: 'Cancel',
     loading: 'Loading',
     search: 'Search',
+    backToResults: 'Back to results',
     locationInfo: {
       fireAccess: 'Access to fire',
       waterAccess: 'Access to water',
