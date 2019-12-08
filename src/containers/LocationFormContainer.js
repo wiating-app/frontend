@@ -26,18 +26,22 @@ const LocationFormContainer = ({
       setLocation(cachedLocation)
       setLoading(false)
     } else {
-      const handleAsync = async () => {
-        try {
-          const { data: { _id, _source } } = await api.post('get_point', { id })
-          const newData = { id: _id, ..._source }
-          setLocation(newData)
-          setCachedLocation(newData)
-        } catch (error) {
-          setError(true)
+      if (id) {
+        const handleAsync = async () => {
+          try {
+            const { data: { _id, _source } } = await api.post('get_point', { id })
+            const newData = { id: _id, ..._source }
+            setLocation(newData)
+            setCachedLocation(newData)
+          } catch (error) {
+            setError(true)
+          }
+          setLoading(false)
         }
+        handleAsync()
+      } else {
         setLoading(false)
       }
-      handleAsync()
     }
   }, [])
 
