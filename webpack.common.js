@@ -61,7 +61,7 @@ module.exports = {
 
     new CopyWebpackPlugin([
       {
-        from: '**/*.*',
+        from: '**/*',
         to: './',
         context: './public/',
         ignore: ['index.html'],
