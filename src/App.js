@@ -1,11 +1,16 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import Layout from './components/Layout'
-import MapContainer from './containers/MapContainer'
+import ContentWrapper from './components/ContentWrapper'
 import LocationTab from './components/LocationTab'
+import SearchResults from './components/SearchResults'
+// import PhotosForm from './components/PhotosForm'
 import NavBarContainer from './containers/NavBarContainer'
+import MapContainer from './containers/MapContainer'
+import SelectedLocationContainer from './containers/SelectedLocationContainer'
+import LocationFormContainer from './containers/LocationFormContainer'
 
 
 const App = ({ history }) => {
@@ -16,24 +21,78 @@ const App = ({ history }) => {
 
   return (
     <Layout appBar={
-      <NavBarContainer
-        setSearchResults={results => setSearchResults(results)}
-      />
+      <NavBarContainer setSearchResults={results => {
+        setSearchResults(results)
+        setCachedLocation(null)
+      }} />
     }>
 
       <LocationTab
-        cachedLocation={cachedLocation}
-        setCachedLocation={setCachedLocation}
         closeLocationTab={() => {
           mapRef.current.setActiveMarker(null)
           history.push('/')
         }}
-        searchResults={searchResults}
         refreshMap={async () => {
           await mapRef.current.loadMapMarkers()
         }}
-        setActiveMarker={coords => mapRef.current.setActiveMarker(coords)}
-      />
+        backToSearch={!!searchResults && !!cachedLocation ? () => {
+          history.push('/search')
+          setCachedLocation(null)
+        } : null}
+      >
+        <Switch>
+          <Route exact path='/search'>
+            <SearchResults
+              items={searchResults}
+              setActiveMarker={location => mapRef.current.setActiveMarker(location)}
+              setCachedLocation={location => {
+                setCachedLocation(location)
+                history.push(`/location/${location.id}`)
+              }}
+              history={history}
+            />
+          </Route>
+
+          <Route exact path='/location/new'>
+            <ContentWrapper>
+              <LocationFormContainer
+                cachedLocation={cachedLocation}
+                setCachedLocation={setCachedLocation}
+                setActiveMarker={location => mapRef.current.setActiveMarker(location)}
+                isNew
+              />
+            </ContentWrapper>
+          </Route>
+
+          <Route exact path='/location/:id'>
+            <SelectedLocationContainer
+              cachedLocation={cachedLocation}
+              setCachedLocation={setCachedLocation}
+            />
+          </Route>
+
+          <Route exact path='/location/:id/edit'>
+            <ContentWrapper>
+              <LocationFormContainer
+                cachedLocation={cachedLocation}
+                setCachedLocation={setCachedLocation}
+                setActiveMarker={location => mapRef.current.setActiveMarker(location)}
+              />
+            </ContentWrapper>
+          </Route>
+
+          {/* <Route exact path='/location/:id/photos'>
+            <ContentWrapper>
+              <Typography variant='h4' gutterBottom>{<Text id='actions.editPhotos}</Typography>
+              <PhotosForm
+                locationData={cachedLocation}
+                onSubmitLocation={files => onImageUpload(files)}
+                cancel={() => setLocationTabContent('markerInfo')}
+              />
+            </ContentWrapper>
+          </Route> */}
+        </Switch>
+      </LocationTab>
 
       <MapContainer
         openLocationTab={point => {

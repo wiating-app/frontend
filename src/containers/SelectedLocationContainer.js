@@ -1,7 +1,5 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { Button } from '@material-ui/core'
-import { ViewList } from '@material-ui/icons'
 import Resizer from 'react-image-file-resizer'
 import dataUriToBuffer from 'data-uri-to-buffer'
 import api from '../api'
@@ -14,10 +12,8 @@ import Loader from '../components/Loader'
 const SelectedLocationContainer = ({
   cachedLocation,
   setCachedLocation,
-  showBackToSearch,
   match,
   history,
-  classes,
 }) => {
   const { params: { id } } = match
   const { isLoggedIn } = useAuth0()
@@ -92,14 +88,6 @@ const SelectedLocationContainer = ({
             images={location.images}
             id={id}
           />
-          {showBackToSearch &&
-            <Button
-              onClick={() => history.push('/search')}
-              className={classes.backToSearch}
-              variant='contained'
-              size='small'
-            ><ViewList /> Powrót do wyników</Button>
-          }
           <LocationInfo
             selectedLocation={location}
             loggedIn={isLoggedIn}

@@ -1,25 +1,20 @@
 import React from 'react'
-import { Switch, Route, Link, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import {
   Drawer,
+  Button,
   IconButton,
 } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { Close } from '@material-ui/icons'
+import { Close, ViewList } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-// import PhotosForm from './PhotosForm'
-import SearchResults from './SearchResults'
-import SelectedLocationContainer from '../containers/SelectedLocationContainer'
-import LocationFormContainer from '../containers/LocationFormContainer'
 
 
 const LocationTab = ({
-  cachedLocation,
   closeLocationTab,
-  searchResults,
-  setActiveMarker,
-  setCachedLocation,
+  backToSearch,
+  children,
   location,
   history,
 }) => {
@@ -33,9 +28,7 @@ const LocationTab = ({
       variant='persistent'
       anchor={matches ? 'left' : 'bottom'}
       className={classes.drawer}
-      classes={{
-        paper: classes.drawerPaper,
-      }}
+      classes={{ paper: classes.drawerPaper }}
       onClose={() => closeLocationTab()}
     >
       <div className={classes.toolbar} />
@@ -48,60 +41,16 @@ const LocationTab = ({
           to='/'
         ><Close /></IconButton>
 
-        <Switch>
-          <Route exact path='/search'>
-            <SearchResults
-              items={searchResults}
-              setActiveMarker={setActiveMarker}
-              setCachedLocation={location => {
-                setCachedLocation(location)
-                history.push(`/location/${location.id}`)
-              }}
-              history={history}
-            />
-          </Route>
+        {backToSearch &&
+          <Button
+            onClick={() => backToSearch()}
+            className={classes.backToSearch}
+            variant='contained'
+            size='small'
+          ><ViewList /> Powrót do wyników</Button>
+        }
 
-          <Route exact path='/location/new'>
-            <div className={classes.content}>
-              <LocationFormContainer
-                cachedLocation={cachedLocation}
-                setCachedLocation={setCachedLocation}
-                setActiveMarker={location => setActiveMarker(location)}
-                isNew
-              />
-            </div>
-          </Route>
-
-          <Route exact path='/location/:id'>
-            <SelectedLocationContainer
-              cachedLocation={cachedLocation}
-              setCachedLocation={setCachedLocation}
-              showBackToSearch={!!searchResults}
-              classes={classes}
-            />
-          </Route>
-
-          <Route exact path='/location/:id/edit'>
-            <div className={classes.content}>
-              <LocationFormContainer
-                cachedLocation={cachedLocation}
-                setCachedLocation={setCachedLocation}
-                setActiveMarker={location => setActiveMarker(location)}
-              />
-            </div>
-          </Route>
-
-          {/* {content === 'editPhotos' &&
-            <div className={classes.content}>
-              <Typography variant='h4' gutterBottom>{<Text id='actions.editPhotos}</Typography>
-              <PhotosForm
-                locationData={cachedLocation}
-                onSubmitLocation={files => onImageUpload(files)}
-                cancel={() => setLocationTabContent('markerInfo')}
-              />
-            </div>
-          } */}
-        </Switch>
+        {children}
       </PerfectScrollbar>
     </Drawer>
   )
@@ -126,12 +75,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-  },
-  content: {
-    padding: theme.spacing(2),
-    boxShadow: theme.shadows[1],
-    position: 'relative',
-    flexGrow: 1,
   },
   close: {
     position: 'absolute',
