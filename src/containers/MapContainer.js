@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSnackbar } from 'notistack'
 import api from '../api'
 import { useAuth0 } from '../auth0'
 import Map from '../components/Map'
@@ -6,6 +7,7 @@ import Map from '../components/Map'
 const MapContainer = React.forwardRef((props, ref) => {
   const [points, setPoints] = React.useState()
   const [initalPosition, setInitalPosition] = React.useState()
+  const { enqueueSnackbar } = useSnackbar()
 
   const mapRef = React.useRef()
   const {
@@ -16,17 +18,21 @@ const MapContainer = React.forwardRef((props, ref) => {
 
   const loadMapMarkers = async bounds => {
     const { _northEast, _southWest } = bounds
-    const { data: { points } } = await api.post('get_points', {
-      top_right: {
-        lat: _northEast.lat,
-        lon: _northEast.lng,
-      },
-      bottom_left: {
-        lat: _southWest.lat,
-        lon: _southWest.lng,
-      },
-    })
-    setPoints(points)
+    try {
+      const { data: { points } } = await api.post('get_points', {
+        top_right: {
+          lat: _northEast.lat,
+          lon: _northEast.lng,
+        },
+        bottom_left: {
+          lat: _southWest.lat,
+          lon: _southWest.lng,
+        },
+      })
+      setPoints(points)
+    } catch (error) {
+      enqueueSnackbar(<Text id='connectionProblem' />, { variant: 'error' })
+    }
   }
 
   React.useImperativeHandle(ref, () => ({

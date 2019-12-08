@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactLoading from 'react-loading'
 
-const Loader = () =>
+const Loader = ({ dark, big }) =>
   <ReactLoading
     type='spinningBubbles'
-    width={18}
-    height={18}
-    color='white'
+    width={big ? 80 : 18}
+    height={big ? 80 : 18}
+    color={dark ? 'inherit' : 'white'}
   />
 
 export default Loader

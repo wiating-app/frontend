@@ -9,6 +9,7 @@ export default {
     loading: 'Ładowanie',
     search: 'Szukaj',
     backToResults: 'Powrót do wyników',
+    connectionProblem: 'Nie można pobrać markerów. Problem z połączeniem.',
     locationInfo: {
       fireAccess: 'Dostęp do ognia',
       waterAccess: 'Dostęp do wody',
@@ -65,6 +66,7 @@ export default {
     loading: 'Loading',
     search: 'Search',
     backToResults: 'Back to results',
+    connectionProblem: 'Connection problem.',
     locationInfo: {
       fireAccess: 'Access to fire',
       waterAccess: 'Access to water',

@@ -25,6 +25,7 @@ const SelectedLocationContainer = ({
   React.useEffect(() => {
     if (cachedLocation) {
       setLocation(cachedLocation)
+      setLoading(false)
     } else {
       const handleAsync = async () => {
         try {
@@ -39,7 +40,7 @@ const SelectedLocationContainer = ({
       }
       handleAsync()
     }
-  }, [])
+  }, [cachedLocation])
 
   // Update the component if cached location changes.
   React.useEffect(() => {
@@ -78,7 +79,7 @@ const SelectedLocationContainer = ({
 
   return (
     loading
-      ? <Loader />
+      ? <Loader dark big />
       : error
         ? <div>Error!</div>
         : <>
