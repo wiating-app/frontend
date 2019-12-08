@@ -3,6 +3,8 @@ import { useSnackbar } from 'notistack'
 import api from '../api'
 import { useAuth0 } from '../auth0'
 import Map from '../components/Map'
+import Text from '../components/Text'
+
 
 const MapContainer = React.forwardRef((props, ref) => {
   const [points, setPoints] = React.useState()
@@ -31,7 +33,7 @@ const MapContainer = React.forwardRef((props, ref) => {
       })
       setPoints(points)
     } catch (error) {
-      enqueueSnackbar(<Text id='connectionProblem' />, { variant: 'error' })
+      enqueueSnackbar(<Text id='connectionProblem.map' />, { variant: 'error' })
     }
   }
 

@@ -9,7 +9,6 @@ export default {
     loading: 'Ładowanie',
     search: 'Szukaj',
     backToResults: 'Powrót do wyników',
-    connectionProblem: 'Nie można pobrać markerów. Problem z połączeniem.',
     locationInfo: {
       fireAccess: 'Dostęp do ognia',
       waterAccess: 'Dostęp do wody',
@@ -26,6 +25,10 @@ export default {
       tower: 'Wieża widokowa',
     },
     noResults: 'Nic nie znaleziono',
+    connectionProblem: {
+      map: 'Nie można pobrać markerów. Problem z połączeniem.',
+      location: 'Nie udało się pobrać danych lokalizacji. Problem z połączeniem.',
+    },
     markerForm: {
       heading: {
         addMarker: 'Dodaj nowe miejsce',
@@ -66,7 +69,6 @@ export default {
     loading: 'Loading',
     search: 'Search',
     backToResults: 'Back to results',
-    connectionProblem: 'Connection problem.',
     locationInfo: {
       fireAccess: 'Access to fire',
       waterAccess: 'Access to water',
@@ -83,6 +85,10 @@ export default {
       tower: 'Observation Tower',
     },
     noResults: 'No results',
+    connectionProblem: {
+      map: 'Could not load markers. Connection problem.',
+      location: 'Could not load location details. Connection problem.',
+    },
     markerForm: {
       heading: {
         addMarker: 'Add new place',

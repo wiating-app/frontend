@@ -2,11 +2,13 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Resizer from 'react-image-file-resizer'
 import dataUriToBuffer from 'data-uri-to-buffer'
+import { useSnackbar } from 'notistack'
 import api from '../api'
 import { useAuth0 } from '../auth0'
 import LocationImages from '../components/LocationImages'
 import LocationInfo from '../components/LocationInfo'
 import Loader from '../components/Loader'
+import Text from '../components/Text'
 
 
 const SelectedLocationContainer = ({
@@ -17,6 +19,7 @@ const SelectedLocationContainer = ({
 }) => {
   const { params: { id } } = match
   const { isLoggedIn } = useAuth0()
+  const { enqueueSnackbar } = useSnackbar()
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
@@ -35,6 +38,7 @@ const SelectedLocationContainer = ({
           setCachedLocation(newData)
         } catch (error) {
           setError(true)
+          enqueueSnackbar(<Text id='connectionProblem.location' />, { variant: 'error' })
         }
         setLoading(false)
       }
