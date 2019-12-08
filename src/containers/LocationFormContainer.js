@@ -24,6 +24,7 @@ const LocationFormContainer = ({
   React.useEffect(() => {
     if (cachedLocation) {
       setLocation(cachedLocation)
+      setLoading(false)
     } else {
       const handleAsync = async () => {
         try {
@@ -93,7 +94,7 @@ const LocationFormContainer = ({
   }
   return (
     loading
-      ? <Loader />
+      ? <Loader dark big />
       : error
         ? <div>Error!</div>
         : <LocationForm
