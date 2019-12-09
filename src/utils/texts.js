@@ -65,6 +65,7 @@ export default {
     no: 'No',
     is: 'Is available',
     none: 'None',
+    save: 'Save',
     cancel: 'Cancel',
     loading: 'Loading',
     search: 'Search',
