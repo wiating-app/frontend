@@ -19,6 +19,15 @@ const App = ({ history, location }) => {
 
   const mapRef = React.useRef()
 
+  React.useEffect(() => {
+    if (cachedLocation) {
+      const { lat, lon } = cachedLocation.location
+      mapRef.current.setActiveMarker([lat, lon])
+    } else {
+      mapRef.current.setActiveMarker(null)
+    }
+  }, [cachedLocation])
+
   return (
     <Layout appBar={
       <NavBarContainer setSearchResults={results => {
@@ -29,7 +38,7 @@ const App = ({ history, location }) => {
 
       <LocationTab
         closeLocationTab={() => {
-          mapRef.current.setActiveMarker(null)
+          setCachedLocation(null)
           history.push('/')
         }}
         refreshMap={async () => {
@@ -44,7 +53,6 @@ const App = ({ history, location }) => {
           <Route exact path='/search'>
             <SearchResults
               items={searchResults}
-              setActiveMarker={location => mapRef.current.setActiveMarker(location)}
               setCachedLocation={location => {
                 setCachedLocation(location)
                 history.push(`/location/${location.id}`)
@@ -58,7 +66,6 @@ const App = ({ history, location }) => {
               <LocationFormContainer
                 cachedLocation={cachedLocation}
                 setCachedLocation={setCachedLocation}
-                setActiveMarker={location => mapRef.current.setActiveMarker(location)}
                 isNew
               />
             </ContentWrapper>

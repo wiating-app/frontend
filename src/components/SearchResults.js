@@ -14,9 +14,7 @@ import Text from './Text'
 
 const SearchResults = ({
   items,
-  setActiveMarker,
   setCachedLocation,
-  history,
 }) => {
   const classes = useStyles()
   return (
@@ -28,10 +26,7 @@ const SearchResults = ({
               className={classes.item}
               onClick={() => {
                 const { _id, _source } = item
-                const { lon, lat } = _source.location
-                history.push(`/location/${_id}`)
                 setCachedLocation({ id: _id, ..._source })
-                setActiveMarker([lon, lat])
               }}
             >
               <ListItemAvatar>

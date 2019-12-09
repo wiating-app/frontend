@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import {
   Drawer,
   Button,
@@ -29,7 +29,6 @@ const LocationTab = ({
       anchor={matches ? 'left' : 'bottom'}
       className={classes.drawer}
       classes={{ paper: classes.drawerPaper }}
-      onClose={() => closeLocationTab()}
     >
       <div className={classes.toolbar} />
       <PerfectScrollbar className={classes.inner}>
@@ -37,8 +36,7 @@ const LocationTab = ({
           size='small'
           className={classes.close}
           aria-label='close'
-          component={Link}
-          to='/'
+          onClick={() => closeLocationTab()}
         ><Close /></IconButton>
 
         {backToSearch &&

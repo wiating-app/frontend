@@ -104,7 +104,6 @@ const LocationFormContainer = ({
         : <LocationForm
           locationData={location}
           onSubmitLocation={fields => onSubmitLocation(fields, true)}
-          setActiveMarker={location => setActiveMarker(location)}
           cancel={() => history.goBack()}
           isNew={isNew}
         />

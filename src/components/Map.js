@@ -19,6 +19,12 @@ const Map = React.forwardRef((props, ref) => {
   const mapRef = React.useRef()
   const classes = useStyles()
 
+  React.useEffect(() => {
+    if (activeMarker) {
+      mapRef.current.leafletElement.panTo(activeMarker)
+    }
+  }, [activeMarker])
+
   // Handle refs.
   React.useImperativeHandle(ref, () => ({
     setActiveMarker(coords) {
@@ -73,7 +79,6 @@ const Map = React.forwardRef((props, ref) => {
             const point = { id, ..._source }
             props.openLocationTab(point)
             setActiveMarker([lat, lon])
-            mapRef.current.leafletElement.setView([lat, lon])
             setContextMenu(null)
           }}
         />
