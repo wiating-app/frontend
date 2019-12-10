@@ -39,20 +39,14 @@ const LocationInfo = ({
         <Typography
           variant='body1'
           gutterBottom
-        >{selectedLocation.description}</Typography>
+        ><strong><Text id='locationInfo.description' />:</strong> {selectedLocation.description}</Typography>
 
         {selectedLocation.directions &&
-          <div>
-            <Typography
-              variant='subtitle2'
-              component='span'
-            ><Text id='locationInfo.directions' />: </Typography>
-            <Typography
-              variant='body2'
-              component='span'
-              gutterBottom
-            >{selectedLocation.directions}</Typography>
-          </div>
+          <Typography
+            variant='body1'
+            component='span'
+            gutterBottom
+          ><strong><Text id='locationInfo.directions' />:</strong> {selectedLocation.directions}</Typography>
         }
 
         <div>
