@@ -10,6 +10,7 @@ import Loader from '../components/Loader'
 const LocationFormContainer = ({
   cachedLocation,
   setCachedLocation,
+  refreshMap,
   isNew,
   history,
   match,

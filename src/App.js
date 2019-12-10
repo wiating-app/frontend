@@ -67,6 +67,9 @@ const App = ({ history, location }) => {
                 cachedLocation={cachedLocation}
                 setCachedLocation={setCachedLocation}
                 isNew
+                refreshMap={async () => {
+                  await mapRef.current.loadMapMarkers()
+                }}
               />
             </ContentWrapper>
           </Route>
