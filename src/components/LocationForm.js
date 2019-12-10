@@ -31,6 +31,7 @@ const LocationForm = ({
       fields={[
         'name',
         'description',
+        'directions',
         'type',
         'location',
         'water_exists',
@@ -41,6 +42,7 @@ const LocationForm = ({
       required={[
         'name',
         'description',
+        'directions',
         'type',
         'location',
       ]}
@@ -66,6 +68,14 @@ const LocationForm = ({
         label={<Text id='markerForm.description' />}
         min={40}
         initialValue={locationData && locationData.description}
+        multiline
+      />
+
+      <Input
+        name='directions'
+        label={<Text id='locationInfo.directions' />}
+        min={20}
+        initialValue={locationData && locationData.directions}
         multiline
       />
 

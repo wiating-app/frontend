@@ -41,6 +41,20 @@ const LocationInfo = ({
           gutterBottom
         >{selectedLocation.description}</Typography>
 
+        {selectedLocation.directions &&
+          <div>
+            <Typography
+              variant='subtitle2'
+              component='span'
+            ><Text id='locationInfo.directions' />: </Typography>
+            <Typography
+              variant='body2'
+              component='span'
+              gutterBottom
+            >{selectedLocation.directions}</Typography>
+          </div>
+        }
+
         <div>
           <Typography
             variant='subtitle2'

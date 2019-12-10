@@ -10,6 +10,7 @@ export default {
     search: 'Szukaj',
     backToResults: 'Powrót do wyników',
     locationInfo: {
+      directions: 'Wskazówki dojścia',
       fireAccess: 'Dostęp do ognia',
       waterAccess: 'Dostęp do wody',
       lastUpdate: 'Ostatnia aktualizacja',
@@ -71,6 +72,7 @@ export default {
     search: 'Search',
     backToResults: 'Back to results',
     locationInfo: {
+      directions: 'How to reach the place',
       fireAccess: 'Access to fire',
       waterAccess: 'Access to water',
       lastUpdate: 'Last update',

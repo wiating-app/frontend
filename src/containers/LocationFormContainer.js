@@ -50,6 +50,7 @@ const LocationFormContainer = ({
     const {
       name,
       description,
+      directions,
       type,
       water_exists,
       water_comment,
@@ -61,6 +62,7 @@ const LocationFormContainer = ({
     const data = {
       name,
       description,
+      directions,
       lat: parseFloat(lat),
       lon: parseFloat(lon),
       type,
