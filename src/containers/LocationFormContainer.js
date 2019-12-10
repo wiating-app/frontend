@@ -47,6 +47,7 @@ const LocationFormContainer = ({
   }, [])
 
   const onSubmitLocation = async (fields, editExisting) => {
+    console.log('fields: ', fields);
     /* eslint-disable camelcase */
     const {
       name,
