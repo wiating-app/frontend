@@ -5,6 +5,6 @@ export default {
   WATER_SOURCE: 'locationType.waterSource',
   CAVE: 'locationType.cave',
   PASTURE: 'locationType.pasture',
-  PULPIT: 'locationType.pulpit',
+  RAISED_HIDE: 'locationType.raisedHide',
   TOWER: 'locationType.tower',
 }
