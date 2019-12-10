@@ -7,10 +7,11 @@ import {
   ZoomControl,
   ScaleControl,
 } from 'react-leaflet'
+import { makeStyles } from '@material-ui/core/styles'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import ContextMenu from './ContextMenu'
-import { makeStyles } from '@material-ui/core/styles'
+import locationTypes from '../utils/locationTypes'
 
 
 const Map = React.forwardRef((props, ref) => {
@@ -65,11 +66,16 @@ const Map = React.forwardRef((props, ref) => {
         attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
       />
       {props.points && props.points.map(item => {
-        const { lat, lon } = item._source.location
+        const { location: { lat, lon }, type } = item._source
+        // Fallback to HUT icon, if invalid icon type is set.
+        const iconName = Object.keys(locationTypes).includes(type)
+          ? type
+          : 'HUT'
+
         return <Marker
           key={item._id}
           icon={new Icon({
-            iconUrl: '/pin2.svg',
+            iconUrl: `/location-icons/${iconName.toLowerCase()}.svg`,
             iconSize: [30, 30],
             iconAnchor: [15, 30],
           })}
@@ -86,9 +92,9 @@ const Map = React.forwardRef((props, ref) => {
       {activeMarker &&
         <Marker
           icon={new Icon({
-            iconUrl: '/pin2.svg',
-            iconSize: [50, 50],
-            iconAnchor: [25, 50],
+            iconUrl: '/location-icons/point.svg',
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
           })}
           position={activeMarker}
         />
