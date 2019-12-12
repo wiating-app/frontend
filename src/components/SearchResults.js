@@ -11,6 +11,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Home } from '@material-ui/icons'
 import Text from './Text'
+import { getIconUrl } from '../utils/helpers'
 
 const SearchResults = ({
   items,
@@ -30,7 +31,7 @@ const SearchResults = ({
               }}
             >
               <ListItemAvatar>
-                <Avatar src="/location-icons/" + {item._source.type.toLowerCase()} + ".svg"></Avatar>
+                <img src={getIconUrl(item._source.type)} className={classes.listAvatar}/>
               </ListItemAvatar>
               <ListItemText primary={item._source.name} secondary={item._source.description} />
             </ListItem>
@@ -49,6 +50,10 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.grey[100],
     },
+  },
+  listAvatar: {
+    width: 45,
+    height: 45,
   },
 }))
 
