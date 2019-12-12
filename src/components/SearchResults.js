@@ -30,7 +30,7 @@ const SearchResults = ({
               }}
             >
               <ListItemAvatar>
-                <Avatar src="/location-icons/${item._source.type.toLowerCase()}.svg"></Avatar>
+                <Avatar src="/location-icons/" + {item._source.type.toLowerCase()} + ".svg"></Avatar>
               </ListItemAvatar>
               <ListItemText primary={item._source.name} secondary={item._source.description} />
             </ListItem>
