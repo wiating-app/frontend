@@ -14,8 +14,8 @@ export const formatDate = timestamp => {
 export function getIconUrl(type) {
   // Fallback to HUT icon, if invalid icon type is set.
   const iconName = Object.keys(locationTypes).includes(type)
-  ? type
-  : 'HUT'
+    ? type
+    : 'HUT'
 
-  return "/location-icons/" + iconName.toLowerCase() + ".svg";;
+  return '/location-icons/' + iconName.toLowerCase() + '.svg'
 }

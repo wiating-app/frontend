@@ -5,11 +5,9 @@ import {
   ListItemText,
   ListItemAvatar,
   Divider,
-  Avatar,
   Typography,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Home } from '@material-ui/icons'
 import Text from './Text'
 import { getIconUrl } from '../utils/helpers'
 
@@ -31,7 +29,7 @@ const SearchResults = ({
               }}
             >
               <ListItemAvatar>
-                <img src={getIconUrl(item._source.type)} className={classes.listAvatar}/>
+                <img src={getIconUrl(item._source.type)} className={classes.listAvatar} />
               </ListItemAvatar>
               <ListItemText primary={item._source.name} secondary={item._source.description} />
             </ListItem>
