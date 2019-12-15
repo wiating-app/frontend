@@ -15,7 +15,7 @@ import locationTypes from '../utils/locationTypes'
 const LocationForm = ({
   locationData,
   onSubmitLocation,
-  setCachedLocation,
+  updateCurrentMarker,
   cancel,
   isNew,
 }) => {
@@ -49,10 +49,7 @@ const LocationForm = ({
       callbackOnChange={fields => {
         setHasWater(fields.water_exists)
         setHasFire(fields.fire_exists)
-        const location = fields.location.split(', ')
-        if (locationData.location.lat !== location[0] || locationData.location.lon !== location[1]) {
-          setCachedLocation(location)
-        }
+        updateCurrentMarker(fields.location)
       }}
     >
 
@@ -135,7 +132,7 @@ const LocationForm = ({
           color='primary'
           callback={async fields => {
             setLoading(true)
-            await onSubmitLocation(fields, !!locationData.id)
+            await onSubmitLocation(fields)
             setLoading(false)
           }}
           loading={loading}

@@ -21,6 +21,7 @@ const App = ({ history, location }) => {
 
   React.useEffect(() => {
     if (cachedLocation) {
+      console.log('cachedLocation changed: ', cachedLocation);
       const { lat, lon } = cachedLocation.location
       mapRef.current.setActiveMarker([lat, lon])
     } else {

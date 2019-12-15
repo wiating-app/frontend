@@ -46,7 +46,7 @@ const LocationFormContainer = ({
     }
   }, [])
 
-  const onSubmitLocation = async (fields, editExisting) => {
+  const onSubmitLocation = async fields => {
     console.log('fields: ', fields);
     /* eslint-disable camelcase */
     const {
@@ -76,7 +76,15 @@ const LocationFormContainer = ({
     console.log('data: ', data)
 
     try {
-      if (editExisting) {
+      if (isNew) {
+        const { data: { _id, _source } } = await api.post('add_point', data)
+        console.log('response: ', _id, _source)
+        const newData = { id: _id, ..._source }
+        setLocation(newData)
+        setCachedLocation(newData)
+        history.push(`/location/${_id}`)
+        enqueueSnackbar(<Text id='notifications.newMarkerAdded' />, { variant: 'success' })
+      } else {
         const { id } = cachedLocation
         const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
         console.log('response: ', _id, _source)
@@ -85,14 +93,6 @@ const LocationFormContainer = ({
         setCachedLocation(newData)
         history.push(`/location/${_id}`)
         enqueueSnackbar(<Text id='notifications.markerUpdated' />, { variant: 'success' })
-      } else {
-        const { data: { _id, _source } } = await api.post('add_point', data)
-        console.log('response: ', _id, _source)
-        const newData = { id: _id, ..._source }
-        setLocation(newData)
-        setCachedLocation(newData)
-        history.push(`/location/${_id}`)
-        enqueueSnackbar(<Text id='notifications.newMarkerAdded' />, { variant: 'success' })
       }
       refreshMap()
     } catch (error) {
@@ -107,7 +107,13 @@ const LocationFormContainer = ({
         ? <div>Error!</div>
         : <LocationForm
           locationData={location}
-          onSubmitLocation={fields => onSubmitLocation(fields, true)}
+          onSubmitLocation={onSubmitLocation}
+          updateCurrentMarker={coords => {
+            const [lat, lon] = coords.split(', ')
+            if (location.location.lat !== lat || location.location.lon !== lon) {
+              setCachedLocation({ ...location, location: { lat, lon } })
+            }
+          }}
           cancel={() => history.goBack()}
           isNew={isNew}
         />
