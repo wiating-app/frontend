@@ -96,6 +96,7 @@ const Map = React.forwardRef((props, ref) => {
             iconSize: [40, 40],
             iconAnchor: [20, 40],
           })}
+          zIndexOffset={1000}
           position={activeMarker}
         />
       }
