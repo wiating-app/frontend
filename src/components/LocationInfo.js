@@ -73,7 +73,7 @@ const LocationInfo = ({
           <Typography
             variant='subtitle2'
             component='span'
-          ><Text id='locationInfo.waterAccess' />: </Typography>
+          ><Text id='locationInfo.fireAccess' />: </Typography>
 
           {selectedLocation.fire &&
             <Typography
