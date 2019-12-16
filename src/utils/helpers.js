@@ -19,3 +19,65 @@ export function getIconUrl(type) {
 
   return '/location-icons/' + iconName.toLowerCase() + '.svg'
 }
+
+export function parseCoordinates(input) {
+  var [lat, lon] = input.split(/[\,\s]+/);
+
+  lat = (isFinite(+lat)) ? Number(lat) : lat;
+  lon = (isFinite(+lon)) ? Number(lon) : lon;
+
+  if (typeof(lat) === typeof(lon)) {
+    switch (typeof(lat)) {
+      case 'string':
+        lat = ConvertLatDMSToDD(lat);
+        lon = ConvertLonDMSToDD(lon);
+        // Don't break
+      case 'number':
+        latitudeScope(lat);
+        longitudeScope(lon);
+        return [lat, lon];
+      default:
+        throw "Wrong value"
+    }
+  }
+}
+
+
+function latitudeScope(latitude) {
+  if (-90.0 <= latitude && latitude <= 90.0) {
+    return true
+  }
+  throw "Latitude out of scope"
+}
+
+function longitudeScope(longitude) {
+  if (-180.0 <= longitude && longitude <= 180.0) {
+    return true
+  }
+  throw "Longitude out of scope"
+}
+
+function ConvertLatDMSToDD(lat) {
+  return ConvertDMSToDD(lat, "lat");
+}
+
+function ConvertLonDMSToDD(lon) {
+  return ConvertDMSToDD(lon, "lon");
+}
+
+function ConvertDMSToDD(coordinate, type) {
+    var parts = coordinate.split(/[^\d\w\.]+/);
+    try {
+      var dd = Number(parts[0]) + Number(parts[1])/60 + Number(parts[2])/(60*60);
+      if (type === "lat" && parts[3] == "S" ||
+       type === "lon" && parts[3] == "W") {
+          dd = dd * -1;
+      } else if (type === "lat" && parts[3] != "N" ||
+       type === "lon" && parts[3] != "E") {
+         throw -1
+      }
+    } catch(err) {
+      throw "Wrong coordinate format"
+    }
+    return dd;
+}

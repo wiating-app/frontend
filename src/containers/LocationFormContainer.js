@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import LocationForm from '../components/LocationForm'
 import Text from '../components/Text'
 import Loader from '../components/Loader'
+import { parseCoordinates } from '../utils/helpers'
 
 
 const LocationFormContainer = ({
@@ -109,7 +110,7 @@ const LocationFormContainer = ({
           locationData={location}
           onSubmitLocation={onSubmitLocation}
           updateCurrentMarker={coords => {
-            const [lat, lon] = coords.split(', ')
+            const [lat, lon] = parseCoordinates(coords)
             if (location.location.lat !== lat || location.location.lon !== lon) {
               setCachedLocation({ ...location, location: { lat, lon } })
             }
