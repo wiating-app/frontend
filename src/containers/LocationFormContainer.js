@@ -60,24 +60,23 @@ const LocationFormContainer = ({
       fire_exists,
       fire_comment,
     } = fields
-    const [lat, lon] = fields.location.split(', ')
-
-    const data = {
-      name,
-      description,
-      directions,
-      lat: parseFloat(lat),
-      lon: parseFloat(lon),
-      type,
-      water_exists: water_exists || false,
-      water_comment: water_exists ? water_comment : false,
-      fire_exists: fire_exists || false,
-      fire_comment: fire_exists ? fire_comment : false,
-    }
-    console.log('data: ', data)
 
     try {
-      parseCoordinates(`${data['lat']}, ${data['lon']}`)
+      const [lat, lon] = parseCoordinates(fields.location)
+
+      const data = {
+        name,
+        description,
+        directions,
+        lat: lat,
+        lon: lon,
+        type,
+        water_exists: water_exists || false,
+        water_comment: water_exists ? water_comment : false,
+        fire_exists: fire_exists || false,
+        fire_comment: fire_exists ? fire_comment : false,
+      }
+      console.log('data: ', data)
       if (isNew) {
         const { data: { _id, _source } } = await api.post('add_point', data)
         console.log('response: ', _id, _source)

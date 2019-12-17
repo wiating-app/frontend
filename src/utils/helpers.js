@@ -39,6 +39,8 @@ export function parseCoordinates(input) {
       default:
         throw { type: 'parseError', value: 'Wrong value' }
     }
+  } else {
+    throw { type: 'parseError', value: 'Lat and lon formats don\'t match' }
   }
 }
 
