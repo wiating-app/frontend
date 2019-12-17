@@ -50,6 +50,7 @@ export default {
       couldNotSaveMarker: 'Nie udało się zapisać markera.',
       photoAdded: 'Dodano nowe zdjęcie.',
       couldNotSavePhoto: 'Nie udało się zapisać zdjęcia.',
+      wrongCoordsFormat: 'Niepoprawny format współrzędnych.',
     },
     actions: {
       edit: 'Edytuj',
@@ -114,6 +115,7 @@ export default {
       couldNotSaveMarker: 'Could not save a marker.',
       photoAdded: 'Photo added.',
       couldNotSavePhoto: 'Could not save a photo.',
+      wrongCoordsFormat: 'Wrong coordinations format.',
     },
     actions: {
       edit: 'Edit',

@@ -77,6 +77,7 @@ const LocationFormContainer = ({
     console.log('data: ', data)
 
     try {
+      parseCoordinates(`${data['lat']}, ${data['lon']}`)
       if (isNew) {
         const { data: { _id, _source } } = await api.post('add_point', data)
         console.log('response: ', _id, _source)
@@ -97,8 +98,13 @@ const LocationFormContainer = ({
       }
       refreshMap()
     } catch (error) {
-      console.error(error)
-      enqueueSnackbar(<Text id='notifications.couldNotSaveMarker' />, { variant: 'error' })
+      if (error.type === 'parseError') {
+        console.error(error.value)
+        enqueueSnackbar(<Text id='notifications.wrongCoordsFormat' />, { variant: 'error' })
+      } else {
+        console.error(error)
+        enqueueSnackbar(<Text id='notifications.couldNotSaveMarker' />, { variant: 'error' })
+      }
     }
   }
   return (

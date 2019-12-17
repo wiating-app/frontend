@@ -37,7 +37,7 @@ export function parseCoordinates(input) {
         longitudeScope(lon)
         return [lat, lon]
       default:
-        throw 'Wrong value'
+        throw { type: 'parseError', value: 'Wrong value' }
     }
   }
 }
@@ -47,14 +47,14 @@ function latitudeScope(latitude) {
   if (latitude >= -90.0 && latitude <= 90.0) {
     return true
   }
-  throw 'Latitude out of scope'
+  throw { type: 'parseError', value: 'Latitude out of scope' }
 }
 
 function longitudeScope(longitude) {
   if (longitude >= -180.0 && longitude <= 180.0) {
     return true
   }
-  throw 'Longitude out of scope'
+  throw { type: 'parseError', value: 'Longitude out of scope' }
 }
 
 function ConvertLatDMSToDD(lat) {
@@ -77,7 +77,7 @@ function ConvertDMSToDD(coordinate, type) {
       throw -1
     }
   } catch (err) {
-    throw 'Wrong coordinate format'
+    throw { type: 'parseError', value: 'Wrong coordinate format' }
   }
   return dd
 }
