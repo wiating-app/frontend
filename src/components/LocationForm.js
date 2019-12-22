@@ -8,6 +8,7 @@ import {
   Checkbox,
   FormActions,
 } from 'react-standalone-form-mui'
+import CoordinatesInput from './CoordinatesInput'
 import Text from './Text'
 import locationTypes from '../utils/locationTypes'
 
@@ -85,11 +86,10 @@ const LocationForm = ({
         initialValue={locationData && locationData.type}
       />
 
-      <Input
+      <CoordinatesInput
         name='location'
         label={<Text id='markerForm.location' />}
-        min={5}
-        initialValue={locationData && `${locationData.location.lat}, ${locationData.location.lon}`}
+        initialValue={locationData && [locationData.location.lat, locationData.location.lon]}
         help={<Text id='markerForm.format' />}
       />
 

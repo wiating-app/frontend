@@ -23,8 +23,8 @@
     "react-perfect-scrollbar": "^1.5.3",
     "react-responsive-carousel": "^3.1.50",
     "react-router-dom": "^5.0.1",
-    "react-standalone-form": "^0.6.11",
-    "react-standalone-form-mui": "^0.1.2",
+    "react-standalone-form": "^0.8.1",
+    "react-standalone-form-mui": "^0.1.4",
     "validator": "^11.1.0"
   },
   "scripts": {

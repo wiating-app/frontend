@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom'
 import LocationForm from '../components/LocationForm'
 import Text from '../components/Text'
 import Loader from '../components/Loader'
-import { parseCoordinates } from '../utils/helpers'
 
 
 const LocationFormContainer = ({
@@ -21,6 +20,10 @@ const LocationFormContainer = ({
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
   const { enqueueSnackbar } = useSnackbar()
+
+  React.useEffect(() => {
+    setLocation(cachedLocation)
+  }, [cachedLocation])
 
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
@@ -62,7 +65,7 @@ const LocationFormContainer = ({
     } = fields
 
     try {
-      const [lat, lon] = parseCoordinates(fields.location)
+      const [lat, lon] = fields.location
 
       const data = {
         name,
@@ -78,6 +81,7 @@ const LocationFormContainer = ({
       }
       console.log('data: ', data)
       if (isNew) {
+        // New marker creation.
         const { data: { _id, _source } } = await api.post('add_point', data)
         console.log('response: ', _id, _source)
         const newData = { id: _id, ..._source }
@@ -86,6 +90,7 @@ const LocationFormContainer = ({
         history.push(`/location/${_id}`)
         enqueueSnackbar(<Text id='notifications.newMarkerAdded' />, { variant: 'success' })
       } else {
+        // Updating exisitng marker.
         const { id } = cachedLocation
         const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
         console.log('response: ', _id, _source)
@@ -115,7 +120,7 @@ const LocationFormContainer = ({
           locationData={location}
           onSubmitLocation={onSubmitLocation}
           updateCurrentMarker={coords => {
-            const [lat, lon] = parseCoordinates(coords)
+            const [lat, lon] = coords
             if (location.location.lat !== lat || location.location.lon !== lon) {
               setCachedLocation({ ...location, location: { lat, lon } })
             }

@@ -1,7 +1,8 @@
 import React from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
+import history from './history'
 import Layout from './components/Layout'
 import ContentWrapper from './components/ContentWrapper'
 import LocationTab from './components/LocationTab'
@@ -13,7 +14,7 @@ import SelectedLocationContainer from './containers/SelectedLocationContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
 
 
-const App = ({ history, location }) => {
+const App = () => {
   const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState()
 
@@ -21,7 +22,6 @@ const App = ({ history, location }) => {
 
   React.useEffect(() => {
     if (cachedLocation) {
-      console.log('cachedLocation changed: ', cachedLocation);
       const { lat, lon } = cachedLocation.location
       mapRef.current.setActiveMarker([lat, lon])
     } else {
@@ -129,4 +129,4 @@ const App = ({ history, location }) => {
   )
 }
 
-export default withRouter(App)
+export default App
