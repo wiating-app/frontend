@@ -3800,6 +3800,11 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
+geo-coordinates-parser@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/geo-coordinates-parser/-/geo-coordinates-parser-1.2.3.tgz#aac4d869f1703161b8efd43d55e4ec89c2545aff"
+  integrity sha512-d5yj0zfkN4K2tIE877cg0lWofCo+JnWIjX2JMtBOMVgU76DrqEWgKuxZnp0L+hbSkmi1bot22M7a7Go5TNEVJg==
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"

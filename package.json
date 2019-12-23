@@ -10,6 +10,7 @@
     "data-uri-to-buffer": "^3.0.0",
     "date-fns": "^2.6.0",
     "dot-object": "^2.1.2",
+    "geo-coordinates-parser": "^1.2.3",
     "leaflet": "^1.5.1",
     "notistack": "^0.9.5",
     "react": "^16.9.0",

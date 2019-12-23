@@ -1,7 +1,9 @@
 import React from 'react'
 import { withFormControl } from 'react-standalone-form-mui'
+import { useSnackbar } from 'notistack'
+import convert from 'geo-coordinates-parser'
 import { Input } from '@material-ui/core'
-import { parseCoordinates } from '../utils/parseCoordinates'
+
 
 const CoordinatesInput = ({
   name,
@@ -11,6 +13,7 @@ const CoordinatesInput = ({
   multiline,
   setValue,
 }) => {
+  const { enqueueSnackbar } = useSnackbar()
   return (
     <Input
       id={name}
@@ -18,12 +21,16 @@ const CoordinatesInput = ({
         const { value } = e.target
         if (value) {
           try {
-            const parsedValue = parseCoordinates(value)
+            const { decimalLatitude, decimalLongitude } = convert(value)
             const stringifiedValue = [
-              parsedValue[0].toString(),
-              parsedValue[1].toString(),
+              decimalLatitude.toString(),
+              decimalLongitude.toString(),
             ]
             setValue(name, stringifiedValue, required)
+            enqueueSnackbar(
+              `Przystosowano koordynaty ${value} do systemu decymalnego.`,
+              { variant: 'success', anchorOrigin: { vertical: 'bottom', horizontal: 'left' } }
+            )
           } catch (err) {
             setValue(name, value, required, { forcedErrorMessage: err.message })
           }

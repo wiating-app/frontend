@@ -50,7 +50,7 @@ const LocationForm = ({
       callbackOnChange={fields => {
         setHasWater(fields.water_exists)
         setHasFire(fields.fire_exists)
-        updateCurrentMarker(fields.location)
+        typeof fields.location === 'object' && updateCurrentMarker(fields.location)
       }}
     >
 
