@@ -90,7 +90,7 @@ const LocationForm = ({
         name='location'
         label={<Text id='markerForm.location' />}
         initialValue={locationData && [locationData.location.lat, locationData.location.lon]}
-        help={<Text id='markerForm.format' />}
+        help={<Text id='markerForm.locationHelp' />}
       />
 
       <Checkbox

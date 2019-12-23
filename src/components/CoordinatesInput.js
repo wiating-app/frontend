@@ -1,8 +1,9 @@
 import React from 'react'
 import { withFormControl } from 'react-standalone-form-mui'
 import { useSnackbar } from 'notistack'
-import convert from 'geo-coordinates-parser'
+import parse from 'coord-parser'
 import { Input } from '@material-ui/core'
+import Text from './Text'
 
 
 const CoordinatesInput = ({
@@ -21,18 +22,18 @@ const CoordinatesInput = ({
         const { value } = e.target
         if (value) {
           try {
-            const { decimalLatitude, decimalLongitude } = convert(value)
+            const { lat, lon } = parse(value)
             const stringifiedValue = [
-              decimalLatitude.toString(),
-              decimalLongitude.toString(),
+              lat.toString(),
+              lon.toString(),
             ]
             setValue(name, stringifiedValue, required)
             enqueueSnackbar(
-              `Przystosowano koordynaty ${value} do systemu decymalnego.`,
+              `${value} - współrzędne zweryfikowane poprawnie.`,
               { variant: 'success', anchorOrigin: { vertical: 'bottom', horizontal: 'left' } }
             )
           } catch (err) {
-            setValue(name, value, required, { forcedErrorMessage: err.message })
+            setValue(name, value, required, { forcedErrorMessage: <Text id='notifications.wrongCoordsFormat' /> })
           }
         } else {
           setValue(name, '', required)
