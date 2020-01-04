@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown } from '@material-ui/icons'
 import Form from 'react-standalone-form'
 import Dropdown from './Dropdown'
+import Logo from './Logo'
 import SearchInput from './SearchInput'
 import Text from './Text'
 
@@ -23,7 +24,7 @@ const NavBar = ({
   return (
     <AppBar position='relative' className={classes.root}>
       <Toolbar>
-        <Typography variant='h6' className={classes.title}>Wiating</Typography>
+        <Logo />
         <Form
           fields={['phrase']}
           callbackOnChange={async fields => {
@@ -31,6 +32,7 @@ const NavBar = ({
             await onSearch(fields.phrase)
             setSearchLoading(false)
           }}
+          className={classes.search}
         >
           <SearchInput
             name='phrase'
@@ -74,17 +76,16 @@ const useStyles = makeStyles(theme => ({
   root: {
     zIndex: theme.zIndex.drawer + 1,
   },
-  searchWrapper: {
-    flexGrow: 1,
-  },
   search: {
-    maxWidth: 240,
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
   name: {
     marginLeft: theme.spacing(1),
     textTransform: 'none',
     whiteSpace: 'nowrap',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   },

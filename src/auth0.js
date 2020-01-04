@@ -84,5 +84,5 @@ export const Auth0Provider = ({
     >
       {children}
     </Auth0Context.Provider>
-    : <div><Text id='loading' />...</div>
+    : <div>Loading...</div>
 }
