@@ -13,9 +13,10 @@ import SelectedLocationContainer from './containers/SelectedLocationContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
 
 
-const App = ({ history, location }) => {
+const App = ({ history, location: { pathname } }) => {
   const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState()
+  const editMode = pathname.endsWith('/edit') || pathname.endsWith('/new')
 
   const mapRef = React.useRef()
 
@@ -123,6 +124,7 @@ const App = ({ history, location }) => {
           setCachedLocation({ ...cachedLocation, location: { lon, lat } })
         }}
         ref={mapRef}
+        editMode={editMode}
       />
 
     </Layout>

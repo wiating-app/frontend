@@ -53,12 +53,20 @@ const Map = React.forwardRef((props, ref) => {
       zoomControl={false}
       whenReady={() => loadMapMarkers()}
       onMoveEnd={() => loadMapMarkers()}
-      onClick={e => {
-        if (props.isLoggedIn) {
-          setActiveMarker(contextMenu ? null : e.latlng)
-          setContextMenu(!contextMenu)
+      onContextMenu={e => {
+        if (!props.editMode) {
+          if (props.isLoggedIn) {
+            setActiveMarker(contextMenu ? null : e.latlng)
+            setContextMenu(!contextMenu)
+          }
+          props.closeTab()
         }
-        props.closeTab()
+      }}
+      onClick={() => {
+        if (contextMenu) {
+          setContextMenu(false)
+          setActiveMarker(false)
+        }
       }}
     >
       <TileLayer
