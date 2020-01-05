@@ -28,8 +28,8 @@ export default {
     },
     noResults: 'Nic nie znaleziono',
     connectionProblem: {
-      map: 'Nie można pobrać markerów. Problem z połączeniem.',
-      location: 'Nie udało się pobrać danych lokalizacji. Problem z połączeniem.',
+      map: 'Nie można nawiązać połączenia z bazą lokacji.',
+      location: 'Nie udało się pobrać danych lokacji.',
     },
     markerForm: {
       heading: {
@@ -91,8 +91,8 @@ export default {
     },
     noResults: 'No results',
     connectionProblem: {
-      map: 'Could not load markers. Connection problem.',
-      location: 'Could not load location details. Connection problem.',
+      map: 'Could not connect to the database of locations.',
+      location: 'Could not load the location details.',
     },
     markerForm: {
       heading: {
