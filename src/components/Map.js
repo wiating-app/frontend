@@ -62,10 +62,12 @@ const Map = React.forwardRef((props, ref) => {
           props.closeTab()
         }
       }}
-      onClick={() => {
+      onClick={e => {
         if (contextMenu) {
           setContextMenu(false)
           setActiveMarker(false)
+        } else if (!activeMarker && props.editMode && props.isLoggedIn) {
+          setActiveMarker(contextMenu ? null : e.latlng)
         }
       }}
     >
@@ -102,6 +104,12 @@ const Map = React.forwardRef((props, ref) => {
           })}
           zIndexOffset={1000}
           position={activeMarker}
+          draggable={props.editMode}
+          onMove={e => {
+            if (props.editMode) {
+              console.log('onMove: ', e);
+            }
+          }}
         />
       }
       {activeMarker && contextMenu &&
