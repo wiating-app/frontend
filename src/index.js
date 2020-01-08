@@ -11,6 +11,7 @@ import history from './history'
 import TranslationsProvider from './containers/TranslationsProvider'
 import * as serviceWorker from './serviceWorker'
 import theme from './theme'
+import formTheme from './utils/formTheme'
 
 
 ReactDOM.render(
@@ -24,7 +25,7 @@ ReactDOM.render(
           responseType='token id_token'
           getTokenSilently
         >
-          <FormThemeProvider>
+          <FormThemeProvider theme={formTheme}>
             <CssBaseline />
             <ThemeProvider theme={theme}>
               <App />

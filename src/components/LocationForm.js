@@ -85,12 +85,13 @@ const LocationForm = ({
         })}
         initialValue={locationData && locationData.type}
       />
-
       <CoordinatesInput
         name='location'
         label={<Text id='markerForm.location' />}
-        initialValue={locationData && [locationData.location.lat, locationData.location.lon]}
-        help={<Text id='markerForm.locationHelp' />}
+        initialValue={locationData && Object.values(locationData.location)
+          .toString()
+          .replace(',', ', ')
+        }
       />
 
       <Checkbox

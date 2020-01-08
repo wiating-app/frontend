@@ -2,6 +2,7 @@ import React from 'react'
 import { useSnackbar } from 'notistack'
 import api from '../api'
 import { withRouter } from 'react-router-dom'
+import parse from 'coord-parser'
 import LocationForm from '../components/LocationForm'
 import Text from '../components/Text'
 import Loader from '../components/Loader'
@@ -51,13 +52,13 @@ const LocationFormContainer = ({
   }, [])
 
   const onSubmitLocation = async fields => {
-    console.log('fields: ', fields);
     /* eslint-disable camelcase */
     const {
       name,
       description,
       directions,
       type,
+      location,
       water_exists,
       water_comment,
       fire_exists,
@@ -65,8 +66,7 @@ const LocationFormContainer = ({
     } = fields
 
     try {
-      const [lat, lon] = fields.location
-
+      const { lat, lon } = parse(location)
       const data = {
         name,
         description,
@@ -79,7 +79,7 @@ const LocationFormContainer = ({
         fire_exists: fire_exists || false,
         fire_comment: fire_exists ? fire_comment : false,
       }
-      console.log('data: ', data)
+
       if (isNew) {
         // New marker creation.
         const { data: { _id, _source } } = await api.post('add_point', data)
@@ -111,6 +111,7 @@ const LocationFormContainer = ({
       }
     }
   }
+
   return (
     loading
       ? <Loader dark big />
