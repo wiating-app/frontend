@@ -11,7 +11,7 @@ const ContextMenu = ({ addMarker }) => {
       <MenuList>
         <MenuItem
           onClick={addMarker}
-        ><Text id='addMarker' /></MenuItem>
+        ><Text id='addMarkerHere' /></MenuItem>
       </MenuList>
     </Paper>
   )

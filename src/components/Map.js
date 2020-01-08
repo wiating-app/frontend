@@ -14,7 +14,10 @@ import ContextMenu from './ContextMenu'
 import { getIconUrl } from '../utils/helpers'
 
 
-const Map = React.forwardRef((props, ref) => {
+const Map = React.forwardRef(({
+  updateCoordinates,
+  ...props
+}, ref) => {
   const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
   const mapRef = React.useRef()
@@ -53,12 +56,23 @@ const Map = React.forwardRef((props, ref) => {
       zoomControl={false}
       whenReady={() => loadMapMarkers()}
       onMoveEnd={() => loadMapMarkers()}
-      onClick={e => {
-        if (props.isLoggedIn) {
-          setActiveMarker(contextMenu ? null : e.latlng)
-          setContextMenu(!contextMenu)
+      onContextMenu={e => {
+        if (!props.editMode) {
+          if (props.isLoggedIn) {
+            setActiveMarker(contextMenu ? null : e.latlng)
+            setContextMenu(!contextMenu)
+          }
+          props.closeTab()
         }
-        props.closeTab()
+      }}
+      onClick={e => {
+        if (contextMenu) {
+          setContextMenu(false)
+          setActiveMarker(false)
+        } else if (!activeMarker && props.editMode && props.isLoggedIn) {
+          setActiveMarker(e.latlng)
+          updateCoordinates(e.latlng)
+        }
       }}
     >
       <TileLayer
@@ -94,6 +108,12 @@ const Map = React.forwardRef((props, ref) => {
           })}
           zIndexOffset={1000}
           position={activeMarker}
+          draggable={props.editMode}
+          onMoveEnd={e => {
+            if (props.editMode) {
+              updateCoordinates(e.target.getLatLng())
+            }
+          }}
         />
       }
       {activeMarker && contextMenu &&

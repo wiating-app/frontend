@@ -4,6 +4,8 @@ import createAuth0Client from '@auth0/auth0-spa-js'
 import api from './api'
 import Text from './components/Text'
 
+// Useful info about Auth0Provider configuration:
+// https://auth0.com/docs/quickstart/spa/react
 
 const Auth0Context = React.createContext()
 export const useAuth0 = () => useContext(Auth0Context)
@@ -82,5 +84,5 @@ export const Auth0Provider = ({
     >
       {children}
     </Auth0Context.Provider>
-    : <div><Text id='loading' />...</div>
+    : <div>Loading...</div>
 }
