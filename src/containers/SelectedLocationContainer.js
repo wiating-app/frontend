@@ -66,7 +66,7 @@ const SelectedLocationContainer = ({
           const resizedFile = new File([decoded], file.name, { type: file.type })
           const data = new FormData()
           data.append('file', resizedFile)
-          const { data: { _id, _source } } = await api.post(`add_image/${selectedLocation.id}`, data)
+          const { data: { _id, _source } } = await api.post(`add_image/${location.id}`, data)
           console.log('response: ', _id, _source)
           const newData = { id: _id, ..._source }
           setLocation(newData)
