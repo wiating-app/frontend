@@ -38,15 +38,13 @@ export const Auth0Provider = ({
 
         const user = await auth0FromHook.getUser()
         const token = await auth0FromHook.getTokenSilently()
-        const completeUser = { ...user, token }
-        localStorage.setItem('currentUser', JSON.stringify(completeUser))
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        setUser(completeUser)
+        setUser(user)
         enqueueSnackbar(<Text id='auth.loginSuccessful' />, { variant: 'success' })
       } else {
         // Retrieve user from local storage on page init.
-        const currentUser = localStorage.getItem('currentUser')
-        setUser(currentUser ? JSON.parse(currentUser) : false)
+        const currentUser = await auth0FromHook.getUser()
+        setUser(currentUser || false)
       }
 
       setLoading(false)
@@ -66,7 +64,6 @@ export const Auth0Provider = ({
         logout: p => {
           auth0.logout(p)
           api.defaults.headers.common['Authorization'] = null
-          localStorage.removeItem('currentUser')
         },
         setStoredPosition: position => {
           localStorage.setItem('lastPosition', JSON.stringify(position))
@@ -76,7 +73,6 @@ export const Auth0Provider = ({
             const position = localStorage.getItem('lastPosition')
             return position ? JSON.parse(position) : false
           } catch (error) {
-            localStorage.removeItem('currentUser')
             return false
           }
         },
