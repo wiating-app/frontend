@@ -10,12 +10,14 @@ const CoordinatesInput = ({
   required,
   multiline,
   setValue,
+  onChange,
 }) =>
   <Input
     id={name}
     onChange={e => {
       const { value } = e.target
       setValue(name, value, required, { type: 'coordinates' })
+      onChange && onChange(value)
     }}
     value={value || ''}
     placeholder={placeholder}

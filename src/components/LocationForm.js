@@ -23,7 +23,9 @@ const LocationForm = ({
   const [loading, setLoading] = React.useState()
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
-  const locationToString = Object.values(locationData.location)
+
+  const { lat, lon } = locationData.location
+  const locationToString = [lat, lon]
     .toString()
     .replace(',', ', ')
 
@@ -53,9 +55,6 @@ const LocationForm = ({
       callbackOnChange={fields => {
         setHasWater(fields.water_exists)
         setHasFire(fields.fire_exists)
-        if (fields.location !== locationToString) {
-          updateCurrentMarker(fields.location)
-        }
       }}
     >
 
@@ -94,6 +93,9 @@ const LocationForm = ({
         name='location'
         label={<Text id='markerForm.location' />}
         initialValue={locationData && locationToString}
+        onChange={value => {
+          updateCurrentMarker(value)
+        }}
       />
 
       <Checkbox
