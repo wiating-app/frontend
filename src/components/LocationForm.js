@@ -8,6 +8,7 @@ import {
   Checkbox,
   FormActions,
 } from 'react-standalone-form-mui'
+import CoordinatesInput from './CoordinatesInput'
 import Text from './Text'
 import locationTypes from '../utils/locationTypes'
 
@@ -22,6 +23,9 @@ const LocationForm = ({
   const [loading, setLoading] = React.useState()
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
+  const locationToString = Object.values(locationData.location)
+    .toString()
+    .replace(',', ', ')
 
   return <>
     <Typography variant='h4' gutterBottom>
@@ -49,7 +53,9 @@ const LocationForm = ({
       callbackOnChange={fields => {
         setHasWater(fields.water_exists)
         setHasFire(fields.fire_exists)
-        updateCurrentMarker(fields.location)
+        if (fields.location !== locationToString) {
+          updateCurrentMarker(fields.location)
+        }
       }}
     >
 
@@ -84,13 +90,10 @@ const LocationForm = ({
         })}
         initialValue={locationData && locationData.type}
       />
-
-      <Input
+      <CoordinatesInput
         name='location'
         label={<Text id='markerForm.location' />}
-        min={5}
-        initialValue={locationData && `${locationData.location.lat}, ${locationData.location.lon}`}
-        help='Format: 00.0000, 00.0000'
+        initialValue={locationData && locationToString}
       />
 
       <Checkbox

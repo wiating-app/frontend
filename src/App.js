@@ -22,7 +22,6 @@ const App = ({ history, location: { pathname } }) => {
 
   React.useEffect(() => {
     if (cachedLocation) {
-      console.log('cachedLocation changed: ', cachedLocation);
       const { lat, lon } = cachedLocation.location
       mapRef.current.setActiveMarker([lat, lon])
     } else {
@@ -120,7 +119,7 @@ const App = ({ history, location: { pathname } }) => {
           setCachedLocation({ location: { lat, lon } })
           history.push('/location/new')
         }}
-        onUpdateMarkerPosition={(lon, lat) => {
+        updateCoordinates={({ lat, lng: lon }) => {
           setCachedLocation({ ...cachedLocation, location: { lon, lat } })
         }}
         ref={mapRef}

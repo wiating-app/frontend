@@ -14,7 +14,10 @@ import ContextMenu from './ContextMenu'
 import { getIconUrl } from '../utils/helpers'
 
 
-const Map = React.forwardRef((props, ref) => {
+const Map = React.forwardRef(({
+  updateCoordinates,
+  ...props
+}, ref) => {
   const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
   const mapRef = React.useRef()
@@ -67,7 +70,8 @@ const Map = React.forwardRef((props, ref) => {
           setContextMenu(false)
           setActiveMarker(false)
         } else if (!activeMarker && props.editMode && props.isLoggedIn) {
-          setActiveMarker(contextMenu ? null : e.latlng)
+          setActiveMarker(e.latlng)
+          updateCoordinates(e.latlng)
         }
       }}
     >
@@ -105,9 +109,9 @@ const Map = React.forwardRef((props, ref) => {
           zIndexOffset={1000}
           position={activeMarker}
           draggable={props.editMode}
-          onMove={e => {
+          onMoveEnd={e => {
             if (props.editMode) {
-              console.log('onMove: ', e);
+              updateCoordinates(e.target.getLatLng())
             }
           }}
         />
@@ -116,7 +120,6 @@ const Map = React.forwardRef((props, ref) => {
         <Popup
           position={activeMarker}
           closeButton={false}
-          keepInView
           className={classes.popup}
         >
           <ContextMenu addMarker={() => {

@@ -2,6 +2,7 @@ import React from 'react'
 import { useSnackbar } from 'notistack'
 import api from '../api'
 import { withRouter } from 'react-router-dom'
+import parse from 'coord-parser'
 import LocationForm from '../components/LocationForm'
 import Text from '../components/Text'
 import Loader from '../components/Loader'
@@ -20,6 +21,10 @@ const LocationFormContainer = ({
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
   const { enqueueSnackbar } = useSnackbar()
+
+  React.useEffect(() => {
+    setLocation(cachedLocation)
+  }, [cachedLocation])
 
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
@@ -47,36 +52,36 @@ const LocationFormContainer = ({
   }, [])
 
   const onSubmitLocation = async fields => {
-    console.log('fields: ', fields);
     /* eslint-disable camelcase */
     const {
       name,
       description,
       directions,
       type,
+      location,
       water_exists,
       water_comment,
       fire_exists,
       fire_comment,
     } = fields
-    const [lat, lon] = fields.location.split(', ')
-
-    const data = {
-      name,
-      description,
-      directions,
-      lat: parseFloat(lat),
-      lon: parseFloat(lon),
-      type,
-      water_exists: water_exists || false,
-      water_comment: water_exists ? water_comment : false,
-      fire_exists: fire_exists || false,
-      fire_comment: fire_exists ? fire_comment : false,
-    }
-    console.log('data: ', data)
 
     try {
+      const { lat, lon } = parse(location)
+      const data = {
+        name,
+        description,
+        directions,
+        lat: lat,
+        lon: lon,
+        type,
+        water_exists: water_exists || false,
+        water_comment: water_exists ? water_comment : false,
+        fire_exists: fire_exists || false,
+        fire_comment: fire_exists ? fire_comment : false,
+      }
+
       if (isNew) {
+        // New marker creation.
         const { data: { _id, _source } } = await api.post('add_point', data)
         console.log('response: ', _id, _source)
         const newData = { id: _id, ..._source }
@@ -85,6 +90,7 @@ const LocationFormContainer = ({
         history.push(`/location/${_id}`)
         enqueueSnackbar(<Text id='notifications.newMarkerAdded' />, { variant: 'success' })
       } else {
+        // Updating exisitng marker.
         const { id } = cachedLocation
         const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
         console.log('response: ', _id, _source)
@@ -96,10 +102,16 @@ const LocationFormContainer = ({
       }
       refreshMap()
     } catch (error) {
-      console.error(error)
-      enqueueSnackbar(<Text id='notifications.couldNotSaveMarker' />, { variant: 'error' })
+      if (error.type === 'parseError') {
+        console.error(error.value)
+        enqueueSnackbar(<Text id='notifications.wrongCoordsFormat' />, { variant: 'error' })
+      } else {
+        console.error(error)
+        enqueueSnackbar(<Text id='notifications.couldNotSaveMarker' />, { variant: 'error' })
+      }
     }
   }
+
   return (
     loading
       ? <Loader dark big />
@@ -109,7 +121,7 @@ const LocationFormContainer = ({
           locationData={location}
           onSubmitLocation={onSubmitLocation}
           updateCurrentMarker={coords => {
-            const [lat, lon] = coords.split(', ')
+            const { lat, lon } = parse(coords)
             if (location.location.lat !== lat || location.location.lon !== lon) {
               setCachedLocation({ ...location, location: { lat, lon } })
             }
