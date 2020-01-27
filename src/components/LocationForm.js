@@ -23,6 +23,9 @@ const LocationForm = ({
   const [loading, setLoading] = React.useState()
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
+  const locationToString = Object.values(locationData.location)
+    .toString()
+    .replace(',', ', ')
 
   return <>
     <Typography variant='h4' gutterBottom>
@@ -50,7 +53,9 @@ const LocationForm = ({
       callbackOnChange={fields => {
         setHasWater(fields.water_exists)
         setHasFire(fields.fire_exists)
-        typeof fields.location === 'object' && updateCurrentMarker(fields.location)
+        if (fields.location !== locationToString) {
+          updateCurrentMarker(fields.location)
+        }
       }}
     >
 
@@ -88,10 +93,7 @@ const LocationForm = ({
       <CoordinatesInput
         name='location'
         label={<Text id='markerForm.location' />}
-        initialValue={locationData && Object.values(locationData.location)
-          .toString()
-          .replace(',', ', ')
-        }
+        initialValue={locationData && locationToString}
       />
 
       <Checkbox

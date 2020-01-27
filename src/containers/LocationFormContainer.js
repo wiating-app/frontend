@@ -121,7 +121,7 @@ const LocationFormContainer = ({
           locationData={location}
           onSubmitLocation={onSubmitLocation}
           updateCurrentMarker={coords => {
-            const [lat, lon] = coords
+            const { lat, lon } = parse(coords)
             if (location.location.lat !== lat || location.location.lon !== lon) {
               setCachedLocation({ ...location, location: { lat, lon } })
             }
