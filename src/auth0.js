@@ -18,6 +18,7 @@ export const Auth0Provider = ({
   const [auth0, setAuth0] = useState()
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState()
+  const [isLoggedIn, setIsLoggedIn] = React.useState()
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
@@ -44,6 +45,8 @@ export const Auth0Provider = ({
       } else {
         // Retrieve user from local storage on page init.
         const currentUser = await auth0FromHook.getUser()
+        const isAuthenticated = await auth0FromHook.isAuthenticated()
+        setIsLoggedIn(isAuthenticated || false)
         setUser(currentUser || false)
       }
 
@@ -56,7 +59,7 @@ export const Auth0Provider = ({
     ? <Auth0Context.Provider
       value={{
         loading,
-        isLoggedIn: !!user,
+        isLoggedIn,
         user,
         loginWithRedirect: p => {
           auth0.loginWithRedirect(p)
