@@ -52,7 +52,9 @@ const Map = React.forwardRef(({
       className={classes.root}
       center={props.center}
       zoom={props.zoom}
+      minZoom={5}
       maxZoom={18}
+      maxBounds={[[-90, -180], [90, 180]]}
       zoomControl={false}
       whenReady={() => loadMapMarkers()}
       onMoveEnd={() => loadMapMarkers()}
