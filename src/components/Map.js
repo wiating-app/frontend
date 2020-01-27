@@ -120,7 +120,6 @@ const Map = React.forwardRef(({
         <Popup
           position={activeMarker}
           closeButton={false}
-          keepInView
           className={classes.popup}
         >
           <ContextMenu addMarker={() => {
