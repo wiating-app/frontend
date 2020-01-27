@@ -17,6 +17,7 @@ const MapContainer = React.forwardRef((props, ref) => {
     setStoredPosition,
     getStoredPosition,
   } = useAuth0()
+  console.log('isLoggedIn: ', isLoggedIn);
 
   const loadMapMarkers = async bounds => {
     const { _northEast, _southWest } = bounds
