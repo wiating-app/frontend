@@ -77,11 +77,12 @@ const App = ({ history, location: { pathname } }) => {
               cachedLocation={cachedLocation}
               setCachedLocation={setCachedLocation}
             />
-            {searchResults.length &&
-              <BackToSearch onClick={() => {
+            {searchResults.length
+              ? <BackToSearch onClick={() => {
                 history.push('/search')
                 setCachedLocation(null)
               }} />
+              : null
             }
           </Route>
 
