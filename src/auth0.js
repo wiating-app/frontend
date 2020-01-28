@@ -46,10 +46,12 @@ export const Auth0Provider = ({
         enqueueSnackbar(<Text id='auth.loginSuccessful' />, { variant: 'success' })
       } else {
         // Retrieve user from local storage on page init.
-        const currentUser = await auth0FromHook.getUser()
+        const user = await auth0FromHook.getUser()
+        const token = await auth0FromHook.getTokenSilently()
         const isAuthenticated = await auth0FromHook.isAuthenticated()
+        setUser(user || false)
         setIsLoggedIn(isAuthenticated || false)
-        setUser(currentUser || false)
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
       }
 
       setLoading(false)

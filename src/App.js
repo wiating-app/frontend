@@ -17,6 +17,7 @@ const App = ({ history, location: { pathname } }) => {
   const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState()
   const editMode = pathname.endsWith('/edit') || pathname.endsWith('/new')
+  console.log('cachedLocation: ', cachedLocation);
 
   const mapRef = React.useRef()
 
@@ -55,6 +56,7 @@ const App = ({ history, location: { pathname } }) => {
             <SearchResults
               items={searchResults}
               setCachedLocation={location => {
+                console.log('SearchResults setCachedLocation: ');
                 setCachedLocation(location)
                 history.push(`/location/${location.id}`)
               }}
