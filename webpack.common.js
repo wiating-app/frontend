@@ -92,7 +92,10 @@ module.exports = {
 
     new GenerateSW({
       clientsClaim: true,
-      exclude: [/asset-manifest\.json$/],
+      exclude: [
+        /asset-manifest\.json$/,
+        /_redirects$/,
+      ],
     }),
   ],
 }
