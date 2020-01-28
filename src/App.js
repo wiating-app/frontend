@@ -6,6 +6,7 @@ import Layout from './components/Layout'
 import ContentWrapper from './components/ContentWrapper'
 import LocationTab from './components/LocationTab'
 import SearchResults from './components/SearchResults'
+import BackToSearch from './components/BackToSearch'
 // import PhotosForm from './components/PhotosForm'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
@@ -15,9 +16,8 @@ import LocationFormContainer from './containers/LocationFormContainer'
 
 const App = ({ history, location: { pathname } }) => {
   const [cachedLocation, setCachedLocation] = React.useState()
-  const [searchResults, setSearchResults] = React.useState()
+  const [searchResults, setSearchResults] = React.useState([])
   const editMode = pathname.endsWith('/edit') || pathname.endsWith('/new')
-  console.log('cachedLocation: ', cachedLocation);
 
   const mapRef = React.useRef()
 
@@ -46,17 +46,12 @@ const App = ({ history, location: { pathname } }) => {
         refreshMap={async () => {
           await mapRef.current.loadMapMarkers()
         }}
-        backToSearch={!!searchResults && !!cachedLocation ? () => {
-          history.push('/search')
-          setCachedLocation(null)
-        } : null}
       >
         <Switch>
           <Route exact path='/search'>
             <SearchResults
               items={searchResults}
               setCachedLocation={location => {
-                console.log('SearchResults setCachedLocation: ');
                 setCachedLocation(location)
                 history.push(`/location/${location.id}`)
               }}
@@ -82,6 +77,12 @@ const App = ({ history, location: { pathname } }) => {
               cachedLocation={cachedLocation}
               setCachedLocation={setCachedLocation}
             />
+            {searchResults.length &&
+              <BackToSearch onClick={() => {
+                history.push('/search')
+                setCachedLocation(null)
+              }} />
+            }
           </Route>
 
           <Route exact path='/location/:id/edit'>

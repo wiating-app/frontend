@@ -18,7 +18,7 @@ const SearchResults = ({
   const classes = useStyles()
   return (
     <List>
-      {items && items.length
+      {items.length
         ? items.map((item, index) =>
           <React.Fragment key={index}>
             <ListItem

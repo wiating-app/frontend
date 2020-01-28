@@ -2,13 +2,11 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import {
   Drawer,
-  Button,
   IconButton,
 } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { Close, ViewList } from '@material-ui/icons'
-import Text from './Text'
+import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 
@@ -38,16 +36,6 @@ const LocationTab = ({
           aria-label='close'
           onClick={() => closeLocationTab()}
         ><Close /></IconButton>
-
-        {backToSearch &&
-          <Button
-            onClick={() => backToSearch()}
-            className={classes.backToSearch}
-            variant='contained'
-            size='small'
-          ><ViewList /> <Text id='backToResults' /></Button>
-        }
-
         {children}
       </PerfectScrollbar>
     </Drawer>
@@ -83,12 +71,6 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.9)',
     },
-  },
-  backToSearch: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    left: theme.spacing(1),
-    zIndex: theme.zIndex.mobileStepper,
   },
 }))
 
