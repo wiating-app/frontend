@@ -113,7 +113,7 @@ const App = ({ history, location: { pathname } }) => {
 
       <MapContainer
         openLocationTab={point => {
-          setSearchResults(null)
+          setSearchResults([])
           setCachedLocation(point)
           history.push(`/location/${point.id}`)
         }}

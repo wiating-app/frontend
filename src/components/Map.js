@@ -24,7 +24,7 @@ const Map = React.forwardRef(({
   const classes = useStyles()
 
   React.useEffect(() => {
-    if (activeMarker) {
+    if (activeMarker && !contextMenu) {
       mapRef.current.leafletElement.panTo(activeMarker)
     }
   }, [activeMarker])
@@ -61,8 +61,8 @@ const Map = React.forwardRef(({
       onContextMenu={e => {
         if (!props.editMode) {
           if (props.isLoggedIn) {
-            setActiveMarker(contextMenu ? null : e.latlng)
             setContextMenu(!contextMenu)
+            setActiveMarker(contextMenu ? null : e.latlng)
           }
           props.closeTab()
         }
@@ -96,8 +96,8 @@ const Map = React.forwardRef(({
             const { _id: id, _source } = item
             const point = { id, ..._source }
             props.openLocationTab(point)
-            setActiveMarker([lat, lon])
             setContextMenu(null)
+            setActiveMarker([lat, lon])
           }}
         />
       })}
