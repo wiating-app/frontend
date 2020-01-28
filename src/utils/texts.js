@@ -50,6 +50,7 @@ export default {
       photoAdded: 'Dodano nowe zdjęcie.',
       couldNotSavePhoto: 'Nie udało się zapisać zdjęcia.',
       wrongCoordsFormat: 'Niepoprawny format współrzędnych.',
+      couldNotRestoreSession: 'Nie udało się uwierzytelnić. Spróbuj się wylogować i zalogować ponownie.',
     },
     actions: {
       edit: 'Edytuj',
@@ -114,6 +115,7 @@ export default {
       photoAdded: 'Photo added.',
       couldNotSavePhoto: 'Could not save a photo.',
       wrongCoordsFormat: 'Wrong coordinations format.',
+      couldNotRestoreSession: 'Could not authenticate. Try to log out and log in again.',
     },
     actions: {
       edit: 'Edit',

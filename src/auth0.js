@@ -23,35 +23,42 @@ export const Auth0Provider = ({
 
   useEffect(() => {
     const initAuth0 = async () => {
-      const auth0FromHook = await createAuth0Client(initOptions)
-      setAuth0(auth0FromHook)
+      try {
+        const auth0FromHook = await createAuth0Client(initOptions)
+        setAuth0(auth0FromHook)
 
-      // Log in with redirect after successfull authentication
-      if (window.location.search.includes('code=')) {
-        const { appState } = await auth0FromHook.handleRedirectCallback()
-        window.history.replaceState(
-          {},
-          document.title,
-          appState && appState.targetUrl
-            ? appState.targetUrl
-            : window.location.pathname
-        )
+        // Log in with redirect after successfull authentication
+        if (window.location.search.includes('code=')) {
+          const { appState } = await auth0FromHook.handleRedirectCallback()
+          window.history.replaceState(
+            {},
+            document.title,
+            appState && appState.targetUrl
+              ? appState.targetUrl
+              : window.location.pathname
+          )
 
-        const user = await auth0FromHook.getUser()
-        const token = await auth0FromHook.getTokenSilently()
-        const isAuthenticated = await auth0FromHook.isAuthenticated()
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        setUser(user)
-        setIsLoggedIn(isAuthenticated || false)
-        enqueueSnackbar(<Text id='auth.loginSuccessful' />, { variant: 'success' })
-      } else {
-        // Retrieve user from local storage on page init.
-        const user = await auth0FromHook.getUser()
-        const token = await auth0FromHook.getTokenSilently()
-        const isAuthenticated = await auth0FromHook.isAuthenticated()
-        setUser(user || false)
-        setIsLoggedIn(isAuthenticated || false)
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          const user = await auth0FromHook.getUser()
+          const token = await auth0FromHook.getTokenSilently()
+          const isAuthenticated = await auth0FromHook.isAuthenticated()
+          api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          setUser(user)
+          setIsLoggedIn(isAuthenticated || false)
+          enqueueSnackbar(<Text id='auth.loginSuccessful' />, { variant: 'success' })
+        } else {
+          // Restore user session from auth0.
+          const isAuthenticated = await auth0FromHook.isAuthenticated()
+          if (isAuthenticated) {
+            const user = await auth0FromHook.getUser()
+            const token = await auth0FromHook.getTokenSilently()
+            setUser(user || false)
+            setIsLoggedIn(isAuthenticated || false)
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          }
+        }
+      } catch (err) {
+        console.error(err)
+        enqueueSnackbar(<Text id='notifications.couldNotRestoreSession' />, { variant: 'error' })
       }
 
       setLoading(false)
