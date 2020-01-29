@@ -13,7 +13,6 @@ import * as serviceWorker from './serviceWorker'
 import theme from './theme'
 import formTheme from './utils/formTheme'
 
-console.log('process.env.REACT_APP_AUTH_CLIENT: ', process.env.REACT_APP_AUTH_CLIENT)
 
 ReactDOM.render(
   <TranslationsProvider>
