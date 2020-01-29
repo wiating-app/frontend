@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/db4e98df-270a-4e20-b996-9216b581a2e5/deploy-status)](https://app.netlify.com/sites/wiating/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2c9f2f32-c413-4b16-95a4-92b8ac302928/deploy-status)](https://app.netlify.com/sites/wiating/deploys)
 
 ## Available Scripts
 
