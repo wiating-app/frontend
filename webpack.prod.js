@@ -10,7 +10,10 @@ module.exports = merge(common, {
   mode: 'production',
 
   plugins: [
-    new Dotenv({ path: './.env.production' }),
+    new Dotenv({
+      path: './.env.production',
+      systemvars: true,
+    }),
     new OptimizeCssAssetsPlugin(),
     new MinifyPlugin(),
     new WebpackBundleSizeAnalyzerPlugin('./plain-report.txt'),
