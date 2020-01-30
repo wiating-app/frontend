@@ -1,6 +1,6 @@
 export default {
-  HUT: 'locationType.hut',
-  HUT_FIREPLACE: 'locationType.hutFireplace',
+  CABIN: 'locationType.cabin',
+  CABIN_FIREPLACE: 'locationType.cabinFireplace',
   SHED: 'locationType.shed',
   WATER_SOURCE: 'locationType.waterSource',
   CAVE: 'locationType.cave',

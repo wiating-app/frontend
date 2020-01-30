@@ -17,8 +17,8 @@ export default {
       lastUpdate: 'Ostatnia aktualizacja',
     },
     locationType: {
-      hut: 'Chatka',
-      hutFireplace: 'Chatka z paleniskiem',
+      cabin: 'Chatka',
+      cabinFireplace: 'Chatka z paleniskiem',
       shed: 'Wiata',
       waterSource: 'Źródło',
       cave: 'Jaskinia',
@@ -82,8 +82,8 @@ export default {
       lastUpdate: 'Last update',
     },
     locationType: {
-      hut: 'Hut',
-      hutFireplace: 'Hut with a fireplace',
+      cabin: 'Cabin',
+      cabinFireplace: 'Cabin with a fireplace',
       shed: 'Shed',
       waterSource: 'Water source',
       cave: 'Cave',
