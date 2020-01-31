@@ -17,12 +17,6 @@ const NavBarContainer = ({ setSearchResults, history }) => {
     logout,
   } = useAuth0()
 
-  if (loading) {
-    return (
-      <div>Loading...</div>
-    )
-  }
-
   const onSearch = async phrase => {
     if (phrase) {
       const { data: { points } } = await api.post('search_points', { phrase })
@@ -45,6 +39,8 @@ const NavBarContainer = ({ setSearchResults, history }) => {
       loginWithRedirect={loginWithRedirect}
       isLoggedIn={isLoggedIn}
       user={user}
+      logout={logout}
+      loading={loading}
       links={links}
       language={language}
       languages={languages}
