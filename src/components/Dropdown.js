@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Button, Menu, MenuItem } from '@material-ui/core'
 
 const Dropdown = ({ children, items, anchorOrigin }) => {
@@ -29,9 +30,16 @@ const Dropdown = ({ children, items, anchorOrigin }) => {
         getContentAnchorEl={null}
         anchorOrigin={anchorOrigin}
       >
-        {items.map((item, index) =>
-          <MenuItem key={index} onClick={() => {
-            item.onClick()
+        {items.map((item, index) => item.url
+          ? <MenuItem
+            component={Link}
+            to={item.url}
+            key={index}
+            onClick={() => handleClose()}
+            divider={item.divider}
+          >{item.label}</MenuItem>
+          : <MenuItem key={index} onClick={() => {
+            item.callback()
             handleClose()
           }}>{item.label}</MenuItem>
         )}

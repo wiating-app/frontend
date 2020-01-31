@@ -1,7 +1,7 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Button, Avatar } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { ArrowDropDown } from '@material-ui/icons'
+import { ArrowDropDown, Menu } from '@material-ui/icons'
 import Form from 'react-standalone-form'
 import Dropdown from './Dropdown'
 import Logo from './Logo'
@@ -11,6 +11,8 @@ import Text from './Text'
 
 const NavBar = ({
   user,
+  links,
+  isLoggedIn,
   logout,
   loginWithRedirect,
   onSearch,
@@ -52,20 +54,24 @@ const NavBar = ({
             horizontal: 'left',
           }}
         >{language.toUpperCase()}</Dropdown>
-        {user
-          ? <Dropdown items={[
-            { label: <Text id='auth.logout' />, onClick: () => logout() },
-          ]}>
-            <Avatar alt={user.name} src={user.picture}
-            >{!user.picture && `${user.given_name.charAt(0)}${user.family_name.charAt(0)}`}</Avatar>
-            <Typography className={classes.name}>{user.name && user.name}</Typography>
-            <ArrowDropDown />
-          </Dropdown>
-          : <Button
-            color='inherit'
-            onClick={() => loginWithRedirect({})}
-          ><Text id='auth.login' /></Button>
-        }
+        <Dropdown items={[
+          ...links,
+          {
+            label: <Text id={isLoggedIn ? 'auth.logout' : 'auth.login'} />,
+            callback: () => isLoggedIn ? logout() : loginWithRedirect({}),
+          },
+        ]}>
+          {isLoggedIn
+            ? <>
+              <Avatar alt={user.name} src={user.picture}>
+                {!user.picture && `${user.given_name.charAt(0)}${user.family_name.charAt(0)}`}
+              </Avatar>
+              <Typography className={classes.name}>{user.name && user.name}</Typography>
+              <ArrowDropDown />
+            </>
+            : <Menu />
+          }
+        </Dropdown>
       </Toolbar>
     </AppBar>
   )

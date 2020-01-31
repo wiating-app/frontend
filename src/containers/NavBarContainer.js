@@ -13,6 +13,7 @@ const NavBarContainer = ({ setSearchResults, history }) => {
     loading,
     loginWithRedirect,
     user,
+    isLoggedIn,
     logout,
   } = useAuth0()
 
@@ -32,12 +33,19 @@ const NavBarContainer = ({ setSearchResults, history }) => {
     }
   }
 
+  const links = [
+    { label: 'Informacje', url: '/info' },
+    { label: 'Regulamin', url: '/regulamin' },
+    { label: 'Polityka prywatności', url: '/polityka-prywatnosci', divider: true },
+  ]
+
   return (
     <NavBar
       onSearch={phrase => onSearch(phrase)}
       loginWithRedirect={loginWithRedirect}
+      isLoggedIn={isLoggedIn}
       user={user}
-      logout={logout}
+      links={links}
       language={language}
       languages={languages}
       setLanguage={setLanguage}

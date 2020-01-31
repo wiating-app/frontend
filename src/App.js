@@ -8,6 +8,9 @@ import LocationTab from './components/LocationTab'
 import SearchResults from './components/SearchResults'
 import BackToSearch from './components/BackToSearch'
 // import PhotosForm from './components/PhotosForm'
+import Info from './components/Info'
+import Regulamin from './components/Regulamin'
+import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
 import SelectedLocationContainer from './containers/SelectedLocationContainer'
@@ -129,6 +132,12 @@ const App = ({ history, location: { pathname } }) => {
         ref={mapRef}
         editMode={editMode}
       />
+
+      <Switch>
+        <Route exact path='/info' component={Info} />
+        <Route exact path='/regulamin' component={Regulamin} />
+        <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
+      </Switch>
 
     </Layout>
   )
