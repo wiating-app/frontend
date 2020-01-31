@@ -9,7 +9,9 @@ import {
 } from 'react-leaflet'
 import { makeStyles } from '@material-ui/core/styles'
 import { Icon } from 'leaflet'
+import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
+import 'react-leaflet-markercluster/dist/styles.min.css'
 import ContextMenu from './ContextMenu'
 import { getIconUrl } from '../utils/helpers'
 
@@ -81,26 +83,31 @@ const Map = React.forwardRef(({
         url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
         attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
       />
-      {props.points && props.points.map(item => {
-        const { location: { lat, lon }, type } = item._source
+      <MarkerClusterGroup
+        showCoverageOnHover={false}
+        maxClusterRadius={60}
+      >
+        {props.points && props.points.map(item => {
+          const { location: { lat, lon }, type } = item._source
 
-        return <Marker
-          key={item._id}
-          icon={new Icon({
-            iconUrl: getIconUrl(type),
-            iconSize: [30, 30],
-            iconAnchor: [15, 30],
-          })}
-          position={[lat, lon]}
-          onClick={() => {
-            const { _id: id, _source } = item
-            const point = { id, ..._source }
-            props.openLocationTab(point)
-            setContextMenu(null)
-            setActiveMarker([lat, lon])
-          }}
-        />
-      })}
+          return <Marker
+            key={item._id}
+            icon={new Icon({
+              iconUrl: getIconUrl(type),
+              iconSize: [30, 30],
+              iconAnchor: [15, 30],
+            })}
+            position={[lat, lon]}
+            onClick={() => {
+              const { _id: id, _source } = item
+              const point = { id, ..._source }
+              props.openLocationTab(point)
+              setContextMenu(null)
+              setActiveMarker([lat, lon])
+            }}
+          />
+        })}
+      </MarkerClusterGroup>
       {activeMarker &&
         <Marker
           icon={new Icon({
