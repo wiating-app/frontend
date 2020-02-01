@@ -5,11 +5,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg1123"
    version="1.1"
    viewBox="0 0 37.169804 44.110702"
    height="44.110703mm"
-   width="37.169804mm">
+   width="37.169804mm"
+   sodipodi:docname="water_source.svg"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="954"
+     inkscape:window-height="1015"
+     id="namedview157"
+     showgrid="false"
+     inkscape:zoom="4.7505478"
+     inkscape:cx="70.242149"
+     inkscape:cy="83.358808"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer2" />
   <defs
      id="defs1117" />
   <metadata
@@ -20,10 +44,20 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="background">
+    <path
+       inkscape:connector-curvature="0"
+       id="path3762-6"
+       style="fill:#eff4f4;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.03850921"
+       d="m 8.6598119,28.465574 c 5.9826371,5.939396 15.6837851,5.939396 21.6664221,0 5.983022,-5.939971 5.983022,-15.568652 0,-21.5085457 -5.982637,-5.939893 -15.683785,-5.939893 -21.665644,0 C 2.6775734,12.896922 2.6775734,22.526371 8.6598073,28.465574" />
+  </g>
   <g
      transform="translate(-88.47764,-26.1756)"
      id="layer1">
