@@ -48,7 +48,7 @@ const NavBar = ({
         <Dropdown
           items={languages.map(lang => ({
             label: lang.toUpperCase(),
-            onClick: () => setLanguage(lang),
+            callback: () => setLanguage(lang),
           }))}
           anchorOrigin={{
             vertical: 'bottom',
