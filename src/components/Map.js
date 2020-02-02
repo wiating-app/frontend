@@ -86,6 +86,7 @@ const Map = React.forwardRef(({
       <MarkerClusterGroup
         showCoverageOnHover={false}
         maxClusterRadius={60}
+        disableClusteringAtZoom={13}
       >
         {props.points && props.points.map(item => {
           const { location: { lat, lon }, type } = item._source
@@ -152,6 +153,10 @@ Map.defaultProps = {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    '& .marker-cluster > div': {
+      backgroundColor: '#6d5740',
+      color: 'white',
+    },
   },
   popup: {
     marginBottom: 50,
