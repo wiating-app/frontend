@@ -8,7 +8,7 @@ import {
   ScaleControl,
 } from 'react-leaflet'
 import { makeStyles } from '@material-ui/core/styles'
-import { Icon } from 'leaflet'
+import { Icon, DivIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
@@ -87,6 +87,14 @@ const Map = React.forwardRef(({
         showCoverageOnHover={false}
         maxClusterRadius={60}
         disableClusteringAtZoom={13}
+        iconCreateFunction={cluster => {
+          const count = cluster.getChildCount()
+          return new DivIcon({
+            html: count,
+            className: 'woodboard-cluster',
+            iconSize: [40, 40],
+          })
+        }}
       >
         {props.points && props.points.map(item => {
           const { location: { lat, lon }, type } = item._source
@@ -153,9 +161,21 @@ Map.defaultProps = {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    '& .marker-cluster > div': {
-      backgroundColor: '#6d5740',
-      color: 'white',
+    '& .leaflet-marker-icon': {
+      filter: 'drop-shadow(0 0 2px rgba(0,0,0,.33))',
+    },
+    '& .woodboard-cluster': {
+      backgroundColor: 'transparent',
+      backgroundImage: 'url(/woodboard.svg)',
+      backgroundSize: 'contain',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontWeight: 'bold',
+      color: '#522d19',
+      filter: 'drop-shadow(0 0 2px rgba(0,0,0,.33))',
     },
   },
   popup: {
