@@ -49,23 +49,18 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(2),
     width: 'auto',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-    },
   },
   searchIcon: {
-    display: 'none',
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: theme.spacing(5),
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(7),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
   },
   inputRoot: {
@@ -73,6 +68,7 @@ const useStyles = makeStyles(theme => ({
   },
   inputInput: {
     padding: theme.spacing(1),
+    paddingLeft: theme.spacing(5),
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {

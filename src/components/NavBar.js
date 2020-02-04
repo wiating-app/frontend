@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Avatar } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, Avatar, Hidden } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown, Menu } from '@material-ui/icons'
 import Form from 'react-standalone-form'
@@ -27,7 +27,7 @@ const NavBar = ({
   return (
     <AppBar position='relative' className={classes.root}>
       <Toolbar>
-        <Logo />
+        <Logo className={classes.logo} />
         <Form
           fields={['phrase']}
           callbackOnChange={async fields => {
@@ -86,9 +86,15 @@ const useStyles = makeStyles(theme => ({
   root: {
     zIndex: theme.zIndex.drawer + 1,
   },
-  search: {
+  logo: {
+    marginRight: theme.spacing(2),
     [theme.breakpoints.down('xs')]: {
       display: 'none',
+    },
+  },
+  search: {
+    [theme.breakpoints.down('sm')]: {
+      width: '50%',
     },
   },
   name: {

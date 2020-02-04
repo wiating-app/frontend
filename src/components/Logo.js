@@ -1,10 +1,10 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
-const Logo = () => {
+const Logo = ({ className }) => {
   const classes = useStyles()
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} ${className || ''}`}>
       <img
         src='/logo-app.png'
         srcSet='/logo-app@2x.png 2x'
