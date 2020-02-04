@@ -87,6 +87,7 @@ const Map = React.forwardRef(({
         showCoverageOnHover={false}
         maxClusterRadius={60}
         disableClusteringAtZoom={11}
+        spiderfyOnMaxZoom={false}
         iconCreateFunction={cluster => {
           const count = cluster.getChildCount()
           return new DivIcon({
