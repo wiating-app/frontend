@@ -69,6 +69,7 @@ module.exports = {
 
     new GenerateSW({
       clientsClaim: true,
+      skipWaiting: true,
       exclude: [
         /manifest\.json$/,
         /_redirects$/,
