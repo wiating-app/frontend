@@ -1,7 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ManifestPlugin = require('webpack-manifest-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin')
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
 
@@ -68,32 +67,10 @@ module.exports = {
       },
     ]),
 
-    new ManifestPlugin({
-      seed: {
-        short_name: 'Wiating',
-        name: 'Wiating',
-        icons: [
-          {
-            src: '/favicon/android-chrome-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/favicon/android-chrome-256x256.png',
-            sizes: '256x256',
-            type: 'image/png',
-          },
-        ],
-        theme_color: '#4c4c42',
-        background_color: '#4c4c42',
-        display: 'standalone',
-      },
-    }),
-
     new GenerateSW({
       clientsClaim: true,
       exclude: [
-        /asset-manifest\.json$/,
+        /manifest\.json$/,
         /_redirects$/,
       ],
     }),
