@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Avatar, Hidden } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown, Menu } from '@material-ui/icons'
 import Form from 'react-standalone-form'
@@ -54,7 +54,7 @@ const NavBar = ({
             vertical: 'bottom',
             horizontal: 'left',
           }}
-        >{language.toUpperCase()}</Dropdown>
+        >{language ? language.toUpperCase() : ''}</Dropdown>
         {loading
           ? <Typography>Loading...</Typography>
           : <Dropdown items={[

@@ -66,8 +66,8 @@ export const Auth0Provider = ({
     initAuth0()
   }, [])
 
-  return auth0
-    ? <Auth0Context.Provider
+  return (
+    <Auth0Context.Provider
       value={{
         loading,
         isLoggedIn,
@@ -94,5 +94,5 @@ export const Auth0Provider = ({
     >
       {children}
     </Auth0Context.Provider>
-    : <div>Loading...</div>
+  )
 }
