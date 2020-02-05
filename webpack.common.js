@@ -71,7 +71,6 @@ module.exports = {
       clientsClaim: true,
       skipWaiting: true,
       exclude: [
-        /manifest\.json$/,
         /_redirects$/,
       ],
     }),
