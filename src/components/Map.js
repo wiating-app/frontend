@@ -7,7 +7,9 @@ import {
   ZoomControl,
   ScaleControl,
 } from 'react-leaflet'
+import Control from 'react-leaflet-control'
 import { makeStyles } from '@material-ui/core/styles'
+import { GpsFixed } from '@material-ui/icons'
 import { Icon, DivIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
@@ -160,6 +162,14 @@ const Map = React.forwardRef(({
         />
       }
       <ZoomControl position='topright' />
+      {props.currentLocation &&
+        <Control position='topright'>
+          <button
+            className={`leaflet-bar ${classes.center}`}
+            onClick={() => mapRef.current.leafletElement.flyTo(props.currentLocation)}
+          ><GpsFixed className={classes.centerIcon} /></button>
+        </Control>
+      }
       <ScaleControl position='bottomright' imperial={false} />
     </MapComponent>
   )
@@ -201,6 +211,21 @@ const useStyles = makeStyles(theme => ({
       borderRadius: 0,
       border: 'none',
     },
+  },
+  center: {
+    width: 26,
+    height: 26,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: 'none',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#f4f4f4',
+    },
+  },
+  centerIcon: {
+    fontSize: 18,
   },
 }))
 

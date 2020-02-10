@@ -21,6 +21,7 @@
     "react-image-file-resizer": "^0.2.1",
     "react-image-gallery": "^0.9.1",
     "react-leaflet": "^2.5.0",
+    "react-leaflet-control": "^2.1.2",
     "react-leaflet-markercluster": "^2.0.0-rc3",
     "react-loading": "2.0.3",
     "react-perfect-scrollbar": "^1.5.3",
