@@ -2,6 +2,7 @@ import React from 'react'
 import { useSnackbar } from 'notistack'
 import api from '../api'
 import { useAuth0 } from '../auth0'
+import { useCurrentLocation } from '../containers/CurrentLocationProvider'
 import Map from '../components/Map'
 import Text from '../components/Text'
 
@@ -10,6 +11,7 @@ const MapContainer = React.forwardRef((props, ref) => {
   const [points, setPoints] = React.useState()
   const [initalPosition, setInitalPosition] = React.useState()
   const { enqueueSnackbar } = useSnackbar()
+  const currentLocation = useCurrentLocation()
 
   const mapRef = React.useRef()
   const {
@@ -57,6 +59,7 @@ const MapContainer = React.forwardRef((props, ref) => {
       setStoredPosition={coords => setStoredPosition(coords)}
       loadMapMarkers={viewport => loadMapMarkers(viewport)}
       points={points}
+      currentLocation={currentLocation}
       center={initalPosition && initalPosition.center}
       zoom={initalPosition && initalPosition.zoom}
       {...props}

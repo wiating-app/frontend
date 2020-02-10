@@ -148,6 +148,17 @@ const Map = React.forwardRef(({
           }} />
         </Popup>
       }
+      {props.currentLocation &&
+        <Marker
+          icon={new Icon({
+            iconUrl: '/location-icons/current.svg',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12],
+          })}
+          zIndexOffset={1100}
+          position={props.currentLocation}
+        />
+      }
       <ZoomControl position='topright' />
       <ScaleControl position='bottomright' imperial={false} />
     </MapComponent>

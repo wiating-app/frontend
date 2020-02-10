@@ -9,6 +9,7 @@ import App from './App'
 import { Auth0Provider } from './auth0'
 import history from './history'
 import TranslationsProvider from './containers/TranslationsProvider'
+import CurrentLocationProvider from './containers/CurrentLocationProvider'
 import * as serviceWorker from './serviceWorker'
 import theme from './theme'
 import formTheme from './utils/formTheme'
@@ -28,7 +29,9 @@ ReactDOM.render(
           <FormThemeProvider theme={formTheme}>
             <CssBaseline />
             <ThemeProvider theme={theme}>
-              <App />
+              <CurrentLocationProvider>
+                <App />
+              </CurrentLocationProvider>
             </ThemeProvider>
           </FormThemeProvider>
         </Auth0Provider>
