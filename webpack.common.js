@@ -73,7 +73,6 @@ module.exports = {
       exclude: [
         /_redirects$/,
       ],
-      skipWaiting: true, // TODO: Remove it when it will be sure that old service worker is unregistered everywhere.
     }),
   ],
 }
