@@ -1,7 +1,7 @@
 import { Workbox } from 'workbox-window'
 
 export default function() {
-  if ('serviceWorker' in navigator) {
+  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       const wb = new Workbox('/service-worker.js')
 
