@@ -29,7 +29,8 @@
     "react-router-dom": "^5.0.1",
     "react-standalone-form": "^0.9.1",
     "react-standalone-form-mui": "^0.1.11",
-    "validator": "^11.1.0"
+    "validator": "^11.1.0",
+    "workbox-window": "^5.0.0"
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",

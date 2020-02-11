@@ -8,6 +8,7 @@ import { FormThemeProvider } from 'react-standalone-form'
 import App from './App'
 import { Auth0Provider } from './auth0'
 import history from './history'
+import enableServiceWorker from './enableServiceWorker'
 import TranslationsProvider from './containers/TranslationsProvider'
 import CurrentLocationProvider from './containers/CurrentLocationProvider'
 import theme from './theme'
@@ -38,9 +39,4 @@ ReactDOM.render(
     </Router>
   </TranslationsProvider>, document.getElementById('root'))
 
-
-if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-  })
-}
+enableServiceWorker()
