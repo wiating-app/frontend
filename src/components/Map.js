@@ -9,7 +9,7 @@ import {
 } from 'react-leaflet'
 import Control from 'react-leaflet-control'
 import { makeStyles } from '@material-ui/core/styles'
-import { GpsFixed } from '@material-ui/icons'
+import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon, DivIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
@@ -162,14 +162,20 @@ const Map = React.forwardRef(({
         />
       }
       <ZoomControl position='topright' />
-      {props.currentLocation &&
-        <Control position='topright'>
-          <button
-            className={`leaflet-bar ${classes.center}`}
-            onClick={() => mapRef.current.leafletElement.flyTo(props.currentLocation)}
-          ><GpsFixed className={classes.centerIcon} /></button>
-        </Control>
-      }
+      <Control position='topright'>
+        <button
+          className={`leaflet-bar ${classes.center}`}
+          onClick={() => props.currentLocation &&
+            mapRef.current.leafletElement.flyTo(props.currentLocation)
+          }
+          disabled={!props.currentLocation}
+        >
+          {props.currentLocation
+            ? <GpsFixed className={classes.centerIcon} />
+            : <GpsNotFixed className={classes.centerIcon} />
+          }
+        </button>
+      </Control>
       <ScaleControl position='bottomright' imperial={false} />
     </MapComponent>
   )
@@ -222,6 +228,10 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     '&:hover': {
       backgroundColor: '#f4f4f4',
+    },
+    '&[disabled]': {
+      pointerEvents: 'none',
+      opacity: 0.67,
     },
   },
   centerIcon: {
