@@ -1,7 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { GenerateSW } = require('workbox-webpack-plugin')
+const { InjectManifest } = require('workbox-webpack-plugin')
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
 
 
@@ -67,12 +67,8 @@ module.exports = {
       },
     ]),
 
-    new GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true,
-      exclude: [
-        /_redirects$/,
-      ],
+    new InjectManifest({
+      swSrc: './src/src-sw.js',
     }),
   ],
 }
