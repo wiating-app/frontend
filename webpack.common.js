@@ -70,6 +70,9 @@ module.exports = {
     new InjectManifest({
       swSrc: './src/serviceWorker.js',
       swDest: 'service-worker.js',
+      exclude: [
+        /_redirects$/,
+      ],
     }),
   ],
 }
