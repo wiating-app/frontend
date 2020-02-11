@@ -28,6 +28,7 @@ const NavBar = ({
     <AppBar position='relative' className={classes.root}>
       <Toolbar>
         <Logo className={classes.logo} />
+        Test
         <Form
           fields={['phrase']}
           callbackOnChange={async fields => {
