@@ -70,6 +70,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     backgroundColor: 'white',
     minHeight: `calc(100% - ${theme.layout.mobileMiniMapHeight}px)`,
+    overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       boxShadow: theme.shadows[4],
     },
