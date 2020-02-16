@@ -8,7 +8,8 @@ import {
   ScaleControl,
 } from 'react-leaflet'
 import Control from 'react-leaflet-control'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { useMediaQuery } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon, DivIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
@@ -25,6 +26,9 @@ const Map = React.forwardRef(({
   const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
   const mapRef = React.useRef()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const isPhone = useMediaQuery(theme.breakpoints.down('sm'))
   const classes = useStyles()
 
   React.useEffect(() => {
@@ -32,6 +36,12 @@ const Map = React.forwardRef(({
       mapRef.current.leafletElement.panTo(activeMarker)
     }
   }, [activeMarker])
+
+  React.useEffect(() => {
+    if (isMobile) {
+      mapRef.current.leafletElement.invalidateSize()
+    }
+  }, [props.isLocationTabOpen, isMobile])
 
   // Handle refs.
   React.useImperativeHandle(ref, () => ({
@@ -54,6 +64,12 @@ const Map = React.forwardRef(({
     <MapComponent
       ref={mapRef}
       className={classes.root}
+      style={props.isLocationTabOpen && isMobile
+        ? isPhone
+          ? { height: theme.layout.mobileMiniMapHeight }
+          : { marginLeft: theme.layout.locationTabWidth }
+        : {}
+      }
       center={props.center}
       zoom={props.zoom}
       minZoom={5}

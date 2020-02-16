@@ -20,8 +20,8 @@ import LocationFormContainer from './containers/LocationFormContainer'
 const App = ({ history, location: { pathname } }) => {
   const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState([])
+  const isLocationTabOpen = location.pathname.startsWith('/location') || location.pathname.startsWith('/search')
   const editMode = pathname.endsWith('/edit') || pathname.endsWith('/new')
-
   const mapRef = React.useRef()
 
   React.useEffect(() => {
@@ -49,6 +49,7 @@ const App = ({ history, location: { pathname } }) => {
         refreshMap={async () => {
           await mapRef.current.loadMapMarkers()
         }}
+        isLocationTabOpen={isLocationTabOpen}
       >
         <Switch>
           <Route exact path='/search'>
@@ -121,15 +122,16 @@ const App = ({ history, location: { pathname } }) => {
           setCachedLocation(point)
           history.push(`/location/${point.id}`)
         }}
-        closeTab={() => history.push('/')}
         openAddMarkerTab={({ lat, lng: lon }) => {
           setCachedLocation({ location: { lat, lon } })
           history.push('/location/new')
         }}
+        closeTab={() => history.push('/')}
         updateCoordinates={({ lat, lng: lon }) => {
           setCachedLocation({ ...cachedLocation, location: { lon, lat } })
         }}
         ref={mapRef}
+        isLocationTabOpen={isLocationTabOpen}
         editMode={editMode}
       />
 

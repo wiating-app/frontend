@@ -1,5 +1,4 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
 import {
   Drawer,
   IconButton,
@@ -12,8 +11,8 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 
 const LocationTab = ({
   closeLocationTab,
+  isLocationTabOpen,
   children,
-  location,
 }) => {
   const classes = useStyles()
   const theme = useTheme()
@@ -21,7 +20,7 @@ const LocationTab = ({
 
   return (
     <Drawer
-      open={location.pathname.startsWith('/location') || location.pathname.startsWith('/search')}
+      open={isLocationTabOpen}
       variant='persistent'
       anchor={matches ? 'left' : 'bottom'}
       className={classes.drawer}
@@ -50,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[3],
     backgroundColor: 'transparent',
     [theme.breakpoints.up('sm')]: {
-      width: 400,
+      width: theme.layout.locationTabWidth,
       height: '100%',
       marginTop: 0,
     },
@@ -59,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0,
   },
   mapSpacer: {
-    height: 240,
+    height: theme.layout.mobileMiniMapHeight,
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
@@ -70,6 +69,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: 'white',
+    minHeight: `calc(100% - ${theme.layout.mobileMiniMapHeight}px)`,
     [theme.breakpoints.down('sm')]: {
       boxShadow: theme.shadows[4],
     },
@@ -89,4 +89,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default withRouter(LocationTab)
+export default LocationTab
