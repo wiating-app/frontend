@@ -27,7 +27,7 @@ const LocationTab = ({
       classes={{ paper: classes.drawerPaper }}
     >
       <div className={classes.toolbar} />
-      <PerfectScrollbar>
+      <PerfectScrollbar swipeEasing={false}>
         <div className={classes.mapSpacer} />
         <div className={classes.inner}>
           <IconButton

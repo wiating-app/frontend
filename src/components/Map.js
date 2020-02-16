@@ -27,8 +27,8 @@ const Map = React.forwardRef(({
   const [contextMenu, setContextMenu] = React.useState()
   const mapRef = React.useRef()
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const isPhone = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
   const classes = useStyles()
 
   React.useEffect(() => {
@@ -177,21 +177,25 @@ const Map = React.forwardRef(({
           position={props.currentLocation}
         />
       }
-      <ZoomControl position='topright' />
-      <Control position='topright'>
-        <button
-          className={`leaflet-bar ${classes.center}`}
-          onClick={() => props.currentLocation &&
-            mapRef.current.leafletElement.flyTo(props.currentLocation)
-          }
-          disabled={!props.currentLocation}
-        >
-          {props.currentLocation
-            ? <GpsFixed className={classes.centerIcon} />
-            : <GpsNotFixed className={classes.centerIcon} />
-          }
-        </button>
-      </Control>
+      {(!props.isLocationTabOpen || !isPhone) &&
+        <>
+          <ZoomControl position='topright' />
+          <Control position='topright'>
+            <button
+              className={`leaflet-bar ${classes.center}`}
+              onClick={() => props.currentLocation &&
+                mapRef.current.leafletElement.flyTo(props.currentLocation)
+              }
+              disabled={!props.currentLocation}
+            >
+              {props.currentLocation
+                ? <GpsFixed className={classes.centerIcon} />
+                : <GpsNotFixed className={classes.centerIcon} />
+              }
+            </button>
+          </Control>
+        </>
+      }
       <ScaleControl position='bottomright' imperial={false} />
     </MapComponent>
   )
