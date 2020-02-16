@@ -12,7 +12,6 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 
 const LocationTab = ({
   closeLocationTab,
-  backToSearch,
   children,
   location,
 }) => {
@@ -29,14 +28,17 @@ const LocationTab = ({
       classes={{ paper: classes.drawerPaper }}
     >
       <div className={classes.toolbar} />
-      <PerfectScrollbar className={classes.inner}>
-        <IconButton
-          size='small'
-          className={classes.close}
-          aria-label='close'
-          onClick={() => closeLocationTab()}
-        ><Close /></IconButton>
-        {children}
+      <PerfectScrollbar>
+        <div className={classes.mapSpacer} />
+        <div className={classes.inner}>
+          <IconButton
+            size='small'
+            className={classes.close}
+            aria-label='close'
+            onClick={() => closeLocationTab()}
+          ><Close /></IconButton>
+          {children}
+        </div>
       </PerfectScrollbar>
     </Drawer>
   )
@@ -46,6 +48,7 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     height: '100vh',
     boxShadow: theme.shadows[3],
+    backgroundColor: 'transparent',
     [theme.breakpoints.up('sm')]: {
       width: 400,
       height: '100%',
@@ -55,12 +58,24 @@ const useStyles = makeStyles(theme => ({
   drawer: {
     flexShrink: 0,
   },
+  mapSpacer: {
+    height: 240,
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
   toolbar: theme.mixins.toolbar,
   inner: {
     position: 'relative',
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: 'white',
+    [theme.breakpoints.down('sm')]: {
+      boxShadow: theme.shadows[4],
+    },
+    [theme.breakpoints.up('sm')]: {
+      minHeight: '100%',
+    },
   },
   close: {
     position: 'absolute',
