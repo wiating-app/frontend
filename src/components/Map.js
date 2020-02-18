@@ -210,7 +210,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     '& .leaflet-marker-icon': {
-      filter: 'drop-shadow(0 0 2px rgba(0,0,0,.33))',
+      filter: 'drop-shadow(0 0 1px rgb(0,0,0))',
     },
     '& .woodboard-cluster': {
       backgroundColor: 'transparent',
@@ -223,7 +223,7 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'center',
       fontWeight: 'bold',
       color: '#522d19',
-      filter: 'drop-shadow(0 0 2px rgba(0,0,0,.33))',
+      filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.5))',
     },
   },
   popup: {
