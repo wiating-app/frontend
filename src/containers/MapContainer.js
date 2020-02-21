@@ -10,8 +10,9 @@ import Text from '../components/Text'
 const MapContainer = React.forwardRef((props, ref) => {
   const [points, setPoints] = React.useState()
   const [initalPosition, setInitalPosition] = React.useState()
+  // console.log('initalPosition: ', initalPosition);
   const { enqueueSnackbar } = useSnackbar()
-  const currentLocation = useCurrentLocation()
+  const { location, loading, error } = useCurrentLocation()
 
   const mapRef = React.useRef()
   const {
@@ -54,11 +55,10 @@ const MapContainer = React.forwardRef((props, ref) => {
   }, [])
 
   React.useEffect(() => {
-    console.log('initalPosition: ', initalPosition);
-    if ((!initalPosition || !Object.keys(initalPosition).length) && currentLocation) {
-      setInitalPosition(currentLocation)
+    if ((!initalPosition || !Object.keys(initalPosition).length) && location && !error) {
+      setInitalPosition({ center: location })
     }
-  }, [currentLocation])
+  }, [loading])
 
   return (
     <Map
@@ -66,7 +66,7 @@ const MapContainer = React.forwardRef((props, ref) => {
       setStoredPosition={coords => setStoredPosition(coords)}
       loadMapMarkers={viewport => loadMapMarkers(viewport)}
       points={points}
-      currentLocation={currentLocation}
+      currentLocation={location}
       center={initalPosition && initalPosition.center}
       zoom={initalPosition && initalPosition.zoom}
       {...props}

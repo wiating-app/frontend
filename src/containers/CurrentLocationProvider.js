@@ -1,13 +1,31 @@
 import React from 'react'
-import getCurrentLocation from '../utils/getCurrentLocation'
+
 
 const CurrentLocationContext = React.createContext([null, () => {}])
 
+
 const CurrentLocationProvider = ({ children }) => {
-  const [currentLocation, setCurrentLocation] = React.useState()
+  const [currentLocation, setCurrentLocation] = React.useState({
+    location: null,
+    loading: true,
+    error: false,
+  })
 
   React.useEffect(() => {
-    getCurrentLocation(location => setCurrentLocation(location))
+    getCurrentLocation(
+      // Success
+      location => setCurrentLocation({
+        location,
+        loading: false,
+        error: false,
+      }),
+      // Error
+      () => setCurrentLocation({
+        location: null,
+        loading: false,
+        error: true,
+      })
+    )
   }, [])
 
   return (
@@ -19,7 +37,28 @@ const CurrentLocationProvider = ({ children }) => {
 
 export default CurrentLocationProvider
 
+
 export const useCurrentLocation = () => {
   const [currentLocation] = React.useContext(CurrentLocationContext)
   return currentLocation
+}
+
+
+export const getCurrentLocation = (callback, error) => {
+  if (typeof window !== 'undefined' && 'geolocation' in navigator) {
+    // Check if geolocation is supported/enabled on current browser.
+    navigator.geolocation.getCurrentPosition(
+      function success(position) {
+        // For when getting location is a success.
+        callback([position.coords.latitude, position.coords.longitude])
+      },
+      function error(errorMessage) {
+        console.error('An error has occured while retrieving location.', errorMessage)
+        error('ERROR')
+      }
+    )
+  } else {
+    console.warn('Geolocation is not enabled on this browser.')
+    error('DISABLED')
+  }
 }
