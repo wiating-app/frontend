@@ -101,7 +101,7 @@ const LocationForm = ({
         onChange={value => {
           updateCurrentMarker(value)
         }}
-        addon={<Hint message='' />}
+        addon={<Hint message='Postaraj się jak najdokładniej umieścić pinezkę lokacji na mapie. Podczas dodawania nowej lokacji możesz przesuwać pinezkę, aby wyznaczyć lokalizację jak najdokładniej. Możesz też wpisać współrzędne w odpowiednie pole, wtedy pinezka przeniesie się w podane miejsce.' />}
       />
 
       <Checkbox

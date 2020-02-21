@@ -1,6 +1,6 @@
 import React from 'react'
 import { withFormControl } from 'react-standalone-form-mui'
-import { Input } from '@material-ui/core'
+import { Input, InputAdornment } from '@material-ui/core'
 
 
 const CoordinatesInput = ({
@@ -8,9 +8,9 @@ const CoordinatesInput = ({
   value,
   placeholder,
   required,
-  multiline,
   setValue,
   onChange,
+  addon,
 }) =>
   <Input
     id={name}
@@ -21,7 +21,10 @@ const CoordinatesInput = ({
     }}
     value={value || ''}
     placeholder={placeholder}
-    multiline={multiline}
+    startAdornment={addon
+      ? <InputAdornment position='start'>{addon}</InputAdornment>
+      : null
+    }
   />
 
 export default withFormControl(CoordinatesInput)
