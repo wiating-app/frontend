@@ -10,6 +10,13 @@ const theme = createMuiTheme({
     locationTabWidth: 400,
     mobileMiniMapHeight: 240,
   },
+  overrides: {
+    MuiFormControl: {
+      root: {
+        marginBottom: '16px !important',
+      },
+    },
+  },
 })
 
 export default theme

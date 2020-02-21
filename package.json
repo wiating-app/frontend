@@ -28,7 +28,7 @@
     "react-responsive-carousel": "^3.1.50",
     "react-router-dom": "^5.0.1",
     "react-standalone-form": "^0.9.1",
-    "react-standalone-form-mui": "^0.1.11",
+    "react-standalone-form-mui": "^0.1.14",
     "validator": "^11.1.0",
     "workbox-window": "^5.0.0"
   },
