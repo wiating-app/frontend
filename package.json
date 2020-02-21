@@ -34,6 +34,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
+    "start:netlify": "concurrently --kill-others 'yarn start' 'netlify dev'",
     "build": "webpack --config webpack.prod.js"
   },
   "babel": {
@@ -87,6 +88,7 @@
     "babel-loader": "^8.0.6",
     "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-import": "^1.12.2",
+    "concurrently": "^5.1.0",
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
     "cssnano": "^4.1.10",
@@ -101,6 +103,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
+    "netlify-cli": "^2.35.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "style-loader": "^1.0.0",
