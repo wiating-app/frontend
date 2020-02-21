@@ -91,7 +91,7 @@ const LocationForm = ({
         options={Object.entries(locationTypes).map(([value, label]) => {
           return { value, label: <Text id={label} /> }
         })}
-        addon={<Hint message='Wybierz odpowiedni typ miejsca. Dzięki temu na mapie pokaże się odpowiednia ikona i osoby zainteresowane, na przykład tylko wieżami widokowymi, będą mogły łatwo znaleźć Twoje miejsce.' />}
+        help='Wybierz odpowiedni typ miejsca. Dzięki temu na mapie pokaże się odpowiednia ikona i osoby zainteresowane, na przykład tylko wieżami widokowymi, będą mogły łatwo znaleźć Twoje miejsce.'
         initialValue={locationData && locationData.type}
       />
       <CoordinatesInput
