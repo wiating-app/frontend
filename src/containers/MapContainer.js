@@ -53,6 +53,13 @@ const MapContainer = React.forwardRef((props, ref) => {
     position && setInitalPosition(position)
   }, [])
 
+  React.useEffect(() => {
+    console.log('initalPosition: ', initalPosition);
+    if ((!initalPosition || !Object.keys(initalPosition).length) && currentLocation) {
+      setInitalPosition(currentLocation)
+    }
+  }, [currentLocation])
+
   return (
     <Map
       isLoggedIn={isLoggedIn}

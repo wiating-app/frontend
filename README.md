@@ -4,9 +4,19 @@
 
 In the project directory, you can run:
 
-### Before running
+### Local setup
 
-Just install all dependencies with `yarn install`.
+Clone the repository and Install all dependencies with `yarn install` command.
+
+If you want to let authentication work on your local, create `.env` file in root
+of a project with the following content:
+
+```
+REACT_APP_AUTH_CLIENT=123456
+```
+
+Replace `123456` with a valid client ID.
+
 
 ### `yarn start`
 

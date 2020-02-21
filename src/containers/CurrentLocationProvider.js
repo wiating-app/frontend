@@ -5,7 +5,6 @@ const CurrentLocationContext = React.createContext([null, () => {}])
 
 const CurrentLocationProvider = ({ children }) => {
   const [currentLocation, setCurrentLocation] = React.useState()
-  console.log('currentLocation: ', currentLocation);
 
   React.useEffect(() => {
     getCurrentLocation(location => setCurrentLocation(location))

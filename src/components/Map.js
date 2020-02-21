@@ -38,6 +38,12 @@ const Map = React.forwardRef(({
   }, [activeMarker])
 
   React.useEffect(() => {
+    if (props.center) {
+      // mapRef.current.leafletElement.panTo(activeMarker)
+    }
+  }, [props.center])
+
+  React.useEffect(() => {
     if (isMobile) {
       mapRef.current.leafletElement.invalidateSize()
     }
@@ -54,9 +60,9 @@ const Map = React.forwardRef(({
   }))
 
   const loadMapMarkers = async () => {
+    props.setStoredPosition(mapRef.current.viewport)
     const bounds = await mapRef.current.leafletElement.getBounds()
     props.loadMapMarkers(bounds)
-    props.setStoredPosition(mapRef.current.viewport)
   }
 
 

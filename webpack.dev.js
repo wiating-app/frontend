@@ -14,5 +14,6 @@ module.exports = merge(common, {
 
   plugins: [
     new Dotenv({ path: './.env.development' }),
+    new Dotenv({ path: './.env' }),
   ],
 })
