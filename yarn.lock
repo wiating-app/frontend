@@ -9896,10 +9896,10 @@ react-router@5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-standalone-form-mui@^0.1.14:
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/react-standalone-form-mui/-/react-standalone-form-mui-0.1.14.tgz#a18e6c97fcfdac24e97763d075894c6a3542383e"
-  integrity sha512-AzkjwPeDicKdhM3SZ5MklgXKv1HcMAJnz+KCUc2uH54MqU6sGgsOYQxeEIE9MCnXvGYAOkNKy6sQDvDIs31UVQ==
+react-standalone-form-mui@^0.1.15:
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/react-standalone-form-mui/-/react-standalone-form-mui-0.1.15.tgz#200e04f456d1cba75c6fb2026efc9668f70c0eed"
+  integrity sha512-4JrWNxYvtDRU6fUDN2c4K4Bx8J1gRYvgyfHDDe6ISoE15gaiMKjctq8NYflali7DS8GlmBjYS026oa5HYsmESA==
   dependencies:
     classnames "^2.2.6"
     react-standalone-form "^0.10.2"

@@ -9,6 +9,7 @@ import {
   FormActions,
 } from 'react-standalone-form-mui'
 import CoordinatesInput from './CoordinatesInput'
+import Hint from './Hint'
 import Text from './Text'
 import locationTypes from '../utils/locationTypes'
 
@@ -63,6 +64,7 @@ const LocationForm = ({
         label={<Text id='markerForm.place' />}
         min={5}
         initialValue={locationData && locationData.name}
+        addon={<Hint message='Postaraj się aby nazwa lokacji była krótka i unikatowa, związana z konkretnym miejscem które dodajesz, tak aby potem można je było łatwo znaleźć. Jeśli lokacja nie ma nazwy własnej (np. Schron Czumak) to warto nawiązać do charakterystycznych punktów znajdujących się w pobliżu. Staraj się unikać ogólnych nazw, takich jak „Wiata przy jeziorze”. Zamiast tego możesz napisać „Wiata przy jeziorze Bukowskim” albo „Chatka przy zielonym szlaku na Turbacz” co ułatwi przeglądanie i wyszukiwanie.' />}
       />
 
       <Input
@@ -70,6 +72,7 @@ const LocationForm = ({
         label={<Text id='markerForm.description' />}
         min={40}
         initialValue={locationData && locationData.description}
+        addon={<Hint message='W opisie podaj przydatne dla odwiedzających informacje, takie jak wielkość, liczbę miejsc, dostępność, ochrona przed deszczem, jakie są zasady korzystania, dane właściciela i inne adekwatne do dodawanej lokacji. W opisie nie podawaj: współrzędnych lokacji (jest na nie osobne pole), wskazówek dojścia na miejsce (również jest na to osobne pole), informacji o dostępności wody i ognia (są na to osobne pola na końcu formularza).' />}
         multiline
       />
 
@@ -78,6 +81,7 @@ const LocationForm = ({
         label={<Text id='locationInfo.directions' />}
         min={20}
         initialValue={locationData && locationData.directions}
+        addon={<Hint message='W polu wskazówki dojścia wpisz szczegóły gdzie leży dane miejsce i jak do niego dotrzeć, np. chatkowym szlakiem od odejścia zielonego, w kępie krzaków na łące, mostkiem od północy itp. Pomyśl, że jesteś już blisko, ale jest środek nocy i nic nie widać i ta informacja ma Cię doprowadzić do celu.' />}
         multiline
       />
 
@@ -87,6 +91,7 @@ const LocationForm = ({
         options={Object.entries(locationTypes).map(([value, label]) => {
           return { value, label: <Text id={label} /> }
         })}
+        addon={<Hint message='Wybierz odpowiedni typ miejsca. Dzięki temu na mapie pokaże się odpowiednia ikona i osoby zainteresowane, na przykład tylko wieżami widokowymi, będą mogły łatwo znaleźć Twoje miejsce.' />}
         initialValue={locationData && locationData.type}
       />
       <CoordinatesInput
@@ -96,6 +101,7 @@ const LocationForm = ({
         onChange={value => {
           updateCurrentMarker(value)
         }}
+        addon={<Hint message='' />}
       />
 
       <Checkbox
@@ -110,6 +116,7 @@ const LocationForm = ({
           label={<Text id='markerForm.waterDescription' />}
           min={40}
           initialValue={locationData && locationData.water && locationData.water.comment}
+          addon={<Hint message='Podaj szczegóły, np. jak wydajny jest strumień.' />}
           multiline
         />
       }
@@ -126,6 +133,7 @@ const LocationForm = ({
           label={<Text id='markerForm.fireDescription' />}
           min={40}
           initialValue={locationData && locationData.fire && locationData.fire.comment}
+          addon={<Hint message='Podaj szczegóły, np. skąd wziąć drewno.' />}
           multiline
         />
       }
