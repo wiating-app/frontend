@@ -9917,19 +9917,6 @@ react-standalone-form@^0.10.2:
     throttle-debounce "^2.1.0"
     validator "^10.11.0"
 
-react-standalone-form@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/react-standalone-form/-/react-standalone-form-0.9.1.tgz#3ab409f3e71c517f10446b434a765c5d6d3d49a4"
-  integrity sha512-uHJ5MxVv9jtofyBiD03A8bulOf5niQfNXaZABagbin9Nn21hlQvmdTDYx8waveQqsUr0sZONKBOwgKoaeSdqrQ==
-  dependencies:
-    bem-modifiers "^1.0.7"
-    polished "^3.0.3"
-    react-jss "^10.0.3"
-    react-loading "^2.0.3"
-    react-toastify "^5.1.0"
-    throttle-debounce "^2.1.0"
-    validator "^10.11.0"
-
 react-swipeable@^5.2.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-5.5.0.tgz#083300d27ffea96f27b49cee04925151515ae9ba"
