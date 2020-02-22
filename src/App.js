@@ -15,6 +15,7 @@ import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
 import SelectedLocationContainer from './containers/SelectedLocationContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
+import LogsContainer from './containers/LogsContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
@@ -139,6 +140,7 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/info' component={Info} />
         <Route exact path='/regulamin' component={Regulamin} />
         <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
+        <Route exact path='/log' component={LogsContainer} />
       </Switch>
 
     </Layout>
