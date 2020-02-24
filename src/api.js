@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+export const CancelToken = axios.CancelToken
+export const isCancel = axios.isCancel
 
 const authorization = () => {
   const user = localStorage.getItem('currentUser')
@@ -19,6 +21,5 @@ const api = axios.create({
     ...authorization(),
   },
 })
-
 
 export default api

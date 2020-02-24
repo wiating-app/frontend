@@ -28,7 +28,7 @@ const NavBarContainer = ({ setSearchResults, history }) => {
   }
 
   const links = [
-    isLoggedIn && { label: 'Pokaż logi', url: '/log', divider: true },
+    ...isLoggedIn ? [{ label: 'Pokaż logi', url: '/log', divider: true }] : [],
     { label: 'Informacje', url: '/info' },
     { label: 'Regulamin', url: '/regulamin' },
     { label: 'Polityka prywatności', url: '/polityka-prywatnosci', divider: true },

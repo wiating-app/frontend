@@ -62,6 +62,7 @@ export default {
       login: 'Logowanie',
       logout: 'Wyloguj',
     },
+    answerPermission: 'Czy chcesz włączyć pokazywanie bierzącej lokalizacji?',
   },
 
   en: {
@@ -127,5 +128,6 @@ export default {
       login: 'Login',
       logout: 'Logout',
     },
+    answerPermission: 'Odpowiedz na pytanie o uprawnienia',
   },
 }

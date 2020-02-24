@@ -25,6 +25,7 @@ const Map = React.forwardRef(({
 }, ref) => {
   const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
+  const [previousBounds, setPreviousBounds] = React.useState()
   const mapRef = React.useRef()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -38,8 +39,8 @@ const Map = React.forwardRef(({
   }, [activeMarker])
 
   React.useEffect(() => {
-    if (props.center) {
-      mapRef.current.leafletElement.panTo(props.center)
+    if (props.center && !activeMarker) {
+      mapRef.current.leafletElement.flyTo(props.center)
     }
   }, [props.center])
 
@@ -61,10 +62,14 @@ const Map = React.forwardRef(({
 
   const loadMapMarkers = async () => {
     const bounds = await mapRef.current.leafletElement.getBounds()
-    props.loadMapMarkers(bounds)
-    props.setStoredPosition(mapRef.current.viewport)
+    // Check whether viewport really changed to prevent a multiple calls for the
+    // same data.
+    if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
+      props.loadMapMarkers(bounds)
+      props.setStoredPosition(mapRef.current.viewport)
+      setPreviousBounds(bounds)
+    }
   }
-
 
   return (
     <MapComponent
@@ -82,7 +87,6 @@ const Map = React.forwardRef(({
       maxZoom={18}
       maxBounds={[[-90, -180], [90, 180]]}
       zoomControl={false}
-      whenReady={() => loadMapMarkers()}
       onMoveEnd={() => loadMapMarkers()}
       onContextMenu={e => {
         if (!props.editMode) {
@@ -208,7 +212,6 @@ const Map = React.forwardRef(({
 })
 
 Map.defaultProps = {
-  center: [50.39805, 16.844417],
   zoom: 7,
 }
 

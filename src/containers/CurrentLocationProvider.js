@@ -44,7 +44,7 @@ export const useCurrentLocation = () => {
 }
 
 
-export const getCurrentLocation = (callback, error) => {
+export const getCurrentLocation = (callback, errorCallback) => {
   if (typeof window !== 'undefined' && 'geolocation' in navigator) {
     // Check if geolocation is supported/enabled on current browser.
     navigator.geolocation.getCurrentPosition(
@@ -53,12 +53,12 @@ export const getCurrentLocation = (callback, error) => {
         callback([position.coords.latitude, position.coords.longitude])
       },
       function error(errorMessage) {
-        console.error('An error has occured while retrieving location.', errorMessage)
-        error('ERROR')
+        console.error(errorMessage.message)
+        errorCallback()
       }
     )
   } else {
     console.warn('Geolocation is not enabled on this browser.')
-    error('DISABLED')
+    errorCallback()
   }
 }
