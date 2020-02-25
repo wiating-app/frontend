@@ -1,8 +1,9 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
 import Overlay from './Overlay'
 import Table from './Table'
 import Pagination from './Pagination'
+import Actions from './Actions'
+
 
 const Logs = ({
   data,
@@ -11,26 +12,21 @@ const Logs = ({
   rowsInTotal,
   rowsPerPage,
 }) =>
-  <Overlay>
+  <Overlay wide>
     <h2>Logi (historia zmian)</h2>
     <Table
       data={data.map(item => ({
         ...item,
         location: <>{item.location.name}<br />({item.location._id})</>,
-        actions: <>
-          <Button
-            size='small'
-            color='primary'
-            variant='contained'
-            onClick={() => alert('W przyszłości ten przycisk będzie wyświetlał szczegóły danego loga.')}
-          >Zobacz</Button>
-          {' '}
-          <Button
-            size='small'
-            color='secondary'
-            onClick={() => confirm('Czy na pewno chcesz zbanować użytkownika, który był autorem tego loga?')}
-          >Banuj</Button>
-        </>,
+        actions: <Actions
+          primary={[
+            { label: 'Pokaż', action: () => alert('Wyświetlenie szczegółów danego loga.') },
+          ]}
+          secondary={[
+            { label: 'Cofnij akcję', action: () => alert('Cofnięcie akcji, która poskutkowała danym logiem.') },
+            { label: 'Zbanuj użytkownika', action: () => alert('Zablokowanie konta autora danego loga.') },
+          ]}
+        />,
       }))}
       labels={[
         { name: 'ID', field: '_id' },

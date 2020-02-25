@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import history from '../history'
 
 
-const Overlay = ({ children }) => {
-  const classes = useStyles()
+const Overlay = ({ wide, children }) => {
+  const classes = useStyles({ wide })
 
   return (
     <Modal
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
     position: 'relative',
-    width: 800,
+    width: ({ wide }) => wide ? 1200 : 800,
     maxWidth: '100vw',
     flexGrow: 1,
     boxSizing: 'border-box',
