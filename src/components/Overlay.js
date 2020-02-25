@@ -2,14 +2,15 @@ import React from 'react'
 import { Modal, IconButton, Slide } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
+import history from '../history'
 
 
-const Overlay = ({ onClose, children }) => {
+const Overlay = ({ children }) => {
   const classes = useStyles()
 
   return (
     <Modal
-      onClose={() => onClose && onClose()}
+      onClose={() => history.goBack()}
       className={classes.root}
       disablePortal
       open
@@ -21,7 +22,7 @@ const Overlay = ({ onClose, children }) => {
             {children}
             <IconButton
               className={classes.close}
-              onClick={() => onClose && onClose()}
+              onClick={() => history.goBack()}
             ><Close /></IconButton>
           </div>
         </Slide>

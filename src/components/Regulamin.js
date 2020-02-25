@@ -1,9 +1,8 @@
 import React from 'react'
 import Overlay from './Overlay'
-import history from '../history'
 
 const Regulamin = () =>
-  <Overlay onClose={() => history.goBack()}>
+  <Overlay>
     <h2>Regulamin</h2>
     <p>Dział w budowie</p>
   </Overlay>
