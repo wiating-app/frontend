@@ -1,9 +1,9 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import api from '../api'
-import { useAuth0 } from '../auth0'
+import { useAuth0 } from '../utils/auth0Provider'
 import NavBar from '../components/NavBar'
-import { LanguageContext } from '../containers/TranslationsProvider'
+import { LanguageContext } from '../utils/TranslationsProvider'
 
 const languages = ['pl', 'en']
 

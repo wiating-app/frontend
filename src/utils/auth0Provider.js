@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useSnackbar } from 'notistack'
 import createAuth0Client from '@auth0/auth0-spa-js'
-import api from './api'
-import Text from './components/Text'
+import api from '../api'
+import Text from '../components/Text'
 
 // Useful info about Auth0Provider configuration:
 // https://auth0.com/docs/quickstart/spa/react

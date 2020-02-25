@@ -1,6 +1,6 @@
 import React from 'react'
-import detectUserLanguage from '../utils/detectUserLanguage'
-import texts from '../utils/texts'
+import detectUserLanguage from './detectUserLanguage'
+import texts from './texts'
 
 
 export const TranslationsContext = React.createContext([null, () => {}])

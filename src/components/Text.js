@@ -1,6 +1,6 @@
 import React from 'react'
 import dot from 'dot-object'
-import { TranslationsContext } from '../containers/TranslationsProvider'
+import { TranslationsContext } from '../utils/TranslationsProvider'
 
 
 const Text = ({ id }) => {
