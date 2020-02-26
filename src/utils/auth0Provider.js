@@ -18,12 +18,19 @@ export const Auth0Provider = ({
   const [auth0, setAuth0] = useState()
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState()
-  const [isLoggedIn, setIsLoggedIn] = React.useState()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isModerator, setIsModerator] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     const initAuth0 = async () => {
       try {
+        const checkModerator = user => {
+          if (user[process.env.REACT_APP_AUTH_METADATA_KEY] &&
+            user[process.env.REACT_APP_AUTH_METADATA_KEY].role === process.env.REACT_APP_AUTH_MODERATOR_ROLE) {
+            setIsModerator(true)
+          }
+        }
         const auth0FromHook = await createAuth0Client(initOptions)
         setAuth0(auth0FromHook)
 
@@ -44,6 +51,7 @@ export const Auth0Provider = ({
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`
           setUser(user)
           setIsLoggedIn(isAuthenticated || false)
+          checkModerator(user)
           enqueueSnackbar(<Text id='auth.loginSuccessful' />, { variant: 'success' })
         } else {
           // Restore user session from auth0.
@@ -53,6 +61,7 @@ export const Auth0Provider = ({
             const token = await auth0FromHook.getTokenSilently()
             setUser(user || false)
             setIsLoggedIn(isAuthenticated || false)
+            checkModerator(user)
             api.defaults.headers.common['Authorization'] = `Bearer ${token}`
           }
         }
@@ -71,6 +80,7 @@ export const Auth0Provider = ({
       value={{
         loading,
         isLoggedIn,
+        isModerator,
         user,
         loginWithRedirect: p => {
           auth0.loginWithRedirect(p)

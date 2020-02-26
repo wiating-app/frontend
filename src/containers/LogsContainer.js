@@ -1,8 +1,10 @@
 import React from 'react'
 import Logs from '../components/Logs'
+import { useAuth0 } from '../utils/auth0Provider'
 
 
 const LogsContainer = () => {
+  const { isModerator } = useAuth0()
   const [page, setPage] = React.useState(0) // Page numeration starts at 0.
   const data = [
     {
@@ -26,13 +28,15 @@ const LogsContainer = () => {
   ]
   const rowsInTotal = 20
   return (
-    <Logs
-      data={data}
-      page={page}
-      setPage={setPage}
-      rowsInTotal={rowsInTotal}
-      rowsPerPage={3}
-    />
+    isModerator
+      ? <Logs
+        data={data}
+        page={page}
+        setPage={setPage}
+        rowsInTotal={rowsInTotal}
+        rowsPerPage={3}
+      />
+      : null
   )
 }
 
