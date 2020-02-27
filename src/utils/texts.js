@@ -30,6 +30,7 @@ export default {
     connectionProblem: {
       map: 'Nie można nawiązać połączenia z bazą lokacji.',
       location: 'Nie udało się pobrać danych lokacji.',
+      logs: 'Nie można połączyć się z bazą logów.',
     },
     markerForm: {
       heading: {
@@ -103,6 +104,7 @@ export default {
     connectionProblem: {
       map: 'Could not connect to the database of locations.',
       location: 'Could not load the location details.',
+      logs: 'Could not connect to the database of locations.',
     },
     markerForm: {
       heading: {

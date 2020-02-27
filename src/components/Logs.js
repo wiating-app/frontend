@@ -13,11 +13,13 @@ const Logs = ({
   rowsPerPage,
 }) =>
   <Overlay wide>
-    <h2>Logi (historia zmian)</h2>
+    <h2>Administracja - Logi (historia zmian)</h2>
     <Table
       data={data.map(item => ({
-        ...item,
-        location: <>{item.location.name}<br />({item.location._id})</>,
+        id: item._id,
+        timestamp: item._source.timestamp,
+        location: <>{item._source.name}<br />({item._source.doc_id})</>,
+        user: item._source.modified_by,
         actions: <Actions
           primary={[
             { label: 'Pokaż', action: () => alert('Wyświetlenie szczegółów danego loga.') },
@@ -29,7 +31,7 @@ const Logs = ({
         />,
       }))}
       labels={[
-        { name: 'ID', field: '_id' },
+        { name: 'ID', field: 'id' },
         { name: 'Data', field: 'timestamp' },
         { name: 'Lokacja', field: 'location' },
         { name: 'Użytkownik', field: 'user' },
