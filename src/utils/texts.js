@@ -30,7 +30,7 @@ export default {
     connectionProblem: {
       map: 'Nie można nawiązać połączenia z bazą lokacji.',
       location: 'Nie udało się pobrać danych lokacji.',
-      logs: 'Nie można połączyć się z bazą logów.',
+      logs: 'Nie udało się połączyć z bazą logów :(',
     },
     markerForm: {
       heading: {
