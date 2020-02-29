@@ -28,7 +28,7 @@ const exportToKML = locations => {
     const placemarks = locations.reduce((acc, { _source }) => [
       ...acc,
       '    <Placemark>',
-      `      <name>[${dot.pick(locationTypes[_source.type], texts.pl)}] ${_source.name}</name>`,
+      `      <name><![CDATA[[${dot.pick(locationTypes[_source.type], texts.pl)}] ${_source.name}]]></name>`,
       '      <description>',
       '        <![CDATA[',
       `          <p>${_source.description}</p>`,
