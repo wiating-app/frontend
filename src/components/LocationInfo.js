@@ -63,7 +63,7 @@ const LocationInfo = ({
             >
               {!selectedLocation.water.exists
                 ? 'Brak.'
-                : selectedLocation.water.comment || 'Jest.'
+                : selectedLocation.water.comment || <Text id='is' />
               }
             </Typography>
           }

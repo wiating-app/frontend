@@ -17,6 +17,7 @@ import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import ContextMenu from './ContextMenu'
 import { getIconUrl } from '../utils/helpers'
+import exportToKML from '../utils/exportToKML'
 
 
 const Map = React.forwardRef(({
@@ -192,17 +193,24 @@ const Map = React.forwardRef(({
           <ZoomControl position='topright' />
           <Control position='topright'>
             <button
-              className={`leaflet-bar ${classes.center}`}
+              className={`leaflet-bar ${classes.customControl}`}
               onClick={() => props.currentLocation &&
                 mapRef.current.leafletElement.flyTo(props.currentLocation)
               }
               disabled={!props.currentLocation}
             >
               {props.currentLocation
-                ? <GpsFixed className={classes.centerIcon} />
-                : <GpsNotFixed className={classes.centerIcon} />
+                ? <GpsFixed className={classes.customControlIcon} />
+                : <GpsNotFixed className={classes.customControlIcon} />
               }
             </button>
+          </Control>
+          <Control position='topright'>
+            <button
+              className={`leaflet-bar ${classes.customControl}`}
+              onClick={() => exportToKML(props.points)}
+              disabled={!props.points || !props.points.length}
+            >KML</button>
           </Control>
         </>
       }
@@ -247,7 +255,7 @@ const useStyles = makeStyles(theme => ({
       border: 'none',
     },
   },
-  center: {
+  customControl: {
     width: 26,
     height: 26,
     display: 'flex',
@@ -263,7 +271,7 @@ const useStyles = makeStyles(theme => ({
       opacity: 0.67,
     },
   },
-  centerIcon: {
+  customControlIcon: {
     fontSize: 18,
   },
 }))
