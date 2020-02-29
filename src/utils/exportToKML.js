@@ -15,12 +15,12 @@ const exportToKML = locations => {
     const header = [
       '<?xml version="1.0" encoding="UTF-8"?>',
       '<kml xmlns="http://www.opengis.net/kml/2.2">',
-      '  <Folder>',
+      '  <Document>',
       '    <name>Wiating</name>',
-      `    <description>Eksport z aplikacji Wiating z dnia ${date}.</description>`,
+      `    <description>Eksport z aplikacji Wiating (https://mapa.wiating.eu) z dnia ${date}.</description>`,
     ]
     const footer = [
-      '  </Folder>',
+      '  </Document>',
       '</kml>',
     ]
 
