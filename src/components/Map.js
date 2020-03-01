@@ -191,9 +191,9 @@ const Map = React.forwardRef(({
       {(!props.isLocationTabOpen || !isPhone) &&
         <>
           <ZoomControl position='topright' />
-          <Control position='topright'>
-            <button
-              className={`leaflet-bar ${classes.customControl}`}
+          <Control position='topright' className='leaflet-bar'>
+            <a
+              className={classes.customControl}
               onClick={() => props.currentLocation &&
                 mapRef.current.leafletElement.flyTo(props.currentLocation)
               }
@@ -203,14 +203,14 @@ const Map = React.forwardRef(({
                 ? <GpsFixed className={classes.customControlIcon} />
                 : <GpsNotFixed className={classes.customControlIcon} />
               }
-            </button>
+            </a>
           </Control>
-          <Control position='topright'>
-            <button
-              className={`leaflet-bar ${classes.customControl}`}
+          <Control position='topright' className='leaflet-bar'>
+            <a
+              className={classes.customControl}
               onClick={() => exportToKML(props.points)}
               disabled={!props.points || !props.points.length}
-            >KML</button>
+            >KML</a>
           </Control>
         </>
       }
@@ -256,16 +256,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
   customControl: {
-    width: 26,
-    height: 26,
-    display: 'flex',
-    justifyContent: 'center',
+    display: 'flex !important',
     alignItems: 'center',
-    border: 'none',
+    justifyContent: 'center',
     cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#f4f4f4',
-    },
     '&[disabled]': {
       pointerEvents: 'none',
       opacity: 0.67,
