@@ -13,30 +13,34 @@ import TranslationsProvider from './utils/TranslationsProvider'
 import CurrentLocationProvider from './utils/CurrentLocationProvider'
 import theme from './theme'
 import formTheme from './utils/formTheme'
+import Maintenance from './components/Maintenance'
 
 
 ReactDOM.render(
   <TranslationsProvider>
-    <Router history={history}>
-      <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-        <Auth0Provider
-          domain={process.env.REACT_APP_AUTH_DOMAIN}
-          client_id={process.env.REACT_APP_AUTH_CLIENT}
-          redirect_uri={window.location.origin}
-          responseType='token id_token'
-          getTokenSilently
-        >
-          <FormThemeProvider theme={formTheme}>
-            <CssBaseline />
-            <ThemeProvider theme={theme}>
-              <CurrentLocationProvider>
-                <App />
-              </CurrentLocationProvider>
-            </ThemeProvider>
-          </FormThemeProvider>
-        </Auth0Provider>
-      </SnackbarProvider>
-    </Router>
+    <ThemeProvider theme={theme}>
+      {process.env.MAINTENANCE === 'true'
+        ? <Maintenance />
+        : <Router history={history}>
+          <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+            <Auth0Provider
+              domain={process.env.REACT_APP_AUTH_DOMAIN}
+              client_id={process.env.REACT_APP_AUTH_CLIENT}
+              redirect_uri={window.location.origin}
+              responseType='token id_token'
+              getTokenSilently
+            >
+              <FormThemeProvider theme={formTheme}>
+                <CssBaseline />
+                <CurrentLocationProvider>
+                  <App />
+                </CurrentLocationProvider>
+              </FormThemeProvider>
+            </Auth0Provider>
+          </SnackbarProvider>
+        </Router>
+      }
+    </ThemeProvider>
   </TranslationsProvider>, document.getElementById('root'))
 
 enableServiceWorker()
