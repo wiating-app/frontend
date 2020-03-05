@@ -13,17 +13,20 @@ const LogDetails = ({
   loadingBan,
   loadingRevert,
 }) => {
-  console.log('log details: ', data)
-  const changed = Object.entries(data.changed).map(([name, values]) => ({
-    name,
-    old: values.old_value || <Clear color='disabled' />,
-    new: values.new_value || <Clear color='disabled' />,
-  }))
-  const added = Object.entries(data.added).map(([name, value]) => ({
-    name,
-    old: <Clear color='disabled' />,
-    new: value || <Clear color='disabled' />,
-  }))
+  const changed = data.changed
+    ? Object.entries(data.changed).map(([name, values]) => ({
+      name,
+      old: values.old_value || <Clear color='disabled' />,
+      new: values.new_value || <Clear color='disabled' />,
+    }))
+    : []
+  const added = data.added
+    ? Object.entries(data.added).map(([name, value]) => ({
+      name,
+      old: <Clear color='disabled' />,
+      new: value || <Clear color='disabled' />,
+    }))
+    : []
   const modifications = [...changed, ...added]
 
   return (
