@@ -64,7 +64,7 @@ const LogsContainer = () => {
         }), {}),
       }
       console.log('dataObject: ', dataObject);
-      // await api.post('modify_point', dataObject)
+      await api.post('modify_point', dataObject)
       setDetails(null)
       enqueueSnackbar('Przywrócono poprzedni stan lokacji.', { variant: 'success' })
     } catch (err) {
