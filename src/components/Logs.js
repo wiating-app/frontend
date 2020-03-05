@@ -25,7 +25,7 @@ const Logs = ({
         <Typography
           variant='h4'
           gutterBottom
-        >Administracja - Logi (historia zmian)</Typography>
+        >Administracja - historia zmian</Typography>
         {loading
           ? <Loader loading={loading} error={error} dark big />
           : error
@@ -39,11 +39,7 @@ const Logs = ({
                   user: item._source.modified_by,
                   actions: <Actions
                     primary={[
-                      { label: 'Pokaż', action: () => setDetails({ id: item._id, ...item._source }) },
-                    ]}
-                    secondary={[
-                      { label: 'Cofnij zmianę', action: () => alert('Cofnięcie akcji, która poskutkowała danym logiem.') },
-                      { label: 'Zbanuj użytkownika', action: () => alert('Zablokowanie konta autora danego loga.') },
+                      { label: 'Szczegóły', action: () => setDetails({ id: item._id, ...item._source }) },
                     ]}
                   />,
                 }))}
@@ -51,8 +47,8 @@ const Logs = ({
                   { name: 'ID', field: 'id' },
                   { name: 'Data', field: 'timestamp' },
                   { name: 'Lokacja', field: 'location' },
-                  { name: 'Użytkownik', field: 'user' },
-                  { name: 'Akcje', field: 'actions' },
+                  { name: 'Identyfikator użytkownika', field: 'user' },
+                  { name: '', field: 'actions' },
                 ]}
               />
               {rowsInTotal > rowsPerPage &&
@@ -66,7 +62,13 @@ const Logs = ({
             </>
         }
       </Modal>
-      {details && <LogDetails data={details} /> }
+      {details &&
+        <LogDetails
+          data={details}
+          banCallback={() => {}}
+          revertCallback={() => {}}
+        />
+      }
     </>
   )
 }

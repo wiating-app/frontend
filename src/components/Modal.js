@@ -2,6 +2,7 @@ import React from 'react'
 import { Modal as MUIModal, IconButton, Slide } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import history from '../history'
 
 
@@ -18,13 +19,13 @@ const Modal = ({ wide, short, children }) => {
       <>
         <div className={classes.toolbar} />
         <Slide direction='up' in mountOnEnter unmountOnExit>
-          <div className={classes.content}>
+          <PerfectScrollbar className={classes.content}>
             {children}
             <IconButton
               className={classes.close}
               onClick={() => history.goBack()}
             ><Close /></IconButton>
-          </div>
+          </PerfectScrollbar>
         </Slide>
       </>
     </MUIModal>
@@ -42,9 +43,9 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
     position: 'relative',
-    width: ({ wide }) => wide ? 1200 : 800,
-    marginTop: ({ short }) => short ? 50 : 0,
-    marginBottom: ({ short }) => short ? 50 : 0,
+    width: ({ wide }) => wide ? 1200 : 900,
+    marginTop: ({ short }) => short ? 30 : 0,
+    marginBottom: ({ short }) => short ? 30 : 0,
     maxWidth: '100vw',
     flexGrow: 1,
     boxSizing: 'border-box',
