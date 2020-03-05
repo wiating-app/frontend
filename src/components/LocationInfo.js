@@ -18,6 +18,7 @@ const LocationInfo = ({
   selectedLocation,
   onImageUpload,
 }) => {
+  console.log('selectedLocation: ', selectedLocation);
   const classes = useStyles()
   const [imagesLoading, setImagesLoading] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
@@ -44,7 +45,6 @@ const LocationInfo = ({
         {selectedLocation.directions &&
           <Typography
             variant='body1'
-            component='span'
             gutterBottom
           ><strong><Text id='locationInfo.directions' />:</strong> {selectedLocation.directions}</Typography>
         }
@@ -55,18 +55,16 @@ const LocationInfo = ({
             component='span'
           ><Text id='locationInfo.waterAccess' />: </Typography>
 
-          {selectedLocation.water &&
-            <Typography
-              variant='body2'
-              gutterBottom
-              component='span'
-            >
-              {!selectedLocation.water.exists
-                ? 'Brak.'
-                : selectedLocation.water.comment || <Text id='is' />
-              }
-            </Typography>
-          }
+          <Typography
+            variant='body2'
+            gutterBottom
+            component='span'
+          >
+            {!selectedLocation.water_exists
+              ? <Text id='none' />
+              : selectedLocation.water_comment || <Text id='is' />
+            }
+          </Typography>
         </div>
 
         <div>
@@ -75,18 +73,16 @@ const LocationInfo = ({
             component='span'
           ><Text id='locationInfo.fireAccess' />: </Typography>
 
-          {selectedLocation.fire &&
-            <Typography
-              variant='body2'
-              gutterBottom
-              component='span'
-            >
-              {!selectedLocation.fire.exists
-                ? <Text id='none' />
-                : selectedLocation.fire.comment || <Text id='is' />
-              }.
-            </Typography>
-          }
+          <Typography
+            variant='body2'
+            gutterBottom
+            component='span'
+          >
+            {!selectedLocation.fire_exists
+              ? <Text id='none' />
+              : selectedLocation.fire_comment || <Text id='is' />
+            }.
+          </Typography>
         </div>
 
       </div>

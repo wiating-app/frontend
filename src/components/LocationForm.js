@@ -113,7 +113,7 @@ const LocationForm = ({
       <Checkbox
         name='water_exists'
         text={<Text id='locationInfo.waterAccess' />}
-        initialValue={locationData && locationData.water && locationData.water.exists}
+        initialValue={locationData && locationData.water_exists}
       />
 
       {hasWater &&
@@ -122,7 +122,7 @@ const LocationForm = ({
             name='water_comment'
             label={<Text id='markerForm.waterDescription' />}
             min={40}
-            initialValue={locationData && locationData.water && locationData.water.comment}
+            initialValue={locationData && locationData.water_comment}
             multiline
           />
         </HintWrapper>
@@ -131,7 +131,7 @@ const LocationForm = ({
       <Checkbox
         name='fire_exists'
         text={<Text id='locationInfo.fireAccess' />}
-        initialValue={locationData && locationData.fire && locationData.fire.exists}
+        initialValue={locationData && locationData.fire_exists}
       />
 
       {hasFire &&
@@ -140,7 +140,7 @@ const LocationForm = ({
             name='fire_comment'
             label={<Text id='markerForm.fireDescription' />}
             min={40}
-            initialValue={locationData && locationData.fire && locationData.fire.comment}
+            initialValue={locationData && locationData.fire_comment}
             multiline
           />
         </HintWrapper>
