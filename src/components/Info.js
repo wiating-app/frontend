@@ -1,10 +1,10 @@
 import React from 'react'
-import Overlay from './Overlay'
+import Modal from './Modal'
 
 const Info = () =>
-  <Overlay>
+  <Modal>
     <h2>Informacje</h2>
     <p>Dział w budowie</p>
-  </Overlay>
+  </Modal>
 
 export default Info

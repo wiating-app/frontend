@@ -1,15 +1,15 @@
 import React from 'react'
-import { Modal, IconButton, Slide } from '@material-ui/core'
+import { Modal as MUIModal, IconButton, Slide } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import history from '../history'
 
 
-const Overlay = ({ wide, children }) => {
-  const classes = useStyles({ wide })
+const Modal = ({ wide, short, children }) => {
+  const classes = useStyles({ wide, short })
 
   return (
-    <Modal
+    <MUIModal
       onClose={() => history.goBack()}
       className={classes.root}
       disablePortal
@@ -27,7 +27,7 @@ const Overlay = ({ wide, children }) => {
           </div>
         </Slide>
       </>
-    </Modal>
+    </MUIModal>
   )
 }
 
@@ -43,6 +43,8 @@ const useStyles = makeStyles(theme => ({
   content: {
     position: 'relative',
     width: ({ wide }) => wide ? 1200 : 800,
+    marginTop: ({ short }) => short ? 50 : 0,
+    marginBottom: ({ short }) => short ? 50 : 0,
     maxWidth: '100vw',
     flexGrow: 1,
     boxSizing: 'border-box',
@@ -65,4 +67,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default Overlay
+export default Modal

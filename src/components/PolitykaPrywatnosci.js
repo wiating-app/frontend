@@ -1,10 +1,10 @@
 import React from 'react'
-import Overlay from './Overlay'
+import Modal from './Modal'
 
 const PolitykaPrywatnosci = () =>
-  <Overlay>
+  <Modal>
     <h2>Polityka prywatności</h2>
     <p>Dział w budowie</p>
-  </Overlay>
+  </Modal>
 
 export default PolitykaPrywatnosci
