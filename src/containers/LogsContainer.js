@@ -15,17 +15,19 @@ const LogsContainer = () => {
   const [loadingBan, setLoadingBan] = React.useState(false)
   const [loadingRevert, setLoadingRevert] = React.useState(false)
   const [page, setPage] = React.useState(0) // Page numeration starts at 0.
+  const [logsTotal, setlogsTotal] = React.useState()
   const rowsPerPage = 3
   const [details, setDetails] = React.useState()
 
   const getLogs = async page => {
     try {
       setLoadingLogs(true)
-      const { data: { logs } } = await api.post('get_logs', {
+      const { data: { logs }, total } = await api.post('get_logs', {
         size: rowsPerPage,
         offset: rowsPerPage * page,
       })
       setLogs(logs)
+      setlogsTotal(total)
     } catch (err) {
       console.error(err)
       setErrorLogs(true)
@@ -34,8 +36,6 @@ const LogsContainer = () => {
   }
   React.useEffect(() => { isModerator && getLogs(page) }, [isModerator])
   React.useEffect(() => { isModerator && getLogs(page) }, [page])
-
-  const rowsInTotal = 20
 
   const banCallback = async userId => {
     try {
@@ -85,7 +85,7 @@ const LogsContainer = () => {
           loadingRevert={loadingRevert}
           page={page}
           setPage={setPage}
-          rowsInTotal={rowsInTotal}
+          rowsInTotal={logsTotal}
           rowsPerPage={rowsPerPage}
           banCallback={banCallback}
           revertCallback={revertCallback}
