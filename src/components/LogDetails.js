@@ -3,21 +3,29 @@ import { Button, Typography, Grid } from '@material-ui/core'
 import { Clear } from '@material-ui/icons'
 import Modal from './Modal'
 import Table from './Table'
+import Loader from './Loader'
 
-const LogDetails = ({ data, banCallback, revertCallback }) => {
-  console.log('data: ', data);
+
+const LogDetails = ({
+  data,
+  banCallback,
+  revertCallback,
+  loadingBan,
+  loadingRevert,
+}) => {
+  console.log('log details: ', data)
   const changed = Object.entries(data.changed).map(([name, values]) => ({
     name,
-    old: values.old_value || <Clear />,
-    new: values.new_value || <Clear />,
+    old: values.old_value || <Clear color='disabled' />,
+    new: values.new_value || <Clear color='disabled' />,
   }))
   const added = Object.entries(data.added).map(([name, value]) => ({
     name,
-    old: <Clear />,
-    new: value || <Clear />,
+    old: <Clear color='disabled' />,
+    new: value || <Clear color='disabled' />,
   }))
   const modifications = [...changed, ...added]
-  console.log('modifications: ', modifications);
+
   return (
     <Modal short>
       <Typography variant='h5' gutterBottom>Szczegóły loga {data.id}</Typography>
@@ -46,14 +54,18 @@ const LogDetails = ({ data, banCallback, revertCallback }) => {
         <Grid item>
           <Button
             variant='contained'
-            onClick={() => banCallback()}
-          >Zbanuj autora</Button>
+            onClick={() => banCallback(data.modified_by)}
+            disabled={!banCallback}
+          >
+            {loadingBan && <Loader dark />}
+            {banCallback ? 'Zbanuj autora' : 'Nie możesz zbanować sam(a) siebie'}
+          </Button>
         </Grid>
         <Grid item>
           <Button
             variant='contained'
-            onClick={() => revertCallback()}
-          >Przywróć poprzednią wersję</Button>
+            onClick={() => revertCallback(data.id, data.changed, data.added)}
+          >{loadingRevert && <Loader dark />}Przywróć poprzednią wersję</Button>
         </Grid>
       </Grid>
     </Modal>
