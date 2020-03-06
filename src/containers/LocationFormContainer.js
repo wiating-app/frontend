@@ -35,10 +35,9 @@ const LocationFormContainer = ({
       if (id) {
         const handleAsync = async () => {
           try {
-            const { data: { _id, _source } } = await api.post('get_point', { id })
-            const newData = { id: _id, ..._source }
-            setLocation(newData)
-            setCachedLocation(newData)
+            const { data } = await api.post('get_point', { id })
+            setLocation(data)
+            setCachedLocation(data)
           } catch (error) {
             setError(true)
           }
@@ -67,7 +66,7 @@ const LocationFormContainer = ({
 
     try {
       const { lat, lon } = parse(location)
-      const data = {
+      const dataObject = {
         name,
         description,
         directions,
@@ -75,28 +74,25 @@ const LocationFormContainer = ({
         lon: lon,
         type,
         water_exists: water_exists || false,
-        water_comment: water_exists ? water_comment : false,
+        water_comment: water_exists && water_comment ? water_comment : null,
         fire_exists: fire_exists || false,
-        fire_comment: fire_exists ? fire_comment : false,
+        fire_comment: fire_exists && fire_comment ? fire_comment : null,
       }
+      console.log('dataObject: ', dataObject);
 
       if (isNew) {
         // New marker creation.
-        const { data: { _id, _source } } = await api.post('add_point', data)
-        console.log('response: ', _id, _source)
-        const newData = { id: _id, ..._source }
-        setLocation(newData)
-        setCachedLocation(newData)
+        const { data } = await api.post('add_point', dataObject)
+        setLocation(data)
+        setCachedLocation(data)
         history.push(`/location/${_id}`)
         enqueueSnackbar(<Text id='notifications.newMarkerAdded' />, { variant: 'success' })
       } else {
         // Updating exisitng marker.
         const { id } = cachedLocation
-        const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
-        console.log('response: ', _id, _source)
-        const newData = { id: _id, ..._source }
-        setLocation(newData)
-        setCachedLocation(newData)
+        const { data } = await api.post('modify_point', { id, ...dataObject })
+        setLocation(data)
+        setCachedLocation(data)
         history.push(`/location/${_id}`)
         enqueueSnackbar(<Text id='notifications.markerUpdated' />, { variant: 'success' })
       }
