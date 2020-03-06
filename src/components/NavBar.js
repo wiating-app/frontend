@@ -7,6 +7,7 @@ import Dropdown from './Dropdown'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
 import Text from './Text'
+import Loader from './Loader'
 
 
 const NavBar = ({
@@ -56,7 +57,7 @@ const NavBar = ({
           }}
         >{language ? language.toUpperCase() : ''}</Dropdown>
         {loading
-          ? <Typography>Loading...</Typography>
+          ? <Loader />
           : <Dropdown items={[
             ...links,
             {

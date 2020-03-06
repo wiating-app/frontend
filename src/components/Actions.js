@@ -34,9 +34,11 @@ const Actions = ({ primary, secondary }) => {
         {primary && primary.map((item, index) =>
           <Button key={index} onClick={() => item.action()} >{item.label}</Button>
         )}
-        <Button onClick={() => setOpen(prevOpen => !prevOpen)}>
-          <MoreHoriz />
-        </Button>
+        {secondary &&
+          <Button onClick={() => setOpen(prevOpen => !prevOpen)}>
+            <MoreHoriz />
+          </Button>
+        }
       </ButtonGroup>
       <Popper
         open={open}

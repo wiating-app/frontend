@@ -59,10 +59,10 @@ export const Auth0Provider = ({
           if (isAuthenticated) {
             const user = await auth0FromHook.getUser()
             const token = await auth0FromHook.getTokenSilently()
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`
             setUser(user || false)
             setIsLoggedIn(isAuthenticated || false)
             checkModerator(user)
-            api.defaults.headers.common['Authorization'] = `Bearer ${token}`
           }
         }
       } catch (err) {
