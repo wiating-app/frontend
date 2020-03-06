@@ -18,7 +18,6 @@ const LocationInfo = ({
   selectedLocation,
   onImageUpload,
 }) => {
-  console.log('selectedLocation: ', selectedLocation);
   const classes = useStyles()
   const [imagesLoading, setImagesLoading] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
