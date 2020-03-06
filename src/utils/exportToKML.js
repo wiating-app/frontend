@@ -4,6 +4,7 @@ import texts from './texts'
 
 
 const exportToKML = locations => {
+  console.log('locations: ', locations);
   // Currently only polish language is supported.
   try {
     const today = new Date()
@@ -25,20 +26,20 @@ const exportToKML = locations => {
     ]
 
     // TODO: Add images support.
-    const placemarks = locations.reduce((acc, { _source }) => [
+    const placemarks = locations.reduce((acc, location) => [
       ...acc,
       '    <Placemark>',
-      `      <name><![CDATA[[${dot.pick(locationTypes[_source.type], texts.pl)}] ${_source.name}]]></name>`,
+      `      <name><![CDATA[[${dot.pick(locationTypes[location.type], texts.pl)}] ${location.name}]]></name>`,
       '      <description>',
       '        <![CDATA[',
-      `          <p>${_source.description}</p>`,
-      `          <p><strong>Wskazówki dojścia:</strong> ${_source.directions || 'Brak informacji.'}</p>`,
-      `          <p><strong>Dostęp do wody:</strong> ${!_source.water || !_source.water_exists ? 'brak.' : _source.water_comment || 'jest.'}</p>`,
-      `          <p><strong>Dostęp do ognia:</strong> ${!_source.fire || !_source.fire_exists ? 'brak.' : _source.fire_comment || 'jest.'}</p>`,
+      `          <p>${location.description}</p>`,
+      `          <p><strong>Wskazówki dojścia:</strong> ${location.directions || 'Brak informacji.'}</p>`,
+      `          <p><strong>Dostęp do wody:</strong> ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'}</p>`,
+      `          <p><strong>Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</p>`,
       '        ]]>',
       '      </description>',
       '      <Point>',
-      `        <coordinates>${_source.location.lon},${_source.location.lat},0</coordinates>`,
+      `        <coordinates>${location.location.lon},${location.location.lat},0</coordinates>`,
       '      </Point>',
       '    </Placemark>',
     ], [])
