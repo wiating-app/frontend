@@ -11,7 +11,7 @@ const exportToKML = locations => {
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yyyy = today.getFullYear()
     const date = `${yyyy}-${mm}-${dd}`
-    const baseUrl = 'https://mapa.wiating.eu'
+    const baseUrl = process.env.REACT_APP_CDN_URL
 
     const header = [
       '<?xml version="1.0" encoding="UTF-8"?>',
@@ -36,7 +36,7 @@ const exportToKML = locations => {
       `          <p><strong>Dostęp do wody:</strong> ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'}</p>`,
       `          <p><strong>Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</p>`,
       ...location.images
-        ? location.images.map(item => `          <img src="${baseUrl}/${item.name}" width="100%" />`)
+        ? location.images.map(item => `          <img src="${baseUrl}/${location.id}/${item.name}" width="100%" />`)
         : ['          <p>Brak zdjęć.</p>'],
       '        ]]>',
       '      </description>',
