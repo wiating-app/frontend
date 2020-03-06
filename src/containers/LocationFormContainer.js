@@ -35,8 +35,7 @@ const LocationFormContainer = ({
       if (id) {
         const handleAsync = async () => {
           try {
-            const { data: { _id, _source } } = await api.post('get_point', { id })
-            const newData = { id: _id, ..._source }
+            const newData = await api.post('get_point', { id })
             setLocation(newData)
             setCachedLocation(newData)
           } catch (error) {
@@ -82,9 +81,8 @@ const LocationFormContainer = ({
 
       if (isNew) {
         // New marker creation.
-        const { data: { _id, _source } } = await api.post('add_point', data)
-        console.log('response: ', _id, _source)
-        const newData = { id: _id, ..._source }
+        const newData = await api.post('add_point', data)
+        console.log('response: ', newData)
         setLocation(newData)
         setCachedLocation(newData)
         history.push(`/location/${_id}`)
@@ -92,9 +90,8 @@ const LocationFormContainer = ({
       } else {
         // Updating exisitng marker.
         const { id } = cachedLocation
-        const { data: { _id, _source } } = await api.post('modify_point', { id, ...data })
-        console.log('response: ', _id, _source)
-        const newData = { id: _id, ..._source }
+        const newData = await api.post('modify_point', { id, ...data })
+        console.log('response: ', newData)
         setLocation(newData)
         setCachedLocation(newData)
         history.push(`/location/${_id}`)

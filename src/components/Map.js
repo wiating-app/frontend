@@ -127,10 +127,10 @@ const Map = React.forwardRef(({
         }}
       >
         {props.points && props.points.map(item => {
-          const { location: { lat, lon }, type } = item._source
+          const { location: { lat, lon }, type } = item
 
           return <Marker
-            key={item._id}
+            key={item.id}
             icon={new Icon({
               iconUrl: getIconUrl(type),
               iconSize: [30, 30],
@@ -138,9 +138,7 @@ const Map = React.forwardRef(({
             })}
             position={[lat, lon]}
             onClick={() => {
-              const { _id: id, _source } = item
-              const point = { id, ..._source }
-              props.openLocationTab(point)
+              props.openLocationTab(item)
               setContextMenu(null)
               setActiveMarker([lat, lon])
             }}

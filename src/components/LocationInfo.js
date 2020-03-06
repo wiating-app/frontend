@@ -61,9 +61,9 @@ const LocationInfo = ({
               gutterBottom
               component='span'
             >
-              {!selectedLocation.water.exists
+              {!selectedLocation.water_exists
                 ? 'Brak.'
-                : selectedLocation.water.comment || <Text id='is' />
+                : selectedLocation.water_comment || <Text id='is' />
               }
             </Typography>
           }
@@ -81,9 +81,9 @@ const LocationInfo = ({
               gutterBottom
               component='span'
             >
-              {!selectedLocation.fire.exists
+              {!selectedLocation.fire_exists
                 ? <Text id='none' />
-                : selectedLocation.fire.comment || <Text id='is' />
+                : selectedLocation.fire_comment || <Text id='is' />
               }.
             </Typography>
           }

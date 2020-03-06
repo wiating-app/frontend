@@ -32,8 +32,7 @@ const SelectedLocationContainer = ({
     } else {
       const handleAsync = async () => {
         try {
-          const { data: { _id, _source } } = await api.post('get_point', { id })
-          const newData = { id: _id, ..._source }
+          const newData = await api.post('get_point', { id })
           setLocation(newData)
           setCachedLocation(newData)
         } catch (error) {
@@ -66,9 +65,8 @@ const SelectedLocationContainer = ({
           const resizedFile = new File([decoded], file.name, { type: file.type })
           const data = new FormData()
           data.append('file', resizedFile)
-          const { data: { _id, _source } } = await api.post(`add_image/${location.id}`, data)
-          console.log('response: ', _id, _source)
-          const newData = { id: _id, ..._source }
+          const newData = await api.post(`add_image/${location.id}`, data)
+          console.log('response: ', newData)
           setLocation(newData)
           setCachedLocation(newData)
           history.push(`/location/${_id}`)
