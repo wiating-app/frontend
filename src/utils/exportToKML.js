@@ -4,7 +4,6 @@ import texts from './texts'
 
 
 const exportToKML = locations => {
-  console.log('locations: ', locations);
   // Currently only polish language is supported.
   try {
     const today = new Date()
@@ -12,6 +11,7 @@ const exportToKML = locations => {
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yyyy = today.getFullYear()
     const date = `${yyyy}-${mm}-${dd}`
+    const baseUrl = 'https://mapa.wiating.eu'
 
     const header = [
       '<?xml version="1.0" encoding="UTF-8"?>',
@@ -25,7 +25,6 @@ const exportToKML = locations => {
       '</kml>',
     ]
 
-    // TODO: Add images support.
     const placemarks = locations.reduce((acc, location) => [
       ...acc,
       '    <Placemark>',
@@ -36,6 +35,9 @@ const exportToKML = locations => {
       `          <p><strong>Wskazówki dojścia:</strong> ${location.directions || 'Brak informacji.'}</p>`,
       `          <p><strong>Dostęp do wody:</strong> ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'}</p>`,
       `          <p><strong>Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</p>`,
+      ...location.images
+        ? location.images.map(item => `          <img src="${baseUrl}/${item.name}" width="100%" />`)
+        : ['          <p>Brak zdjęć.</p>'],
       '        ]]>',
       '      </description>',
       '      <Point>',
