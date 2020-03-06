@@ -74,9 +74,9 @@ const LocationFormContainer = ({
         lon: lon,
         type,
         water_exists: water_exists || false,
-        water_comment: water_exists ? water_comment : false,
+        water_comment: water_exists ? water_comment : null,
         fire_exists: fire_exists || false,
-        fire_comment: fire_exists ? fire_comment : false,
+        fire_comment: fire_exists ? fire_comment : null,
       }
 
       if (isNew) {
