@@ -13,21 +13,13 @@ const LogDetails = ({
   loadingBan,
   loadingRevert,
 }) => {
-  const changed = data.changed
-    ? Object.entries(data.changed).map(([name, values]) => ({
+  const changes = data.changes
+    ? Object.entries(data.changes).map(([name, values]) => ({
       name,
       old: values.old_value || <Clear color='disabled' />,
       new: values.new_value || <Clear color='disabled' />,
     }))
     : []
-  const added = data.added
-    ? Object.entries(data.added).map(([name, value]) => ({
-      name,
-      old: <Clear color='disabled' />,
-      new: value || <Clear color='disabled' />,
-    }))
-    : []
-  const modifications = [...changed, ...added]
 
   return (
     <Modal short>
@@ -46,7 +38,7 @@ const LogDetails = ({
       >Lokalizacja: {data.name} ({data.doc_id})</Typography>
       <Typography variant='h6'>Zmiany</Typography>
       <Table
-        data={modifications}
+        data={changes}
         labels={[
           { name: 'Pole', field: 'name' },
           { name: 'Stara treść', field: 'old' },
