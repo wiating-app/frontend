@@ -24,7 +24,7 @@ const SearchResults = ({
             <ListItem
               className={classes.item}
               onClick={() => {
-                setCachedLocation({ item })
+                setCachedLocation( item )
               }}
             >
               <ListItemAvatar>
