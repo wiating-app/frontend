@@ -4,14 +4,15 @@ import Form from 'react-standalone-form'
 import {
   Input,
   FormButton,
-  Select,
   Checkbox,
   FormActions,
 } from 'react-standalone-form-mui'
 import CoordinatesInput from './CoordinatesInput'
 import HintWrapper from './HintWrapper'
 import Text from './Text'
+import Select from './Select'
 import locationTypes from '../utils/locationTypes'
+import { getIconUrl } from '../utils/helpers'
 
 
 const LocationForm = ({
@@ -92,9 +93,11 @@ const LocationForm = ({
         <Select
           name='type'
           label={<Text id='markerForm.type' />}
-          options={Object.entries(locationTypes).map(([value, label]) => {
-            return { value, label: <Text id={label} /> }
-          })}
+          options={Object.entries(locationTypes).map(([value, label]) => ({
+            value,
+            label: <Text id={label} />,
+            icon: <img src={getIconUrl(value)} alt='' height='30' />,
+          }))}
           initialValue={locationData && locationData.type}
         />
       </HintWrapper>
