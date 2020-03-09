@@ -6,6 +6,7 @@ import parse from 'coord-parser'
 import LocationForm from '../components/LocationForm'
 import Text from '../components/Text'
 import Loader from '../components/Loader'
+import { useAuth0 } from '../utils/auth0Provider'
 
 
 const LocationFormContainer = ({
@@ -17,10 +18,18 @@ const LocationFormContainer = ({
   match,
 }) => {
   const { params: { id } } = match
+  const { isLoggedIn, loading: loadingAuth } = useAuth0()
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
   const { enqueueSnackbar } = useSnackbar()
+
+  React.useEffect(() => {
+    if (!loadingAuth && !isLoggedIn) {
+      history.push(`/location/${id}`)
+      enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
+    }
+  }, [loadingAuth])
 
   React.useEffect(() => {
     setLocation(cachedLocation)
@@ -109,7 +118,7 @@ const LocationFormContainer = ({
   }
 
   return (
-    loading
+    loading || loadingAuth
       ? <Loader dark big />
       : error
         ? <div>Error!</div>

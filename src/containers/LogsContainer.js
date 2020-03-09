@@ -4,10 +4,11 @@ import api from '../api'
 import Logs from '../components/Logs'
 import LogDetails from '../components/LogDetails'
 import { useAuth0 } from '../utils/auth0Provider'
+import history from '../history'
 
 
 const LogsContainer = () => {
-  const { isModerator, user } = useAuth0()
+  const { isModerator, user, loading: loadingAuth } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const [logs, setLogs] = React.useState()
   const [loadingLogs, setLoadingLogs] = React.useState(true)
@@ -18,6 +19,13 @@ const LogsContainer = () => {
   const [logsTotal, setlogsTotal] = React.useState()
   const rowsPerPage = 3
   const [details, setDetails] = React.useState()
+
+  React.useEffect(() => {
+    // Invisible guarding.
+    if (!loadingAuth && !isModerator) {
+      history.push('/')
+    }
+  }, [loadingAuth])
 
   const getLogs = async page => {
     try {
