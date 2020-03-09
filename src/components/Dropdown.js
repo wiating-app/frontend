@@ -38,7 +38,7 @@ const Dropdown = ({ children, items, anchorOrigin }) => {
             onClick={() => handleClose()}
             divider={item.divider}
           >{item.label}</MenuItem>
-          : <MenuItem key={index} onClick={() => {
+          : <MenuItem key={index} divider={item.divider} onClick={() => {
             item.callback()
             handleClose()
           }}>{item.label}</MenuItem>

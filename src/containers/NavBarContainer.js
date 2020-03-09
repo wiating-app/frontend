@@ -3,12 +3,15 @@ import { withRouter } from 'react-router-dom'
 import api from '../api'
 import { useAuth0 } from '../utils/auth0Provider'
 import NavBar from '../components/NavBar'
+import LanguageSwitcher from '../components/LanguageSwitcher'
+import Text from '../components/Text'
 import { LanguageContext } from '../utils/TranslationsProvider'
 
 const languages = ['pl', 'en']
 
 const NavBarContainer = ({ setSearchResults, history }) => {
   const [language, setLanguage] = React.useContext(LanguageContext)
+  const [languageSwitch, setLanguageSwitch] = React.useState()
   const {
     loading,
     loginWithRedirect,
@@ -29,25 +32,42 @@ const NavBarContainer = ({ setSearchResults, history }) => {
   }
 
   const links = [
-    ...isModerator ? [{ label: 'Administracja', url: '/log', divider: true }] : [],
-    { label: 'Informacje', url: '/info' },
-    { label: 'Regulamin', url: '/regulamin' },
-    { label: 'Polityka prywatności', url: '/polityka-prywatnosci', divider: true },
+    ...isModerator ? [{ label: <Text id='administration' />, url: '/log' }] : [],
+    ...isLoggedIn ? [{
+      label: <><Text id='language' />: {language.toUpperCase()}</>,
+      callback: () => setLanguageSwitch(true),
+      divider: true,
+    }] : [],
+    { label: <Text id='informations' />, url: '/info' },
+    { label: <Text id='termsAndConditions' />, url: '/regulamin' },
+    { label: <Text id='privacyPolicy' />, url: '/polityka-prywatnosci', divider: true },
+    {
+      label: <Text id={isLoggedIn ? 'auth.logout' : 'auth.login'} />,
+      callback: () => isLoggedIn ? logout() : loginWithRedirect({}),
+    },
   ]
 
   return (
-    <NavBar
-      onSearch={phrase => onSearch(phrase)}
-      loginWithRedirect={loginWithRedirect}
-      isLoggedIn={isLoggedIn}
-      user={user}
-      logout={logout}
-      loading={loading}
-      links={links}
-      language={language}
-      languages={languages}
-      setLanguage={setLanguage}
-    />
+    <>
+      {languageSwitch &&
+        <LanguageSwitcher
+          language={language}
+          languages={languages}
+          setLanguage={setLanguage}
+          onClose={() => setLanguageSwitch(false)}
+        />
+      }
+      <NavBar
+        onSearch={phrase => onSearch(phrase)}
+        isLoggedIn={isLoggedIn}
+        user={user}
+        loading={loading}
+        links={links}
+        language={language}
+        languages={languages}
+        setLanguage={setLanguage}
+      />
+    </>
   )
 }
 

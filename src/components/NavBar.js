@@ -6,7 +6,6 @@ import Form from 'react-standalone-form'
 import Dropdown from './Dropdown'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
-import Text from './Text'
 import Loader from './Loader'
 
 
@@ -14,8 +13,6 @@ const NavBar = ({
   user,
   links,
   isLoggedIn,
-  logout,
-  loginWithRedirect,
   onSearch,
   loading,
   language,
@@ -46,25 +43,21 @@ const NavBar = ({
           />
         </Form>
         <div className={classes.grow} />
-        <Dropdown
-          items={languages.map(lang => ({
-            label: lang.toUpperCase(),
-            callback: () => setLanguage(lang),
-          }))}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-        >{language ? language.toUpperCase() : ''}</Dropdown>
+        {!loading && !isLoggedIn &&
+          <Dropdown
+            items={languages.map(lang => ({
+              label: lang.toUpperCase(),
+              callback: () => setLanguage(lang),
+            }))}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >{language ? language.toUpperCase() : ''}</Dropdown>
+        }
         {loading
           ? <Loader />
-          : <Dropdown items={[
-            ...links,
-            {
-              label: <Text id={isLoggedIn ? 'auth.logout' : 'auth.login'} />,
-              callback: () => isLoggedIn ? logout() : loginWithRedirect({}),
-            },
-          ]}>
+          : <Dropdown items={links}>
             {isLoggedIn
               ? <>
                 <Avatar alt={user.name} src={user.picture}>

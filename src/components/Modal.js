@@ -6,12 +6,12 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import history from '../history'
 
 
-const Modal = ({ wide, short, children }) => {
-  const classes = useStyles({ wide, short })
+const Modal = ({ wide, short, small, children, onClose }) => {
+  const classes = useStyles({ wide, short, small })
 
   return (
     <MUIModal
-      onClose={() => history.goBack()}
+      onClose={() => onClose ? onClose() : history.goBack()}
       className={classes.root}
       disablePortal
       open
@@ -23,7 +23,7 @@ const Modal = ({ wide, short, children }) => {
             {children}
             <IconButton
               className={classes.close}
-              onClick={() => history.goBack()}
+              onClick={() => onClose ? onClose() : history.goBack()}
             ><Close /></IconButton>
           </PerfectScrollbar>
         </Slide>
@@ -43,7 +43,8 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
     position: 'relative',
-    width: ({ wide }) => wide ? 1200 : 900,
+    width: ({ wide, small }) => wide ? 1200 : small ? 320 : 900,
+    maxHeight: ({ small }) => small ? 160 : 'auto',
     marginTop: ({ short }) => short ? 30 : 0,
     marginBottom: ({ short }) => short ? 30 : 0,
     maxWidth: '100vw',

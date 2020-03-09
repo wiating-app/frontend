@@ -70,8 +70,15 @@ export default {
       login: 'Logowanie',
       logout: 'Wyloguj',
     },
-    answerPermission: 'Czy chcesz włączyć pokazywanie bierzącej lokalizacji?',
+    language: 'Język',
+    selectLanguage: 'Wybierz nowy język',
+    languageChanged: 'Język zmieniony.',
+    administration: 'Administracja',
+    informations: 'Informacje',
+    termsAndConditions: 'Regulamin',
+    privacyPolicy: 'Polityka prywatności',
   },
+
 
   en: {
     yes: 'Yes',
@@ -144,6 +151,12 @@ export default {
       login: 'Login',
       logout: 'Logout',
     },
-    answerPermission: 'Odpowiedz na pytanie o uprawnienia',
+    language: 'Language',
+    administration: 'Administration',
+    selectLanguage: 'Select language',
+    languageChanged: 'Language changed.',
+    informations: 'Informations',
+    termsAndConditions: 'Terms and conditions',
+    privacyPolicy: 'Privacy policy',
   },
 }
