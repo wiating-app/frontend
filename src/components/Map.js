@@ -100,11 +100,20 @@ const Map = React.forwardRef(({
       }}
       onClick={e => {
         if (contextMenu) {
+          // If context menu is opened, close it.
           setContextMenu(false)
           setActiveMarker(false)
-        } else if (!activeMarker && props.editMode && props.isLoggedIn) {
+        } else if (props.editMode && props.isLoggedIn && !activeMarker) {
+          // If location creation form has beem opened from URL and there are no
+          // coordinates given yet, set the coordinates and active marker.
           setActiveMarker(e.latlng)
           updateCoordinates(e.latlng)
+        } else if (isMobile && props.isLocationTabOpen && !props.editMode) {
+          // On mobile version, dismiss the location details drawer, when
+          // clicking on a mini map.
+          props.closeTab()
+          setContextMenu(false)
+          setActiveMarker(false)
         }
       }}
     >

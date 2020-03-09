@@ -16,13 +16,13 @@ const LocationTab = ({
 }) => {
   const classes = useStyles()
   const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.up('sm'))
+  const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
 
   return (
     <Drawer
       open={isLocationTabOpen}
       variant='persistent'
-      anchor={matches ? 'left' : 'bottom'}
+      anchor={isNotSmartphone ? 'left' : 'bottom'}
       className={classes.drawer}
       classes={{ paper: classes.drawerPaper }}
     >
@@ -45,37 +45,33 @@ const LocationTab = ({
 
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
-    height: '100vh',
-    boxShadow: theme.shadows[3],
     backgroundColor: 'transparent',
+    borderTop: 'none',
+    height: `calc(100vh - ${theme.layout.mobileMiniMapHeight + theme.mixins.toolbar.minHeight}px)`,
+    boxShadow: theme.shadows[14],
     [theme.breakpoints.up('sm')]: {
       width: theme.layout.locationTabWidth,
       height: '100%',
-      marginTop: 0,
+      boxShadow: theme.shadows[3],
     },
   },
   drawer: {
     flexShrink: 0,
   },
-  mapSpacer: {
-    height: theme.layout.mobileMiniMapHeight,
+  toolbar: {
     [theme.breakpoints.up('sm')]: {
-      display: 'none',
+      ...theme.mixins.toolbar,
     },
   },
-  toolbar: theme.mixins.toolbar,
   inner: {
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: 'white',
-    minHeight: `calc(100% - ${theme.layout.mobileMiniMapHeight}px)`,
+    minHeight: '100%',
     overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       boxShadow: theme.shadows[4],
-    },
-    [theme.breakpoints.up('sm')]: {
-      minHeight: '100%',
     },
   },
   close: {

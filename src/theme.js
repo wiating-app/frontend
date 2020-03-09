@@ -8,7 +8,7 @@ const theme = createMuiTheme({
   },
   layout: {
     locationTabWidth: 400,
-    mobileMiniMapHeight: 240,
+    mobileMiniMapHeight: 200,
   },
   overrides: {
     MuiFormControl: {

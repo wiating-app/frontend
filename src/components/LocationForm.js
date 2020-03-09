@@ -26,10 +26,10 @@ const LocationForm = ({
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
 
-  const { lat, lon } = locationData.location
-  const locationToString = [lat, lon]
-    .toString()
-    .replace(',', ', ')
+  const locationToString = () => {
+    const { lat, lon } = locationData.location
+    return [lat, lon].toString().replace(',', ', ')
+  }
 
   return <>
     <Typography variant='h4' gutterBottom>
@@ -106,7 +106,7 @@ const LocationForm = ({
         <CoordinatesInput
           name='location'
           label={<Text id='markerForm.location' />}
-          initialValue={locationData && locationToString}
+          initialValue={locationData && locationToString()}
           onChange={value => {
             updateCurrentMarker(value)
           }}

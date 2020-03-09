@@ -59,7 +59,10 @@ const LocationImages = ({ images, id }) => {
 
 const useStyles = makeStyles(theme => ({
   imageWrapper: {
-    height: 240,
+    height: '50vw',
+    [theme.breakpoints.up('sm')]: {
+      height: 240,
+    },
   },
   image: {
     objectFit: 'cover',
