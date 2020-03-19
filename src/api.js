@@ -4,7 +4,7 @@ export const CancelToken = axios.CancelToken
 export const isCancel = axios.isCancel
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}/wiating/`,
+  baseURL: process.env.REACT_APP_API_URL,
   timeout: 10000,
   headers: {
     'Accept-Version': 1,

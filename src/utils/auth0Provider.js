@@ -26,8 +26,8 @@ export const Auth0Provider = ({
     const initAuth0 = async () => {
       try {
         const checkModerator = user => {
-          if (user[process.env.REACT_APP_AUTH_METADATA_KEY] &&
-            user[process.env.REACT_APP_AUTH_METADATA_KEY].role === process.env.REACT_APP_AUTH_MODERATOR_ROLE) {
+          if (user[process.env.REACT_APP_AUTH_METADATA_OBJECT_KEY] &&
+            user[process.env.REACT_APP_AUTH_METADATA_OBJECT_KEY].role === process.env.REACT_APP_AUTH_MODERATOR_ROLE) {
             setIsModerator(true)
           }
         }

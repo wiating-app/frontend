@@ -3,4 +3,4 @@
 /info  /index.html  200
 /regulamin  /index.html  200
 /polityka-prywatnosci  /index.html  200
-/api/* https://serwer.wiating.eu/:splat 200
+/api/* https://serwer.wiating.eu/wiating/:splat 200
