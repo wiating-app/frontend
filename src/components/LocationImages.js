@@ -1,5 +1,6 @@
 import React from 'react'
-import { Box, Modal } from '@material-ui/core'
+import { Box, Modal, IconButton } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Carousel } from 'react-responsive-carousel'
 import ImageGallery from 'react-image-gallery'
@@ -48,6 +49,10 @@ const LocationImages = ({ images, id }) => {
               showPlayButton={false}
               showFullscreenButton={false}
             />
+            <IconButton
+              className={classes.close}
+              onClick={() => setOpenModal(false)}
+            ><Close /></IconButton>
           </Box>
         </Modal>
       </>
@@ -70,19 +75,44 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
   },
   modalContent: {
-    width: '80vw',
-    marginTop: '5vw',
-    marginLeft: '10vw',
+    position: 'relative',
     backgroundColor: 'white',
-    '& .image-gallery-image': {
+    height: '100vh',
+    [theme.breakpoints.up('md')]: {
       width: '80vw',
-      height: '70vh',
+      height: '80vh',
+      marginTop: '10vw',
+      marginLeft: '10vw',
+    },
+    '& .image-gallery, & .image-gallery-content, & .image-gallery-swipe, & .image-gallery-swipe *': {
+      height: '100%',
+    },
+    '& .image-gallery-slide-wrapper': {
+      height: 'calc(100% - 80px)',
+      [theme.breakpoints.up('sm')]: {
+        height: 'calc(100% - 110px)',
+      },
+    },
+    '& .image-gallery-image': {
       backgroundColor: theme.palette.grey[900],
+      height: '100%',
       '& img': {
         objectFit: 'contain',
         width: '100%',
         height: '100%',
       },
+    },
+  },
+  close: {
+    position: 'absolute',
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    },
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
 }))
