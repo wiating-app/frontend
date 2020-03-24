@@ -89,8 +89,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   search: {
-    [theme.breakpoints.down('sm')]: {
-      width: '50%',
+    [theme.breakpoints.down('xs')]: {
+      width: 190,
     },
   },
   name: {
