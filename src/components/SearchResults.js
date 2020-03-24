@@ -25,13 +25,16 @@ const SearchResults = ({
             <ListItem
               className={classes.item}
               onClick={() => {
-                setCachedLocation( item )
+                setCachedLocation(item)
               }}
             >
               <ListItemAvatar>
                 <img src={getIconUrl(item.type)} className={classes.listAvatar} />
               </ListItemAvatar>
-              <ListItemText primary={item.name} secondary={item.description} />
+              <ListItemText
+                primary={item.name}
+                secondary={item.description && item.description.substring(0, 70)}
+              />
             </ListItem>
             <Divider variant='inset' component='li' />
           </React.Fragment>

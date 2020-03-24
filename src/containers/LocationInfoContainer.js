@@ -11,7 +11,7 @@ import Loader from '../components/Loader'
 import useLanguage from '../utils/useLanguage'
 
 
-const SelectedLocationContainer = ({
+const LocationInfoContainer = ({
   cachedLocation,
   setCachedLocation,
   match,
@@ -98,4 +98,4 @@ const SelectedLocationContainer = ({
   )
 }
 
-export default withRouter(SelectedLocationContainer)
+export default withRouter(LocationInfoContainer)

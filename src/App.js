@@ -13,7 +13,7 @@ import Regulamin from './components/Regulamin'
 import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
-import SelectedLocationContainer from './containers/SelectedLocationContainer'
+import LocationInfoContainer from './containers/LocationInfoContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
 import LogsContainer from './containers/LogsContainer'
 
@@ -78,7 +78,7 @@ const App = ({ history, location: { pathname } }) => {
           </Route>
 
           <Route exact path='/location/:id'>
-            <SelectedLocationContainer
+            <LocationInfoContainer
               cachedLocation={cachedLocation}
               setCachedLocation={setCachedLocation}
             />
