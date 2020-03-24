@@ -12,20 +12,31 @@ export const CurrentLocationProvider = ({ children }) => {
   })
 
   React.useEffect(() => {
-    getCurrentLocation(
-      // Success
-      location => setCurrentLocation({
-        location,
-        loading: false,
-        error: false,
-      }),
-      // Error
-      () => setCurrentLocation({
-        location: null,
-        loading: false,
-        error: true,
-      })
-    )
+    const getCurrentLocationHandler = () => {
+      getCurrentLocation(
+        // Success
+        location => setCurrentLocation({
+          location,
+          loading: false,
+          error: false,
+        }),
+        // Error
+        () => setCurrentLocation({
+          location: null,
+          loading: false,
+          error: true,
+        })
+      )
+    }
+
+    getCurrentLocationHandler()
+
+    const interval = setInterval(() => {
+      console.log('Updating current location info.')
+      getCurrentLocationHandler()
+    }, 30000) // 30 seconds.
+
+    return () => clearInterval(interval)
   }, [])
 
   return (
