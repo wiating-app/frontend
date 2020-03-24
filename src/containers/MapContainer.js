@@ -4,7 +4,7 @@ import api, { CancelToken, isCancel } from '../api'
 import useAuth0 from '../utils/useAuth0'
 import useCurrentLocation from '../utils/useCurrentLocation'
 import Map from '../components/Map'
-import Text from '../components/Text'
+import useLanguage from '../utils/useLanguage'
 
 let cancelRequest
 
@@ -12,6 +12,7 @@ let cancelRequest
 const MapContainer = React.forwardRef((props, ref) => {
   const [points, setPoints] = React.useState()
   const [initalPosition, setInitalPosition] = React.useState()
+  const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
   const { location, loading, error } = useCurrentLocation()
   const defaultPosition = [50.39805, 16.844417] // The area of Polish mountains.
@@ -46,7 +47,7 @@ const MapContainer = React.forwardRef((props, ref) => {
       setPoints(points)
     } catch (error) {
       if (!isCancel(error)) {
-        enqueueSnackbar(<Text id='connectionProblem.map' />, { variant: 'error' })
+        enqueueSnackbar(translations.connectionProblem.map, { variant: 'error' })
       } else {
         process.env.NODE_ENV === 'development' && console.log('Previous request canceled.')
       }

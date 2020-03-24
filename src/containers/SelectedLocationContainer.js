@@ -8,7 +8,7 @@ import useAuth0 from '../utils/useAuth0'
 import LocationImages from '../components/LocationImages'
 import LocationInfo from '../components/LocationInfo'
 import Loader from '../components/Loader'
-import Text from '../components/Text'
+import useLanguage from '../utils/useLanguage'
 
 
 const SelectedLocationContainer = ({
@@ -18,6 +18,7 @@ const SelectedLocationContainer = ({
   history,
 }) => {
   const { params: { id } } = match
+  const { translations } = useLanguage()
   const { isLoggedIn } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const [location, setLocation] = React.useState()
@@ -37,7 +38,7 @@ const SelectedLocationContainer = ({
           setCachedLocation(data)
         } catch (error) {
           setError(true)
-          enqueueSnackbar(<Text id='connectionProblem.location' />, { variant: 'error' })
+          enqueueSnackbar(translations.connectionProblem.location, { variant: 'error' })
         }
         setLoading(false)
       }
@@ -70,12 +71,12 @@ const SelectedLocationContainer = ({
           setLocation(newData)
           setCachedLocation(newData)
           history.push(`/location/${_id}`)
-          enqueueSnackbar(<Text id='notifications.photoAdded' />, { variant: 'success' })
+          enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
         },
       )
     } catch (error) {
       console.error(error)
-      enqueueSnackbar(<Text id='notifications.couldNotSavePhoto' />, { variant: 'error' })
+      enqueueSnackbar(translations.notifications.couldNotSavePhoto, { variant: 'error' })
     }
   }
 

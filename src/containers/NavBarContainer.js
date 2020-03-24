@@ -4,14 +4,13 @@ import api from '../api'
 import useAuth0 from '../utils/useAuth0'
 import NavBar from '../components/NavBar'
 import LanguageSwitcher from '../components/LanguageSwitcher'
-import Text from '../components/Text'
-import { LanguageContext } from '../utils/TranslationsProvider'
+import useLanguage from '../utils/useLanguage'
 
 const languages = ['pl', 'en']
 
 const NavBarContainer = ({ setSearchResults, history }) => {
-  const [language, setLanguage] = React.useContext(LanguageContext)
   const [languageSwitch, setLanguageSwitch] = React.useState()
+  const { translations, language, setLanguage } = useLanguage()
   const {
     loading,
     loginWithRedirect,
@@ -32,17 +31,17 @@ const NavBarContainer = ({ setSearchResults, history }) => {
   }
 
   const links = [
-    ...isModerator ? [{ label: <Text id='administration' />, url: '/log' }] : [],
+    ...isModerator ? [{ label: translations.administration, url: '/log' }] : [],
     ...isLoggedIn ? [{
-      label: <><Text id='language' />: {language.toUpperCase()}</>,
+      label: <>{translations.language}: {language.toUpperCase()}</>,
       callback: () => setLanguageSwitch(true),
       divider: true,
     }] : [],
-    { label: <Text id='informations' />, url: '/info' },
-    { label: <Text id='termsAndConditions' />, url: '/regulamin' },
-    { label: <Text id='privacyPolicy' />, url: '/polityka-prywatnosci', divider: true },
+    { label: translations.informations, url: '/info' },
+    { label: translations.termsAndConditions, url: '/regulamin' },
+    { label: translations.privacyPolicy, url: '/polityka-prywatnosci', divider: true },
     {
-      label: <Text id={isLoggedIn ? 'auth.logout' : 'auth.login'} />,
+      label: translations.auth[isLoggedIn ? 'logout' : 'login'],
       callback: () => isLoggedIn ? logout() : loginWithRedirect({}),
     },
   ]

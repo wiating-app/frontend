@@ -10,7 +10,7 @@ import Dropzone from 'react-dropzone'
 import Loader from './Loader'
 import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
-import Text from './Text'
+import useLanguage from '../utils/useLanguage'
 
 
 const LocationInfo = ({
@@ -19,9 +19,11 @@ const LocationInfo = ({
   onImageUpload,
 }) => {
   const classes = useStyles()
+  const { translations } = useLanguage()
   const [imagesLoading, setImagesLoading] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
-  const type = locationTypes[selectedLocation.type]
+  const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type]] : ''
+
   return (
     <div className={classes.root}>
       <div className={classes.main}>
@@ -33,26 +35,26 @@ const LocationInfo = ({
           color='textSecondary'
           gutterBottom
         >
-          {type && <Text id={type} />} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}
+          {type} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}
         </Typography>
 
         <Typography
           variant='body1'
           gutterBottom
-        ><strong><Text id='locationInfo.description' />:</strong> {selectedLocation.description}</Typography>
+        ><strong>{translations.locationInfo.description}:</strong> {selectedLocation.description}</Typography>
 
         {selectedLocation.directions &&
           <Typography
             variant='body1'
             gutterBottom
-          ><strong><Text id='locationInfo.directions' />:</strong> {selectedLocation.directions}</Typography>
+          ><strong>{translations.locationInfo.directions}:</strong> {selectedLocation.directions}</Typography>
         }
 
         <div>
           <Typography
             variant='subtitle2'
             component='span'
-          ><Text id='locationInfo.waterAccess' />: </Typography>
+          >{translations.locationInfo.waterAccess}: </Typography>
 
           <Typography
             variant='body2'
@@ -60,8 +62,8 @@ const LocationInfo = ({
             component='span'
           >
             {!selectedLocation.water_exists
-              ? <Text id='none' />
-              : selectedLocation.water_comment || <Text id='is' />
+              ? translations.none
+              : selectedLocation.water_comment || translations.is
             }
           </Typography>
         </div>
@@ -70,7 +72,7 @@ const LocationInfo = ({
           <Typography
             variant='subtitle2'
             component='span'
-          ><Text id='locationInfo.fireAccess' />: </Typography>
+          >{translations.locationInfo.fireAccess}: </Typography>
 
           <Typography
             variant='body2'
@@ -78,8 +80,8 @@ const LocationInfo = ({
             component='span'
           >
             {!selectedLocation.fire_exists
-              ? <Text id='none' />
-              : selectedLocation.fire_comment || <Text id='is' />
+              ? translations.none
+              : selectedLocation.fire_comment || translations.is
             }.
           </Typography>
         </div>
@@ -93,7 +95,7 @@ const LocationInfo = ({
             variant='caption'
             align='right'
             color='textSecondary'
-          ><Text id='locationInfo.lastUpdate' />: {formatDate(updatedAt)}</Typography>
+          >{translations.locationInfo.lastUpdate}: {formatDate(updatedAt)}</Typography>
         }
         {loggedIn &&
           <ButtonGroup
@@ -104,9 +106,9 @@ const LocationInfo = ({
             <Button
               component={Link}
               to={`/location/${selectedLocation.id}/edit`}
-            ><Text id='actions.edit' /></Button>
+            >{translations.actions.edit}</Button>
             {imagesLoading
-              ? <Button disabled><Text id='actions.addPhoto' /> <Loader /></Button>
+              ? <Button disabled>{translations.actions.addPhoto} <Loader /></Button>
               : <Button>
                 <Dropzone onDrop={async files => {
                   setImagesLoading(true)
@@ -117,7 +119,7 @@ const LocationInfo = ({
                     <section>
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
-                        <Text id='actions.addPhoto' />
+                        {translations.actions.addPhoto}
                       </div>
                     </section>
                   )}

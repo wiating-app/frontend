@@ -7,6 +7,7 @@ import Dropdown from './Dropdown'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
 import Loader from './Loader'
+import useLanguage from '../utils/useLanguage'
 
 
 const NavBar = ({
@@ -20,6 +21,7 @@ const NavBar = ({
   setLanguage,
 }) => {
   const classes = useStyles()
+  const { translations } = useLanguage()
   const [searchLoading, setSearchLoading] = React.useState()
 
   return (
@@ -37,7 +39,7 @@ const NavBar = ({
         >
           <SearchInput
             name='phrase'
-            // placeholder={<Text id='search' />} TODO: Placeholder translation support.
+            placeholder={translations.search}
             noBottomGutter
             loading={searchLoading}
           />

@@ -4,8 +4,8 @@ import api from '../api'
 import { withRouter } from 'react-router-dom'
 import parse from 'coord-parser'
 import LocationForm from '../components/LocationForm'
-import Text from '../components/Text'
 import Loader from '../components/Loader'
+import useLanguage from '../utils/useLanguage'
 import useAuth0 from '../utils/useAuth0'
 
 
@@ -19,6 +19,7 @@ const LocationFormContainer = ({
 }) => {
   const { params: { id } } = match
   const { isLoggedIn, loading: loadingAuth } = useAuth0()
+  const { translations } = useLanguage()
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
@@ -87,7 +88,6 @@ const LocationFormContainer = ({
         fire_exists: fire_exists || false,
         fire_comment: fire_exists && fire_comment ? fire_comment : null,
       }
-      console.log('dataObject: ', dataObject);
 
       if (isNew) {
         // New marker creation.
@@ -95,7 +95,7 @@ const LocationFormContainer = ({
         setLocation(data)
         setCachedLocation(data)
         history.push(`/location/${_id}`)
-        enqueueSnackbar(<Text id='notifications.newMarkerAdded' />, { variant: 'success' })
+        enqueueSnackbar(translations.notifications.newMarkerAdded, { variant: 'success' })
       } else {
         // Updating exisitng marker.
         const { id } = cachedLocation
@@ -103,16 +103,16 @@ const LocationFormContainer = ({
         setLocation(data)
         setCachedLocation(data)
         history.push(`/location/${_id}`)
-        enqueueSnackbar(<Text id='notifications.markerUpdated' />, { variant: 'success' })
+        enqueueSnackbar(translations.notifications.markerUpdated, { variant: 'success' })
       }
       refreshMap()
     } catch (error) {
       if (error.type === 'parseError') {
         console.error(error.value)
-        enqueueSnackbar(<Text id='notifications.wrongCoordsFormat' />, { variant: 'error' })
+        enqueueSnackbar(translations.notifications.wrongCoordsFormat, { variant: 'error' })
       } else {
         console.error(error)
-        enqueueSnackbar(<Text id='notifications.couldNotSaveMarker' />, { variant: 'error' })
+        enqueueSnackbar(translations.notifications.couldNotSaveMarker, { variant: 'error' })
       }
     }
   }

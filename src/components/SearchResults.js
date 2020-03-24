@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import Text from './Text'
+import useLanguage from '../utils/useLanguage'
 import { getIconUrl } from '../utils/helpers'
 
 const SearchResults = ({
@@ -16,6 +16,7 @@ const SearchResults = ({
   setCachedLocation,
 }) => {
   const classes = useStyles()
+  const { translations } = useLanguage()
   return (
     <List>
       {items.length
@@ -35,7 +36,7 @@ const SearchResults = ({
             <Divider variant='inset' component='li' />
           </React.Fragment>
         )
-        : <Typography variant='subtitle1' align='center'><Text id='noResults' /></Typography>
+        : <Typography variant='subtitle1' align='center'>{translations.noResults}</Typography>
       }
     </List>
   )

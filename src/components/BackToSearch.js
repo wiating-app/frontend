@@ -2,17 +2,18 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ViewList } from '@material-ui/icons'
-import Text from './Text'
+import useLanguage from '../utils/useLanguage'
 
 const BackToSearch = ({ onClick }) => {
   const classes = useStyles()
+  const { translations } = useLanguage()
   return (
     <Button
       onClick={() => onClick()}
       className={classes.root}
       variant='contained'
       size='small'
-    ><ViewList /> <Text id='backToResults' /></Button>
+    ><ViewList /> {translations.backToResults}</Button>
   )
 }
 

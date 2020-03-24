@@ -9,10 +9,10 @@ import {
 } from 'react-standalone-form-mui'
 import CoordinatesInput from './CoordinatesInput'
 import HintWrapper from './HintWrapper'
-import Text from './Text'
 import Select from './Select'
 import locationTypes from '../utils/locationTypes'
 import { getIconUrl } from '../utils/helpers'
+import useLanguage from '../utils/useLanguage'
 
 
 const LocationForm = ({
@@ -25,6 +25,7 @@ const LocationForm = ({
   const [loading, setLoading] = React.useState()
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
+  const { translations } = useLanguage()
 
   const locationToString = () => {
     const { lat, lon } = locationData.location
@@ -33,7 +34,7 @@ const LocationForm = ({
 
   return <>
     <Typography variant='h4' gutterBottom>
-      <Text id={`markerForm.heading.${isNew ? 'addMarker' : 'editMarker'}`} />
+      {translations[`markerForm.heading.${isNew ? 'addMarker' : 'editMarker'}`]}
     </Typography>
     <Form
       fields={[
@@ -60,52 +61,52 @@ const LocationForm = ({
       }}
     >
 
-      <HintWrapper message={<Text id='markerForm.placeHint' />}>
+      <HintWrapper message={translations.markerForm.placeHint}>
         <Input
           name='name'
-          label={<Text id='markerForm.place' />}
+          label={translations.markerForm.place}
           min={5}
           initialValue={locationData && locationData.name}
         />
       </HintWrapper>
 
-      <HintWrapper message={<Text id='markerForm.descriptionHint' />}>
+      <HintWrapper message={translations.markerForm.descriptionHint}>
         <Input
           name='description'
-          label={<Text id='markerForm.description' />}
+          label={translations.markerForm.description}
           min={40}
           initialValue={locationData && locationData.description}
           multiline
         />
       </HintWrapper>
 
-      <HintWrapper message={<Text id='markerForm.directionsHint' />}>
+      <HintWrapper message={translations.markerForm.directionsHint}>
         <Input
           name='directions'
-          label={<Text id='locationInfo.directions' />}
+          label={translations.locationInfo.directions}
           min={20}
           initialValue={locationData && locationData.directions}
           multiline
         />
       </HintWrapper>
 
-      <HintWrapper message={<Text id='markerForm.typeHint' />}>
+      <HintWrapper message={translations.markerForm.typeHint}>
         <Select
           name='type'
-          label={<Text id='markerForm.type' />}
+          label={translations.markerForm.type}
           options={Object.entries(locationTypes).map(([value, label]) => ({
             value,
-            label: <Text id={label} />,
+            label: translations.locationType[label],
             icon: <img src={getIconUrl(value)} alt='' height='30' />,
           }))}
           initialValue={locationData && locationData.type}
         />
       </HintWrapper>
 
-      <HintWrapper message={<Text id='markerForm.locationHint' />}>
+      <HintWrapper message={translations.markerForm.locationHint}>
         <CoordinatesInput
           name='location'
-          label={<Text id='markerForm.location' />}
+          label={translations.markerForm.location}
           initialValue={locationData && locationToString()}
           onChange={value => {
             updateCurrentMarker(value)
@@ -115,15 +116,15 @@ const LocationForm = ({
 
       <Checkbox
         name='water_exists'
-        text={<Text id='locationInfo.waterAccess' />}
+        text={translations.locationInfo.waterAccess}
         initialValue={locationData && locationData.water_exists}
       />
 
       {hasWater &&
-        <HintWrapper message={<Text id='markerForm.waterDescriptionHint' />}>
+        <HintWrapper message={translations.markerForm.waterDescriptionHint}>
           <Input
             name='water_comment'
-            label={<Text id='markerForm.waterDescription' />}
+            label={translations.markerForm.waterDescription}
             min={40}
             initialValue={locationData && locationData.water_comment}
             multiline
@@ -133,15 +134,15 @@ const LocationForm = ({
 
       <Checkbox
         name='fire_exists'
-        text={<Text id='locationInfo.fireAccess' />}
+        text={translations.locationInfo.fireAccess}
         initialValue={locationData && locationData.fire_exists}
       />
 
       {hasFire &&
-        <HintWrapper message={<Text id='markerForm.fireDescriptionHint' />}>
+        <HintWrapper message={translations.markerForm.fireDescriptionHint}>
           <Input
             name='fire_comment'
-            label={<Text id='markerForm.fireDescription' />}
+            label={translations.markerForm.fireDescription}
             min={40}
             initialValue={locationData && locationData.fire_comment}
             multiline
@@ -150,7 +151,7 @@ const LocationForm = ({
       }
 
       <FormActions>
-        <Button onClick={() => cancel()}><Text id='cancel' /></Button>
+        <Button onClick={() => cancel()}>{translations.cancel}</Button>
         <FormButton
           variant='contained'
           color='primary'
@@ -160,7 +161,7 @@ const LocationForm = ({
             setLoading(false)
           }}
           loading={loading}
-        ><Text id='save' /></FormButton>
+        >{translations.save}</FormButton>
       </FormActions>
     </Form>
   </>

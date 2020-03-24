@@ -9,7 +9,7 @@ import App from './App'
 import { Auth0Provider } from './utils/useAuth0'
 import history from './history'
 import enableServiceWorker from './enableServiceWorker'
-import TranslationsProvider from './utils/TranslationsProvider'
+import { LanguageProvider } from './utils/useLanguage'
 import { CurrentLocationProvider } from './utils/useCurrentLocation'
 import theme from './theme'
 import formTheme from './utils/formTheme'
@@ -17,7 +17,7 @@ import Maintenance from './components/Maintenance'
 
 
 ReactDOM.render(
-  <TranslationsProvider>
+  <LanguageProvider>
     <ThemeProvider theme={theme}>
       {process.env.MAINTENANCE === 'true'
         ? <Maintenance />
@@ -41,6 +41,6 @@ ReactDOM.render(
         </Router>
       }
     </ThemeProvider>
-  </TranslationsProvider>, document.getElementById('root'))
+  </LanguageProvider>, document.getElementById('root'))
 
 enableServiceWorker()

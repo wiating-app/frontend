@@ -6,9 +6,11 @@ import {
   FormButton,
   FormActions,
 } from 'react-standalone-form-mui'
-import Text from './Text'
+import useLanguage from '../utils/useLanguage'
+
 
 const PhotosForm = ({ locationData, onSubmitLocation, cancel }) => {
+  const { translations } = useLanguage()
   return (
     <Form fields={['files']} allRequired>
       <MultiImageUpload
@@ -20,12 +22,12 @@ const PhotosForm = ({ locationData, onSubmitLocation, cancel }) => {
         }
       />
       <FormActions>
-        <Button onClick={() => cancel()}><Text id='cancel' /></Button>
+        <Button onClick={() => cancel()}>{translations.cancel}</Button>
         <FormButton
           variant='contained'
           color='primary'
           callback={fields => onSubmitLocation(fields.files)}
-        ><Text id='markerForm.cta' /></FormButton>
+        >{translations.markerForm.cta}</FormButton>
       </FormActions>
     </Form>
   )

@@ -1,10 +1,11 @@
+// Values are the keys of translation.
 export default {
-  CABIN: 'locationType.cabin',
-  CABIN_FIREPLACE: 'locationType.cabinFireplace',
-  SHED: 'locationType.shed',
-  WATER_SOURCE: 'locationType.waterSource',
-  CAVE: 'locationType.cave',
-  PASTURE: 'locationType.pasture',
-  RAISED_HIDE: 'locationType.raisedHide',
-  TOWER: 'locationType.tower',
+  CABIN: 'cabin',
+  CABIN_FIREPLACE: 'cabinFireplace',
+  SHED: 'shed',
+  WATER_SOURCE: 'waterSource',
+  CAVE: 'cave',
+  PASTURE: 'pasture',
+  RAISED_HIDE: 'raisedHide',
+  TOWER: 'tower',
 }

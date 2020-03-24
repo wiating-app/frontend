@@ -106,7 +106,7 @@ const App = ({ history, location: { pathname } }) => {
 
           {/* <Route exact path='/location/:id/photos'>
             <ContentWrapper>
-              <Typography variant='h4' gutterBottom>{<Text id='actions.editPhotos}</Typography>
+              <Typography variant='h4' gutterBottom>{translations.actions.editPhotos}</Typography>
               <PhotosForm
                 locationData={cachedLocation}
                 onSubmitLocation={files => onImageUpload(files)}

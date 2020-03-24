@@ -7,7 +7,7 @@ export default {
     save: 'Zapisz',
     cancel: 'Anuluj',
     loading: 'Ładowanie',
-    search: 'Szukaj',
+    search: 'Szukaj we Wiatingu',
     backToResults: 'Powrót do wyników',
     locationInfo: {
       description: 'Opis',
@@ -88,7 +88,7 @@ export default {
     save: 'Save',
     cancel: 'Cancel',
     loading: 'Loading',
-    search: 'Search',
+    search: 'Search in Wiating',
     backToResults: 'Back to results',
     locationInfo: {
       description: 'Description',
