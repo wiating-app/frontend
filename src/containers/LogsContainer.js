@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack'
 import api from '../api'
 import Logs from '../components/Logs'
 import LogDetails from '../components/LogDetails'
-import { useAuth0 } from '../utils/auth0Provider'
+import useAuth0 from '../utils/useAuth0'
 import history from '../history'
 
 

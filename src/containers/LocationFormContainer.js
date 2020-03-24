@@ -6,7 +6,7 @@ import parse from 'coord-parser'
 import LocationForm from '../components/LocationForm'
 import Text from '../components/Text'
 import Loader from '../components/Loader'
-import { useAuth0 } from '../utils/auth0Provider'
+import useAuth0 from '../utils/useAuth0'
 
 
 const LocationFormContainer = ({

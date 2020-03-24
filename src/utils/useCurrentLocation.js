@@ -4,7 +4,7 @@ import React from 'react'
 const CurrentLocationContext = React.createContext([null, () => {}])
 
 
-const CurrentLocationProvider = ({ children }) => {
+export const CurrentLocationProvider = ({ children }) => {
   const [currentLocation, setCurrentLocation] = React.useState({
     location: null,
     loading: true,
@@ -35,16 +35,14 @@ const CurrentLocationProvider = ({ children }) => {
   )
 }
 
-export default CurrentLocationProvider
 
-
-export const useCurrentLocation = () => {
+const useCurrentLocation = () => {
   const [currentLocation] = React.useContext(CurrentLocationContext)
   return currentLocation
 }
 
 
-export const getCurrentLocation = (callback, errorCallback) => {
+const getCurrentLocation = (callback, errorCallback) => {
   if (typeof window !== 'undefined' && 'geolocation' in navigator) {
     // Check if geolocation is supported/enabled on current browser.
     navigator.geolocation.getCurrentPosition(
@@ -62,3 +60,5 @@ export const getCurrentLocation = (callback, errorCallback) => {
     errorCallback()
   }
 }
+
+export default useCurrentLocation

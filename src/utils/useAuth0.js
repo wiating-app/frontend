@@ -8,7 +8,7 @@ import Text from '../components/Text'
 // https://auth0.com/docs/quickstart/spa/react
 
 const Auth0Context = React.createContext()
-export const useAuth0 = () => useContext(Auth0Context)
+const useAuth0 = () => useContext(Auth0Context)
 
 
 export const Auth0Provider = ({
@@ -106,3 +106,5 @@ export const Auth0Provider = ({
     </Auth0Context.Provider>
   )
 }
+
+export default useAuth0

@@ -1,8 +1,8 @@
 import React from 'react'
 import { useSnackbar } from 'notistack'
 import api, { CancelToken, isCancel } from '../api'
-import { useAuth0 } from '../utils/auth0Provider'
-import { useCurrentLocation } from '../utils/CurrentLocationProvider'
+import useAuth0 from '../utils/useAuth0'
+import useCurrentLocation from '../utils/useCurrentLocation'
 import Map from '../components/Map'
 import Text from '../components/Text'
 

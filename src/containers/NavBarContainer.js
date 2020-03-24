@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import api from '../api'
-import { useAuth0 } from '../utils/auth0Provider'
+import useAuth0 from '../utils/useAuth0'
 import NavBar from '../components/NavBar'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import Text from '../components/Text'
