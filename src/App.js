@@ -51,6 +51,7 @@ const App = ({ history, location: { pathname } }) => {
           await mapRef.current.loadMapMarkers()
         }}
         isLocationTabOpen={isLocationTabOpen}
+        hideMapOnMobile={location.pathname.startsWith('/search')}
       >
         <Switch>
           <Route exact path='/search'>

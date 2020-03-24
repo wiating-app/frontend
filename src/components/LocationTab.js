@@ -12,9 +12,10 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 const LocationTab = ({
   closeLocationTab,
   isLocationTabOpen,
+  hideMapOnMobile,
   children,
 }) => {
-  const classes = useStyles()
+  const classes = useStyles(hideMapOnMobile)
   const theme = useTheme()
   const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
 
@@ -28,7 +29,6 @@ const LocationTab = ({
     >
       <div className={classes.toolbar} />
       <PerfectScrollbar swipeEasing={false}>
-        <div className={classes.mapSpacer} />
         <div className={classes.inner}>
           <IconButton
             size='small'
@@ -47,11 +47,12 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     backgroundColor: 'transparent',
     borderTop: 'none',
-    height: `calc(100vh - ${theme.layout.mobileMiniMapHeight + theme.mixins.toolbar.minHeight}px)`,
+    height: hideMapOnMobile =>
+      `calc(100vh - ${(hideMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight) + theme.mixins.toolbar.minHeight}px)`,
     boxShadow: theme.shadows[14],
     [theme.breakpoints.up('sm')]: {
       width: theme.layout.locationTabWidth,
-      height: '100%',
+      height: '100% !important',
       boxShadow: theme.shadows[3],
     },
   },
