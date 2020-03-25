@@ -4,6 +4,7 @@ import {
   Marker,
   Popup,
   TileLayer,
+  Circle,
   ZoomControl,
   ScaleControl,
 } from 'react-leaflet'
@@ -130,7 +131,7 @@ const Map = React.forwardRef(({
           const count = cluster.getChildCount()
           return new DivIcon({
             html: count,
-            className: 'woodboard-cluster',
+            className: classes.woodboardCluster,
             iconSize: [40, 40],
           })
         }}
@@ -185,15 +186,23 @@ const Map = React.forwardRef(({
         </Popup>
       }
       {props.currentLocation &&
-        <Marker
-          icon={new Icon({
-            iconUrl: '/location-icons/current.svg',
-            iconSize: [24, 24],
-            iconAnchor: [12, 12],
-          })}
-          zIndexOffset={1100}
-          position={props.currentLocation}
-        />
+        <>
+          {props.locationAccuracy && props.locationAccuracy > 30 &&
+            <Circle
+              center={props.currentLocation}
+              radius={props.locationAccuracy}
+            />
+          }
+          <Marker
+            icon={new Icon({
+              iconUrl: '/location-icons/current.svg',
+              iconSize: [24, 24],
+              iconAnchor: [12, 12],
+            })}
+            zIndexOffset={1100}
+            position={props.currentLocation}
+          />
+        </>
       }
       {(!props.isLocationTabOpen || !isPhone) &&
         <>
@@ -202,7 +211,7 @@ const Map = React.forwardRef(({
             <a
               className={classes.customControl}
               onClick={() => props.currentLocation &&
-                mapRef.current.leafletElement.flyTo(props.currentLocation)
+                mapRef.current.leafletElement.flyTo(props.currentLocation, 13)
               }
               disabled={!props.currentLocation}
             >
@@ -228,6 +237,11 @@ const Map = React.forwardRef(({
             variant='caption'
             className={classes.currentLocation}
           >Aktualne położenie: {props.currentLocation}</Typography>
+          <br />
+          <Typography
+            variant='caption'
+            className={classes.currentLocation}
+          >Dokładność: {props.locationAccuracy} m</Typography>
         </Control>
       }
     </MapComponent>
@@ -244,19 +258,19 @@ const useStyles = makeStyles(theme => ({
     '& .leaflet-marker-icon': {
       filter: 'drop-shadow(0 0 1px rgb(0,0,0))',
     },
-    '& .woodboard-cluster': {
-      backgroundColor: 'transparent',
-      backgroundImage: 'url(/woodboard.svg)',
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontWeight: 'bold',
-      color: '#522d19',
-      filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.5))',
-    },
+  },
+  woodboardCluster: {
+    backgroundColor: 'transparent',
+    backgroundImage: 'url(/woodboard.svg)',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold',
+    color: '#522d19',
+    filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.5))',
   },
   popup: {
     marginBottom: 50,

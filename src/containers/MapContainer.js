@@ -14,7 +14,7 @@ const MapContainer = React.forwardRef((props, ref) => {
   const [initalPosition, setInitalPosition] = React.useState()
   const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
-  const { location, loading, error } = useCurrentLocation()
+  const { location, accuracy, loading, error } = useCurrentLocation()
   const defaultPosition = [50.39805, 16.844417] // The area of Polish mountains.
 
   const mapRef = React.useRef()
@@ -85,6 +85,7 @@ const MapContainer = React.forwardRef((props, ref) => {
       loadMapMarkers={viewport => loadMapMarkers(viewport)}
       points={points}
       currentLocation={location}
+      locationAccuracy={accuracy}
       center={initalPosition && initalPosition.center}
       zoom={initalPosition && initalPosition.zoom}
       {...props}

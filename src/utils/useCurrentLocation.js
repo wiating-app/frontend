@@ -7,6 +7,7 @@ const CurrentLocationContext = React.createContext([null, () => {}])
 export const CurrentLocationProvider = ({ children }) => {
   const [currentLocation, setCurrentLocation] = React.useState({
     location: null,
+    accuracy: null,
     loading: true,
     error: false,
   })
@@ -17,10 +18,11 @@ export const CurrentLocationProvider = ({ children }) => {
       navigator.geolocation.getCurrentPosition(
         function success(location) {
           // For when getting location is a success.
-          const { coords: { latitude, longitude } } = location
-          console.log('Updated user location: ', [latitude, longitude])
+          const { coords: { latitude, longitude, accuracy } } = location
+          console.log('Updated user location:', [latitude, longitude], 'Accuracy:', accuracy)
           setCurrentLocation({
             location: [latitude, longitude],
+            accuracy,
             loading: false,
             error: false,
           })
@@ -30,6 +32,7 @@ export const CurrentLocationProvider = ({ children }) => {
           console.error(err.message)
           setCurrentLocation({
             location: null,
+            accuracy: null,
             loading: false,
             error: true,
           })
@@ -39,6 +42,7 @@ export const CurrentLocationProvider = ({ children }) => {
       console.warn('Geolocation is not enabled on this browser.')
       setCurrentLocation({
         location: null,
+        accuracy: null,
         loading: false,
         error: true,
       })
