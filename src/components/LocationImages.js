@@ -81,10 +81,10 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       width: '80vw',
       height: '80vh',
-      marginTop: '10vw',
+      marginTop: '6vw',
       marginLeft: '10vw',
     },
-    '& .image-gallery, & .image-gallery-content, & .image-gallery-swipe, & .image-gallery-swipe *': {
+    '& .image-gallery, & .image-gallery-content, & .image-gallery-swipe, & .image-gallery-slides, & .image-gallery-slides *': {
       height: '100%',
     },
     '& .image-gallery-slide-wrapper': {
