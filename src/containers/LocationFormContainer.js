@@ -94,7 +94,7 @@ const LocationFormContainer = ({
         const { data } = await api.post('add_point', dataObject)
         setLocation(data)
         setCachedLocation(data)
-        history.push(`/location/${_id}`)
+        history.push(`/location/${id}`)
         enqueueSnackbar(translations.notifications.newMarkerAdded, { variant: 'success' })
       } else {
         // Updating exisitng marker.
@@ -102,7 +102,7 @@ const LocationFormContainer = ({
         const { data } = await api.post('modify_point', { id, ...dataObject })
         setLocation(data)
         setCachedLocation(data)
-        history.push(`/location/${_id}`)
+        history.push(`/location/${id}`)
         enqueueSnackbar(translations.notifications.markerUpdated, { variant: 'success' })
       }
       refreshMap()
