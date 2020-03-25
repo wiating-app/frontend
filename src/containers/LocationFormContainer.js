@@ -117,6 +117,19 @@ const LocationFormContainer = ({
     }
   }
 
+  const onDeleteLocation = async () => {
+    try {
+      await api.post('delete_point', { id })
+      setCachedLocation(null)
+      history.push('/')
+      refreshMap()
+      enqueueSnackbar(translations.notifications.locationDeleted, { variant: 'success' })
+    } catch (err) {
+      console.error(err)
+      enqueueSnackbar(translations.notifications.couldNotDeleteLocation, { variant: 'error' })
+    }
+  }
+
   return (
     loading || loadingAuth
       ? <Loader dark big />
@@ -133,7 +146,7 @@ const LocationFormContainer = ({
           }}
           cancel={() => history.goBack()}
           isModerator={isModerator}
-          deleteCallback={() => alert('Usuwanie lokacji będzie gotowe wkrótce.')}
+          onDeleteLocation={onDeleteLocation}
           isNew={isNew}
         />
   )

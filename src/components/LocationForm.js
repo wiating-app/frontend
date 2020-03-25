@@ -22,7 +22,7 @@ const LocationForm = ({
   updateCurrentMarker,
   cancel,
   isModerator,
-  deleteCallback,
+  onDeleteLocation,
   isNew,
 }) => {
   const [loading, setLoading] = React.useState()
@@ -160,7 +160,7 @@ const LocationForm = ({
             id={locationData.id}
             title={translations.deleteThisEntry}
             name={locationData.name}
-            deleteCallback={deleteCallback}
+            deleteCallback={onDeleteLocation}
           />
         }
         <FormButton

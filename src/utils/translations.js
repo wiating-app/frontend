@@ -59,6 +59,8 @@ export default {
       couldNotSavePhoto: 'Nie udało się zapisać zdjęcia.',
       wrongCoordsFormat: 'Niepoprawny format współrzędnych.',
       couldNotRestoreSession: 'Nie udało się uwierzytelnić. Spróbuj się wylogować i zalogować ponownie.',
+      locationDeleted: 'Lokacja została usunięta.',
+      couldNotDeleteLocation: 'Nie udało się usunąć lokacji.',
     },
     actions: {
       edit: 'Edytuj',
@@ -142,6 +144,8 @@ export default {
       couldNotSavePhoto: 'Could not save a photo.',
       wrongCoordsFormat: 'Wrong coordinations format.',
       couldNotRestoreSession: 'Could not authenticate. Try to log out and log in again.',
+      locationDeleted: 'Location has been deleted.',
+      couldNotDeleteLocation: 'Could not delete location.',
     },
     actions: {
       edit: 'Edit',
