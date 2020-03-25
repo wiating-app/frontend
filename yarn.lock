@@ -9883,18 +9883,31 @@ react-router@5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-standalone-form-mui@^0.1.15:
-  version "0.1.15"
-  resolved "https://registry.yarnpkg.com/react-standalone-form-mui/-/react-standalone-form-mui-0.1.15.tgz#200e04f456d1cba75c6fb2026efc9668f70c0eed"
-  integrity sha512-4JrWNxYvtDRU6fUDN2c4K4Bx8J1gRYvgyfHDDe6ISoE15gaiMKjctq8NYflali7DS8GlmBjYS026oa5HYsmESA==
+react-standalone-form-mui@^0.1.19:
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/react-standalone-form-mui/-/react-standalone-form-mui-0.1.19.tgz#4a0327d8213e6dcbce4999edd1307faced126e22"
+  integrity sha512-h3VwsO6Ok6re8/JPh876jnp6DyIrqtV45OfydsXEev6vAY97aSZMoQ6IJGr+KYnby7xL4wIMGP+llzvLkZxSNg==
   dependencies:
     classnames "^2.2.6"
-    react-standalone-form "^0.10.2"
+    react-standalone-form "^0.10.4"
 
 react-standalone-form@^0.10.2:
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/react-standalone-form/-/react-standalone-form-0.10.2.tgz#0ce73a70bc357adf2766abefd7d9c5ec8578ca81"
   integrity sha512-3LveIw9NkYXZVvEjMpTNYnW7hXrZp9BsJARCMXGSvf991h0SkvqESmHCl6TDPIE3WKb5veVRD5/6r6xf0i6/Aw==
+  dependencies:
+    bem-modifiers "^1.0.7"
+    polished "^3.0.3"
+    react-jss "^10.0.3"
+    react-loading "^2.0.3"
+    react-toastify "^5.1.0"
+    throttle-debounce "^2.1.0"
+    validator "^10.11.0"
+
+react-standalone-form@^0.10.4:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/react-standalone-form/-/react-standalone-form-0.10.5.tgz#f64990b4c433ed146d694dce58a2e66a96348142"
+  integrity sha512-pAri6XYc3D+jj10EfVplOAkZRTgilXNrkSw6EZgdaK27uE2xs3UlnvTOXLFDb6xwxg6SB/zxIoVV32/U/bIV1w==
   dependencies:
     bem-modifiers "^1.0.7"
     polished "^3.0.3"
