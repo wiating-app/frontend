@@ -10,6 +10,7 @@ import {
 import CoordinatesInput from './CoordinatesInput'
 import HintWrapper from './HintWrapper'
 import Select from './Select'
+import ConfirmDelete from './ConfirmDelete'
 import locationTypes from '../utils/locationTypes'
 import { getIconUrl } from '../utils/helpers'
 import useLanguage from '../utils/useLanguage'
@@ -20,6 +21,8 @@ const LocationForm = ({
   onSubmitLocation,
   updateCurrentMarker,
   cancel,
+  isModerator,
+  deleteCallback,
   isNew,
 }) => {
   const [loading, setLoading] = React.useState()
@@ -152,6 +155,14 @@ const LocationForm = ({
 
       <FormActions>
         <Button onClick={() => cancel()}>{translations.cancel}</Button>
+        {isModerator &&
+          <ConfirmDelete
+            id={locationData.id}
+            title={translations.deleteThisEntry}
+            name={locationData.name}
+            deleteCallback={deleteCallback}
+          />
+        }
         <FormButton
           variant='contained'
           color='primary'

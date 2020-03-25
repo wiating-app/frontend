@@ -18,7 +18,7 @@ const LocationFormContainer = ({
   match,
 }) => {
   const { params: { id } } = match
-  const { isLoggedIn, loading: loadingAuth } = useAuth0()
+  const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
   const { translations } = useLanguage()
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
@@ -132,6 +132,8 @@ const LocationFormContainer = ({
             }
           }}
           cancel={() => history.goBack()}
+          isModerator={isModerator}
+          deleteCallback={() => alert('Usuwanie lokacji będzie gotowe wkrótce.')}
           isNew={isNew}
         />
   )

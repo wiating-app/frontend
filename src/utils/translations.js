@@ -77,6 +77,8 @@ export default {
     informations: 'Informacje',
     termsAndConditions: 'Regulamin',
     privacyPolicy: 'Polityka prywatności',
+    confirmDeleteLocation: 'Na pewno bezpowrotnie usunąć tą lokację?',
+    delete: 'Usuń',
   },
 
 
@@ -158,5 +160,7 @@ export default {
     informations: 'Informations',
     termsAndConditions: 'Terms and conditions',
     privacyPolicy: 'Privacy policy',
+    delete: 'Delete',
+    confirmDeleteLocation: 'Are you sure to permanently delete this location?',
   },
 }
