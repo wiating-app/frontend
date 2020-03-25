@@ -8,7 +8,6 @@ import useLanguage from '../utils/useLanguage'
 // https://auth0.com/docs/quickstart/spa/react
 
 const Auth0Context = React.createContext()
-const useAuth0 = () => useContext(Auth0Context)
 
 
 export const Auth0Provider = ({
@@ -108,4 +107,5 @@ export const Auth0Provider = ({
   )
 }
 
+const useAuth0 = () => useContext(Auth0Context)
 export default useAuth0

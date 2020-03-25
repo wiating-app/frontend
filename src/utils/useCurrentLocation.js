@@ -11,65 +11,58 @@ export const CurrentLocationProvider = ({ children }) => {
     error: false,
   })
 
-  React.useEffect(() => {
-    const getCurrentLocationHandler = () => {
-      getCurrentLocation(
-        // Success
-        location => setCurrentLocation({
-          location,
-          loading: false,
-          error: false,
-        }),
-        // Error
-        () => setCurrentLocation({
-          location: null,
-          loading: false,
-          error: true,
-        })
+  const getCurrentLocation = () => {
+    if (typeof window !== 'undefined' && 'geolocation' in navigator) {
+      // Check if geolocation is supported/enabled on current browser.
+      navigator.geolocation.getCurrentPosition(
+        function success(location) {
+          // For when getting location is a success.
+          const { coords: { latitude, longitude } } = location
+          console.log('Updated user location: ', [latitude, longitude])
+          setCurrentLocation({
+            location: [latitude, longitude],
+            loading: false,
+            error: false,
+          })
+        },
+        function error(err) {
+          // For when getting location had an error.
+          console.error(err.message)
+          setCurrentLocation({
+            location: null,
+            loading: false,
+            error: true,
+          })
+        }
       )
+    } else {
+      console.warn('Geolocation is not enabled on this browser.')
+      setCurrentLocation({
+        location: null,
+        loading: false,
+        error: true,
+      })
     }
+  }
 
-    getCurrentLocationHandler()
+  // Location pooling.
+  React.useEffect(() => {
+    getCurrentLocation()
 
     const interval = setInterval(() => {
-      console.log('Updating current location info.')
-      getCurrentLocationHandler()
-    }, 30000) // 30 seconds.
+      getCurrentLocation()
+    }, 10000) // 100 seconds.
 
     return () => clearInterval(interval)
   }, [])
 
   return (
-    <CurrentLocationContext.Provider value={[currentLocation, setCurrentLocation]}>
+    <CurrentLocationContext.Provider value={currentLocation}>
       {children}
     </CurrentLocationContext.Provider>
   )
 }
 
 
-const useCurrentLocation = () => {
-  const [currentLocation] = React.useContext(CurrentLocationContext)
-  return currentLocation
-}
-
-
-const getCurrentLocation = (callback, errorCallback) => {
-  if (typeof window !== 'undefined' && 'geolocation' in navigator) {
-    // Check if geolocation is supported/enabled on current browser.
-    navigator.geolocation.getCurrentPosition(
-      function success(position) {
-        // For when getting location is a success.
-        callback([position.coords.latitude, position.coords.longitude])
-      },
-      function error(errorMessage) {
-        console.error(errorMessage.message)
-        errorCallback()
-      }
-    )
-  } else {
-    console.warn('Geolocation is not enabled on this browser.')
-    errorCallback()
-  }
-}
-
+const useCurrentLocation = () => React.useContext(CurrentLocationContext)
 export default useCurrentLocation

@@ -9,7 +9,7 @@ import {
 } from 'react-leaflet'
 import Control from 'react-leaflet-control'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { useMediaQuery } from '@material-ui/core'
+import { Typography, useMediaQuery } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon, DivIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
@@ -222,6 +222,14 @@ const Map = React.forwardRef(({
         </>
       }
       <ScaleControl position='bottomright' imperial={false} />
+      {props.currentLocation &&
+        <Control position='topleft'>
+          <Typography
+            variant='caption'
+            className={classes.currentLocation}
+          >Aktualne położenie: {props.currentLocation}</Typography>
+        </Control>
+      }
     </MapComponent>
   )
 })
@@ -274,6 +282,10 @@ const useStyles = makeStyles(theme => ({
   },
   customControlIcon: {
     fontSize: 18,
+  },
+  currentLocation: {
+    backgroundColor: 'rgba(255,255,255,0.67)',
+    padding: 2,
   },
 }))
 
