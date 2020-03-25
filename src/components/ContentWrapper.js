@@ -14,6 +14,9 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[1],
     position: 'relative',
     flexGrow: 1,
+    [theme.breakpoints.down('xs')]: {
+      paddingRight: theme.spacing(3),
+    },
   },
 }))
 
