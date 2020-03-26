@@ -94,7 +94,7 @@ const LocationFormContainer = ({
         const { data } = await api.post('add_point', dataObject)
         setLocation(data)
         setCachedLocation(data)
-        history.push(`/location/${id}`)
+        history.push(`/location/${data.id}`)
         enqueueSnackbar(translations.notifications.newMarkerAdded, { variant: 'success' })
       } else {
         // Updating exisitng marker.
