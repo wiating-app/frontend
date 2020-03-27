@@ -57,7 +57,7 @@ const LogsContainer = () => {
     setLoadingBan(false)
   }
 
-  const revertCallback = async (id, changed, added) => {
+  const revertCallback = async (id, changed) => {
     try {
       setLoadingRevert(true)
       const dataObject = {
@@ -65,10 +65,6 @@ const LogsContainer = () => {
         ...Object.entries(changed).reduce((acc, [name, value]) => ({
           ...acc,
           [name]: value.old_value,
-        }), {}),
-        ...Object.keys(added).reduce((acc, cur) => ({
-          ...acc,
-          [cur]: null,
         }), {}),
       }
       console.log('dataObject: ', dataObject);

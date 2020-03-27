@@ -59,7 +59,7 @@ const LogDetails = ({
         <Grid item>
           <Button
             variant='contained'
-            onClick={() => revertCallback(data.id, data.changed, data.added)}
+            onClick={() => revertCallback(data.doc_id, data.changes)}
           >{loadingRevert && <Loader dark />}Przywróć poprzednią wersję</Button>
         </Grid>
       </Grid>
