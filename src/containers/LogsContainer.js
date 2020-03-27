@@ -102,6 +102,7 @@ const LogsContainer = () => {
             revertCallback={revertCallback}
             loadingBan={loadingBan}
             loadingRevert={loadingRevert}
+            onClose={() => setDetails(null)}
           />
         }
       </>

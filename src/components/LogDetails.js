@@ -12,6 +12,7 @@ const LogDetails = ({
   revertCallback,
   loadingBan,
   loadingRevert,
+  onClose,
 }) => {
   const changes = data.changes
     ? Object.entries(data.changes).map(([name, values]) => ({
@@ -22,7 +23,7 @@ const LogDetails = ({
     : []
 
   return (
-    <Modal short>
+    <Modal short onClose={onClose}>
       <Typography variant='h5' gutterBottom>Szczegóły loga {data.id}</Typography>
       <Typography
         variant='body2'
