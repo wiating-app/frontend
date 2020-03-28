@@ -212,7 +212,7 @@ const Map = React.forwardRef(({
             <a
               className={classes.customControl}
               onClick={() => props.currentLocation &&
-                mapRef.current.leafletElement.flyTo(props.currentLocation, 13)
+                mapRef.current.leafletElement.flyTo(props.currentLocation, 14)
               }
               disabled={!props.currentLocation}
             >
