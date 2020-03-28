@@ -17,6 +17,7 @@ import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import ContextMenu from './ContextMenu'
+import Legend from './Legend'
 import { getIconUrl } from '../utils/helpers'
 import exportToKML from '../utils/exportToKML'
 
@@ -230,20 +231,18 @@ const Map = React.forwardRef(({
           </Control>
         </>
       }
+      <Control position='bottomright'>
+        {props.currentLocation &&
+          <Typography
+            variant='caption'
+            className={classes.currentLocation}
+          >Dokładność GPS: {Math.round(props.locationAccuracy)} m</Typography>
+        }
+      </Control>
       <ScaleControl position='bottomright' imperial={false} />
-      {props.currentLocation &&
-        <Control position='topleft'>
-          <Typography
-            variant='caption'
-            className={classes.currentLocation}
-          >Aktualne położenie: {props.currentLocation}</Typography>
-          <br />
-          <Typography
-            variant='caption'
-            className={classes.currentLocation}
-          >Dokładność: {props.locationAccuracy} m</Typography>
-        </Control>
-      }
+      <Control position='topleft'>
+        <Legend />
+      </Control>
     </MapComponent>
   )
 })
@@ -298,7 +297,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 18,
   },
   currentLocation: {
-    backgroundColor: 'rgba(255,255,255,0.67)',
+    backgroundColor: 'rgba(255,255,255,0.85)',
     padding: 2,
   },
 }))

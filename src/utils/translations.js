@@ -81,6 +81,7 @@ export default {
     privacyPolicy: 'Polityka prywatności',
     confirmDeleteLocation: 'Na pewno bezpowrotnie usunąć tą lokację?',
     delete: 'Usuń',
+    legend: 'Legenda',
   },
 
 
@@ -166,5 +167,6 @@ export default {
     privacyPolicy: 'Privacy policy',
     delete: 'Delete',
     confirmDeleteLocation: 'Are you sure to permanently delete this location?',
+    legend: 'Legend',
   },
 }
