@@ -6,18 +6,18 @@ import { getIconUrl } from '../utils/helpers'
 import useLanguage from '../utils/useLanguage'
 
 
-const Legend = () => {
-  const classes = useStyles()
+const Legend = ({ boxed }) => {
+  const classes = useStyles(boxed)
   const { translations } = useLanguage()
   return (
     <div className={classes.root}>
-      <Typography variant='subtitle2'>
+      <Typography variant={boxed ? 'subtitle2' : 'h5'}>
         {translations.legend}:
       </Typography>
       {Object.entries(locationTypes).map(([key, label]) =>
         <div className={classes.item} key={key}>
           <img src={getIconUrl(key)} alt='' className={classes.icon} />
-          <Typography variant='caption'>
+          <Typography variant={boxed ? 'caption' : 'body1'}>
             {translations.locationType[label]}
           </Typography>
         </div>
@@ -26,24 +26,25 @@ const Legend = () => {
   )
 }
 
+Legend.defaultProps = {
+  boxed: false,
+}
+
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: 'rgba(255,255,255,0.85)',
-    padding: theme.spacing(1),
-    boxShadow: theme.shadows[1],
+    backgroundColor: boxed => boxed ? 'rgba(255,255,255,0.85)' : 'transparent',
+    padding: boxed => boxed ? theme.spacing(1) : 0,
+    boxShadow: boxed => boxed ? theme.shadows[1] : 0,
     borderRadius: 4,
     marginBottom: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
   },
   item: {
-    marginTop: theme.spacing(1),
+    marginTop: boxed => boxed ? theme.spacing(1) : theme.spacing(2),
     display: 'flex',
     alignItems: 'center',
   },
   icon: {
-    height: 20,
+    height: boxed => boxed ? 20 : 30,
     marginRight: theme.spacing(1),
   },
 }))

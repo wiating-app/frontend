@@ -1,5 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import { useMediaQuery } from '@material-ui/core'
+import { useTheme } from '@material-ui/core/styles'
 import api from '../api'
 import useAuth0 from '../utils/useAuth0'
 import NavBar from '../components/NavBar'
@@ -19,6 +21,8 @@ const NavBarContainer = ({ setSearchResults, history }) => {
     isModerator,
     logout,
   } = useAuth0()
+  const theme = useTheme()
+  const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
 
   const onSearch = async phrase => {
     if (phrase) {
@@ -38,6 +42,7 @@ const NavBarContainer = ({ setSearchResults, history }) => {
       divider: true,
     }] : [],
     { label: translations.informations, url: '/info' },
+    ...isPhone ? [{ label: translations.legend, url: '/legenda' }] : [],
     { label: translations.termsAndConditions, url: '/regulamin' },
     { label: translations.privacyPolicy, url: '/polityka-prywatnosci', divider: true },
     {

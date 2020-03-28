@@ -240,9 +240,11 @@ const Map = React.forwardRef(({
         }
       </Control>
       <ScaleControl position='bottomright' imperial={false} />
-      <Control position='topleft'>
-        <Legend />
-      </Control>
+      {!isPhone &&
+        <Control position='topleft'>
+          <Legend boxed />
+        </Control>
+      }
     </MapComponent>
   )
 })
