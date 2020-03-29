@@ -10,7 +10,7 @@ import {
 } from 'react-leaflet'
 import Control from 'react-leaflet-control'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { Typography, useMediaQuery } from '@material-ui/core'
+import { Typography, useMediaQuery, Tooltip } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon, DivIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
@@ -120,6 +120,7 @@ const Map = React.forwardRef(({
         } else if (editMode && isLoggedIn && !activeMarker) {
           // If location creation form has beem opened from URL and there are no
           // coordinates given yet, set the coordinates and active marker.
+          openAddMarkerTab(e.latlng)
           setActiveMarker(e.latlng)
           updateCoordinates(e.latlng)
         } else if (isMobile && isLocationTabOpen && !editMode) {
@@ -165,6 +166,7 @@ const Map = React.forwardRef(({
               setContextMenu(null)
               setActiveMarker([lat, lon])
             }}
+            opacity={editMode ? 0.5 : 1}
           />
         })}
       </MarkerClusterGroup>
@@ -234,13 +236,17 @@ const Map = React.forwardRef(({
               }
             </a>
           </Control>
-          <Control position='topright' className='leaflet-bar'>
-            <a
-              className={classes.customControl}
-              onClick={() => exportToKML(points)}
-              disabled={!points || !points.length}
-            >KML</a>
-          </Control>
+          {!editMode &&
+            <Control position='topright' className='leaflet-bar'>
+              <Tooltip title='Eksportuj aktualny widok do KML' placement='left'>
+                <a
+                  className={classes.customControl}
+                  onClick={() => exportToKML(points)}
+                  disabled={!points || !points.length}
+                >KML</a>
+              </Tooltip>
+            </Control>
+          }
         </>
       }
       <Control position='bottomright'>
@@ -252,7 +258,7 @@ const Map = React.forwardRef(({
         }
       </Control>
       <ScaleControl position='bottomright' imperial={false} />
-      {!isMobile &&
+      {!isMobile && !editMode &&
         <Control position='topleft'>
           <Legend boxed />
         </Control>

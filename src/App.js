@@ -1,5 +1,6 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import Layout from './components/Layout'
@@ -23,9 +24,10 @@ import LogsContainer from './containers/LogsContainer'
 const App = ({ history, location: { pathname } }) => {
   const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState([])
+  const [editMode, setEditMode] = React.useState()
   const isLocationTabOpen = location.pathname.startsWith('/location') || location.pathname.startsWith('/search')
-  const editMode = pathname.endsWith('/edit') || pathname.endsWith('/new')
   const mapRef = React.useRef()
+  const { closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
     if (cachedLocation) {
@@ -35,6 +37,14 @@ const App = ({ history, location: { pathname } }) => {
       mapRef.current.setActiveMarker(null)
     }
   }, [cachedLocation])
+
+  React.useEffect(() => {
+    setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
+  }, [pathname])
+
+  React.useEffect(() => {
+    !editMode && closeSnackbar() // Dismiss all snackbars when exiting the edit mode.
+  }, [editMode])
 
   return (
     <Layout appBar={
@@ -139,7 +149,11 @@ const App = ({ history, location: { pathname } }) => {
         editMode={editMode}
       />
 
-      <AddButtonContainer setCachedLocation={setCachedLocation} />
+      {!editMode &&
+        <AddButtonContainer
+          setCachedLocation={setCachedLocation}
+        />
+      }
 
       <Switch>
         <Route exact path='/info' component={Info} />

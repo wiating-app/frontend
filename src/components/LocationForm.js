@@ -73,6 +73,17 @@ const LocationForm = ({
         />
       </HintWrapper>
 
+      <HintWrapper message={translations.markerForm.locationHint}>
+        <CoordinatesInput
+          name='location'
+          label={translations.markerForm.location}
+          initialValue={locationData && locationToString()}
+          onChange={value => {
+            updateCurrentMarker(value)
+          }}
+        />
+      </HintWrapper>
+
       <HintWrapper message={translations.markerForm.descriptionHint}>
         <Input
           name='description'
@@ -103,17 +114,6 @@ const LocationForm = ({
             icon: <img src={getIconUrl(value)} alt='' height='30' />,
           }))}
           initialValue={locationData && locationData.type}
-        />
-      </HintWrapper>
-
-      <HintWrapper message={translations.markerForm.locationHint}>
-        <CoordinatesInput
-          name='location'
-          label={translations.markerForm.location}
-          initialValue={locationData && locationToString()}
-          onChange={value => {
-            updateCurrentMarker(value)
-          }}
         />
       </HintWrapper>
 

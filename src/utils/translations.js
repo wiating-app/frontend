@@ -61,6 +61,7 @@ export default {
       couldNotRestoreSession: 'Nie udało się uwierzytelnić. Spróbuj się wylogować i zalogować ponownie.',
       locationDeleted: 'Lokacja została usunięta.',
       couldNotDeleteLocation: 'Nie udało się usunąć lokacji.',
+      pointOnMap: 'Wskaż dowolne miejsce na mapie.',
     },
     actions: {
       edit: 'Edytuj',
@@ -151,6 +152,7 @@ export default {
       couldNotRestoreSession: 'Could not authenticate. Try to log out and log in again.',
       locationDeleted: 'Location has been deleted.',
       couldNotDeleteLocation: 'Could not delete location.',
+      pointOnMap: 'Point the location on a map.',
     },
     actions: {
       edit: 'Edit',

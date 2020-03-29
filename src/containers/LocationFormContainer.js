@@ -23,7 +23,7 @@ const LocationFormContainer = ({
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
-  const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
     if (!loadingAuth && !isLoggedIn) {
@@ -40,6 +40,7 @@ const LocationFormContainer = ({
   // form to new location form.
   React.useEffect(() => {
     if (isNew) {
+      closeSnackbar() // It is here only to dismiss the persising "Put point on map" snackbar.
       const handleAsync = async () => {
         setLoading(true)
         await setCachedLocation(null)
@@ -145,7 +146,6 @@ const LocationFormContainer = ({
     }
   }
 
-  console.log('location: ', location);
   return (
     loading || loadingAuth
       ? <Loader dark big />
@@ -156,7 +156,7 @@ const LocationFormContainer = ({
           onSubmitLocation={onSubmitLocation}
           updateCurrentMarker={coords => {
             const { lat, lon } = parse(coords)
-            if (location.location.lat !== lat || location.location.lon !== lon) {
+            if (!location || !location.location || location.location.lat !== lat || location.location.lon !== lon) {
               setCachedLocation({ ...location, location: { lat, lon } })
             }
           }}
