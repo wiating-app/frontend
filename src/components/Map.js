@@ -23,8 +23,20 @@ import exportToKML from '../utils/exportToKML'
 
 
 const Map = React.forwardRef(({
+  center,
+  zoom,
+  isLocationTabOpen,
+  editMode,
+  isLoggedIn,
+  currentLocation,
+  points,
+  locationAccuracy,
   updateCoordinates,
-  ...props
+  loadMapMarkers,
+  setStoredPosition,
+  openLocationTab,
+  openAddMarkerTab,
+  closeTab,
 }, ref) => {
   const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
@@ -42,16 +54,16 @@ const Map = React.forwardRef(({
   }, [activeMarker])
 
   React.useEffect(() => {
-    if (props.center && !activeMarker) {
-      mapRef.current.leafletElement.flyTo(props.center)
+    if (center && !activeMarker) {
+      mapRef.current.leafletElement.flyTo(center)
     }
-  }, [props.center])
+  }, [center])
 
   React.useEffect(() => {
     if (isMobile) {
       mapRef.current.leafletElement.invalidateSize()
     }
-  }, [props.isLocationTabOpen, isMobile])
+  }, [isLocationTabOpen, isMobile])
 
   // Handle refs.
   React.useImperativeHandle(ref, () => ({
@@ -59,17 +71,17 @@ const Map = React.forwardRef(({
       setActiveMarker(coords)
     },
     loadMapMarkers() {
-      loadMapMarkers()
+      handleLoadMapMarkers()
     },
   }))
 
-  const loadMapMarkers = async () => {
+  const handleLoadMapMarkers = async () => {
     const bounds = await mapRef.current.leafletElement.getBounds()
     // Check whether viewport really changed to prevent a multiple calls for the
     // same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
-      props.loadMapMarkers(bounds)
-      props.setStoredPosition(mapRef.current.viewport)
+      loadMapMarkers(bounds)
+      setStoredPosition(mapRef.current.viewport)
       setPreviousBounds(bounds)
     }
   }
@@ -78,26 +90,26 @@ const Map = React.forwardRef(({
     <MapComponent
       ref={mapRef}
       className={classes.root}
-      style={props.isLocationTabOpen && isMobile
+      style={isLocationTabOpen && isMobile
         ? isPhone
           ? { height: theme.layout.mobileMiniMapHeight }
           : { marginLeft: theme.layout.locationTabWidth }
         : {}
       }
-      center={props.center}
-      zoom={props.zoom}
+      center={center}
+      zoom={zoom}
       minZoom={5}
       maxZoom={18}
       maxBounds={[[-90, -180], [90, 180]]}
       zoomControl={false}
-      onMoveEnd={() => loadMapMarkers()}
+      onMoveEnd={() => handleLoadMapMarkers()}
       onContextMenu={e => {
-        if (!props.editMode) {
-          if (props.isLoggedIn) {
+        if (!editMode) {
+          if (isLoggedIn) {
             setContextMenu(!contextMenu)
             setActiveMarker(contextMenu ? null : e.latlng)
           }
-          props.closeTab()
+          closeTab()
         }
       }}
       onClick={e => {
@@ -105,15 +117,15 @@ const Map = React.forwardRef(({
           // If context menu is opened, close it.
           setContextMenu(false)
           setActiveMarker(false)
-        } else if (props.editMode && props.isLoggedIn && !activeMarker) {
+        } else if (editMode && isLoggedIn && !activeMarker) {
           // If location creation form has beem opened from URL and there are no
           // coordinates given yet, set the coordinates and active marker.
           setActiveMarker(e.latlng)
           updateCoordinates(e.latlng)
-        } else if (isMobile && props.isLocationTabOpen && !props.editMode) {
+        } else if (isMobile && isLocationTabOpen && !editMode) {
           // On mobile version, dismiss the location details drawer, when
           // clicking on a mini map.
-          props.closeTab()
+          closeTab()
           setContextMenu(false)
           setActiveMarker(false)
         }
@@ -137,7 +149,7 @@ const Map = React.forwardRef(({
           })
         }}
       >
-        {props.points && props.points.map(item => {
+        {points && points.map(item => {
           const { location: { lat, lon }, type } = item
 
           return <Marker
@@ -149,7 +161,7 @@ const Map = React.forwardRef(({
             })}
             position={[lat, lon]}
             onClick={() => {
-              props.openLocationTab(item)
+              openLocationTab(item)
               setContextMenu(null)
               setActiveMarker([lat, lon])
             }}
@@ -165,9 +177,9 @@ const Map = React.forwardRef(({
           })}
           zIndexOffset={1000}
           position={activeMarker}
-          draggable={props.editMode}
+          draggable={editMode}
           onMoveEnd={e => {
-            if (props.editMode) {
+            if (editMode) {
               updateCoordinates(e.target.getLatLng())
             }
           }}
@@ -181,17 +193,17 @@ const Map = React.forwardRef(({
         >
           <ContextMenu addMarker={() => {
             setContextMenu(null)
-            props.openAddMarkerTab(activeMarker)
+            openAddMarkerTab(activeMarker)
             mapRef.current.leafletElement.setView(activeMarker)
           }} />
         </Popup>
       }
-      {props.currentLocation &&
+      {currentLocation &&
         <>
-          {props.locationAccuracy && props.locationAccuracy > 30 &&
+          {locationAccuracy && locationAccuracy > 30 &&
             <Circle
-              center={props.currentLocation}
-              radius={props.locationAccuracy}
+              center={currentLocation}
+              radius={locationAccuracy}
             />
           }
           <Marker
@@ -201,22 +213,22 @@ const Map = React.forwardRef(({
               iconAnchor: [12, 12],
             })}
             zIndexOffset={1100}
-            position={props.currentLocation}
+            position={currentLocation}
           />
         </>
       }
-      {(!props.isLocationTabOpen || !isPhone) &&
+      {(!isLocationTabOpen || !isPhone) &&
         <>
           <ZoomControl position='topright' />
           <Control position='topright' className='leaflet-bar'>
             <a
               className={classes.customControl}
-              onClick={() => props.currentLocation &&
-                mapRef.current.leafletElement.flyTo(props.currentLocation, 14)
+              onClick={() => currentLocation &&
+                mapRef.current.leafletElement.flyTo(currentLocation, 14)
               }
-              disabled={!props.currentLocation}
+              disabled={!currentLocation}
             >
-              {props.currentLocation
+              {currentLocation
                 ? <GpsFixed className={classes.customControlIcon} />
                 : <GpsNotFixed className={classes.customControlIcon} />
               }
@@ -225,18 +237,18 @@ const Map = React.forwardRef(({
           <Control position='topright' className='leaflet-bar'>
             <a
               className={classes.customControl}
-              onClick={() => exportToKML(props.points)}
-              disabled={!props.points || !props.points.length}
+              onClick={() => exportToKML(points)}
+              disabled={!points || !points.length}
             >KML</a>
           </Control>
         </>
       }
       <Control position='bottomright'>
-        {props.currentLocation &&
+        {currentLocation &&
           <Typography
             variant='caption'
             className={classes.currentLocation}
-          >Dokładność GPS: {Math.round(props.locationAccuracy)} m</Typography>
+          >Dokładność GPS: {Math.round(locationAccuracy)} m</Typography>
         }
       </Control>
       <ScaleControl position='bottomright' imperial={false} />
