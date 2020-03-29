@@ -34,8 +34,8 @@ export default {
     },
     markerForm: {
       heading: {
-        addMarker: 'Dodaj nowe miejsce',
-        editMarker: 'Edytuj miejsce',
+        addMarker: 'Dodaj nową lokację',
+        editMarker: 'Edytuj lokację',
       },
       location: 'Położenie geograficzne',
       locationHint: 'Postaraj się jak najdokładniej umieścić pinezkę lokacji na mapie. Podczas dodawania nowej lokacji możesz przesuwać pinezkę, aby wyznaczyć lokalizację jak najdokładniej. Możesz też wpisać współrzędne w odpowiednie pole, wtedy pinezka przeniesie się w podane miejsce.',
@@ -52,8 +52,8 @@ export default {
       fireDescriptionHint: 'Podaj szczegóły, np. skąd wziąć drewno.',
     },
     notifications: {
-      markerUpdated: 'Marker zaktualizowany.',
-      newMarkerAdded: 'Dodano nowy marker.',
+      markerUpdated: 'Lokacja zaktualizowana.',
+      newMarkerAdded: 'Dodano nową lokację.',
       couldNotSaveMarker: 'Nie udało się zapisać markera.',
       photoAdded: 'Dodano nowe zdjęcie.',
       couldNotSavePhoto: 'Nie udało się zapisać zdjęcia.',
@@ -66,6 +66,7 @@ export default {
       edit: 'Edytuj',
       addPhoto: 'Dodaj zdjęcie',
     },
+    addMarker: 'Dodaj lokację',
     addMarkerHere: 'Dodaj tu lokację',
     auth: {
       loginSuccessful: 'Zalogowano pomyślnie',
@@ -82,6 +83,9 @@ export default {
     confirmDeleteLocation: 'Na pewno bezpowrotnie usunąć tą lokację?',
     delete: 'Usuń',
     legend: 'Legenda',
+    pointOnMap: 'Wskaż na mapie',
+    enterCoordinates: 'Wprowadź współrzędne',
+    inCurrentLocation: 'W aktualnej lokalizacji',
   },
 
 
@@ -120,8 +124,8 @@ export default {
     },
     markerForm: {
       heading: {
-        addMarker: 'Add new place',
-        editMarker: 'Edit place',
+        addMarker: 'Add new location',
+        editMarker: 'Edit location',
       },
       location: 'Coordinates',
       locationHint: 'English hints.',
@@ -152,6 +156,7 @@ export default {
       edit: 'Edit',
       addPhoto: 'Add photo',
     },
+    addMarker: 'Add location',
     addMarkerHere: 'Add location here',
     auth: {
       loginSuccessful: 'Login successful',
@@ -168,5 +173,8 @@ export default {
     delete: 'Delete',
     confirmDeleteLocation: 'Are you sure to permanently delete this location?',
     legend: 'Legend',
+    pointOnMap: 'Point on map',
+    enterCoordinates: 'Enter coordinates',
+    inCurrentLocation: 'In current location',
   },
 }

@@ -240,7 +240,7 @@ const Map = React.forwardRef(({
         }
       </Control>
       <ScaleControl position='bottomright' imperial={false} />
-      {!isPhone &&
+      {!isMobile &&
         <Control position='topleft'>
           <Legend boxed />
         </Control>

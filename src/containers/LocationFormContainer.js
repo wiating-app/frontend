@@ -36,26 +36,41 @@ const LocationFormContainer = ({
     setLocation(cachedLocation)
   }, [cachedLocation])
 
+  // Make sure that form is cleaned up eg. when navigating from edit location
+  // form to new location form.
+  React.useEffect(() => {
+    if (isNew) {
+      const handleAsync = async () => {
+        setLoading(true)
+        await setCachedLocation(null)
+        setLoading(false)
+      }
+      handleAsync()
+    }
+  }, [isNew])
+
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
-    if (cachedLocation) {
-      setLocation(cachedLocation)
-      setLoading(false)
-    } else {
-      if (id) {
-        const handleAsync = async () => {
-          try {
-            const { data } = await api.post('get_point', { id })
-            setLocation(data)
-            setCachedLocation(data)
-          } catch (error) {
-            setError(true)
+    if (!isNew) {
+      if (cachedLocation) {
+        setLocation(cachedLocation)
+        setLoading(false)
+      } else {
+        if (id) {
+          const handleAsync = async () => {
+            try {
+              const { data } = await api.post('get_point', { id })
+              setLocation(data)
+              setCachedLocation(data)
+            } catch (error) {
+              setError(true)
+            }
+            setLoading(false)
           }
+          handleAsync()
+        } else {
           setLoading(false)
         }
-        handleAsync()
-      } else {
-        setLoading(false)
       }
     }
   }, [])

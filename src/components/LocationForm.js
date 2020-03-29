@@ -155,7 +155,7 @@ const LocationForm = ({
 
       <FormActions>
         <Button onClick={() => cancel()}>{translations.cancel}</Button>
-        {isModerator &&
+        {!isNew && isModerator &&
           <ConfirmDelete
             id={locationData.id}
             title={translations.deleteThisEntry}

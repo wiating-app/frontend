@@ -3,6 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import Layout from './components/Layout'
+import AddButton from './components/AddButton'
 import ContentWrapper from './components/ContentWrapper'
 import LocationTab from './components/LocationTab'
 import SearchResults from './components/SearchResults'
@@ -137,6 +138,8 @@ const App = ({ history, location: { pathname } }) => {
         isLocationTabOpen={isLocationTabOpen}
         editMode={editMode}
       />
+
+      <AddButton />
 
       <Switch>
         <Route exact path='/info' component={Info} />

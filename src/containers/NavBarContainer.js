@@ -22,7 +22,7 @@ const NavBarContainer = ({ setSearchResults, history }) => {
     logout,
   } = useAuth0()
   const theme = useTheme()
-  const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const onSearch = async phrase => {
     if (phrase) {
@@ -42,7 +42,7 @@ const NavBarContainer = ({ setSearchResults, history }) => {
       divider: true,
     }] : [],
     { label: translations.informations, url: '/info' },
-    ...isPhone ? [{ label: translations.legend, url: '/legenda' }] : [],
+    ...isMobile ? [{ label: translations.legend, url: '/legenda' }] : [],
     { label: translations.termsAndConditions, url: '/regulamin' },
     { label: translations.privacyPolicy, url: '/polityka-prywatnosci', divider: true },
     {
