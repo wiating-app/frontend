@@ -136,9 +136,9 @@ const App = ({ history, location: { pathname } }) => {
           setCachedLocation(point)
           history.push(`/location/${point.id}`)
         }}
-        openAddMarkerTab={({ lat, lng: lon }) => {
+        openAddMarkerTab={async ({ lat, lng: lon }) => {
+          await history.push('/location/new')
           setCachedLocation({ location: { lat, lon } })
-          history.push('/location/new')
         }}
         closeTab={() => history.push('/')}
         updateCoordinates={({ lat, lng: lon }) => {
