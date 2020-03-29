@@ -175,7 +175,7 @@ const Map = React.forwardRef(({
             iconSize: [40, 40],
             iconAnchor: [20, 40],
           })}
-          zIndexOffset={1000}
+          zIndexOffset={1100}
           position={activeMarker}
           draggable={editMode}
           onMoveEnd={e => {
@@ -212,7 +212,7 @@ const Map = React.forwardRef(({
               iconSize: [24, 24],
               iconAnchor: [12, 12],
             })}
-            zIndexOffset={1100}
+            zIndexOffset={1000}
             position={currentLocation}
           />
         </>

@@ -145,6 +145,7 @@ const LocationFormContainer = ({
     }
   }
 
+  console.log('location: ', location);
   return (
     loading || loadingAuth
       ? <Loader dark big />

@@ -3,7 +3,6 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import Layout from './components/Layout'
-import AddButton from './components/AddButton'
 import ContentWrapper from './components/ContentWrapper'
 import LocationTab from './components/LocationTab'
 import SearchResults from './components/SearchResults'
@@ -15,6 +14,7 @@ import Regulamin from './components/Regulamin'
 import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
+import AddButtonContainer from './containers/AddButtonContainer'
 import LocationInfoContainer from './containers/LocationInfoContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
 import LogsContainer from './containers/LogsContainer'
@@ -139,7 +139,7 @@ const App = ({ history, location: { pathname } }) => {
         editMode={editMode}
       />
 
-      <AddButton />
+      <AddButtonContainer setCachedLocation={setCachedLocation} />
 
       <Switch>
         <Route exact path='/info' component={Info} />
