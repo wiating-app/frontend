@@ -30,7 +30,7 @@ const NavBar = ({
         <Logo className={classes.logo} />
         <Form
           fields={['phrase']}
-          callbackOnChange={async fields => {
+          onChange={async fields => {
             setSearchLoading(true)
             await onSearch(fields.phrase)
             setSearchLoading(false)

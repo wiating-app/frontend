@@ -58,7 +58,7 @@ const LocationForm = ({
         'type',
         'location',
       ]}
-      callbackOnChange={fields => {
+      onChange={fields => {
         setHasWater(fields.water_exists)
         setHasFire(fields.fire_exists)
       }}

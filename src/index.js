@@ -4,15 +4,14 @@ import { Router } from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
 import { CssBaseline } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { FormThemeProvider } from 'react-standalone-form'
 import App from './App'
 import { Auth0Provider } from './utils/useAuth0'
 import history from './history'
 import enableServiceWorker from './enableServiceWorker'
 import { LanguageProvider } from './utils/useLanguage'
+import FormThemeProvider from './utils/FormThemeProvider'
 import { CurrentLocationProvider } from './utils/useCurrentLocation'
 import theme from './theme'
-import formTheme from './utils/formTheme'
 import Maintenance from './components/Maintenance'
 
 
@@ -30,7 +29,7 @@ ReactDOM.render(
               responseType='token id_token'
               getTokenSilently
             >
-              <FormThemeProvider theme={formTheme}>
+              <FormThemeProvider>
                 <CssBaseline />
                 <CurrentLocationProvider>
                   <App />
