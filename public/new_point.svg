@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg1123"
+   version="1.1"
+   viewBox="0 0 30.492854 38.106815"
+   height="38.106815mm"
+   width="30.492853mm"
+   sodipodi:docname="new_point.svg"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   inkscape:export-filename="/home/merito/Dokumenty/wiating/strona/wiating/public/location-icons/new_point.png"
+   inkscape:export-xdpi="102.33"
+   inkscape:export-ydpi="102.33">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1914"
+     inkscape:window-height="1015"
+     id="namedview5434"
+     showgrid="false"
+     inkscape:zoom="1.4129419"
+     inkscape:cx="62.76039"
+     inkscape:cy="-60.662638"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1117" />
+  <metadata
+     id="metadata1120">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="circle"
+     transform="translate(-5.9136218,-2.9024819)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Layer 1"
+     transform="translate(-42.911917,-14.699677)"
+     style="display:inline">
+    <path
+       d="m 47.377253,19.401446 c 5.953811,-6.268568 15.607638,-6.269483 21.561733,0 5.954377,6.269177 5.954377,16.433282 0,22.702427 l -9.728967,10.243561 c -0.581283,0.612074 -1.522235,0.612074 -2.104116,0 l -9.72865,-10.243561 c -5.953781,-6.269145 -5.953781,-16.43325 0,-22.702427"
+       style="fill:#fffff9;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.02964529"
+       id="path3760-3-3-2-5"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="plus"
+     style="display:inline"
+     transform="translate(-15.838245,-11.703564)">
+    <rect
+       style="opacity:1;fill:#4c4c42;fill-opacity:0;stroke:none;stroke-width:0.05291667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect6015"
+       width="21.440933"
+       height="4.9623122"
+       x="19.661989"
+       y="23.781647" />
+    <rect
+       style="opacity:1;fill:#4c4c42;fill-opacity:0.99612403;stroke:none;stroke-width:0.06280053;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect6019"
+       width="18.725706"
+       height="5.4304547"
+       x="21.721819"
+       y="24.933609" />
+    <rect
+       style="display:inline;opacity:1;fill:#4c4c42;fill-opacity:1;stroke:none;stroke-width:0.06280053;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect6019-6"
+       width="18.725706"
+       height="5.4304547"
+       x="18.469055"
+       y="-33.7999"
+       transform="rotate(90)" />
+  </g>
+</svg>
