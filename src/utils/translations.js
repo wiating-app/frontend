@@ -65,6 +65,11 @@ export default {
       couldNotDeleteLocation: 'Nie udało się usunąć lokacji.',
       pointOnMap: 'Wskaż dowolne miejsce na mapie.',
     },
+    formLabels: {
+      formInvalid: 'Formularz jest niepoprawnie uzupełniony. Sprawdź pola.',
+      requiredField: 'To pole jest obowiązkowe.',
+      minChars: 'Wartość tego pola powinna mieć conajmniej :length: znaków.',
+    },
     actions: {
       edit: 'Edytuj',
       addPhoto: 'Dodaj zdjęcie',
@@ -157,6 +162,11 @@ export default {
       locationDeleted: 'Location has been deleted.',
       couldNotDeleteLocation: 'Could not delete location.',
       pointOnMap: 'Point the location on a map.',
+    },
+    formLabels: {
+      formInvalid: 'Form contains errors. Check all fields.',
+      requiredField: 'This field is required.',
+      minChars: 'This field should have at least :length: characters.',
     },
     actions: {
       edit: 'Edit',

@@ -2,12 +2,15 @@ import React from 'react'
 import { FormThemeProvider as RSFFormThemeProvider } from 'react-standalone-form'
 import { useSnackbar } from 'notistack'
 import parse from 'coord-parser'
+import useLanguage from './useLanguage'
 
 
 const FormThemeProvider = ({ children }) => {
   const { enqueueSnackbar } = useSnackbar()
+  const { translations } = useLanguage()
 
   const theme = {
+    textLabels: translations.formLabels,
     errorNotificationFunc: message => enqueueSnackbar(message, { variant: 'error' }),
     customValidationFunction: (value, type) => {
       // Custom validation rules should return false or string with error message.

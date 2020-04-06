@@ -4,10 +4,7 @@ import translationsFile from './translations'
 export const LanguageContext = React.createContext([null, () => {}])
 
 export const LanguageProvider = ({ children }) => {
-  const [translations, setTranslations] = React.useState({
-    id: 'en',
-    ...translationsFile.en,
-  })
+  const [translations, setTranslations] = React.useState(null)
 
   const setLanguage = language => {
     localStorage.setItem('language', language)
@@ -19,14 +16,15 @@ export const LanguageProvider = ({ children }) => {
 
   React.useEffect(() => {
     const storedLanguage = localStorage.getItem('language')
-    if (storedLanguage) {
-      setLanguage(storedLanguage)
-    }
+    setLanguage(storedLanguage || {
+      id: 'en',
+      ...translationsFile.en,
+    })
   }, [])
 
   return (
     <LanguageContext.Provider value={[translations, setLanguage]}>
-      {children}
+      {translations && children}
     </LanguageContext.Provider>
   )
 }
