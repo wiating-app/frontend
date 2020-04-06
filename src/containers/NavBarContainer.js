@@ -26,9 +26,11 @@ const NavBarContainer = ({ setSearchResults, history }) => {
 
   const onSearch = async phrase => {
     if (phrase) {
-      const { data: { points } } = await api.post('search_points', { phrase })
-      setSearchResults(points)
-      history.push('/search')
+      if (phrase.length > 3) {
+        const { data: { points } } = await api.post('search_points', { phrase })
+        setSearchResults(points)
+        history.push('/search')
+      }
     } else {
       history.push('/')
     }
