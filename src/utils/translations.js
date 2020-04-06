@@ -19,12 +19,14 @@ export default {
     locationType: {
       cabin: 'Chatka',
       cabinFireplace: 'Chatka z paleniskiem',
+      cabinHosted: 'Chatka studencka',
       shed: 'Wiata',
       waterSource: 'Źródło',
       cave: 'Jaskinia',
       pasture: 'Paśnik',
       raisedHide: 'Ambona',
       tower: 'Wieża widokowa',
+      tentCamp: 'Baza namiotowa',
     },
     noResults: 'Nic nie znaleziono',
     connectionProblem: {
@@ -110,12 +112,14 @@ export default {
     locationType: {
       cabin: 'Cabin',
       cabinFireplace: 'Cabin with a fireplace',
+      cabinHosted: 'Cabin with a host',
       shed: 'Shed',
       waterSource: 'Water source',
       cave: 'Cave',
       pasture: 'Pasture',
       raisedHide: 'Raised Hide',
       tower: 'Observation Tower',
+      tentCamp: 'Tent camp',
     },
     noResults: 'No results',
     connectionProblem: {

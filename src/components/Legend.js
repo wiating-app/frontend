@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     padding: boxed => boxed ? theme.spacing(1) : 0,
     boxShadow: boxed => boxed ? theme.shadows[1] : 0,
     borderRadius: 4,
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
   },
   item: {
     marginTop: boxed => boxed ? theme.spacing(1) : theme.spacing(2),
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   icon: {
-    height: boxed => boxed ? 20 : 30,
+    height: boxed => boxed ? 24 : 30,
     marginRight: theme.spacing(1),
   },
 }))
