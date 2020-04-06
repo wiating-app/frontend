@@ -123,9 +123,8 @@ const Map = React.forwardRef(({
           openAddMarkerTab(e.latlng)
           setActiveMarker(e.latlng)
           updateCoordinates(e.latlng)
-        } else if (isMobile && isLocationTabOpen && !editMode) {
-          // On mobile version, dismiss the location details drawer, when
-          // clicking on a mini map.
+        } else if (isLocationTabOpen && !editMode) {
+          // Dismiss the location details drawer, when clicking on a map.
           closeTab()
           setContextMenu(false)
           setActiveMarker(false)
