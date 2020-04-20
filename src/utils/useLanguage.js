@@ -7,7 +7,6 @@ export const LanguageProvider = ({ children }) => {
   const [translations, setTranslations] = React.useState(null)
 
   const setLanguage = language => {
-    localStorage.setItem('language', language)
     setTranslations({
       id: language,
       ...translationsFile[language],
@@ -16,10 +15,10 @@ export const LanguageProvider = ({ children }) => {
 
   React.useEffect(() => {
     const storedLanguage = localStorage.getItem('language')
-    setLanguage(storedLanguage || {
-      id: 'en',
-      ...translationsFile.en,
-    })
+    setLanguage((storedLanguage && Object.keys(translationsFile).includes(storedLanguage))
+      ? storedLanguage
+      : 'en' // TODO: Get user language from browser.
+    )
   }, [])
 
   return (
@@ -35,6 +34,7 @@ const useLanguage = () => {
     translations,
     language: translations.id,
     setLanguage,
+    languages: Object.keys(translationsFile),
   }
 }
 

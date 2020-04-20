@@ -13,6 +13,8 @@ const languages = ['pl', 'en']
 const NavBarContainer = ({ setSearchResults, history }) => {
   const [languageSwitch, setLanguageSwitch] = React.useState()
   const { translations, language, setLanguage } = useLanguage()
+  console.log('translations: ', translations);
+  console.log('translations.auth: ', translations.auth);
   const {
     loading,
     loginWithRedirect,
