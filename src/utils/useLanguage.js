@@ -11,6 +11,7 @@ export const LanguageProvider = ({ children }) => {
       id: language,
       ...translationsFile[language],
     })
+    localStorage.setItem('language', language)
   }
 
   React.useEffect(() => {
