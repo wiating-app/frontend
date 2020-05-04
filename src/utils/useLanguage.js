@@ -1,5 +1,6 @@
 import React from 'react'
 import translationsFile from './translations'
+import detectUserLanguage from './detectUserLanguage'
 
 export const LanguageContext = React.createContext([null, () => {}])
 
@@ -16,10 +17,12 @@ export const LanguageProvider = ({ children }) => {
 
   React.useEffect(() => {
     const storedLanguage = localStorage.getItem('language')
-    setLanguage((storedLanguage && Object.keys(translationsFile).includes(storedLanguage))
-      ? storedLanguage
-      : 'en' // TODO: Get user language from browser.
-    )
+    // TODO: Remove it after all testers visited the page again.
+    // setLanguage((storedLanguage && Object.keys(translationsFile).includes(storedLanguage))
+    //   ? storedLanguage
+    //   : detectUserLanguage()
+    // )
+    setLanguage(detectUserLanguage())
   }, [])
 
   return (
