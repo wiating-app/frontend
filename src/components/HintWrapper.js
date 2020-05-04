@@ -17,9 +17,7 @@ const HintWrapper = ({ message, children }) => {
         <ClickAwayListener onClickAway={() => setOpen(false)}>
           <div>
             <Tooltip
-              PopperProps={{
-                disablePortal: true,
-              }}
+              placement='left-start'
               onClose={() => setOpen(false)}
               open={open}
               disableFocusListener
@@ -28,8 +26,12 @@ const HintWrapper = ({ message, children }) => {
               title={<div className={classes.message}>{message}</div>}
               className={classes.tooltip}
             >
-              <IconButton onClick={() => setOpen(true)}>
-                <Info />
+              <IconButton
+                onClick={() => setOpen(true)}
+                onMouseOver={() => setOpen(true)}
+                onMouseOut={() => setOpen(false)}
+              >
+                <Info className={classes.icon} />
               </IconButton>
             </Tooltip>
           </div>
@@ -40,13 +42,14 @@ const HintWrapper = ({ message, children }) => {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    tooltip: 20,
-  },
   message: {
     fontSize: theme.typography.fontSize,
     lineHeight: 'normal',
     fontWeight: theme.typography.fontWeightRegular,
+    pointerEvents: 'none',
+  },
+  icon: {
+    pointerEvents: 'none',
   },
 }))
 
