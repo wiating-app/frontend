@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import Cookies from 'js-cookie'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import Layout from './components/Layout'
@@ -14,7 +15,7 @@ import LegendPage from './components/LegendPage'
 import Regulamin from './components/Regulamin'
 import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
 import AcceptCookies from './components/AcceptCookies'
-import Cookies from './components/Cookies'
+import CookiesPage from './components/CookiesPage'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
 import AddButtonContainer from './containers/AddButtonContainer'
@@ -47,6 +48,13 @@ const App = ({ history, location: { pathname } }) => {
   React.useEffect(() => {
     !editMode && closeSnackbar() // Dismiss all snackbars when exiting the edit mode.
   }, [editMode])
+
+  React.useEffect(() => {
+    // Show info page when user visits the site first time.
+    if (!Cookies.get('seenInitialInfo')) {
+      history.push('/info')
+    }
+  }, [])
 
   return (
     <Layout appBar={
@@ -162,7 +170,7 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/legenda' component={LegendPage} />
         <Route exact path='/regulamin' component={Regulamin} />
         <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
-        <Route exact path='/cookies' component={Cookies} />
+        <Route exact path='/cookies' component={CookiesPage} />
         <Route exact path='/log' component={LogsContainer} />
       </Switch>
 
