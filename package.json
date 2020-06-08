@@ -10,6 +10,7 @@
     "coord-parser": "^1.0.0",
     "data-uri-to-buffer": "^3.0.0",
     "date-fns": "^2.6.0",
+    "js-cookie": "^2.2.1",
     "leaflet": "^1.5.1",
     "leaflet.markercluster": "^1.4.1",
     "notistack": "^0.9.5",

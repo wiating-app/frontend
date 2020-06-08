@@ -13,6 +13,8 @@ import Info from './components/Info'
 import LegendPage from './components/LegendPage'
 import Regulamin from './components/Regulamin'
 import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
+import AcceptCookies from './components/AcceptCookies'
+import Cookies from './components/Cookies'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
 import AddButtonContainer from './containers/AddButtonContainer'
@@ -160,8 +162,11 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/legenda' component={LegendPage} />
         <Route exact path='/regulamin' component={Regulamin} />
         <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
+        <Route exact path='/cookies' component={Cookies} />
         <Route exact path='/log' component={LogsContainer} />
       </Switch>
+
+      <AcceptCookies />
 
     </Layout>
   )
