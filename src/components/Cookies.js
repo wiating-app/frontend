@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Modal from './Modal'
+import history from '../history'
 
 const Cookies = () =>
-  <Modal>
+  <Modal onClose={() => history.push('/')}>
     <h2>Cookies</h2>
     <p>Na naszej stronie używamy różnych technologii do zbierania i przetwarzania danych osobowych oraz analizowania ruchu na stronie i w Internecie. Do tego celu możemy zbierać Twoje IP lub inne dane osobowe, które nam podasz.</p>
     <p>Administratorem danych osobowych jest ..., adres e-mail: .....</p>
