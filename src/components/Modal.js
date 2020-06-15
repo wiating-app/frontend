@@ -38,15 +38,19 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: '100%',
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    [theme.breakpoints.up('md')]: theme.mixins.toolbar,
+  },
   content: {
     position: 'relative',
     width: ({ wide, small }) => wide ? 1200 : small ? 320 : 900,
     maxHeight: ({ small }) => small ? 160 : 'auto',
-    marginTop: ({ short }) => short ? 30 : 0,
-    marginBottom: ({ short }) => short ? 30 : 0,
+    [theme.breakpoints.up(900)]: {
+      marginTop: ({ short }) => short ? 30 : 0,
+      marginBottom: ({ short }) => short ? 30 : 0,
+    },
     maxWidth: '100vw',
     flexGrow: 1,
     boxSizing: 'border-box',
