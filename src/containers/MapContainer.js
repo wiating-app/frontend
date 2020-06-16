@@ -38,6 +38,8 @@ const MapContainer = React.forwardRef((props, ref) => {
           lat: _southWest.lat,
           lon: _southWest.lng,
         },
+        // eslint-disable-next-line camelcase
+        ...props.activeTypes.length ? { point_type: props.activeTypes } : {},
       }, {
         cancelToken: new CancelToken(function executor(c) {
           // An executor function receives a cancel function as a parameter

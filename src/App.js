@@ -28,6 +28,7 @@ const App = ({ history, location: { pathname } }) => {
   const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState([])
   const [editMode, setEditMode] = React.useState()
+  const [activeTypes, setActiveTypes] = React.useState([])
   const isLocationTabOpen = location.pathname.startsWith('/location') || location.pathname.startsWith('/search')
   const mapRef = React.useRef()
   const { closeSnackbar } = useSnackbar()
@@ -157,6 +158,8 @@ const App = ({ history, location: { pathname } }) => {
         ref={mapRef}
         isLocationTabOpen={isLocationTabOpen}
         editMode={editMode}
+        activeTypes={activeTypes}
+        setActiveTypes={setActiveTypes}
       />
 
       {!editMode &&
@@ -167,7 +170,10 @@ const App = ({ history, location: { pathname } }) => {
 
       <Switch>
         <Route exact path='/info' component={Info} />
-        <Route exact path='/legenda' component={LegendPage} />
+        <Route exact path='/legenda' render={() => <LegendPage
+          activeTypes={activeTypes}
+          setActiveTypes={setActiveTypes}
+        />} />
         <Route exact path='/regulamin' component={Regulamin} />
         <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
         <Route exact path='/cookies' component={CookiesPage} />

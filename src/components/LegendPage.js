@@ -2,9 +2,15 @@ import React from 'react'
 import Modal from './Modal'
 import Legend from './Legend'
 
-const LegendPage = () =>
+const LegendPage = ({
+  activeTypes,
+  setActiveTypes,
+}) =>
   <Modal>
-    <Legend />
+    <Legend
+      activeTypes={activeTypes}
+      onChange={key => setActiveTypes(key)}
+    />
   </Modal>
 
 export default LegendPage

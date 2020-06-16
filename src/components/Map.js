@@ -37,6 +37,8 @@ const Map = React.forwardRef(({
   openLocationTab,
   openAddMarkerTab,
   closeTab,
+  activeTypes,
+  setActiveTypes,
 }, ref) => {
   const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
@@ -85,6 +87,18 @@ const Map = React.forwardRef(({
       setPreviousBounds(bounds)
     }
   }
+
+  React.useEffect(() => {
+    // Refresh markers when active markers are changed.
+    const handleAsync = async () => {
+      if (mapRef.current.leafletElement._loaded) {
+        const bounds = await mapRef.current.leafletElement.getBounds()
+        loadMapMarkers(bounds)
+        handleLoadMapMarkers()
+      }
+    }
+    handleAsync()
+  }, [activeTypes])
 
   return (
     // Use wrapper to set offset to load markers that are on the edge of a screen.
@@ -264,7 +278,11 @@ const Map = React.forwardRef(({
         <ScaleControl position='bottomright' imperial={false} />
         {!isMobile && !editMode &&
           <Control position='topleft'>
-            <Legend boxed />
+            <Legend
+              boxed
+              activeTypes={activeTypes}
+              onChange={key => setActiveTypes(key)}
+            />
           </Control>
         }
       </MapComponent>
