@@ -19,7 +19,7 @@ export default {
     locationType: {
       cabin: 'Chatka',
       cabinFireplace: 'Chatka z paleniskiem',
-      cabinHosted: 'Chatka studencka',
+      cabinHosted: 'Chatka z opiekunem',
       shed: 'Wiata',
       waterSource: 'Źródło',
       cave: 'Jaskinia',
