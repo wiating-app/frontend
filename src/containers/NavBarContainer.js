@@ -10,7 +10,7 @@ import useLanguage from '../utils/useLanguage'
 
 const languages = ['pl', 'en']
 
-const NavBarContainer = ({ setSearchResults, history }) => {
+const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
   const [languageSwitch, setLanguageSwitch] = React.useState()
   const { translations, language, setLanguage } = useLanguage()
   const {
@@ -27,7 +27,12 @@ const NavBarContainer = ({ setSearchResults, history }) => {
   const onSearch = async phrase => {
     if (phrase) {
       if (phrase.length > 3) {
-        const { data: { points } } = await api.post('search_points', { phrase })
+        const { data: { points } } = await api.post('search_points', {
+          phrase,
+          // eslint-disable-next-line camelcase
+          // TODO: These activeTypes are always the same.
+          ...activeTypes.length ? { point_type: activeTypes } : {},
+        })
         setSearchResults(points)
         history.push('/search')
       }
@@ -65,6 +70,7 @@ const NavBarContainer = ({ setSearchResults, history }) => {
       }
       <NavBar
         onSearch={phrase => onSearch(phrase)}
+        activeTypes={activeTypes}
         isLoggedIn={isLoggedIn}
         user={user}
         loading={loading}

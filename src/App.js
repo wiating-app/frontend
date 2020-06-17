@@ -59,10 +59,13 @@ const App = ({ history, location: { pathname } }) => {
 
   return (
     <Layout appBar={
-      <NavBarContainer setSearchResults={results => {
-        setSearchResults(results)
-        setCachedLocation(null)
-      }} />
+      <NavBarContainer
+        setSearchResults={results => {
+          setSearchResults(results)
+          setCachedLocation(null)
+        }}
+        activeTypes={activeTypes}
+      />
     }>
 
       <LocationTab
