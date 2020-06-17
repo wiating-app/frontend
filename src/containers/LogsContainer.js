@@ -17,7 +17,7 @@ const LogsContainer = () => {
   const [loadingRevert, setLoadingRevert] = React.useState(false)
   const [page, setPage] = React.useState(0) // Page numeration starts at 0.
   const [logsTotal, setlogsTotal] = React.useState()
-  const rowsPerPage = 3
+  const rowsPerPage = 10
   const [details, setDetails] = React.useState()
 
   React.useEffect(() => {
@@ -30,7 +30,7 @@ const LogsContainer = () => {
   const getLogs = async page => {
     try {
       setLoadingLogs(true)
-      const { data: { logs }, total } = await api.post('get_logs', {
+      const { data: { logs, total } } = await api.post('get_logs', {
         size: rowsPerPage,
         offset: rowsPerPage * page,
       })
