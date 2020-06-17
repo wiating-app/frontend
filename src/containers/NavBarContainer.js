@@ -26,6 +26,7 @@ const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
 
   const onSearch = async phrase => {
     if (phrase) {
+      console.log('activeTypes: ', activeTypes)
       if (phrase.length > 3) {
         const { data: { points } } = await api.post('search_points', {
           phrase,
@@ -69,7 +70,7 @@ const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
         />
       }
       <NavBar
-        onSearch={phrase => onSearch(phrase)}
+        onSearch={onSearch}
         activeTypes={activeTypes}
         isLoggedIn={isLoggedIn}
         user={user}

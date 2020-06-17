@@ -33,7 +33,7 @@ export default {
     noResults: 'Nic nie znaleziono',
     connectionProblem: {
       map: 'Nie można nawiązać połączenia z bazą lokacji.',
-      location: 'Nie udało się pobrać danych lokacji.',
+      location: 'Problem z połączeniem, lub dana lokacja nie istnieje.',
       logs: 'Nie udało się połączyć z bazą logów :(',
     },
     markerForm: {
@@ -133,7 +133,7 @@ export default {
     noResults: 'No results',
     connectionProblem: {
       map: 'Could not connect to the database of locations.',
-      location: 'Could not load the location details.',
+      location: 'Connection error, or given location does not exist.',
       logs: 'Could not connect to the database of locations.',
     },
     markerForm: {
