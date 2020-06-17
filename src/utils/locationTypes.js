@@ -5,9 +5,11 @@ export default {
   CABIN_FIREPLACE: 'cabinFireplace',
   CABIN_HOSTED: 'cabinHosted',
   TENT_CAMP: 'tentCamp',
+  WATERFRONT: 'waterFront',
+  URBEX: 'urbex',
   WATER_SOURCE: 'waterSource',
   CAVE: 'cave',
-  PASTURE: 'pasture',
-  RAISED_HIDE: 'raisedHide',
+  SACRAL: 'sacral',
   TOWER: 'tower',
+  EMERGENCY: 'emergency',
 }
