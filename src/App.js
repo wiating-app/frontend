@@ -177,7 +177,7 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/regulamin' component={Regulamin} />
         <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
         <Route exact path='/cookies' component={CookiesPage} />
-        <Route exact path='/log' component={LogsContainer} />
+        <Route exact path='/administracja' component={LogsContainer} />
       </Switch>
 
       <AcceptCookies />

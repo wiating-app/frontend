@@ -1,5 +1,8 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import { Typography, Tooltip } from '@material-ui/core'
+import { OpenInNew } from '@material-ui/icons'
+import { makeStyles } from '@material-ui/core/styles'
 import Modal from './Modal'
 import Table from './Table'
 import Pagination from './Pagination'
@@ -19,6 +22,7 @@ const Logs = ({
   setDetails,
 }) => {
   const { translations } = useLanguage()
+  const classes = useStyles()
   return (
     <Modal wide>
       <Typography
@@ -32,9 +36,15 @@ const Logs = ({
           : <>
             <Table
               data={logs.map(item => ({
-                id: item._id,
                 timestamp: item._source.timestamp,
-                location: <>{item._source.name}<br />({item._source.doc_id})</>,
+                location: <Tooltip title='Przejdź do lokacji' placement='right'>
+                  <Link
+                    to={`/location/${item._id}`}
+                    target='_blank'
+                    className={classes.link}
+                  >{item._source.name} <OpenInNew style={{ fontSize: 12 }} />
+                  </Link>
+                </Tooltip>,
                 user: item._source.modified_by,
                 actions: <Actions
                   primary={[
@@ -43,7 +53,6 @@ const Logs = ({
                 />,
               }))}
               labels={[
-                { name: 'ID', field: 'id' },
                 { name: 'Data', field: 'timestamp' },
                 { name: 'Lokacja', field: 'location' },
                 { name: 'Identyfikator użytkownika', field: 'user' },
@@ -63,5 +72,17 @@ const Logs = ({
     </Modal>
   )
 }
+
+const useStyles = makeStyles(theme => ({
+  link: {
+    cursor: 'pointer',
+    fontWeight: theme.typography.fontWeightBold,
+    color: theme.palette.text.primary,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+}))
 
 export default Logs

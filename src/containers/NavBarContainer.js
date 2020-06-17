@@ -37,7 +37,7 @@ const NavBarContainer = ({ setSearchResults, history }) => {
   }
 
   const links = [
-    ...isModerator ? [{ label: translations.administration, url: '/log' }] : [],
+    ...isModerator ? [{ label: translations.administration, url: '/administracja' }] : [],
     ...isLoggedIn ? [{
       label: <>{translations.language}: {language.toUpperCase()}</>,
       callback: () => setLanguageSwitch(true),
