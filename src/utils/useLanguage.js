@@ -17,11 +17,10 @@ export const LanguageProvider = ({ children }) => {
 
   React.useEffect(() => {
     const storedLanguage = localStorage.getItem('language')
-    // TODO: Remove it after all testers visited the page again.
-    // setLanguage((storedLanguage && Object.keys(translationsFile).includes(storedLanguage))
-    //   ? storedLanguage
-    //   : detectUserLanguage()
-    // )
+    setLanguage((storedLanguage && Object.keys(translationsFile).includes(storedLanguage))
+      ? storedLanguage
+      : detectUserLanguage()
+    )
     setLanguage(detectUserLanguage())
   }, [])
 
