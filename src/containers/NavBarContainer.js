@@ -12,6 +12,8 @@ const languages = ['pl', 'en']
 
 const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
   const [languageSwitch, setLanguageSwitch] = React.useState()
+  const [searchPhrase, setSearchPhrase] = React.useState()
+  const [searchLoading, setSearchLoading] = React.useState()
   const { translations, language, setLanguage } = useLanguage()
   const {
     loading,
@@ -24,23 +26,26 @@ const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const onSearch = async phrase => {
-    if (phrase) {
-      console.log('activeTypes: ', activeTypes)
-      if (phrase.length > 3) {
-        const { data: { points } } = await api.post('search_points', {
-          phrase,
-          // eslint-disable-next-line camelcase
-          // TODO: These activeTypes are always the same.
-          ...activeTypes.length ? { point_type: activeTypes } : {},
-        })
-        setSearchResults(points)
-        history.push('/search')
+  React.useEffect(() => {
+    const handleAsync = async () => {
+      if (searchPhrase) {
+        if (searchPhrase.length > 3) {
+          setSearchLoading(true)
+          const { data: { points } } = await api.post('search_points', {
+            phrase: searchPhrase,
+            // eslint-disable-next-line camelcase
+            ...activeTypes.length ? { point_type: activeTypes } : {},
+          })
+          setSearchResults(points)
+          history.push('/search')
+          setSearchLoading(false)
+        }
+      } else {
+        history.push('/')
       }
-    } else {
-      history.push('/')
     }
-  }
+    handleAsync()
+  }, [searchPhrase])
 
   const links = [
     ...isModerator ? [{ label: translations.administration, url: '/administracja' }] : [],
@@ -70,11 +75,11 @@ const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
         />
       }
       <NavBar
-        onSearch={onSearch}
-        activeTypes={activeTypes}
+        onSearch={setSearchPhrase}
+        searchLoading={searchLoading}
         isLoggedIn={isLoggedIn}
         user={user}
-        loading={loading}
+        authLoading={loading}
         links={links}
         language={language}
         languages={languages}

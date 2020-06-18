@@ -15,14 +15,14 @@ const NavBar = ({
   links,
   isLoggedIn,
   onSearch,
-  loading,
+  searchLoading,
+  authLoading,
   language,
   languages,
   setLanguage,
 }) => {
   const classes = useStyles()
   const { translations } = useLanguage()
-  const [searchLoading, setSearchLoading] = React.useState()
 
   return (
     <AppBar position='relative' className={classes.root}>
@@ -30,11 +30,7 @@ const NavBar = ({
         <Logo className={classes.logo} />
         <Form
           fields={['phrase']}
-          onChange={async fields => {
-            setSearchLoading(true)
-            await onSearch(fields.phrase)
-            setSearchLoading(false)
-          }}
+          onChange={fields => onSearch(fields.phrase)}
           className={classes.search}
         >
           <SearchInput
@@ -45,7 +41,7 @@ const NavBar = ({
           />
         </Form>
         <div className={classes.grow} />
-        {!loading && !isLoggedIn &&
+        {!authLoading && !isLoggedIn &&
           <Dropdown
             items={languages.map(lang => ({
               label: lang.toUpperCase(),
@@ -57,7 +53,7 @@ const NavBar = ({
             }}
           >{language ? language.toUpperCase() : ''}</Dropdown>
         }
-        {loading
+        {authLoading
           ? <Loader />
           : <Dropdown items={links}>
             {isLoggedIn
