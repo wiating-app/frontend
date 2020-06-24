@@ -16,7 +16,7 @@ import history from '../history'
 const AddButtonContainer = ({ setCachedLocation }) => {
   const { translations } = useLanguage()
   const { isLoggedIn } = useAuth0()
-  const { location, error } = useCurrentLocation()
+  const { currentLocation, error } = useCurrentLocation()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   return (
@@ -52,11 +52,11 @@ const AddButtonContainer = ({ setCachedLocation }) => {
             history.push('/location/new')
           },
         },
-        ...location && !error ? [{
+        ...currentLocation && !error ? [{
           label: translations.inCurrentLocation,
           icon: <PersonPinCircle />,
           callback: async () => {
-            const [lat, lon] = location
+            const [lat, lon] = currentLocation
             await history.push('/location/new')
             setCachedLocation({ location: { lat, lon } })
           },

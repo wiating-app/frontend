@@ -327,7 +327,7 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    display: 'flex',
+    display: 'flex !important',
     alignItems: 'center',
     justifyContent: 'center',
     fontWeight: 'bold',

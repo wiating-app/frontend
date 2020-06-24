@@ -14,7 +14,7 @@ const MapContainer = React.forwardRef((props, ref) => {
   const [initalPosition, setInitalPosition] = React.useState()
   const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
-  const { location, accuracy, loading, error } = useCurrentLocation()
+  const { currentLocation, accuracy, loading, error } = useCurrentLocation()
   const defaultPosition = [50.39805, 16.844417] // The area of Polish mountains.
 
   const mapRef = React.useRef()
@@ -67,18 +67,18 @@ const MapContainer = React.forwardRef((props, ref) => {
 
   React.useEffect(() => {
     // Check whether stored position is available asychronously from recognized
-    // location, because location recognition may take undefined amount of time.
+    // currentLocation, because currentLocation recognition may take more time.
     const position = getStoredPosition()
     setInitalPosition(position || { center: defaultPosition })
   }, [])
 
   React.useEffect(() => {
-    // If user location was recognized and initial position is not a default one,
-    // set user location as an initial position.
-    if (!loading && !error && JSON.stringify(initalPosition.center) === JSON.stringify(defaultPosition) && location) {
-      setInitalPosition({ center: location })
+    // If user current location has been recognized and initial position is
+    // default (unchanged), set user current location as an initial position.
+    if (!loading && !error && initalPosition && JSON.stringify(initalPosition.center) === JSON.stringify(defaultPosition) && currentLocation) {
+      setInitalPosition({ center: currentLocation })
     }
-  }, [loading])
+  }, [loading, initalPosition])
 
   return (
     <Map
@@ -86,7 +86,7 @@ const MapContainer = React.forwardRef((props, ref) => {
       setStoredPosition={coords => setStoredPosition(coords)}
       loadMapMarkers={viewport => loadMapMarkers(viewport)}
       points={points}
-      currentLocation={location}
+      currentLocation={currentLocation}
       locationAccuracy={accuracy}
       center={initalPosition && initalPosition.center}
       zoom={initalPosition && initalPosition.zoom}
