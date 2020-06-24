@@ -16,6 +16,7 @@ import Regulamin from './components/Regulamin'
 import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
 import AcceptCookies from './components/AcceptCookies'
 import CookiesPage from './components/CookiesPage'
+import FaqPage from './components/FaqPage'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
 import AddButtonContainer from './containers/AddButtonContainer'
@@ -180,6 +181,7 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/regulamin' component={Regulamin} />
         <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
         <Route exact path='/cookies' component={CookiesPage} />
+        <Route exact path='/faq' component={FaqPage} />
         <Route exact path='/administracja' component={LogsContainer} />
       </Switch>
 

@@ -57,7 +57,8 @@ const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
     { label: translations.informations, url: '/info' },
     ...isMobile ? [{ label: translations.legend, url: '/legenda' }] : [],
     { label: translations.termsAndConditions, url: '/regulamin' },
-    { label: translations.privacyPolicy, url: '/polityka-prywatnosci', divider: true },
+    { label: translations.privacyPolicy, url: '/polityka-prywatnosci' },
+    { label: translations.faq, url: '/faq', divider: true },
     {
       label: translations.auth[isLoggedIn ? 'logout' : 'login'],
       callback: () => isLoggedIn ? logout() : loginWithRedirect({}),

@@ -17,7 +17,7 @@ const AcceptCookies = () => {
   return isVisible
     ? <div className={classes.root}>
       <Typography variant='body2' className={classes.text}>
-        <strong>Cookies:</strong> Na naszej stronie używamy technologii do analizowania ruchu na stronie i w Internecie. Do tego celu możemy zbierać Twoje IP lub inne dane osobowe, które nam podasz.
+        Serwis wykorzystuje pliki cookies. Korzystając ze strony wyrażasz zgodę na wykorzystywanie plików cookies.
       </Typography>
       <div className={classes.buttons}>
         <Button
@@ -35,7 +35,7 @@ const AcceptCookies = () => {
             setIsVisible(false)
             Cookies.set('acceptCookies', 'true')
           }}
-        >Zgadzam się</Button>
+        >Rozumiem</Button>
       </div>
     </div>
     : null
