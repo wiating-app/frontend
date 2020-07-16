@@ -183,7 +183,7 @@ const Map = React.forwardRef(({
                 setContextMenu(null)
                 setActiveMarker([lat, lon])
               }}
-              opacity={editMode ? 0.5 : 1}
+              opacity={editMode || item.is_disabled ? 0.5 : 1}
             />
           })}
         </MarkerClusterGroup>

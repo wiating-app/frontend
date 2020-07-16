@@ -50,6 +50,7 @@ const LocationForm = ({
         'water_comment',
         'fire_exists',
         'fire_comment',
+        'is_disabled',
       ]}
       required={[
         'name',
@@ -152,6 +153,12 @@ const LocationForm = ({
           />
         </HintWrapper>
       }
+
+      <Checkbox
+        name='is_disabled'
+        text={translations.locationInfo.setAsDisabled}
+        initialValue={locationData && locationData.is_disabled}
+      />
 
       <FormActions>
         <Button onClick={() => cancel()}>{translations.cancel}</Button>

@@ -4,6 +4,7 @@ import {
   Typography,
   Button,
   ButtonGroup,
+  Chip,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Dropzone from 'react-dropzone'
@@ -30,6 +31,13 @@ const LocationInfo = ({
         <Typography
           variant='h5'
         >{selectedLocation.name}</Typography>
+        {selectedLocation.is_disabled &&
+          <Chip
+            size='small'
+            color='secondary'
+            label={translations.locationInfo.isDisabled}
+          />
+        }
         <Typography
           variant='body2'
           color='textSecondary'

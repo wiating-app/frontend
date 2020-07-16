@@ -88,6 +88,7 @@ const LocationFormContainer = ({
       water_comment,
       fire_exists,
       fire_comment,
+      is_disabled,
     } = fields
 
     try {
@@ -103,6 +104,7 @@ const LocationFormContainer = ({
         water_comment: water_exists && water_comment ? water_comment : null,
         fire_exists: fire_exists || false,
         fire_comment: fire_exists && fire_comment ? fire_comment : null,
+        is_disabled: is_disabled || false,
       }
 
       if (isNew) {
