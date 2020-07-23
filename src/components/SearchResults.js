@@ -6,6 +6,7 @@ import {
   ListItemAvatar,
   Divider,
   Typography,
+  Chip,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
@@ -33,7 +34,14 @@ const SearchResults = ({
               </ListItemAvatar>
               <ListItemText
                 primary={item.name}
-                secondary={item.description && item.description.substring(0, 70)}
+                secondary={item.is_disabled
+                  ? <Chip
+                    size='small'
+                    color='secondary'
+                    label={translations.locationInfo.isDisabled}
+                  />
+                  : item.description && item.description.substring(0, 70)
+                }
               />
             </ListItem>
             <Divider variant='inset' component='li' />
