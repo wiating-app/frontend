@@ -353,7 +353,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     '&[disabled]': {
       pointerEvents: 'none',
-      opacity: 0.67,
+      opacity: 0.33,
     },
   },
   customControlIcon: {
