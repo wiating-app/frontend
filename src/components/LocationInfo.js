@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import Dropzone from 'react-dropzone'
 import Loader from './Loader'
+import ShareButton from './ShareButton'
 import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
 import useLanguage from '../utils/useLanguage'
@@ -43,7 +44,7 @@ const LocationInfo = ({
           color='textSecondary'
           gutterBottom
         >
-          {type} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)}
+          {type} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)} <ShareButton id={selectedLocation.id} />
         </Typography>
 
         <Typography
