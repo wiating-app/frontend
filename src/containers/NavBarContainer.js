@@ -40,7 +40,7 @@ const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
           history.push('/search')
           setSearchLoading(false)
         }
-      } else {
+      } else if (searchPhrase !== undefined) {
         history.push('/')
       }
     }
