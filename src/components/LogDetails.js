@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Typography, Grid } from '@material-ui/core'
-import { Clear } from '@material-ui/icons'
+import { Check, Clear, Remove } from '@material-ui/icons'
 import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
@@ -14,12 +14,18 @@ const LogDetails = ({
   loadingRevert,
   onClose,
 }) => {
+  const readValue = value => value
+    ? value === true ? <Check style={{ color: '#008080' }} /> : value
+    : value === false ? <Clear color='error' /> : <Remove color='disabled' />
+
   const changes = data.changes
-    ? Object.entries(data.changes).map(([name, values]) => ({
-      name,
-      old: values.old_value || <Clear color='disabled' />,
-      new: values.new_value || <Clear color='disabled' />,
-    }))
+    ? Object.entries(data.changes)
+      .filter(([name, values]) => name !== 'action')
+      .map(([name, values]) => ({
+        name,
+        old: readValue(values.old_value),
+        new: readValue(values.new_value),
+      }))
     : []
 
   return (
