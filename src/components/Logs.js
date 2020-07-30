@@ -23,7 +23,6 @@ const Logs = ({
 }) => {
   const { translations } = useLanguage()
   const classes = useStyles()
-  console.log('logs: ', logs);
   return (
     <Modal wide>
       <Typography
