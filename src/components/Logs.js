@@ -23,6 +23,7 @@ const Logs = ({
 }) => {
   const { translations } = useLanguage()
   const classes = useStyles()
+  console.log('logs: ', logs);
   return (
     <Modal wide>
       <Typography
@@ -39,7 +40,7 @@ const Logs = ({
                 timestamp: item._source.timestamp,
                 location: <Tooltip title='Przejdź do lokacji' placement='right'>
                   <Link
-                    to={`/location/${item._id}`}
+                    to={`/location/${item._source.doc_id}`}
                     target='_blank'
                     className={classes.link}
                   >{item._source.name} <OpenInNew style={{ fontSize: 12 }} />
