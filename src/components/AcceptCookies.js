@@ -24,7 +24,7 @@ const AcceptCookies = () => {
           size='small'
           className={classes.button}
           component={Link}
-          to='/cookies'
+          to='/polityka-prywatnosci'
         >Dowiedz się więcej</Button>
         <Button
           size='small'
@@ -35,7 +35,7 @@ const AcceptCookies = () => {
             setIsVisible(false)
             Cookies.set('acceptCookies', 'true')
           }}
-        >Rozumiem</Button>
+        >Zgadzam się</Button>
       </div>
     </div>
     : null
