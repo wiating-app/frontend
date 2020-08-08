@@ -48,7 +48,7 @@ const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
   }, [searchPhrase])
 
   const links = [
-    ...isModerator ? [{ label: translations.administration, url: '/administracja' }] : [],
+    ...isModerator ? [{ label: translations.administration, url: '/log' }] : [],
     ...isLoggedIn ? [{
       label: <>{translations.language}: {language.toUpperCase()}</>,
       callback: () => setLanguageSwitch(true),

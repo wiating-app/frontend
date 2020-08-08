@@ -22,6 +22,7 @@ import AddButtonContainer from './containers/AddButtonContainer'
 import LocationInfoContainer from './containers/LocationInfoContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
 import LogsContainer from './containers/LogsContainer'
+import LogDetailsContainer from './containers/LogDetailsContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
@@ -30,6 +31,7 @@ const App = ({ history, location: { pathname } }) => {
   const [editMode, setEditMode] = React.useState()
   const [activeTypes, setActiveTypes] = React.useState([])
   const isLocationTabOpen = location.pathname.startsWith('/location') || location.pathname.startsWith('/search')
+  const [cachedLogDetails, setCachedLogDetails] = React.useState()
   const mapRef = React.useRef()
   const { closeSnackbar } = useSnackbar()
 
@@ -181,8 +183,19 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
         <Route exact path='/cookies' component={CookiesPage} />
         <Route exact path='/faq' component={FaqPage} />
-        <Route exact path='/administracja' component={LogsContainer} />
       </Switch>
+
+
+      <Route path='/log'>
+        <LogsContainer setCachedLogDetails={setCachedLogDetails} />
+      </Route>
+
+      <Route exact path='/log/:id'>
+        <LogDetailsContainer
+          cachedLogDetails={cachedLogDetails}
+          setCachedLogDetails={setCachedLogDetails}
+        />
+      </Route>
 
       <AcceptCookies />
 

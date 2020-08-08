@@ -14,10 +14,9 @@ import useLanguage from '../utils/useLanguage'
 const LocationInfoContainer = ({
   cachedLocation,
   setCachedLocation,
-  match,
+  match: { params: { id } },
   history,
 }) => {
-  const { params: { id } } = match
   const { translations } = useLanguage()
   const { isLoggedIn } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
