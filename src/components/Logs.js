@@ -20,11 +20,12 @@ const Logs = ({
   rowsInTotal,
   rowsPerPage,
   setDetails,
+  onClose,
 }) => {
   const { translations } = useLanguage()
   const classes = useStyles()
   return (
-    <Modal wide>
+    <Modal wide onClose={onClose}>
       <Typography
         variant='h4'
         gutterBottom

@@ -53,6 +53,7 @@ const LogsContainer = ({ setCachedLogDetails }) => {
             setCachedLogDetails(data)
             history.push(`/log/${data.id}`)
           }}
+          onClose={() => history.push('/')}
         />
       </>
       : null
