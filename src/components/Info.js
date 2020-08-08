@@ -1,5 +1,4 @@
 import React from 'react'
-import Cookies from 'js-cookie'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography } from '@material-ui/core'
 import Modal from './Modal'
@@ -9,7 +8,7 @@ const Info = () => {
   const classes = useStyles()
 
   const handleClose = () => {
-    Cookies.set('seenInitialInfo', 'true')
+    localStorage.setItem('seenInitialInfo', 'true')
     history.push('/')
   }
 

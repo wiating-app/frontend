@@ -1,7 +1,6 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import Cookies from 'js-cookie'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import Layout from './components/Layout'
@@ -53,7 +52,7 @@ const App = ({ history, location: { pathname } }) => {
 
   React.useEffect(() => {
     // Show info page when user visits the site first time.
-    if (!Cookies.get('seenInitialInfo')) {
+    if (!localStorage.getItem('seenInitialInfo')) {
       history.push('/info')
     }
   }, [])

@@ -2,14 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography } from '@material-ui/core'
-import Cookies from 'js-cookie'
 
 const AcceptCookies = () => {
   const classes = useStyles()
   const [isVisible, setIsVisible] = React.useState(false)
 
   React.useEffect(() => {
-    if (!Cookies.get('acceptCookies')) {
+    if (!localStorage.getItem('acceptCookies')) {
       setIsVisible(true)
     }
   }, [])
@@ -33,7 +32,7 @@ const AcceptCookies = () => {
           className={classes.button}
           onClick={() => {
             setIsVisible(false)
-            Cookies.set('acceptCookies', 'true')
+            localStorage.setItem('acceptCookies', 'true')
           }}
         >Zgadzam się</Button>
       </div>
