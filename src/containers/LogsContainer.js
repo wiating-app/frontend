@@ -42,8 +42,7 @@ const LogsContainer = () => {
     }
     setLoadingLogs(false)
   }
-  React.useEffect(() => { isModerator && getLogs(page) }, [isModerator])
-  React.useEffect(() => { isModerator && getLogs(page) }, [page])
+  React.useEffect(() => { isModerator && getLogs(page) }, [page, isModerator])
 
   const banCallback = async userId => {
     try {
