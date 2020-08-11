@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%',
+    // height: '100%',
   },
   toolbar: {
     [theme.breakpoints.up('md')]: theme.mixins.toolbar,
