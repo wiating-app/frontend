@@ -14,8 +14,15 @@ const LogDetails = ({
   loadingRevert,
   onClose,
 }) => {
-  const readValue = value => value
-    ? value === true ? <Check style={{ color: '#008080' }} /> : value
+  const readValue = (name, value) => value
+    ? value === true
+      ? <Check style={{ color: '#008080' }} />
+      : name === 'images'
+        ? <img
+          src={`${process.env.REACT_APP_CDN_URL}/${data.doc_id}/${value.replace('.jpg', '_m.jpg')}`}
+          width={100}
+        />
+        : value
     : value === false ? <Clear color='error' /> : <Remove color='disabled' />
 
   const changes = data.changes
@@ -23,8 +30,8 @@ const LogDetails = ({
       .filter(([name, values]) => name !== 'action')
       .map(([name, values]) => ({
         name,
-        old: readValue(values.old_value),
-        new: readValue(values.new_value),
+        old: readValue(name, values.old_value),
+        new: readValue(name, values.new_value),
       }))
     : []
 
