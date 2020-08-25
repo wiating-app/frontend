@@ -7,7 +7,7 @@ export default {
     save: 'Zapisz',
     cancel: 'Anuluj',
     loading: 'Ładowanie',
-    search: 'Szukaj we Wiatingu',
+    search: 'Przeszukaj Wiating',
     backToResults: 'Powrót do wyników',
     locationInfo: {
       description: 'Opis',
