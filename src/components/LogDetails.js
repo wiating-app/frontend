@@ -4,10 +4,12 @@ import { Check, Clear, Remove } from '@material-ui/icons'
 import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
+import OpenInNewCard from './OpenInNewCard'
 
 
 const LogDetails = ({
   data,
+  isMe,
   banCallback,
   revertCallback,
   loadingBan,
@@ -45,11 +47,13 @@ const LogDetails = ({
       <Typography
         variant='body2'
         gutterBottom
-      >Identyfikator użytkownika: {data.modified_by}</Typography>
+      >Użytkownik: {isMe ? 'Ja' : data.modified_by}</Typography>
       <Typography
         variant='body2'
         gutterBottom
-      >Lokalizacja: {data.name} ({data.doc_id})</Typography>
+      >
+        Lokacja: <OpenInNewCard path={`/location/${data.doc_id}`}>{data.name} ({data.doc_id})</OpenInNewCard>
+      </Typography>
       <Typography variant='h6'>Zmiany</Typography>
       <Table
         data={changes}
@@ -64,10 +68,10 @@ const LogDetails = ({
           <Button
             variant='contained'
             onClick={() => banCallback(data.modified_by)}
-            disabled={!banCallback}
+            disabled={isMe}
           >
             {loadingBan && <Loader dark />}
-            {banCallback ? 'Zbanuj autora' : 'Nie możesz zbanować sam(a) siebie'}
+            {!isMe ? 'Zbanuj autora' : 'Nie możesz zbanować sam(a) siebie'}
           </Button>
         </Grid>
         <Grid item>

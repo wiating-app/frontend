@@ -78,6 +78,8 @@ const LogDetailsContainer = ({
     setLoadingRevert(false)
   }
 
+  const isMe = logDetails && logDetails.modified_by === user.sub
+
   return (
     loading
       ? <Loader dark big />
@@ -85,7 +87,8 @@ const LogDetailsContainer = ({
         ? <div>Error!</div>
         : <LogDetails
           data={logDetails}
-          banCallback={logDetails && logDetails.modified_by !== user.sub ? banCallback : false}
+          isMe={isMe}
+          banCallback={banCallback}
           revertCallback={revertCallback}
           loadingBan={loadingBan}
           loadingRevert={loadingRevert}
