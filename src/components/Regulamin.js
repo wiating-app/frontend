@@ -7,23 +7,6 @@ const Regulamin = () =>
     <h2>Regulamin świadczenia usług</h2>
 
     <h3>§1. Postanowienia ogólne</h3>
-
-    <ul>
-      <li>Niniejszy dokument określa zasady i warunki korzystania z aplikacji internetowej Wiating.</li>
-      <li>Właścicielem aplikacji internetowej jest Administracja Grupy Wiating - Dariusz Hajduk, adres e-mail: <a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a>.</li>
-      <li>W celu korzystania z usługi należy zapoznać się z niniejszym Regulaminem i Polityką Prywatności. Korzystanie z serwisu internetowego oznacza akceptację Regulaminu i Polityki Prywatności.</li>
-      <li>
-        Pojęcia użyte w regulaminie oznaczają:
-        <ul>
-          <li>Usługodawca - Administracja Grupy Wiating - Dariusz Hajduk;</li>
-          <li>Użytkownik - osoba fizyczna (posiadająca pełną zdolność do czynności prawnych), prawna lub jednostka organizacyjna nieposiadająca osobowości prawnej, która korzysta z Platformy. Użytkownikiem może być zarówno osoba fizyczna nieprowadząca działalności gospodarczej, jak i przedsiębiorca;</li>
-          <li>Konsument - w myśl ustawy z dnia 23 kwietnia 1964 r. Kodeks cywilny – Użytkownik, który jako osoba fizyczna dokonuje za pośrednictwem Platformy czynności prawnej niezwiązanej bezpośrednio z jej działalnością gospodarczą lub zawodową;</li>
-          <li>Regulamin - niniejszy dokument wraz z Polityką Prywatności, która stanowi integralną część Regulaminu. Wszystkie dokumenty dostępne są w Platformie.</li>
-        </ul>
-      </li>
-      <li>Użytkownicy mogą kontaktować się z Usługodawcą drogą elektroniczną na adres e-mail: <a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a></li>
-    </ul>
-    <h3>§1. Postanowienia ogólne</h3>
     <ol>
       <li>Niniejszy dokument określa zasady i warunki korzystania z aplikacji internetowej Wiating.</li>
       <li>Właścicielem aplikacji internetowej jest Administracja Grupy Wiating - Dariusz Hajduk, adres e-mail: <a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a>.</li>
