@@ -13,8 +13,7 @@ import Info from './components/Info'
 import LegendPage from './components/LegendPage'
 import Regulamin from './components/Regulamin'
 import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
-import AcceptCookies from './components/AcceptCookies'
-import CookiesPage from './components/CookiesPage'
+import AcceptDataPrivacy from './components/AcceptDataPrivacy'
 import FaqPage from './components/FaqPage'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
@@ -173,6 +172,8 @@ const App = ({ history, location: { pathname } }) => {
         />
       }
 
+      <AcceptDataPrivacy />
+
       <Switch>
         <Route exact path='/info' component={Info} />
         <Route exact path='/legenda' render={() => <LegendPage
@@ -181,7 +182,6 @@ const App = ({ history, location: { pathname } }) => {
         />} />
         <Route exact path='/regulamin' component={Regulamin} />
         <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
-        <Route exact path='/cookies' component={CookiesPage} />
         <Route exact path='/faq' component={FaqPage} />
       </Switch>
 
@@ -196,8 +196,6 @@ const App = ({ history, location: { pathname } }) => {
           setCachedLogDetails={setCachedLogDetails}
         />
       </Route>
-
-      <AcceptCookies />
 
     </Layout>
   )
