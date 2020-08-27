@@ -85,8 +85,6 @@ const PolitykaPrywatnosci = () =>
       </li>
       <li>Dane gromadzone w dziennikach logów, dane są wykorzystywane tylko i wyłącznie do celów administrowania Serwisem.</li>
       <li>Zebrane logi przechowywane są przez czas nieokreślony jako materiał pomocniczy służący do administrowania Serwisem. Informacje w nich zawarte nie są ujawniane nikomu poza osobami upoważnionymi do administrowania Serwisem. Na podstawie plików logów mogą być generowane statystyki stanowiące pomoc w administrowaniu. Zbiorcze podsumowania w postaci takich statystyk nie zawierają żadnych cech identyfikujących osoby odwiedzające serwis.</li>
-      <li></li>
-      <li></li>
     </ol>
 
     <h3>§8. Kontakt</h3>
