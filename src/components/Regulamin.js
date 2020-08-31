@@ -168,7 +168,7 @@ const Regulamin = () =>
     <ol>
       <li>W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie znajdują przepisy powszechnie obowiązującego prawa polskiego.</li>
       <li>Do wszelkich sporów powstałych na gruncie niniejszego Regulaminu i zawartej przez Użytkownika i Usługodawcę umowy stosuje się prawo polskie oraz właściwe są sądy jurysdykcji polskiej. Sądem właściwym do rozpoznawania sporów zaistniałych pomiędzy Usługodawcą a Użytkownikiem niebędącym konsumentem jest sąd właściwy miejscowo dla siedziby Usługodawcy. Sądem właściwym dla sporów, których stroną jest Konsument jest miejsce zamieszkania Konsumenta.</li>
-      <li>Regulamin obowiązuje od dnia …. roku.</li>
+      <li>Regulamin obowiązuje od dnia 1 września 2020 roku.</li>
     </ol>
 
   </Modal>
