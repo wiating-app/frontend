@@ -52,26 +52,27 @@ const LocationInfoContainer = ({
 
   const onImageUpload = async files => {
     try {
-      const file = files[0]
-      await Resizer.imageFileResizer(
-        file,
-        1080, // Maximum width
-        1080, // Maximum height
-        'JPEG', // Format
-        80, // Quality 1-100
-        0, // Rotation
-        async uri => {
-          const decoded = dataUriToBuffer(uri)
-          const resizedFile = new File([decoded], file.name, { type: file.type })
-          const fileObject = new FormData()
-          fileObject.append('file', resizedFile)
-          const { data } = await api.post(`add_image/${location.id}`, fileObject)
-          setLocation(data)
-          setCachedLocation(data)
-          history.push(`/location/${location.id}`)
-          enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
-        },
-      )
+      await files.forEach(async file => {
+        await Resizer.imageFileResizer(
+          file,
+          1080, // Maximum width
+          1080, // Maximum height
+          'JPEG', // Format
+          80, // Quality 1-100
+          0, // Rotation
+          async uri => {
+            const decoded = dataUriToBuffer(uri)
+            const resizedFile = new File([decoded], file.name, { type: file.type })
+            const fileObject = new FormData()
+            fileObject.append('file', resizedFile)
+            const { data } = await api.post(`add_image/${location.id}`, fileObject)
+            setLocation(data)
+            setCachedLocation(data)
+          },
+        )
+      })
+      history.push(`/location/${location.id}`)
+      enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
     } catch (error) {
       console.error(error)
       enqueueSnackbar(translations.notifications.couldNotSavePhoto, { variant: 'error' })

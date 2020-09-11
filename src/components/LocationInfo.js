@@ -123,7 +123,7 @@ const LocationInfo = ({
             {imagesLoading
               ? <Button disabled>{translations.actions.addPhoto} <Loader /></Button>
               : <Button>
-                <Dropzone onDrop={async files => {
+                <Dropzone accept='image/jpeg' onDrop={async files => {
                   setImagesLoading(true)
                   await onImageUpload(files)
                   setImagesLoading(false)
