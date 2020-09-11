@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'transparent',
     borderTop: 'none',
     height: hideMapOnMobile =>
-      `calc(100vh - ${(hideMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight) + theme.mixins.toolbar.minHeight}px)`,
+      `calc(100vh - ${(hideMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight)}px)`,
     boxShadow: theme.shadows[14],
     [theme.breakpoints.up('sm')]: {
       width: theme.layout.locationTabWidth,

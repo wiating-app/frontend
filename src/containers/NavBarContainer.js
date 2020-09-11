@@ -10,7 +10,12 @@ import useLanguage from '../utils/useLanguage'
 
 const languages = ['pl', 'en']
 
-const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
+const NavBarContainer = ({
+  setSearchResults,
+  activeTypes,
+  isLocationTabOpen,
+  history,
+}) => {
   const [languageSwitch, setLanguageSwitch] = React.useState()
   const [searchPhrase, setSearchPhrase] = React.useState()
   const [searchLoading, setSearchLoading] = React.useState()
@@ -85,6 +90,7 @@ const NavBarContainer = ({ setSearchResults, activeTypes, history }) => {
         language={language}
         languages={languages}
         setLanguage={setLanguage}
+        isLocationTabOpen={isLocationTabOpen}
       />
     </>
   )

@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown, Menu } from '@material-ui/icons'
 import Form from 'react-standalone-form'
+import classNames from 'classnames'
 import Dropdown from './Dropdown'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
@@ -20,12 +21,15 @@ const NavBar = ({
   language,
   languages,
   setLanguage,
+  isLocationTabOpen,
 }) => {
   const classes = useStyles()
   const { translations } = useLanguage()
 
   return (
-    <AppBar position='relative' className={classes.root}>
+    <AppBar position='relative' className={classNames(classes.root, {
+      [classes.hideOnMobile]: isLocationTabOpen,
+    })}>
       <Toolbar>
         <Logo className={classes.logo} />
         <Form
@@ -77,6 +81,11 @@ const NavBar = ({
 const useStyles = makeStyles(theme => ({
   root: {
     zIndex: theme.zIndex.drawer + 1,
+  },
+  hideOnMobile: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
   logo: {
     marginRight: theme.spacing(2),

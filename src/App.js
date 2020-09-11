@@ -66,6 +66,8 @@ const App = ({ history, location: { pathname } }) => {
           setCachedLocation(null)
         }}
         activeTypes={activeTypes}
+        editMode={editMode}
+        isLocationTabOpen={isLocationTabOpen}
       />
     }>
 
