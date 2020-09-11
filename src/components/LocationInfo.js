@@ -70,9 +70,11 @@ const LocationInfo = ({
             gutterBottom
             component='span'
           >
-            {!selectedLocation.water_exists
-              ? translations.none
-              : selectedLocation.water_comment || translations.is
+            {selectedLocation.water_exists === null
+              ? translations.noData
+              : !selectedLocation.water_exists
+                ? translations.none
+                : selectedLocation.water_comment || translations.is
             }
           </Typography>
         </div>
@@ -88,10 +90,12 @@ const LocationInfo = ({
             gutterBottom
             component='span'
           >
-            {!selectedLocation.fire_exists
-              ? translations.none
-              : selectedLocation.fire_comment || translations.is
-            }.
+            {selectedLocation.water_exists === null
+              ? translations.noData
+              : !selectedLocation.fire_exists
+                ? translations.none
+                : selectedLocation.fire_comment || translations.is
+            }
           </Typography>
         </div>
 
