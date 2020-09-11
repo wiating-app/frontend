@@ -148,7 +148,7 @@ const Regulamin = () =>
     <h3>§6. Reklamacje związane z technicznym funkcjonowaniem Platformy</h3>
 
     <ol>
-      <li>Każdy Użytkownik jest uprawniony do zgłoszenia reklamacji z tytułu wszelkich nieprawidłowości działania Platformy w przeciągu 14 dni od wystąpienia nieprawidłowości. Reklamacja powinna zostać złożona drogą wiadomości e-mail wysłanej na adres: ………... Opis zaistniałej nieprawidłowości powinien umożliwiać Usługodawcy identyfikację problemu i jego naprawę.</li>
+      <li>Każdy Użytkownik jest uprawniony do zgłoszenia reklamacji z tytułu wszelkich nieprawidłowości działania Platformy w przeciągu 14 dni od wystąpienia nieprawidłowości. Reklamacja powinna zostać złożona drogą wiadomości e-mail wysłanej na adres: <a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a>. Opis zaistniałej nieprawidłowości powinien umożliwiać Usługodawcy identyfikację problemu i jego naprawę.</li>
       <li>Usługodawca rozpatrzy reklamację w przeciągu 14 dni kalendarzowych od daty otrzymania reklamacji.</li>
       <li>W przypadku wystąpienia poważnego błędu technicznego Usługodawca zastrzega sobie możliwość ograniczenia dostępu do serwisu Platformy.</li>
       <li>Wszystkie ewentualne błędy w funkcjonowaniu Platformy, uwagi i informacje o działaniu Platformy, a także naruszenia Regulaminu prosimy zgłaszać Usługodawcy drogą elektroniczną.</li>
