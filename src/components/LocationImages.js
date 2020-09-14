@@ -20,7 +20,7 @@ const LocationImages = ({ images, id }) => {
     : null
 
   return (
-    images
+    images?.length
       ? <>
         <Carousel
           showArrows
