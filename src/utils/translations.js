@@ -2,9 +2,9 @@ export default {
   pl: {
     yes: 'Tak',
     no: 'Nie',
-    is: 'Jest',
-    none: 'Brak',
-    noData: 'Informacja brakująca',
+    available: 'Jest',
+    unavailable: 'Brak',
+    noData: 'Nie podano',
     save: 'Zapisz',
     cancel: 'Anuluj',
     loading: 'Ładowanie',
@@ -13,8 +13,16 @@ export default {
     locationInfo: {
       description: 'Opis',
       directions: 'Usytuowanie i wskazówki dojścia',
-      fireAccess: 'Dostęp do ognia',
-      waterAccess: 'Dostęp do wody',
+      fire: {
+        label: 'Dostęp do ognia',
+        true: 'Istnieje dostęp do ognia',
+        false: 'Brak dostępu do ognia',
+      },
+      water: {
+        label: 'Dostęp do wody',
+        true: 'Istnieje dostęp do wody',
+        false: 'Brak dostępu do wody',
+      },
       lastUpdate: 'Ostatnia aktualizacja',
       isDisabled: 'Niedostępna / zniszczona',
       setAsDisabled: 'Oznacz jako niedostępną lub zniszczoną',
@@ -108,8 +116,8 @@ export default {
   en: {
     yes: 'Yes',
     no: 'No',
-    is: 'Is available',
-    none: 'None',
+    available: 'Is available',
+    unavailable: 'Not available',
     noData: 'No data',
     save: 'Save',
     cancel: 'Cancel',
@@ -119,8 +127,16 @@ export default {
     locationInfo: {
       description: 'Description',
       directions: 'How to reach the place',
-      fireAccess: 'Access to fire',
-      waterAccess: 'Access to water',
+      fire: {
+        label: 'Access to fire',
+        true: 'There is access to fire',
+        false: 'Fire is impossible',
+      },
+      water: {
+        label: 'Access to water',
+        true: 'There is access to water',
+        false: 'No access to water',
+      },
       lastUpdate: 'Last update',
       isDisabled: 'Unavailable or destroyed',
       setAsDisabled: 'Set as unavailable/destroyed',

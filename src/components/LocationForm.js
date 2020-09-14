@@ -35,6 +35,18 @@ const LocationForm = ({
     return [lat, lon].toString().replace(',', ', ')
   }
 
+  // Convert bool to Select option. null = null, true = 1, false = 2.
+  const mapBoolToOptions = value => {
+    switch (value) {
+      case true:
+        return 1
+      case false:
+        return 2
+      default:
+        return null
+    }
+  }
+
   return <>
     <Typography variant='h4' gutterBottom>
       {translations[`markerForm.heading.${isNew ? 'addMarker' : 'editMarker'}`]}
@@ -60,7 +72,7 @@ const LocationForm = ({
       ]}
       onChange={fields => {
         setHasWater(fields.water_exists)
-        setHasFire(fields.fire_exists)
+        setHasFire(fields.fire_exists === 2)
       }}
     >
 
@@ -117,10 +129,15 @@ const LocationForm = ({
         />
       </HintWrapper>
 
-      <Checkbox
+      <Select
         name='water_exists'
-        text={translations.locationInfo.waterAccess}
-        initialValue={locationData && locationData.water_exists}
+        label={translations.locationInfo.water.label}
+        initialValue={locationData && mapBoolToOptions(locationData.water_exists)}
+        noneLabel={translations.noData}
+        options={[
+          { label: translations.locationInfo.water.true, value: 1 },
+          { label: translations.locationInfo.water.false, value: 2 },
+        ]}
       />
 
       {hasWater &&
@@ -135,10 +152,15 @@ const LocationForm = ({
         </HintWrapper>
       }
 
-      <Checkbox
+      <Select
         name='fire_exists'
-        text={translations.locationInfo.fireAccess}
-        initialValue={locationData && locationData.fire_exists}
+        label={translations.locationInfo.fire.label}
+        initialValue={locationData && mapBoolToOptions(locationData.fire_exists)}
+        noneLabel={translations.noData}
+        options={[
+          { label: translations.locationInfo.fire.true, value: 1 },
+          { label: translations.locationInfo.fire.false, value: 2 },
+        ]}
       />
 
       {hasFire &&

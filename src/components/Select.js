@@ -15,6 +15,7 @@ const Select = ({
   value,
   required,
   options = [],
+  noneLabel,
   setValue,
 }) =>
   <MUISelect
@@ -26,7 +27,7 @@ const Select = ({
     }}
   >
     {!required &&
-      <MenuItem value=''><em>None</em></MenuItem>
+      <MenuItem value=''><em>{noneLabel}</em></MenuItem>
     }
     {options.map((item, index) =>
       typeof item === 'string'
@@ -42,6 +43,10 @@ const Select = ({
         </MenuItem>
     )}
   </MUISelect>
+
+Select.defaultProps = {
+  noneLabel: 'None',
+}
 
 Select.propTypes = {
   name: PropTypes.any.isRequired,

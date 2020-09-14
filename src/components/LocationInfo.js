@@ -63,7 +63,7 @@ const LocationInfo = ({
           <Typography
             variant='subtitle2'
             component='span'
-          >{translations.locationInfo.waterAccess}: </Typography>
+          >{translations.locationInfo.water.label}: </Typography>
 
           <Typography
             variant='body2'
@@ -73,8 +73,8 @@ const LocationInfo = ({
             {selectedLocation.water_exists === null
               ? translations.noData
               : !selectedLocation.water_exists
-                ? translations.none
-                : selectedLocation.water_comment || translations.is
+                ? translations.unavailable
+                : selectedLocation.water_comment || translations.available
             }
           </Typography>
         </div>
@@ -83,18 +83,18 @@ const LocationInfo = ({
           <Typography
             variant='subtitle2'
             component='span'
-          >{translations.locationInfo.fireAccess}: </Typography>
+          >{translations.locationInfo.fire.label}: </Typography>
 
           <Typography
             variant='body2'
             gutterBottom
             component='span'
           >
-            {selectedLocation.water_exists === null
+            {selectedLocation.fire_exists === null
               ? translations.noData
               : !selectedLocation.fire_exists
-                ? translations.none
-                : selectedLocation.fire_comment || translations.is
+                ? translations.unavailable
+                : selectedLocation.fire_comment || translations.available
             }
           </Typography>
         </div>
