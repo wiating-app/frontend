@@ -58,17 +58,27 @@ const LogDetailsContainer = ({
     setLoadingBan(false)
   }
 
-  const revertCallback = async (id, changed) => {
+  const revertCallback = async () => {
     try {
       setLoadingRevert(true)
-      const dataObject = {
-        id,
-        ...Object.entries(changed).reduce((acc, [name, value]) => ({
-          ...acc,
-          [name]: value.old_value,
-        }), {}),
+      // Use another endpoint if change from given log refers to image.
+      // eslint-disable-next-line camelcase
+      if (logDetails.changes?.images?.new_value) {
+        const dataObject = {
+          id: logDetails.doc_id,
+          image_name: logDetails.changes.images.new_value,
+        }
+        await api.post('delete_image', dataObject)
+      } else {
+        const dataObject = {
+          id: logDetails.doc_id,
+          ...Object.entries(logDetails.changes).reduce((acc, [name, value]) => ({
+            ...acc,
+            [name]: value.old_value,
+          }), {}),
+        }
+        await api.post('modify_point', dataObject)
       }
-      await api.post('modify_point', dataObject)
       history.push('/log')
       enqueueSnackbar('Przywrócono poprzedni stan lokacji.', { variant: 'success' })
     } catch (err) {
