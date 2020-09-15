@@ -71,8 +71,8 @@ const LocationForm = ({
         'location',
       ]}
       onChange={fields => {
-        setHasWater(fields.water_exists)
-        setHasFire(fields.fire_exists === 2)
+        setHasWater(fields.water_exists === 1)
+        setHasFire(fields.fire_exists === 1)
       }}
     >
 

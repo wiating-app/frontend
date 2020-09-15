@@ -15,7 +15,7 @@ export default {
       directions: 'Usytuowanie i wskazówki dojścia',
       fire: {
         label: 'Dostęp do ognia',
-        true: 'Istnieje dostęp do ognia',
+        true: 'Jest możliwość rozpalenia ognia',
         false: 'Brak dostępu do ognia',
       },
       water: {
