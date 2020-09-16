@@ -33,13 +33,17 @@ const Info = () => {
           >Przejdź do mapy</Button>
         </div>
         <div className={classes.footer}>
-          <Typography align='left' variant='body2'>
+          <Typography className={classes.footerLeft} variant='body2'>
             Twórcy aplikacji:<br />
             <a href='https://github.com/frontcraft' target='_blank' >Michał Kokociński</a>, <a href='https://github.com/merito' target='_blank' >Dawid Wolski</a></Typography>
           <div>
-            <Typography align='right' variant='body2'>Administracja: Dariusz Hajduk (<a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a>)</Typography>
+            <Typography className={classes.footerRight} variant='body2'>
+              Administracja: Dariusz Hajduk (<a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a>)
+            </Typography>
             <div className={classes.partner}>
-              <Typography align='right' variant='body2'>Opiekun prawny: Weronika Bednarska</Typography>
+              <Typography className={classes.footerRight} variant='body2'>
+                Opiekun prawny: Weronika Bednarska
+              </Typography>
               <a href='https://soinlaw.com' target='_blank'>
                 <img
                   src='/soinlaw.png'
@@ -75,8 +79,20 @@ const useStyles = makeStyles(theme => ({
   },
   footer: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+    },
+  },
+  [theme.breakpoints.up('sm')]: {
+    footerLeft: {
+      textAlign: 'left',
+    },
+    footerRight: {
+      textAlign: 'right',
+    },
   },
   partner: {
     display: 'flex',
