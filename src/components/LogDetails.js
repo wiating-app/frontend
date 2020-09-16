@@ -37,6 +37,8 @@ const LogDetails = ({
       }))
     : []
 
+  const isNew = data.changes.action && data.changes.action === 'created'
+
   return (
     <Modal short onClose={onClose}>
       <Typography variant='h5' gutterBottom>Szczegóły loga {data.id}</Typography>
@@ -54,15 +56,20 @@ const LogDetails = ({
       >
         Lokacja: <OpenInNewCard path={`/location/${data.doc_id}`}>{data.name} ({data.doc_id})</OpenInNewCard>
       </Typography>
-      <Typography variant='h6'>Zmiany</Typography>
-      <Table
-        data={changes}
-        labels={[
-          { name: 'Pole', field: 'name' },
-          { name: 'Stara treść', field: 'old' },
-          { name: 'Nowa treść', field: 'new' },
-        ]}
-      />
+      {isNew
+        ? <Typography variant='h6'>Utworzenie nowej lokacji</Typography>
+        : <>
+          <Typography variant='h6'>Zmiany</Typography>
+          <Table
+            data={changes}
+            labels={[
+              { name: 'Pole', field: 'name' },
+              { name: 'Stara treść', field: 'old' },
+              { name: 'Nowa treść', field: 'new' },
+            ]}
+          />
+        </>
+      }
       <Grid container spacing={2} style={{ marginTop: 20 }}>
         <Grid item>
           <Button

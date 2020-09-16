@@ -39,7 +39,10 @@ const Logs = ({
                 location: <>
                   <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
                   <Typography variant='caption' component='div'>
-                    {Object.keys(item._source.changes).join(', ')}
+                    {item._source.changes.action && item._source.changes.action === 'created'
+                      ? 'Nowa lokacja'
+                      : Object.keys(item._source.changes).join(', ')
+                    }
                   </Typography>
                 </>,
                 user: <Box whiteSpace='nowrap'>{
@@ -53,7 +56,7 @@ const Logs = ({
               }))}
               labels={[
                 { name: 'Data', field: 'timestamp' },
-                { name: 'Lokacja i zmienione pola', field: 'location' },
+                { name: 'Lokacja i edytowane pola', field: 'location' },
                 { name: 'Autor zmiany', field: 'user' },
                 { name: '', field: 'actions' },
               ]}
