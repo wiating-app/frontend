@@ -20,6 +20,7 @@ const NavBarContainer = ({
   const [searchPhrase, setSearchPhrase] = React.useState()
   const [searchLoading, setSearchLoading] = React.useState()
   const { translations, language, setLanguage } = useLanguage()
+
   const {
     loading,
     loginWithRedirect,
@@ -51,6 +52,11 @@ const NavBarContainer = ({
     }
     handleAsync()
   }, [searchPhrase])
+
+  // Set html document language.
+  React.useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
 
   const links = [
     ...isModerator ? [{ label: translations.administration, url: '/log' }] : [],
