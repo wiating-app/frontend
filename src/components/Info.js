@@ -21,11 +21,8 @@ const Info = () => {
             srcSet='/logo-full@2x.png 2x'
             className={classes.logo}
           />
-          <Typography gutterBottom>
-            Witaj w nowej aplikacji facebook'owej grupy <a href='https://www.facebook.com/groups/938290029559772' target='_blank'>Wiating czyli chatki w górach</a>!
-          </Typography>
-          <Typography variant='body2' gutterBottom>
-            Aplikacja znajduje się aktualnie w fazie testów i jej zawartość jest tymczasowa.
+          <Typography gutterBottom variant='body1'>
+            Witaj w aplikacji grupy facebookowej <a href='https://www.facebook.com/groups/938290029559772' target='_blank'>Wiating czyli chatki w górach</a>!
           </Typography>
           <Button
             variant='contained'
@@ -36,13 +33,13 @@ const Info = () => {
           >Przejdź do mapy</Button>
         </div>
         <div className={classes.footer}>
-          <Typography align='left'>
+          <Typography align='left' variant='body2'>
             Twórcy aplikacji:<br />
             <a href='https://github.com/frontcraft' target='_blank' >Michał Kokociński</a>, <a href='https://github.com/merito' target='_blank' >Dawid Wolski</a></Typography>
           <div>
-            <Typography align='right'>Administracja: Dariusz Hajduk (<a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a>)</Typography>
+            <Typography align='right' variant='body2'>Administracja: Dariusz Hajduk (<a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a>)</Typography>
             <div className={classes.partner}>
-              <Typography align='right'>Opiekun prawny: Weronika Bednarska</Typography>
+              <Typography align='right' variant='body2'>Opiekun prawny: Weronika Bednarska</Typography>
               <a href='https://soinlaw.com' target='_blank'>
                 <img
                   src='/soinlaw.png'
@@ -73,7 +70,7 @@ const useStyles = makeStyles(theme => ({
   },
   logo: {
     maxWidth: '100%',
-    margin: '0 auto 32px',
+    margin: '0 auto 34px',
     display: 'block',
   },
   footer: {
