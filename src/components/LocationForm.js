@@ -67,7 +67,7 @@ const LocationForm = ({
       required={[
         'name',
         'description',
-        !locationData && 'directions',
+        !locationData?.id && 'directions',
         'type',
         'location',
       ]}
