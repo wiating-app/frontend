@@ -33,7 +33,7 @@
     "workbox-window": "^5.0.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js",
+    "start": "webpack-dev-server --config webpack.dev.js --host 0.0.0.0",
     "start:netlify": "concurrently --kill-others 'yarn start' 'netlify dev'",
     "build": "webpack --config webpack.prod.js"
   },
