@@ -8,12 +8,13 @@ import {
   ZoomControl,
   ScaleControl,
 } from 'react-leaflet'
+import { PixiOverlay } from 'react-leaflet-pixi-overlay'
 import Control from 'react-leaflet-control'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Typography, useMediaQuery, Tooltip } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
-import { Icon, DivIcon } from 'leaflet'
-import MarkerClusterGroup from 'react-leaflet-markercluster'
+import { Icon } from 'leaflet'
+// import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import ContextMenu from './ContextMenu'
@@ -143,9 +144,10 @@ const Map = React.forwardRef(({
             updateCoordinates(e.latlng)
           } else if (isLocationTabOpen && !editMode) {
             // Dismiss the location details drawer, when clicking on a map.
-            closeTab()
-            setContextMenu(false)
-            setActiveMarker(false)
+            // It does not work with react-leaflet-pixi-overlay approach.
+            // closeTab()
+            // setContextMenu(false)
+            // setActiveMarker(false)
           }
         }}
       >
@@ -153,40 +155,19 @@ const Map = React.forwardRef(({
           url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
           attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
         />
-        <MarkerClusterGroup
-          showCoverageOnHover={false}
-          maxClusterRadius={60}
-          disableClusteringAtZoom={11}
-          spiderfyOnMaxZoom={false}
-          iconCreateFunction={cluster => {
-            const count = cluster.getChildCount()
-            return new DivIcon({
-              html: count,
-              className: classes.woodboardCluster,
-              iconSize: [40, 40],
-            })
-          }}
-        >
-          {points && points.map(item => {
-            const { location: { lat, lon }, type } = item
-
-            return <Marker
-              key={item.id}
-              icon={new Icon({
-                iconUrl: getIconUrl(type),
-                iconSize: [30, 30],
-                iconAnchor: [15, 30],
-              })}
-              position={[lat, lon]}
-              onClick={() => {
-                openLocationTab(item)
-                setContextMenu(null)
-                setActiveMarker([lat, lon])
-              }}
-              opacity={editMode || item.is_disabled ? 0.5 : 1}
-            />
-          })}
-        </MarkerClusterGroup>
+        <PixiOverlay markers={points?.map(item => {
+          const { location: { lat, lon }, id, type } = item
+          return {
+            id,
+            iconColor: 'orange',
+            position: [lat, lon],
+            onClick: () => {
+              openLocationTab(item)
+              setContextMenu(null)
+              setActiveMarker([lat, lon])
+            },
+          }
+        }) || []} />
         {activeMarker &&
           <Marker
             icon={new Icon({
