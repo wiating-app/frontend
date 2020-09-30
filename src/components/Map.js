@@ -8,7 +8,6 @@ import {
   ZoomControl,
   ScaleControl,
 } from 'react-leaflet'
-import { PixiOverlay } from 'react-leaflet-pixi-overlay'
 import Control from 'react-leaflet-control'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Typography, useMediaQuery, Tooltip } from '@material-ui/core'
@@ -17,6 +16,7 @@ import { Icon } from 'leaflet'
 // import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
+import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
 import Legend from './Legend'
 import { getIconUrl } from '../utils/helpers'
