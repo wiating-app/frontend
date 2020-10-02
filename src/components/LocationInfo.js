@@ -7,8 +7,6 @@ import {
   Chip,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import Dropzone from 'react-dropzone'
-import Loader from './Loader'
 import ShareButton from './ShareButton'
 import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
@@ -18,11 +16,9 @@ import useLanguage from '../utils/useLanguage'
 const LocationInfo = ({
   loggedIn,
   selectedLocation,
-  onImageUpload,
 }) => {
   const classes = useStyles()
   const { translations } = useLanguage()
-  const [imagesLoading, setImagesLoading] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
   const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type]] : ''
 
@@ -120,25 +116,6 @@ const LocationInfo = ({
               component={Link}
               to={`/location/${selectedLocation.id}/edit`}
             >{translations.actions.edit}</Button>
-            {imagesLoading
-              ? <Button disabled>{translations.actions.addPhoto} <Loader /></Button>
-              : <Button>
-                <Dropzone accept='image/jpeg' onDrop={async files => {
-                  setImagesLoading(true)
-                  await onImageUpload(files)
-                  setImagesLoading(false)
-                }}>
-                  {({ getRootProps, getInputProps }) => (
-                    <section>
-                      <div {...getRootProps()}>
-                        <input {...getInputProps()} />
-                        {translations.actions.addPhoto}
-                      </div>
-                    </section>
-                  )}
-                </Dropzone>
-              </Button>
-            }
           </ButtonGroup>
         }
       </div>

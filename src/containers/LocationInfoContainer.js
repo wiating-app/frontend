@@ -88,11 +88,11 @@ const LocationInfoContainer = ({
           <LocationImages
             images={location.images}
             id={id}
+            onImageUpload={files => onImageUpload(files)}
           />
           <LocationInfo
             selectedLocation={location}
             loggedIn={isLoggedIn}
-            onImageUpload={files => onImageUpload(files)}
           />
         </>
   )

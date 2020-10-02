@@ -1,16 +1,25 @@
 import React from 'react'
-import { Box, Modal, IconButton } from '@material-ui/core'
+import { Box, Button, Modal, IconButton } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Carousel } from 'react-responsive-carousel'
 import ImageGallery from 'react-image-gallery'
+import Dropzone from 'react-dropzone'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
+import Loader from './Loader'
+import useLanguage from '../utils/useLanguage'
 
 
-const LocationImages = ({ images, id }) => {
+const LocationImages = ({
+  images,
+  id,
+  onImageUpload,
+}) => {
   const classes = useStyles()
+  const { translations } = useLanguage()
   const [openModal, setOpenModal] = React.useState(false)
+  const [imagesLoading, setImagesLoading] = React.useState()
 
   const preparedImages = images
     ? images.map(image => ({
@@ -21,7 +30,7 @@ const LocationImages = ({ images, id }) => {
 
   return (
     images?.length
-      ? <>
+      ? <div className={classes.root}>
         <Carousel
           showArrows
           emulateTouch
@@ -37,6 +46,27 @@ const LocationImages = ({ images, id }) => {
             </div>
           )}
         </Carousel>
+        <Button
+          className={classes.addPhoto}
+          size='small'
+          variant='contained'
+          color='primary'
+        >
+          <Dropzone accept='image/jpeg' onDrop={async files => {
+            setImagesLoading(true)
+            await onImageUpload(files)
+            setImagesLoading(false)
+          }}>
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  {translations.actions.addPhoto}
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </Button>
         <Modal
           open={openModal}
           onClose={() => setOpenModal(false)}
@@ -55,7 +85,7 @@ const LocationImages = ({ images, id }) => {
             ><Close /></IconButton>
           </Box>
         </Modal>
-      </>
+      </div>
       : <div className={classes.imageWrapper}>
         <img src='/no-image.png' alt='No image' className={classes.image} />
       </div>
@@ -63,6 +93,9 @@ const LocationImages = ({ images, id }) => {
 }
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    position: 'relative',
+  },
   imageWrapper: {
     height: '50vw',
     [theme.breakpoints.up('sm')]: {
@@ -114,6 +147,12 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+  },
+  addPhoto: {
+    position: 'absolute',
+    bottom: theme.spacing(1),
+    left: theme.spacing(1),
+    padding: '1px 6px',
   },
 }))
 
