@@ -14,12 +14,12 @@ import useLanguage from '../utils/useLanguage'
 const LocationImages = ({
   images,
   id,
+  uploading,
   onImageUpload,
 }) => {
   const classes = useStyles()
   const { translations } = useLanguage()
   const [openModal, setOpenModal] = React.useState(false)
-  const [imagesLoading, setImagesLoading] = React.useState()
 
   const preparedImages = images
     ? images.map(image => ({
@@ -31,32 +31,33 @@ const LocationImages = ({
   return (
     images?.length
       ? <div className={classes.root}>
-        <Carousel
-          showArrows
-          emulateTouch
-          showThumbs={false}
-        >
-          {preparedImages.map((image, i) =>
-            <div
-              key={i}
-              className={classes.imageWrapper}
-              onClick={() => setOpenModal(true)}
-            >
-              <img src={image.thumbnail} alt='' className={classes.image} />
-            </div>
-          )}
-        </Carousel>
+        {uploading
+          ? <div className={classes.imageWrapper}>
+            <div className={classes.loader}><Loader big /></div>
+          </div>
+          : <Carousel
+            showArrows
+            emulateTouch
+            showThumbs={false}
+          >
+            {preparedImages.map((image, i) =>
+              <div
+                key={i}
+                className={classes.imageWrapper}
+                onClick={() => setOpenModal(true)}
+              >
+                <img src={image.thumbnail} alt='' className={classes.image} />
+              </div>
+            )}
+          </Carousel>
+        }
         <Button
           className={classes.addPhoto}
           size='small'
           variant='contained'
           color='primary'
         >
-          <Dropzone accept='image/jpeg' onDrop={async files => {
-            setImagesLoading(true)
-            await onImageUpload(files)
-            setImagesLoading(false)
-          }}>
+          <Dropzone accept='image/jpeg' onDrop={files => onImageUpload(files)}>
             {({ getRootProps, getInputProps }) => (
               <section>
                 <div {...getRootProps()}>
@@ -106,6 +107,13 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     width: '100%',
     height: '100%',
+  },
+  loader: {
+    height: '100%',
+    backgroundColor: theme.palette.grey[300],
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modalContent: {
     position: 'relative',

@@ -23,6 +23,7 @@ const LocationInfoContainer = ({
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
+  const [imageUploading, setImageUploading] = React.useState(false)
 
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
@@ -51,6 +52,7 @@ const LocationInfoContainer = ({
   }, [cachedLocation])
 
   const onImageUpload = async files => {
+    setImageUploading(true)
     try {
       await files.forEach(async file => {
         await Resizer.imageFileResizer(
@@ -68,13 +70,15 @@ const LocationInfoContainer = ({
             const { data } = await api.post(`add_image/${location.id}`, fileObject)
             setLocation(data)
             setCachedLocation(data)
+            setImageUploading(false)
+            history.push(`/location/${location.id}`)
+            enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
           },
         )
       })
-      history.push(`/location/${location.id}`)
-      enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
     } catch (error) {
       console.error(error)
+      setImageUploading(false)
       enqueueSnackbar(translations.notifications.couldNotSavePhoto, { variant: 'error' })
     }
   }
@@ -88,6 +92,7 @@ const LocationInfoContainer = ({
           <LocationImages
             images={location.images}
             id={id}
+            uploading={imageUploading}
             onImageUpload={files => onImageUpload(files)}
           />
           <LocationInfo
