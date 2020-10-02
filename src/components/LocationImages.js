@@ -1,15 +1,24 @@
 import React from 'react'
-import { Box, Modal, IconButton } from '@material-ui/core'
+import { Box, Button, Modal, IconButton } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Carousel } from 'react-responsive-carousel'
 import ImageGallery from 'react-image-gallery'
+import Dropzone from 'react-dropzone'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
+import Loader from './Loader'
+import useLanguage from '../utils/useLanguage'
 
 
-const LocationImages = ({ images, id }) => {
+const LocationImages = ({
+  images,
+  id,
+  uploading,
+  onImageUpload,
+}) => {
   const classes = useStyles()
+  const { translations } = useLanguage()
   const [openModal, setOpenModal] = React.useState(false)
 
   const preparedImages = images
@@ -21,22 +30,44 @@ const LocationImages = ({ images, id }) => {
 
   return (
     images?.length
-      ? <>
-        <Carousel
-          showArrows
-          emulateTouch
-          showThumbs={false}
+      ? <div className={classes.root}>
+        {uploading
+          ? <div className={classes.imageWrapper}>
+            <div className={classes.loader}><Loader big /></div>
+          </div>
+          : <Carousel
+            showArrows
+            emulateTouch
+            showThumbs={false}
+          >
+            {preparedImages.map((image, i) =>
+              <div
+                key={i}
+                className={classes.imageWrapper}
+                onClick={() => setOpenModal(true)}
+              >
+                <img src={image.thumbnail} alt='' className={classes.image} />
+              </div>
+            )}
+          </Carousel>
+        }
+        <Button
+          className={classes.addPhoto}
+          size='small'
+          variant='contained'
+          color='primary'
         >
-          {preparedImages.map((image, i) =>
-            <div
-              key={i}
-              className={classes.imageWrapper}
-              onClick={() => setOpenModal(true)}
-            >
-              <img src={image.thumbnail} alt='' className={classes.image} />
-            </div>
-          )}
-        </Carousel>
+          <Dropzone accept='image/jpeg' onDrop={files => onImageUpload(files)}>
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  {translations.actions.addPhoto}
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </Button>
         <Modal
           open={openModal}
           onClose={() => setOpenModal(false)}
@@ -55,7 +86,7 @@ const LocationImages = ({ images, id }) => {
             ><Close /></IconButton>
           </Box>
         </Modal>
-      </>
+      </div>
       : <div className={classes.imageWrapper}>
         <img src='/no-image.png' alt='No image' className={classes.image} />
       </div>
@@ -63,6 +94,9 @@ const LocationImages = ({ images, id }) => {
 }
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    position: 'relative',
+  },
   imageWrapper: {
     height: '50vw',
     [theme.breakpoints.up('sm')]: {
@@ -73,6 +107,13 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     width: '100%',
     height: '100%',
+  },
+  loader: {
+    height: '100%',
+    backgroundColor: theme.palette.grey[300],
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modalContent: {
     position: 'relative',
@@ -114,6 +155,12 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+  },
+  addPhoto: {
+    position: 'absolute',
+    bottom: theme.spacing(1),
+    left: theme.spacing(1),
+    padding: '1px 6px',
   },
 }))
 

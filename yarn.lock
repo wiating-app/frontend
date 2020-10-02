@@ -10115,7 +10115,7 @@ react-perfect-scrollbar@^1.5.3:
     perfect-scrollbar "^1.5.0"
     prop-types "^15.6.1"
 
-react-responsive-carousel@^3.1.50:
+react-responsive-carousel@^3.2.10:
   version "3.2.10"
   resolved "https://registry.yarnpkg.com/react-responsive-carousel/-/react-responsive-carousel-3.2.10.tgz#2de13bdc131d78b8b92d3653d295a77d8c20cf2e"
   integrity sha512-O8MV2LoR07BttvWaXesyWkE6s8xRW6p6HiMkelZ3TuPYQwKnlw+fYtZN+bQ3/1jg0D5JQGATY4Hnw/4WEXHnag==
