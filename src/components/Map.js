@@ -155,19 +155,22 @@ const Map = React.forwardRef(({
           url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
           attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
         />
-        <PixiOverlay markers={points?.map(item => {
-          const { location: { lat, lon }, id, type } = item
-          return {
-            id,
-            iconColor: 'orange',
-            position: [lat, lon],
-            onClick: () => {
-              openLocationTab(item)
-              setContextMenu(null)
-              setActiveMarker([lat, lon])
-            },
-          }
-        }) || []} />
+        <PixiOverlay
+          map={mapRef?.current?.leafletElement}
+          markers={points?.map(item => {
+            const { location: { lat, lon }, id, type } = item
+            return {
+              id,
+              iconColor: 'orange',
+              position: [lat, lon],
+              onClick: () => {
+                openLocationTab(item)
+                setContextMenu(null)
+                setActiveMarker([lat, lon])
+              },
+            }
+          }) || []}
+        />
         {activeMarker &&
           <Marker
             icon={new Icon({

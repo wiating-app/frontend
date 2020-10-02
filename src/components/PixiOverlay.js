@@ -10,8 +10,6 @@ import L from 'leaflet'
 import * as PIXI from 'pixi.js'
 import 'leaflet-pixi-overlay'
 
-import { useLeafletMap } from 'use-leaflet'
-
 PIXI.utils.skipHello()
 const PIXILoader = PIXI.Loader.shared
 
@@ -27,6 +25,7 @@ function getEncodedIcon(svg) {
 }
 
 const PixiOverlay = ({
+  map,
   markers,
 }) => {
   const [openedPopupData, setOpenedPopupData] = useState(null)
@@ -37,7 +36,6 @@ const PixiOverlay = ({
 
   const [pixiOverlay, setPixiOverlay] = useState(null)
   const [loaded, setLoaded] = useState(false)
-  const map = useLeafletMap()
 
   // load sprites
   useEffect(() => {
