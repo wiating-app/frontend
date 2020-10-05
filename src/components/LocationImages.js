@@ -29,9 +29,9 @@ const LocationImages = ({
     : null
 
   return (
-    images?.length
-      ? <div className={classes.root}>
-        {uploading
+    <div className={classes.root}>
+      {images?.length
+        ? uploading
           ? <div className={classes.imageWrapper}>
             <div className={classes.loader}><Loader big /></div>
           </div>
@@ -50,46 +50,46 @@ const LocationImages = ({
               </div>
             )}
           </Carousel>
-        }
-        <Button
-          className={classes.addPhoto}
-          size='small'
-          variant='contained'
-          color='primary'
-        >
-          <Dropzone accept='image/jpeg' onDrop={files => onImageUpload(files)}>
-            {({ getRootProps, getInputProps }) => (
-              <section>
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  {translations.actions.addPhoto}
-                </div>
-              </section>
-            )}
-          </Dropzone>
-        </Button>
-        <Modal
-          open={openModal}
-          onClose={() => setOpenModal(false)}
-          disableAutoFocus
-          disableEnforceFocus
-        >
-          <Box boxShadow={3} className={classes.modalContent}>
-            <ImageGallery
-              items={preparedImages}
-              showPlayButton={false}
-              showFullscreenButton={false}
-            />
-            <IconButton
-              className={classes.close}
-              onClick={() => setOpenModal(false)}
-            ><Close /></IconButton>
-          </Box>
-        </Modal>
-      </div>
-      : <div className={classes.imageWrapper}>
-        <img src='/no-image.png' alt='No image' className={classes.image} />
-      </div>
+        : <div className={classes.imageWrapper}>
+          <img src='/no-image.png' alt='No image' className={classes.image} />
+        </div>
+      }
+      <Modal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        disableAutoFocus
+        disableEnforceFocus
+      >
+        <Box boxShadow={3} className={classes.modalContent}>
+          <ImageGallery
+            items={preparedImages}
+            showPlayButton={false}
+            showFullscreenButton={false}
+          />
+          <IconButton
+            className={classes.close}
+            onClick={() => setOpenModal(false)}
+          ><Close /></IconButton>
+        </Box>
+      </Modal>
+      <Button
+        className={classes.addPhoto}
+        size='small'
+        variant='contained'
+        color='primary'
+      >
+        <Dropzone accept='image/jpeg' onDrop={files => onImageUpload(files)}>
+          {({ getRootProps, getInputProps }) => (
+            <section>
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                {translations.actions.addPhoto}
+              </div>
+            </section>
+          )}
+        </Dropzone>
+      </Button>
+    </div>
   )
 }
 
