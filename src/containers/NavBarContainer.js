@@ -60,11 +60,17 @@ const NavBarContainer = ({
 
   const links = [
     ...isModerator ? [{ label: translations.administration, url: '/log' }] : [],
-    ...isLoggedIn ? [{
-      label: <>{translations.language}: {language.toUpperCase()}</>,
-      callback: () => setLanguageSwitch(true),
-      divider: true,
-    }] : [],
+    ...isLoggedIn ? [
+      {
+        label: translations.history,
+        url: '/historia',
+      },
+      {
+        label: <>{translations.language}: {language.toUpperCase()}</>,
+        callback: () => setLanguageSwitch(true),
+        divider: true,
+      },
+    ] : [],
     { label: translations.informations, url: '/info' },
     ...isMobile ? [{ label: translations.legend, url: '/legenda' }] : [],
     { label: translations.termsAndConditions, url: '/regulamin' },

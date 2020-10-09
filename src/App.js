@@ -22,6 +22,7 @@ import LocationInfoContainer from './containers/LocationInfoContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
 import LogsContainer from './containers/LogsContainer'
 import LogDetailsContainer from './containers/LogDetailsContainer'
+import HistoryContainer from '././containers/HistoryContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
@@ -193,6 +194,17 @@ const App = ({ history, location: { pathname } }) => {
       </Route>
 
       <Route exact path='/log/:id'>
+        <LogDetailsContainer
+          cachedLogDetails={cachedLogDetails}
+          setCachedLogDetails={setCachedLogDetails}
+        />
+      </Route>
+
+      <Route path='/historia'>
+        <HistoryContainer setCachedLogDetails={setCachedLogDetails} />
+      </Route>
+
+      <Route exact path='/historia/:id'>
         <LogDetailsContainer
           cachedLogDetails={cachedLogDetails}
           setCachedLogDetails={setCachedLogDetails}
