@@ -15,7 +15,6 @@ const LogDetailsContainer = ({
   location: { pathname },
   history,
 }) => {
-  console.log('pathname: ', pathname.split('/')[1])
   const [logDetails, setLogDetails] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()

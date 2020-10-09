@@ -3,7 +3,7 @@ import { Typography, Box } from '@material-ui/core'
 import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
-import Actions from './Actions'
+// import Actions from './Actions'
 import Pagination from './Pagination'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
@@ -46,11 +46,11 @@ const History = ({
                     }
                   </Typography>
                 </>,
-                actions: <Actions
-                  primary={[
-                    { label: 'Szczegóły', action: () => setDetails({ id: item._id, ...item._source }) },
-                  ]}
-                />,
+                // actions: <Actions
+                //   primary={[
+                //     { label: 'Szczegóły', action: () => setDetails({ id: item._id, ...item._source }) },
+                //   ]}
+                // />,
               }))}
               labels={[
                 { name: 'Data', field: 'timestamp' },
