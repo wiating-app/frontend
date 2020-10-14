@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import locationTypes from '../utils/locationTypes'
-import { getIconUrl } from '../utils/helpers'
+import { getIconName } from '../utils/helpers'
 import useLanguage from '../utils/useLanguage'
 
 
@@ -28,7 +28,7 @@ const Legend = ({ boxed, activeTypes, onChange }) => {
         variant={boxed ? 'subtitle2' : 'h5'}
         className={classes.label}
       >{translations.legend}:</Typography>
-      {Object.entries(locationTypes).map(([key, label]) =>
+      {Object.entries(locationTypes).map(([key, { label }]) =>
         <div
           className={classNames(classes.item, {
             [classes.active]: activeTypes.includes(key) || !activeTypes.length,
@@ -36,7 +36,7 @@ const Legend = ({ boxed, activeTypes, onChange }) => {
           key={key}
           onClick={() => handleOnClick(key)}
         >
-          <img src={getIconUrl(key)} alt='' className={classes.icon} />
+          <img src={getIconName(key)} alt='' className={classes.icon} />
           <Typography variant={boxed ? 'caption' : 'body1'}>
             {translations.locationType[label]}
           </Typography>

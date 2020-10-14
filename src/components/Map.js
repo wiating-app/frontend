@@ -19,7 +19,9 @@ import 'react-leaflet-markercluster/dist/styles.min.css'
 import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
 import Legend from './Legend'
-import { getIconUrl } from '../utils/helpers'
+import { getIconName } from '../utils/helpers'
+import locationIcons from '../utils/locationIcons'
+console.log('typeof locationIcons: ', typeof locationIcons, locationIcons);
 import exportToKML from '../utils/exportToKML'
 
 
@@ -162,6 +164,8 @@ const Map = React.forwardRef(({
             return {
               id,
               iconColor: 'orange',
+              customIcon: locationIcons[getIconName(type)],
+              iconId: type,
               position: [lat, lon],
               onClick: () => {
                 openLocationTab(item)
