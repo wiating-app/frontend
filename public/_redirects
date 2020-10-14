@@ -5,7 +5,8 @@
 /polityka-prywatnosci  /index.html  200
 /cookies  /index.html  200
 /faq  /index.html  200
-/log  /index.html  200
+/log/*  /index.html  200
+/historia/*  /index.html  200
 /api/* https://serwer.wiating.eu/wiating/:splat 200
 https://mapa.wiating.eu/* https://wiating.eu/:splat 301!
 https://wiating.netlify.app/* https://wiating.eu/:splat 301!
