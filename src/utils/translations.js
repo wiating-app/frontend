@@ -98,9 +98,9 @@ export default {
     language: 'Język',
     selectLanguage: 'Wybierz nowy język',
     languageChanged: 'Język zmieniony.',
-    administration: 'Administracja',
-    history: 'Historia',
-    historyDescription: 'Lista twoich ostatnio wprowadzonych zmian.',
+    administration: 'Panel moderatora',
+    history: 'Moja historia',
+    historyDescription: 'Lista ostatnio wprowadzonych przez ciebie zmian.',
     informations: 'Informacje',
     termsAndConditions: 'Regulamin',
     privacyPolicy: 'Polityka prywatności',
@@ -112,6 +112,7 @@ export default {
     enterCoordinates: 'Wprowadź współrzędne',
     inCurrentLocation: 'W aktualnej lokalizacji',
     share: 'Udostępnij',
+    details: 'Szczegóły',
   },
 
 
@@ -212,8 +213,8 @@ export default {
       logout: 'Logout',
     },
     language: 'Language',
-    administration: 'Administration',
-    history: 'History',
+    administration: 'Administration panel',
+    history: 'My history',
     historyDescription: 'List of your recent changes.',
     selectLanguage: 'Select language',
     languageChanged: 'Language changed.',
@@ -228,5 +229,6 @@ export default {
     enterCoordinates: 'Enter coordinates',
     inCurrentLocation: 'In current location',
     share: 'Share',
+    details: 'Details',
   },
 }

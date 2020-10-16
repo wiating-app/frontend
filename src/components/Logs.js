@@ -27,7 +27,7 @@ const Logs = ({
       <Typography
         variant='h4'
         gutterBottom
-      >Administracja - historia zmian</Typography>
+      >{translations.administration} - dziennik zmian</Typography>
       {loadingLogs
         ? <Loader dark big />
         : errorLogs
@@ -50,7 +50,10 @@ const Logs = ({
                 </Box>,
                 actions: <Actions
                   primary={[
-                    { label: 'Szczegóły', action: () => setDetails({ id: item._id, ...item._source }) },
+                    {
+                      label: translations.details,
+                      action: () => setDetails({ id: item._id, ...item._source }),
+                    },
                   ]}
                 />,
               }))}
