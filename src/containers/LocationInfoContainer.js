@@ -83,6 +83,11 @@ const LocationInfoContainer = ({
     }
   }
 
+  const handleReport = fields => {
+    console.log('fields: ', fields)
+    enqueueSnackbar('Punkt zgłoszony do moderacji', { variant: 'success' })
+  }
+
   return (
     loading
       ? <Loader dark big />
@@ -98,6 +103,7 @@ const LocationInfoContainer = ({
           <LocationInfo
             selectedLocation={location}
             loggedIn={isLoggedIn}
+            handleReport={handleReport}
           />
         </>
   )

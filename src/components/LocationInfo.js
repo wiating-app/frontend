@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import ShareButton from './ShareButton'
+import Report from './Report'
 import { roundLatLng, formatDate } from '../utils/helpers'
 import locationTypes from '../utils/locationTypes'
 import useLanguage from '../utils/useLanguage'
@@ -16,9 +17,11 @@ import useLanguage from '../utils/useLanguage'
 const LocationInfo = ({
   loggedIn,
   selectedLocation,
+  handleReport,
 }) => {
   const classes = useStyles()
   const { translations } = useLanguage()
+  const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
   const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type]] : ''
 
@@ -113,12 +116,21 @@ const LocationInfo = ({
             align='right'
           >
             <Button
+              onClick={() => setReportIsOpen(true)}
+            >{translations.actions.report}</Button>
+            <Button
               component={Link}
               to={`/location/${selectedLocation.id}/edit`}
             >{translations.actions.edit}</Button>
           </ButtonGroup>
         }
       </div>
+      {reportIsOpen &&
+        <Report
+          handleReport={handleReport}
+          onClose={() => setReportIsOpen(false)}
+        />
+      }
     </div>
   )
 }

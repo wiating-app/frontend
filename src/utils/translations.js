@@ -86,7 +86,20 @@ export default {
     },
     actions: {
       edit: 'Edytuj',
+      report: 'Zgłoś',
       addPhoto: 'Dodaj zdjęcia',
+    },
+    reportReasons: {
+      duplicate: 'Duplikat innego miejsca',
+      doesNotExist: 'Lokacja nie istnieje',
+      photoRemoval: 'Potrzeba usunąć zdjęcie',
+      other: 'Inny',
+    },
+    reportDescriptions: {
+      duplicate: 'Wklej tutaj link do lokacji, której ta stanowi duplikat',
+      doesNotExist: 'Podaj szczegóły',
+      photoRemoval: 'Opisz, które zdjęcie(a) należy usunąć',
+      other: 'Opisz problem',
     },
     addMarker: 'Dodaj lokację',
     addMarkerHere: 'Dodaj tu lokację',
@@ -203,7 +216,20 @@ export default {
     },
     actions: {
       edit: 'Edit',
+      report: 'Report',
       addPhoto: 'Add photos',
+    },
+    reportReasons: {
+      duplicate: 'Duplicated locaotion',
+      doesNotExist: 'Location does not exist',
+      photoRemoval: 'Photo to be removed',
+      other: 'Other',
+    },
+    reportDescriptions: {
+      duplicate: 'Paste here the link to location, that this is one a duplicate of',
+      doesNotExist: 'Give more details',
+      photoRemoval: 'Describe, which photo(s) should be removed',
+      other: 'Describe the problem',
     },
     addMarker: 'Add location',
     addMarkerHere: 'Add location here',
