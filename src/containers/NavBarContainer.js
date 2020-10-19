@@ -59,7 +59,7 @@ const NavBarContainer = ({
   }, [language])
 
   const links = [
-    ...isModerator ? [{ label: translations.administration, url: '/log' }] : [],
+    ...isModerator ? [{ label: translations.administration, url: '/moderator/log' }] : [],
     ...isLoggedIn ? [
       {
         label: translations.history,
