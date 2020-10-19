@@ -83,9 +83,19 @@ const LocationInfoContainer = ({
     }
   }
 
-  const handleReport = fields => {
-    console.log('fields: ', fields)
-    enqueueSnackbar('Punkt zgłoszony do moderacji', { variant: 'success' })
+  const handleReport = async fields => {
+    try {
+      const { reason, description } = fields
+      const summary = `${translations.reportReasons[reason]}: ${description}`
+      await api.post('report', {
+        id: location.id,
+        report_reason: summary,
+      })
+      enqueueSnackbar('Punkt zgłoszony do moderacji', { variant: 'success' })
+    } catch (err) {
+      console.error(err)
+      enqueueSnackbar(translations.notifications.couldNotReport, { variant: 'error' })
+    }
   }
 
   return (

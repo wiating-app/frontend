@@ -78,6 +78,7 @@ export default {
       couldNotDeleteLocation: 'Nie udało się usunąć lokacji.',
       pointOnMap: 'Wskaż dowolne miejsce na mapie.',
       urlCopied: 'Skopiowano adres URL lokacji do schowka.',
+      couldNotReport: 'Nie udało się przesłać zgłoszenia.',
     },
     formLabels: {
       formInvalid: 'Formularz jest niepoprawnie uzupełniony. Sprawdź pola.',
@@ -208,6 +209,7 @@ export default {
       couldNotDeleteLocation: 'Could not delete location.',
       pointOnMap: 'Point the location on a map.',
       urlCopied: 'Copied the URL of current location.',
+      couldNotReport: 'Could not send the form.',
     },
     formLabels: {
       formInvalid: 'Form contains errors. Check all fields.',
