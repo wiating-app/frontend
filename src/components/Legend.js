@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import locationTypes from '../utils/locationTypes'
-import { getIconName } from '../utils/helpers'
+import generateMarkerIcon from '../utils/generateMarkerIcon'
 import useLanguage from '../utils/useLanguage'
 
 
@@ -36,7 +36,10 @@ const Legend = ({ boxed, activeTypes, onChange }) => {
           key={key}
           onClick={() => handleOnClick(key)}
         >
-          <img src={getIconName(key)} alt='' className={classes.icon} />
+          <div
+            dangerouslySetInnerHTML={{ __html: generateMarkerIcon(key) }}
+            className={classes.icon}
+          />
           <Typography variant={boxed ? 'caption' : 'body1'}>
             {translations.locationType[label]}
           </Typography>

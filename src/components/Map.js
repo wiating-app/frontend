@@ -13,15 +13,12 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Typography, useMediaQuery, Tooltip } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon } from 'leaflet'
-// import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
 import Legend from './Legend'
-import { getIconName } from '../utils/helpers'
-import locationIcons from '../utils/locationIcons'
-console.log('typeof locationIcons: ', typeof locationIcons, locationIcons);
+import generateMarkerIcon from '../utils/generateMarkerIcon'
 import exportToKML from '../utils/exportToKML'
 
 
@@ -163,8 +160,7 @@ const Map = React.forwardRef(({
             const { location: { lat, lon }, id, type } = item
             return {
               id,
-              iconColor: 'orange',
-              customIcon: locationIcons[getIconName(type)],
+              customIcon: generateMarkerIcon(type),
               iconId: type,
               position: [lat, lon],
               onClick: () => {
