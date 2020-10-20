@@ -8,8 +8,8 @@ const generateMarkerIcon = type => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 37.234108 44.192665"
-      width="30"
-      height="30"
+      width="40"
+      height="40"
     >
       <g transform="translate(-98.509916,-52.280436)" >
         <path

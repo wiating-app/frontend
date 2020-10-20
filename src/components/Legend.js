@@ -68,8 +68,13 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: boxed => boxed ? 4 : theme.spacing(1),
   },
   icon: {
-    height: boxed => boxed ? 24 : 30,
-    marginRight: theme.spacing(1),
+    marginRight: 6,
+    marginBottom: -5,
+    marginLeft: -2,
+    '& svg': {
+      width: boxed => boxed ? 24 : 30,
+      height: boxed => boxed ? 24 : 30,
+    },
   },
   item: {
     paddingTop: boxed => boxed ? 4 : theme.spacing(1),
