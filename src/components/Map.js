@@ -48,9 +48,20 @@ const Map = React.forwardRef(({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
   const classes = useStyles()
+
   const currentZoom = mapRef?.current?.leafletElement?._zoom || zoom
+  const markerSize = currentZoom < 8
+  ? 4
+  : currentZoom < 10
+    ? 6
+    : currentZoom < 11
+      ? 16
+      : currentZoom < 13
+        ? 32
+        : 40
+
   React.useEffect(() => {
-    console.log('currentZoom: ', currentZoom)
+    console.log('currentZoom: ', currentZoom, 'markerSize: ', markerSize)
   }, [currentZoom])
 
   React.useEffect(() => {
@@ -162,13 +173,6 @@ const Map = React.forwardRef(({
           map={mapRef?.current?.leafletElement}
           markers={points?.map(item => {
             const { location: { lat, lon }, id, type } = item
-            const markerSize = currentZoom < 8
-              ? 4
-              : currentZoom < 10
-                ? 6
-                : currentZoom < 11
-                  ? 16
-                  : 40
             return {
               id,
               customIcon: generateMarkerIcon(type, markerSize),
