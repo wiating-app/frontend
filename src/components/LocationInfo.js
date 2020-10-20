@@ -23,7 +23,7 @@ const LocationInfo = ({
   const { translations } = useLanguage()
   const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
-  const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type]] : ''
+  const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type].label] : ''
 
   return (
     <div className={classes.root}>

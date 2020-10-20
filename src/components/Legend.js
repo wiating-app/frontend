@@ -37,7 +37,7 @@ const Legend = ({ boxed, activeTypes, onChange }) => {
           onClick={() => handleOnClick(key)}
         >
           <div
-            dangerouslySetInnerHTML={{ __html: generateMarkerIcon(key) }}
+            dangerouslySetInnerHTML={{ __html: generateMarkerIcon(key, boxed ? 24 : 30) }}
             className={classes.icon}
           />
           <Typography variant={boxed ? 'caption' : 'body1'}>
@@ -71,10 +71,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: 6,
     marginBottom: -5,
     marginLeft: -2,
-    '& svg': {
-      width: boxed => boxed ? 24 : 30,
-      height: boxed => boxed ? 24 : 30,
-    },
   },
   item: {
     paddingTop: boxed => boxed ? 4 : theme.spacing(1),

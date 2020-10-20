@@ -30,7 +30,7 @@ const exportToKML = locations => {
       `      <name>${location.name}</name>`,
       '      <description>',
       '        <![CDATA[',
-      `          <p><strong>${texts.pl.locationType[locationTypes[location.type]]}</strong></p>`,
+      `          <p><strong>${texts.pl.locationType[locationTypes[location.type].label]}</strong></p>`,
       `          <p>${location.description}</p>`,
       `          <p><strong>Wskazówki dojścia:</strong> ${location.directions || 'Brak informacji.'}</p>`,
       `          <p><strong>Dostęp do wody:</strong> ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'}</p>`,

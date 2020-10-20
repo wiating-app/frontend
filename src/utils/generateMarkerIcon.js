@@ -1,15 +1,15 @@
 import locationTypes from './locationTypes'
 import locationPictograms from './locationPictograms'
 
-const generateMarkerIcon = type => {
+const generateMarkerIcon = (type, size = 40) => {
   const color = locationTypes[type]?.color || 'grey'
 
   return `
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 37.234108 44.192665"
-      width="40"
-      height="40"
+      width="${size}"
+      height="${size}"
     >
       <g transform="translate(-98.509916,-52.280436)" >
         <path
