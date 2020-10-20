@@ -1,0 +1,30 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 34.738984 34.738995"
+  height="34.738995mm"
+  width="34.738983mm"
+>
+  <ellipse
+    style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05291666;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+    cx="17.033569"
+    cy="14.114885"
+    rx="10.583331"
+    ry="10.583333"
+  />
+  <g transform="translate(-1.1680107,0.80385971)">
+    <ellipse
+      ry="17.369497"
+      rx="17.369492"
+      cy="16.565638"
+      cx="18.537502"
+      style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.1999366;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+    />
+  <ellipse
+    ry="13.170732"
+    rx="13.170729"
+    cy="16.488979"
+    cx="18.598774"
+    style="fill:#0066ff;fill-opacity:1;stroke:none;stroke-width:0.1516055;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+  />
+</g>
+</svg>

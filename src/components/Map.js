@@ -174,7 +174,7 @@ const Map = React.forwardRef(({
         {activeMarker &&
           <Marker
             icon={new Icon({
-              iconUrl: '/location-icons/point.svg',
+              iconUrl: '/active-location.svg',
               iconSize: [40, 40],
               iconAnchor: [20, 40],
             })}
@@ -211,7 +211,7 @@ const Map = React.forwardRef(({
             }
             <Marker
               icon={new Icon({
-                iconUrl: '/location-icons/current.svg',
+                iconUrl: '/current-location.svg',
                 iconSize: [24, 24],
                 iconAnchor: [12, 12],
               })}
