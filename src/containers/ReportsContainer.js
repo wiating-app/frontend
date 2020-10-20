@@ -5,7 +5,7 @@ import useAuth0 from '../utils/useAuth0'
 import history from '../history'
 
 
-const LogsContainer = ({ setCachedLogDetails }) => {
+const ReportsContainer = ({ setCachedLogDetails }) => {
   const { user, isModerator } = useAuth0()
   const [logs, setLogs] = React.useState()
   const [loadingLogs, setLoadingLogs] = React.useState(true)
@@ -51,4 +51,4 @@ const LogsContainer = ({ setCachedLogDetails }) => {
   )
 }
 
-export default LogsContainer
+export default ReportsContainer

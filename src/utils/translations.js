@@ -78,6 +78,7 @@ export default {
       couldNotDeleteLocation: 'Nie udało się usunąć lokacji.',
       pointOnMap: 'Wskaż dowolne miejsce na mapie.',
       urlCopied: 'Skopiowano adres URL lokacji do schowka.',
+      couldNotReport: 'Nie udało się przesłać zgłoszenia.',
     },
     formLabels: {
       formInvalid: 'Formularz jest niepoprawnie uzupełniony. Sprawdź pola.',
@@ -86,7 +87,20 @@ export default {
     },
     actions: {
       edit: 'Edytuj',
+      report: 'Zgłoś',
       addPhoto: 'Dodaj zdjęcia',
+    },
+    reportReasons: {
+      duplicate: 'Duplikat innego miejsca',
+      doesNotExist: 'Lokacja nie istnieje',
+      photoRemoval: 'Potrzeba usunąć zdjęcie',
+      other: 'Inny',
+    },
+    reportDescriptions: {
+      duplicate: 'Wklej tutaj link do lokacji, której ta stanowi duplikat',
+      doesNotExist: 'Podaj szczegóły',
+      photoRemoval: 'Opisz, które zdjęcie(a) należy usunąć',
+      other: 'Opisz problem',
     },
     addMarker: 'Dodaj lokację',
     addMarkerHere: 'Dodaj tu lokację',
@@ -98,9 +112,9 @@ export default {
     language: 'Język',
     selectLanguage: 'Wybierz nowy język',
     languageChanged: 'Język zmieniony.',
-    administration: 'Administracja',
-    history: 'Historia',
-    historyDescription: 'Lista twoich ostatnio wprowadzonych zmian.',
+    administration: 'Panel moderatora',
+    history: 'Moja historia',
+    historyDescription: 'Lista ostatnio wprowadzonych przez ciebie zmian.',
     informations: 'Informacje',
     termsAndConditions: 'Regulamin',
     privacyPolicy: 'Polityka prywatności',
@@ -112,6 +126,7 @@ export default {
     enterCoordinates: 'Wprowadź współrzędne',
     inCurrentLocation: 'W aktualnej lokalizacji',
     share: 'Udostępnij',
+    details: 'Szczegóły',
   },
 
 
@@ -194,6 +209,7 @@ export default {
       couldNotDeleteLocation: 'Could not delete location.',
       pointOnMap: 'Point the location on a map.',
       urlCopied: 'Copied the URL of current location.',
+      couldNotReport: 'Could not send the form.',
     },
     formLabels: {
       formInvalid: 'Form contains errors. Check all fields.',
@@ -202,7 +218,20 @@ export default {
     },
     actions: {
       edit: 'Edit',
+      report: 'Report',
       addPhoto: 'Add photos',
+    },
+    reportReasons: {
+      duplicate: 'Duplicated locaotion',
+      doesNotExist: 'Location does not exist',
+      photoRemoval: 'Photo to be removed',
+      other: 'Other',
+    },
+    reportDescriptions: {
+      duplicate: 'Paste here the link to location, that this is one a duplicate of',
+      doesNotExist: 'Give more details',
+      photoRemoval: 'Describe, which photo(s) should be removed',
+      other: 'Describe the problem',
     },
     addMarker: 'Add location',
     addMarkerHere: 'Add location here',
@@ -212,8 +241,8 @@ export default {
       logout: 'Logout',
     },
     language: 'Language',
-    administration: 'Administration',
-    history: 'History',
+    administration: 'Administration panel',
+    history: 'My history',
     historyDescription: 'List of your recent changes.',
     selectLanguage: 'Select language',
     languageChanged: 'Language changed.',
@@ -228,5 +257,6 @@ export default {
     enterCoordinates: 'Enter coordinates',
     inCurrentLocation: 'In current location',
     share: 'Share',
+    details: 'Details',
   },
 }
