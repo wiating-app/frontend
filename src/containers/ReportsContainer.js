@@ -1,46 +1,37 @@
 import React from 'react'
 import api from '../api'
-import Logs from '../components/Logs'
+import Reports from '../components/Reports'
 import useAuth0 from '../utils/useAuth0'
 import history from '../history'
 
 
 const ReportsContainer = ({ setCachedLogDetails }) => {
   const { user, isModerator } = useAuth0()
-  const [logs, setLogs] = React.useState()
-  const [loadingLogs, setLoadingLogs] = React.useState(true)
-  const [errorLogs, setErrorLogs] = React.useState(false)
-  const [page, setPage] = React.useState(0) // Page numeration starts at 0.
-  const [logsTotal, setlogsTotal] = React.useState()
-  const rowsPerPage = 10
+  const [reports, setReports] = React.useState()
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState(false)
 
-  const getLogs = async page => {
+  const getReports = async () => {
     try {
-      setLoadingLogs(true)
-      const { data: { logs, total } } = await api.post('get_logs', {
-        size: rowsPerPage,
-        offset: rowsPerPage * page,
+      setLoading(true)
+      const { data: { points } } = await api.post('search_points', {
+        report_reason: true,
       })
-      setLogs(logs)
-      setlogsTotal(total)
+      setReports(points)
     } catch (err) {
       console.error(err)
-      setErrorLogs(true)
+      setError(true)
     }
-    setLoadingLogs(false)
+    setLoading(false)
   }
-  React.useEffect(() => { isModerator && getLogs(page) }, [page, isModerator])
+  React.useEffect(() => { isModerator && getReports() }, [isModerator])
 
   return (
     isModerator
-      ? <Logs
-        logs={logs}
-        loadingLogs={loadingLogs}
-        errorLogs={errorLogs}
-        page={page}
-        setPage={setPage}
-        rowsInTotal={logsTotal}
-        rowsPerPage={rowsPerPage}
+      ? <Reports
+        reports={reports}
+        loading={loading}
+        error={error}
         user={user}
         setDetails={data => {
           setCachedLogDetails(data)
