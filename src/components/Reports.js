@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Box } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import Table from './Table'
 import Actions from './Actions'
 import Loader from './Loader'
@@ -19,19 +19,19 @@ const Reports = ({
     ? <Loader dark big />
     : error
       ? <Typography color='error'>{translations.connectionProblem.logs}</Typography>
-      : <>
-        <Table
+      : reports.length
+        ? <Table
           data={reports.map(item => ({
             timestamp: formatDate(item.last_modified_timestamp),
             location: <OpenInNewCard path={`/location/${item.id}`}>{item.name}</OpenInNewCard>,
-            report_reason: item.report_reason.map(item =>
-              <Typography variant='caption'>{item}</Typography>
+            report_reason: item.report_reason.map((item, index) =>
+              <Typography key={index} variant='caption'>{item}</Typography>
             ),
             actions: <Actions
               primary={[
                 {
                   label: translations.details,
-                  action: () => setDetails({ id: item._id, ...item._source }),
+                  action: () => setDetails(item),
                 },
               ]}
             />,
@@ -43,7 +43,7 @@ const Reports = ({
             { name: '', field: 'actions' },
           ]}
         />
-      </>
+        : <Typography>Obecnie nie ma w systemie żadnych zgłoszeń.</Typography>
 }
 
 export default Reports

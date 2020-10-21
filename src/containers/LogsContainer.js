@@ -6,7 +6,7 @@ import history from '../history'
 
 
 const LogsContainer = ({ setCachedLogDetails }) => {
-  const { isModerator } = useAuth0()
+  const { isModerator, user } = useAuth0()
   const [logs, setLogs] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
@@ -41,6 +41,7 @@ const LogsContainer = ({ setCachedLogDetails }) => {
         setPage={setPage}
         rowsInTotal={logsTotal}
         rowsPerPage={rowsPerPage}
+        user={user}
         setDetails={data => {
           setCachedLogDetails(data)
           history.push(`/moderator/log/${data.id}`)
