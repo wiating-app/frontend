@@ -1,52 +1,72 @@
 import React from 'react'
+import { useSnackbar } from 'notistack'
 import api from '../api'
-import Logs from '../components/Logs'
+import Reports from '../components/Reports'
+import ReportDetails from '../components/ReportDetails'
 import useAuth0 from '../utils/useAuth0'
-import history from '../history'
 
 
-const ReportsContainer = ({ setCachedLogDetails }) => {
+const ReportsContainer = () => {
   const { user, isModerator } = useAuth0()
-  const [logs, setLogs] = React.useState()
-  const [loadingLogs, setLoadingLogs] = React.useState(true)
-  const [errorLogs, setErrorLogs] = React.useState(false)
-  const [page, setPage] = React.useState(0) // Page numeration starts at 0.
-  const [logsTotal, setlogsTotal] = React.useState()
-  const rowsPerPage = 10
+  const { enqueueSnackbar } = useSnackbar()
+  const [reports, setReports] = React.useState()
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState(false)
+  const [details, setDetails] = React.useState()
+  const [markAsDoneLoading, setMarkAsDoneLoading] = React.useState()
 
-  const getLogs = async page => {
+  const getReports = async () => {
     try {
-      setLoadingLogs(true)
-      const { data: { logs, total } } = await api.post('get_logs', {
-        size: rowsPerPage,
-        offset: rowsPerPage * page,
+      setLoading(true)
+      const { data: { points } } = await api.post('search_points', {
+        report_reason: true,
       })
-      setLogs(logs)
-      setlogsTotal(total)
+      setReports(points)
     } catch (err) {
       console.error(err)
-      setErrorLogs(true)
+      setError(true)
     }
-    setLoadingLogs(false)
+    setLoading(false)
   }
-  React.useEffect(() => { isModerator && getLogs(page) }, [page, isModerator])
+  React.useEffect(() => { isModerator && getReports() }, [isModerator])
+
+  const markAsDoneCallback = async () => {
+    setMarkAsDoneLoading(true)
+    try {
+      await api.post('report', {
+        id: details.id,
+        report_reason: null,
+      })
+      enqueueSnackbar('Zgłoszenie oznaczone jako załatwione.', { variant: 'success' })
+      setReports(prevState => prevState.filter(item => item.id !== details.id))
+      setMarkAsDoneLoading(false)
+      setDetails(null)
+    } catch (err) {
+      console.error(err)
+      setMarkAsDoneLoading(false)
+      enqueueSnackbar('Nie udało się odznaczyć zgłoszenia.', { variant: 'error' })
+    }
+  }
 
   return (
     isModerator
-      ? <Logs
-        logs={logs}
-        loadingLogs={loadingLogs}
-        errorLogs={errorLogs}
-        page={page}
-        setPage={setPage}
-        rowsInTotal={logsTotal}
-        rowsPerPage={rowsPerPage}
-        user={user}
-        setDetails={data => {
-          setCachedLogDetails(data)
-          history.push(`/moderator/log/${data.id}`)
-        }}
-      />
+      ? <>
+        <Reports
+          reports={reports}
+          loading={loading}
+          error={error}
+          user={user}
+          setDetails={data => setDetails(data)}
+        />
+        {details &&
+          <ReportDetails
+            data={details}
+            markAsDoneCallback={markAsDoneCallback}
+            loading={markAsDoneLoading}
+            onClose={() => setDetails(null)}
+          />
+        }
+      </>
       : null
   )
 }

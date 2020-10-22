@@ -48,7 +48,7 @@ const ModeratorPanel = ({
         <LogsContainer setCachedLogDetails={setCachedLogDetails} />
       </Route>
       <Route path='/moderator/zgloszenia'>
-        <ReportsContainer setCachedLogDetails={setCachedLogDetails} />
+        <ReportsContainer />
       </Route>
 
       <Route exact path='/moderator/log/:id'>

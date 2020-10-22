@@ -11,8 +11,8 @@ import useLanguage from '../utils/useLanguage'
 const Logs = ({
   logs,
   user,
-  loadingLogs,
-  errorLogs,
+  loading,
+  error,
   page,
   setPage,
   rowsInTotal,
@@ -20,9 +20,9 @@ const Logs = ({
   setDetails,
 }) => {
   const { translations } = useLanguage()
-  return loadingLogs
+  return loading
     ? <Loader dark big />
-    : errorLogs
+    : error
       ? <Typography color='error'>{translations.connectionProblem.logs}</Typography>
       : <>
         <Table
