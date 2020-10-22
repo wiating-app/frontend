@@ -1,11 +1,17 @@
 import React from 'react'
+import { parse, stringify } from 'querystringify'
+import { withRouter } from 'react-router-dom'
 import api from '../api'
 import Logs from '../components/Logs'
+import LogFilters from '../components/LogFilters'
 import useAuth0 from '../utils/useAuth0'
-import history from '../history'
 
 
-const LogsContainer = ({ setCachedLogDetails }) => {
+const LogsContainer = ({
+  setCachedLogDetails,
+  location: { search },
+  history,
+}) => {
   const { isModerator, user } = useAuth0()
   const [logs, setLogs] = React.useState()
   const [loading, setLoading] = React.useState(true)
@@ -13,6 +19,7 @@ const LogsContainer = ({ setCachedLogDetails }) => {
   const [page, setPage] = React.useState(0) // Page numeration starts at 0.
   const [logsTotal, setlogsTotal] = React.useState()
   const rowsPerPage = 10
+  const [filters, setFilters] = React.useState({})
 
   const getLogs = async page => {
     try {
@@ -20,6 +27,7 @@ const LogsContainer = ({ setCachedLogDetails }) => {
       const { data: { logs, total } } = await api.post('get_logs', {
         size: rowsPerPage,
         offset: rowsPerPage * page,
+        ...filters,
       })
       setLogs(logs)
       setlogsTotal(total)
@@ -29,26 +37,42 @@ const LogsContainer = ({ setCachedLogDetails }) => {
     }
     setLoading(false)
   }
-  React.useEffect(() => { isModerator && getLogs(page) }, [page, isModerator])
+
+  React.useEffect(() => {
+    isModerator && getLogs(page)
+  }, [page, isModerator, filters])
+
+  React.useEffect(() => {
+    setFilters(parse(search))
+  }, [search])
+
+  const handleFiltersSubmit = fields => {
+    const newFiltersQueryString = stringify(fields, true)
+    console.log('newFiltersQueryString: ', newFiltersQueryString);
+    history.push(`/moderator/log${newFiltersQueryString}`)
+  }
 
   return (
     isModerator
-      ? <Logs
-        logs={logs}
-        loading={loading}
-        error={error}
-        page={page}
-        setPage={setPage}
-        rowsInTotal={logsTotal}
-        rowsPerPage={rowsPerPage}
-        user={user}
-        setDetails={data => {
-          setCachedLogDetails(data)
-          history.push(`/moderator/log/${data.id}`)
-        }}
-      />
+      ? <>
+        <LogFilters values={filters} callback={handleFiltersSubmit} />
+        <Logs
+          logs={logs}
+          loading={loading}
+          error={error}
+          page={page}
+          setPage={setPage}
+          rowsInTotal={logsTotal}
+          rowsPerPage={rowsPerPage}
+          user={user}
+          setDetails={data => {
+            setCachedLogDetails(data)
+            history.push(`/moderator/log/${data.id}`)
+          }}
+        />
+      </>
       : null
   )
 }
 
-export default LogsContainer
+export default withRouter(LogsContainer)

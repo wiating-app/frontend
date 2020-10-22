@@ -15,6 +15,7 @@
     "leaflet.markercluster": "^1.4.1",
     "notistack": "^0.9.5",
     "pixi.js": "^5.3.3",
+    "querystringify": "^2.2.0",
     "react": "^16.13.1",
     "react-auth0-components": "^1.0.1",
     "react-copy-to-clipboard": "^5.0.2",
