@@ -128,28 +128,28 @@ const PixiOverlay = ({
         }
 
         if (popup || onClick) {
-          // Prevent launchung the onClick event on drag and drop.
-          let applyOnClick = true
+          // Prevent accidental launch of onClick event when dragging the map,
+          // Detect very small moves as clicks.
           markerSprite.on('mousedown', () => {
+            let moveCount = 0
             markerSprite.on('mousemove', () => {
-              applyOnClick = false
+              moveCount++
             })
             markerSprite.on('mouseup', () => {
-              if (applyOnClick && onClick) {
+              if (moveCount < 2 && onClick) {
                 onClick(id)
               }
             })
           })
+          // Duplicate the logic for touch devices.
           markerSprite.on('touchstart', () => {
             let moveCount = 0
             markerSprite.on('touchmove', () => {
               moveCount++
-              // applyOnClick = false
             })
             markerSprite.on('touchend', () => {
-              alert(`moveCount: ${moveCount}`)
-              if (applyOnClick && onClick) {
-                // onClick(id)
+              if (moveCount < 10 && onClick) {
+                onClick(id)
               }
             })
           })
