@@ -93,7 +93,7 @@ export default {
     reportReasons: {
       duplicate: 'Duplikat innego miejsca',
       doesNotExist: 'Lokacja nie istnieje',
-      photoRemoval: 'Potrzeba usunąć zdjęcie',
+      photoRemoval: 'Nieodpowiednie zdjęcie',
       other: 'Inny',
     },
     reportDescriptions: {
@@ -224,7 +224,7 @@ export default {
     reportReasons: {
       duplicate: 'Duplicated locaotion',
       doesNotExist: 'Location does not exist',
-      photoRemoval: 'Photo to be removed',
+      photoRemoval: 'Unproperiate photo',
       other: 'Other',
     },
     reportDescriptions: {
