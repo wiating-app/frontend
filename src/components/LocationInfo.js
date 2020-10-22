@@ -116,8 +116,12 @@ const LocationInfo = ({
             variant='text'
             align='right'
           >
-            {!isModerator &&
-              <Button
+            {isModerator
+              ? <Button
+                component={Link}
+                to={`/moderator/log?id=${selectedLocation.id}`}
+              >Wyświetl logi</Button>
+              : <Button
                 onClick={() => setReportIsOpen(true)}
               >{translations.actions.report}</Button>
             }
