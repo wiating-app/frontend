@@ -1,6 +1,7 @@
 import React from 'react'
-import { Button, Typography } from '@material-ui/core'
-import { Check } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
+import { Button, Typography, Grid } from '@material-ui/core'
+import { Check, List } from '@material-ui/icons'
 import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
@@ -16,27 +17,41 @@ const ReportDetails = ({
   return (
     <Modal short onClose={onClose}>
       <Typography variant='h5' gutterBottom>
-        Szczegóły zgłoszenia do lokacji <OpenInNewCard path={`/location/${data.doc_id}`}>{data.name} ({data.id})</OpenInNewCard>
+        Zgłoszenia do lokacji<br /><OpenInNewCard path={`/location/${data.doc_id}`}>{data.name} ({data.id})</OpenInNewCard>
       </Typography>
       <Typography
         variant='body2'
         gutterBottom
-      >Data ostatniej edycji punktu: {data.last_modified_timestamp}</Typography>
+      >Data ostatniej edycji lokacji: {data.last_modified_timestamp}</Typography>
 
       <Table
         data={data.report_reason.map((item, index) => ({
           report_reason: <Typography key={index} variant='caption' gutterBottom>{item}</Typography>
         }))}
         labels={[
-          { name: 'Treść zgłoszenia', field: 'report_reason' },
+          { name: 'Treść zgłoszeń', field: 'report_reason' },
         ]}
       />
-      <Button
-        variant='contained'
-        onClick={markAsDoneCallback}
-        style={{ marginTop: 20 }}
-        disabled={loading}
-      >{loading ? <Loader dark /> : <Check />} Oznacz wszystkie zgłoszenia jako załatwione</Button>
+      <Grid container spacing={2} style={{ marginTop: 20 }}>
+        <Grid item>
+          <Button
+            component={Link}
+            target='_blank'
+            variant='contained'
+            color='primary'
+            to={`/moderator/log?id=${data.id}`}
+            style={{ marginTop: 20 }}
+          ><List /> Pokaż logi lokacji</Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant='contained'
+            onClick={markAsDoneCallback}
+            style={{ marginTop: 20 }}
+            disabled={loading}
+          >{loading ? <Loader dark /> : <Check />} Oznacz zgłoszenia jako załatwione</Button>
+        </Grid>
+      </Grid>
     </Modal>
   )
 }
