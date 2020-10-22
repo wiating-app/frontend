@@ -2,11 +2,11 @@
 export default {
   SHED: {
     label: 'shed',
-    color: '#008080',
+    color: '#168100',
   },
   CABIN: {
     label: 'cabin',
-    color: '#ffa400',
+    color: '#fc7e2f',
   },
   CABIN_FIREPLACE: {
     label: 'cabinFireplace',
@@ -14,7 +14,7 @@ export default {
   },
   CABIN_HOSTED: {
     label: 'cabinHosted',
-    color: '#800000',
+    color: '#bf3737',
   },
   TENT_CAMP: {
     label: 'tentCamp',
@@ -22,7 +22,7 @@ export default {
   },
   WATERFRONT: {
     label: 'waterFront',
-    color: '#2ad4ff',
+    color: '#809EFF',
   },
   URBEX: {
     label: 'urbex',
@@ -30,11 +30,11 @@ export default {
   },
   WATER_SOURCE: {
     label: 'waterSource',
-    color: '#4896d6',
+    color: '#1D52FF',
   },
   CAVE: {
     label: 'cave',
-    color: '#999999',
+    color: '#757575',
   },
   SACRAL: {
     label: 'sacral',

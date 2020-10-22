@@ -50,15 +50,13 @@ const Map = React.forwardRef(({
   const classes = useStyles()
 
   const currentZoom = mapRef?.current?.leafletElement?._zoom || zoom
-  const markerSize = currentZoom < 8
-  ? 4
-  : currentZoom < 10
+  const markerSize = currentZoom < 7
     ? 6
-    : currentZoom < 11
-      ? 16
-      : currentZoom < 13
-        ? 32
-        : 40
+    : currentZoom < 10
+      ? currentZoom - 1
+      : currentZoom < 11
+        ? 20
+        : 32
 
   React.useEffect(() => {
     console.log('currentZoom: ', currentZoom, 'markerSize: ', markerSize)

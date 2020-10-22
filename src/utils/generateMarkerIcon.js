@@ -18,6 +18,12 @@ const generateMarkerIcon = (type, size = 40) => {
           r="${size / 2}"
           fill="${color}"
         />
+        <circle
+          cx="${size / 2}"
+          cy="${size / 2}"
+          r="${size / 4.5}"
+          fill="#ffffff"
+        />
       </svg>
     `
   } else {
