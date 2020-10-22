@@ -140,11 +140,15 @@ const PixiOverlay = ({
               }
             })
           })
-
-          markerSprite.on('tap', () => {
-            if (onClick) {
-              onClick(id)
-            }
+          markerSprite.on('touchstart', () => {
+            markerSprite.on('touchmove', () => {
+              applyOnClick = false
+            })
+            markerSprite.on('touchend', () => {
+              if (applyOnClick && onClick) {
+                onClick(id)
+              }
+            })
           })
 
           markerSprite.defaultCursor = 'pointer'
