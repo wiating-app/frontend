@@ -16,6 +16,7 @@ import useLanguage from '../utils/useLanguage'
 
 const LocationInfo = ({
   loggedIn,
+  isModerator,
   selectedLocation,
   handleReport,
 }) => {
@@ -115,9 +116,11 @@ const LocationInfo = ({
             variant='text'
             align='right'
           >
-            <Button
-              onClick={() => setReportIsOpen(true)}
-            >{translations.actions.report}</Button>
+            {!isModerator &&
+              <Button
+                onClick={() => setReportIsOpen(true)}
+              >{translations.actions.report}</Button>
+            }
             <Button
               component={Link}
               to={`/location/${selectedLocation.id}/edit`}

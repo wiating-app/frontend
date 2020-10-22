@@ -18,7 +18,7 @@ const LocationInfoContainer = ({
   history,
 }) => {
   const { translations } = useLanguage()
-  const { isLoggedIn } = useAuth0()
+  const { isLoggedIn, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
@@ -113,6 +113,7 @@ const LocationInfoContainer = ({
           <LocationInfo
             selectedLocation={location}
             loggedIn={isLoggedIn}
+            isModerator={isModerator}
             handleReport={handleReport}
           />
         </>
