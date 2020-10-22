@@ -141,13 +141,15 @@ const PixiOverlay = ({
             })
           })
           markerSprite.on('touchstart', () => {
+            let moveCount = 0
             markerSprite.on('touchmove', () => {
-              alert('touchmove')
-              applyOnClick = false
+              moveCount++
+              // applyOnClick = false
             })
             markerSprite.on('touchend', () => {
+              alert(`moveCount: ${moveCount}`)
               if (applyOnClick && onClick) {
-                onClick(id)
+                // onClick(id)
               }
             })
           })
