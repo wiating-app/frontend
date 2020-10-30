@@ -27,6 +27,8 @@ const ModeratorPanel = ({
     }
   }, [loadingAuth])
 
+  const pathArray = pathname.split('/')
+
   return (
     <Modal wide onClose={() => history.push('/')}>
       <Typography
@@ -35,7 +37,7 @@ const ModeratorPanel = ({
       >{translations.administration}</Typography>
 
       <Tabs
-        value={pathname}
+        value={`/${pathArray[1]}/${pathArray[2]}`}
         className={classes.tabs}
         onChange={(e, value) => history.push(value)}
         indicatorColor='primary'

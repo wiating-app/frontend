@@ -48,7 +48,6 @@ const LogsContainer = ({
 
   const handleFiltersSubmit = fields => {
     const newFiltersQueryString = stringify(fields, true)
-    console.log('newFiltersQueryString: ', newFiltersQueryString);
     history.push(`/moderator/log${newFiltersQueryString}`)
   }
 
@@ -67,7 +66,7 @@ const LogsContainer = ({
           user={user}
           setDetails={data => {
             setCachedLogDetails(data)
-            history.push(`/moderator/log/${data.id}`)
+            history.push(`/moderator/log/${data.id}${search || ''}`)
           }}
         />
       </>
