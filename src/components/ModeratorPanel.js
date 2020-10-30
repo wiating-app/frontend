@@ -43,13 +43,13 @@ const ModeratorPanel = ({
         indicatorColor='primary'
       >
         <Tab label='Dziennik zmian' value='/moderator/log' />
-        <Tab label='Zgłoszenia' value='/moderator/zgloszenia' />
+        <Tab label='Zgłoszenia' value='/moderator/reports' />
       </Tabs>
 
       <Route path='/moderator/log'>
         <LogsContainer setCachedLogDetails={setCachedLogDetails} />
       </Route>
-      <Route path='/moderator/zgloszenia'>
+      <Route path='/moderator/reports'>
         <ReportsContainer />
       </Route>
 
