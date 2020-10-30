@@ -46,6 +46,9 @@ const App = ({ history, location: { pathname } }) => {
 
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
+    if (!pathname.startsWith('/location/')) {
+      setCachedLocation(null)
+    }
   }, [pathname])
 
   React.useEffect(() => {
