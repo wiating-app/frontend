@@ -13,24 +13,33 @@ const LogsContainer = ({
   history,
 }) => {
   const { isModerator, user } = useAuth0()
-  const [logs, setLogs] = React.useState()
+  const [logs, setLogs] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
   const [page, setPage] = React.useState(0) // Page numeration starts at 0.
   const [logsTotal, setlogsTotal] = React.useState()
   const rowsPerPage = 10
-  const [filters, setFilters] = React.useState({})
+  const [filters, setFilters] = React.useState(parse(search))
+  const [lastParams, setLastParams] = React.useState({})
 
-  const getLogs = async page => {
+  const getLogs = async () => {
+    const params = {
+      size: rowsPerPage,
+      offset: rowsPerPage * page,
+      ...filters,
+    }
+    console.log('params: ', params);
+    console.log('lastParams: ', lastParams);
+    console.log('logs: ', logs);
     try {
-      setLoading(true)
-      const { data: { logs, total } } = await api.post('get_logs', {
-        size: rowsPerPage,
-        offset: rowsPerPage * page,
-        ...filters,
-      })
-      setLogs(logs)
-      setlogsTotal(total)
+      // Run request only when params really changed.
+      if (JSON.stringify(params) !== JSON.stringify(lastParams)) {
+        setLastParams(params)
+        setLoading(true)
+        const { data: { logs, total } } = await api.post('get_logs', params)
+        setLogs(logs)
+        setlogsTotal(total)
+      }
     } catch (err) {
       console.error(err)
       setError(true)
@@ -39,7 +48,7 @@ const LogsContainer = ({
   }
 
   React.useEffect(() => {
-    isModerator && getLogs(page)
+    isModerator && getLogs()
   }, [page, isModerator, filters])
 
   React.useEffect(() => {
