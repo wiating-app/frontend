@@ -28,9 +28,6 @@ const LogsContainer = ({
       offset: rowsPerPage * page,
       ...filters,
     }
-    console.log('params: ', params);
-    console.log('lastParams: ', lastParams);
-    console.log('logs: ', logs);
     try {
       // Run request only when params really changed.
       if (JSON.stringify(params) !== JSON.stringify(lastParams)) {
