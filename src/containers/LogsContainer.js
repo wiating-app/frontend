@@ -49,7 +49,12 @@ const LogsContainer = ({
   }, [page, isModerator, filters])
 
   React.useEffect(() => {
-    setFilters(parse(search))
+    /* eslint-disable camelcase */
+    const { id, reviewed_at } = parse(search)
+    setFilters({
+      id,
+      ...reviewed_at && { reviewed_at: JSON.parse(reviewed_at) },
+    })
   }, [search])
 
   const handleFiltersSubmit = fields => {
