@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Typography, Grid } from '@material-ui/core'
+import { Button, Typography, Grid, ButtonGroup } from '@material-ui/core'
 import { Check, Clear, Remove } from '@material-ui/icons'
 import Modal from './Modal'
 import Table from './Table'
@@ -11,8 +11,10 @@ const LogDetails = ({
   data,
   isMe,
   isModerator,
+  reviewCallback,
   banCallback,
   revertCallback,
+  loadingReview,
   loadingBan,
   loadingRevert,
   onClose,
@@ -57,7 +59,15 @@ const LogDetails = ({
         variant='body2'
         gutterBottom
       >
-        Lokacja: <OpenInNewCard path={`/location/${data.doc_id}`}>{data.name} ({data.doc_id})</OpenInNewCard>
+        Lokacja: <>
+          <strong>{data.name} ({data.doc_id})</strong> <OpenInNewCard
+            path={`/location/${data.doc_id}`}
+            component={Button}
+            variant='contained'
+            color='primary'
+            size='small'
+          >Pokaż</OpenInNewCard>
+        </>
       </Typography>
       {isNew
         ? <Typography variant='h6'>Utworzenie nowej lokacji</Typography>
@@ -78,18 +88,19 @@ const LogDetails = ({
           <Grid item>
             <Button
               variant='contained'
-              onClick={() => banCallback(data.modified_by)}
-              disabled={isMe}
-            >
-              {loadingBan && <Loader dark />}
-              {!isMe ? 'Zbanuj autora' : 'Nie możesz zbanować sam(a) siebie'}
-            </Button>
+              color='primary'
+              onClick={reviewCallback}
+              disabled={data.reviewed_at}
+            >{loadingReview ? <Loader dark /> : <Check />} {data.reviewed_at ? 'Już zweryfikowano' : 'Oznacz jako zweryfikowany'}</Button>
           </Grid>
           <Grid item>
-            <Button
-              variant='contained'
-              onClick={revertCallback}
-            >{loadingRevert && <Loader dark />}Przywróć poprzednią wersję</Button>
+            <ButtonGroup>
+              <Button onClick={banCallback} disabled={isMe}>
+                {loadingBan && <Loader dark />}
+                {!isMe ? 'Zbanuj autora' : 'Nie możesz zbanować sam(a) siebie'}
+              </Button>
+              <Button onClick={revertCallback}>{loadingRevert && <Loader dark />}Przywróć poprzednią wersję</Button>
+            </ButtonGroup>
           </Grid>
         </Grid>
       }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Typography, Box } from '@material-ui/core'
+import { Check, Remove } from '@material-ui/icons'
 import Table from './Table'
 import Pagination from './Pagination'
 import Actions from './Actions'
@@ -27,6 +28,7 @@ const Logs = ({
       : <>
         <Table
           data={logs.map(item => ({
+            verified: item.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' />,
             timestamp: item._source.timestamp,
             location: <>
               <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
@@ -50,6 +52,7 @@ const Logs = ({
             />,
           }))}
           labels={[
+            { name: 'Zweryfikowano', field: 'verified' },
             { name: 'Data', field: 'timestamp' },
             { name: 'Lokacja i edytowane pola', field: 'location' },
             { name: 'Autor zmiany', field: 'user' },
