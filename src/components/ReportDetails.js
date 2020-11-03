@@ -17,7 +17,14 @@ const ReportDetails = ({
   return (
     <Modal short onClose={onClose}>
       <Typography variant='h5' gutterBottom>
-        Zgłoszenia do lokacji<br /><OpenInNewCard path={`/location/${data.doc_id}`}>{data.name} ({data.id})</OpenInNewCard>
+        Zgłoszenia do lokacji<br />
+        <strong>{data.name} ({data.id})</strong> <OpenInNewCard
+          path={`/location/${data.id}`}
+          component={Button}
+          variant='contained'
+          color='primary'
+          size='small'
+        >Pokaż</OpenInNewCard>
       </Typography>
       <Typography
         variant='body2'
