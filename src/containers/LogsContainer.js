@@ -52,7 +52,7 @@ const LogsContainer = ({
     /* eslint-disable camelcase */
     const { id, reviewed_at } = parse(search)
     setFilters({
-      id,
+      ...id && { id },
       ...reviewed_at && { reviewed_at: JSON.parse(reviewed_at) },
     })
   }, [search])

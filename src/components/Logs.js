@@ -28,7 +28,7 @@ const Logs = ({
       : <>
         <Table
           data={logs.map(item => ({
-            verified: item.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' />,
+            verified: item._source.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' />,
             timestamp: item._source.timestamp,
             location: <>
               <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
