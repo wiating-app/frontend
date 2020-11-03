@@ -3,13 +3,13 @@ import { Button, Typography } from '@material-ui/core'
 import Form from 'react-standalone-form'
 import {
   Input,
+  Select,
   FormButton,
   Checkbox,
   FormActions,
 } from 'react-standalone-form-mui'
 import CoordinatesInput from './CoordinatesInput'
 import HintWrapper from './HintWrapper'
-import Select from './Select'
 import ConfirmDelete from './ConfirmDelete'
 import locationTypes from '../utils/locationTypes'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
@@ -136,7 +136,7 @@ const LocationForm = ({
         name='water_exists'
         label={translations.locationInfo.water.label}
         initialValue={locationData && mapBoolToOptions(locationData.water_exists)}
-        noneLabel={translations.noData}
+        placeholder={translations.noData}
         options={[
           { label: translations.locationInfo.water.true, value: 1 },
           { label: translations.locationInfo.water.false, value: 2 },
@@ -159,7 +159,7 @@ const LocationForm = ({
         name='fire_exists'
         label={translations.locationInfo.fire.label}
         initialValue={locationData && mapBoolToOptions(locationData.fire_exists)}
-        noneLabel={translations.noData}
+        placeholder={translations.noData}
         options={[
           { label: translations.locationInfo.fire.true, value: 1 },
           { label: translations.locationInfo.fire.false, value: 2 },

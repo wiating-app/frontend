@@ -29,6 +29,7 @@ const LogFilters = ({ values, callback }) => {
               { label: 'Zweryfikowane', value: 'true' },
               { label: 'Niezweryfikowane', value: 'false' },
             ]}
+            placeholder='Wszystkie'
             initialValue={values?.verified}
             noBottomGutter
           />
