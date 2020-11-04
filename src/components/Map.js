@@ -317,6 +317,10 @@ const useStyles = makeStyles(theme => ({
     '& .leaflet-marker-icon': {
       filter: 'drop-shadow(0 0 1px rgb(0,0,0))',
     },
+    // Move PIXI markers on top of a current location marker.
+    '& .leaflet-pixi-overlay': {
+      zIndex: 1000,
+    },
   },
   woodboardCluster: {
     backgroundColor: 'transparent',
