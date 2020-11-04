@@ -30,7 +30,7 @@
     "react-perfect-scrollbar": "^1.5.3",
     "react-responsive-carousel": "^3.2.10",
     "react-router-dom": "^5.0.1",
-    "react-standalone-form": "^1.1.0",
+    "react-standalone-form": "^1.4.5",
     "react-standalone-form-mui": "^0.3.1",
     "validator": "^11.1.0",
     "workbox-window": "^5.0.0"

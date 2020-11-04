@@ -10277,18 +10277,6 @@ react-standalone-form-mui@^0.3.1:
     classnames "^2.2.6"
     react-standalone-form "^1.4.5"
 
-react-standalone-form@^1.1.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-standalone-form/-/react-standalone-form-1.3.1.tgz#4bdb3c19dfe9acc8b00a4387b6de9308e3fc093d"
-  integrity sha512-jhp/64BhB43SmoDx69ip8l9zVUy22ywDb6W/z6gwPAx9ggRj2JtbCsCQZPsph1vZOqj4ScZwTKzspLgxFM4KWA==
-  dependencies:
-    polished "^3.0.3"
-    react-jss "^10.0.3"
-    react-loading "^2.0.3"
-    react-toastify "^5.1.0"
-    throttle-debounce "^2.1.0"
-    validator "^10.11.0"
-
 react-standalone-form@^1.4.5:
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/react-standalone-form/-/react-standalone-form-1.4.5.tgz#39276726db247f4b4a89469f7b565f0c43585f57"
