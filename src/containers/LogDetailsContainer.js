@@ -48,11 +48,16 @@ const LogDetailsContainer = ({
     }
   }, [cachedLogDetails, isModerator])
 
+  const goBackToLogs = () => {
+    const pathArray = pathname.split('/')
+    history.push(`/${pathArray[1]}/${pathArray[2]}/${search || ''}`)
+  }
+
   const reviewCallback = async () => {
     try {
       setLoadingReview(true)
       await api.post('log_reviewed', { log_id: logDetails.id })
-      history.push('/moderator/log')
+      goBackToLogs()
       enqueueSnackbar('Log zweryfikowany.', { variant: 'success' })
     } catch (err) {
       console.error(err)
@@ -121,8 +126,7 @@ const LogDetailsContainer = ({
           loadingBan={loadingBan}
           loadingRevert={loadingRevert}
           onClose={() => {
-            const pathArray = pathname.split('/')
-            history.push(`/${pathArray[1]}/${pathArray[2]}/${search || ''}`)
+            goBackToLogs()
             setCachedLogDetails(null)
           }}
         />
