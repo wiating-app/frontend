@@ -5,7 +5,7 @@ import Form from 'react-standalone-form'
 import { Input, Select, FormButton } from 'react-standalone-form-mui'
 
 
-const LogFilters = ({ values, callback }) => {
+const LogFilters = ({ values, handleSubmit, handleReset }) => {
   const classes = useStyles()
   return (
     <Form
@@ -38,12 +38,12 @@ const LogFilters = ({ values, callback }) => {
           <FormButton
             variant='contained'
             color='primary'
-            callback={callback}
+            callback={handleSubmit}
           >Filtruj</FormButton>
         </Grid>
         {values && Object.keys(values).length
           ? <Grid item>
-            <FormButton callback={() => callback({})}>Resetuj filtry</FormButton>
+            <FormButton callback={handleReset}>Resetuj filtry</FormButton>
           </Grid>
           : null
         }

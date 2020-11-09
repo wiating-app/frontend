@@ -10,7 +10,7 @@ import useAuth0 from '../utils/useAuth0'
 
 const LogsContainer = ({
   setCachedLogDetails,
-  location: { search, location },
+  location: { search, pathname },
   history,
 }) => {
   const { isModerator, user } = useAuth0()
@@ -53,18 +53,31 @@ const LogsContainer = ({
       ...params,
       ...newParams,
     }, true)
-    history.push(`/moderator/log${newFiltersQueryString}`)
+    history.replace(`/moderator/log${newFiltersQueryString}`)
   }
 
   // Parse search.
   React.useEffect(() => {
-    const { page, size, id, reviewed_at } = parse(search)
-    setParams(prevState => ({
-      page: parseInt(page) || prevState.page,
-      size: parseInt(size) || prevState.size,
-      ...id && { id },
-      ...reviewed_at && { reviewed_at: JSON.parse(reviewed_at) },
-    }))
+    const { page, size, id, reviewed_at, refetchLogs } = parse(search)
+    setParams(prevState => {
+      // If refetchLogs param is present, remove it.
+      // A presence of refetchLogs param updates the `params` object,
+      // so getLogs function is being triggered automatically by useEffect hook.
+      if (refetchLogs) {
+        history.replace({
+          pathname,
+          search: search.replace('&refetchLogs=true', ''),
+        })
+        return prevState
+      } else {
+        return {
+          page: parseInt(page) || prevState.page,
+          size: parseInt(size) || prevState.size,
+          ...id && { id },
+          ...reviewed_at && { reviewed_at: JSON.parse(reviewed_at) },
+        }
+      }
+    })
   }, [search])
 
   const handleFitlersSubmit = fields => {
@@ -77,7 +90,11 @@ const LogsContainer = ({
   return (
     isModerator
       ? <>
-        <LogFilters values={params} callback={handleFitlersSubmit} />
+        <LogFilters
+          values={params}
+          handleSubmit={handleFitlersSubmit}
+          handleReset={() => history.replace({ pathname })}
+        />
         <Logs
           logs={logs}
           loading={loading}

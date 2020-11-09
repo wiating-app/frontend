@@ -11,6 +11,7 @@ import api from '../api'
 const LogDetailsContainer = ({
   cachedLogDetails,
   setCachedLogDetails,
+  refetchLogs,
   match: { params: { id } },
   location: { search, pathname },
   history,
@@ -48,16 +49,19 @@ const LogDetailsContainer = ({
     }
   }, [cachedLogDetails, isModerator])
 
-  const goBackToLogs = () => {
+  const goBackToLogs = refetch => {
     const pathArray = pathname.split('/')
-    history.push(`/${pathArray[1]}/${pathArray[2]}/${search}`)
+    history.push({
+      pathname: `/${pathArray[1]}/${pathArray[2]}`,
+      search: `${search}${refetch ? '&refetchLogs=true' : ''}`,
+    })
   }
 
   const reviewCallback = async () => {
     try {
       setLoadingReview(true)
       await api.post('log_reviewed', { log_id: logDetails.id })
-      goBackToLogs()
+      goBackToLogs(true)
       enqueueSnackbar('Log zweryfikowany.', { variant: 'success' })
     } catch (err) {
       console.error(err)
@@ -99,7 +103,7 @@ const LogDetailsContainer = ({
         }
         await api.post('modify_point', dataObject)
       }
-      history.push('/moderator/log')
+      goBackToLogs(true)
       enqueueSnackbar('Przywrócono poprzedni stan lokacji.', { variant: 'success' })
     } catch (err) {
       console.error(err)
