@@ -26,6 +26,7 @@ const Logs = ({
     : error
       ? <Typography color='error'>{translations.connectionProblem.logs}</Typography>
       : <>
+        <Typography variant='h6'>Znaleziono {rowsInTotal} pozycji:</Typography>
         <Table
           data={logs.map(item => ({
             verified: item._source.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' />,
