@@ -34,7 +34,7 @@ const FaqPage = () => {
     },
     {
       q: 'Kto ponosi odpowiedzialność za korzystanie z informacji udostępnionych na mapie?',
-      a: 'Wszelkie ewentualne szkody powstałe na skutek korzystania z informacji udostępnionych w grupie oraz na mapie przez ich użytkowników oraz osoby trzecie zainspirowane ich treścią, przede wszystkim należy mieć na uwadze, że część z zaznaczonych miejsc jest własnością prywatną, znajduje się na obszarach chronionych lub leśnych, w związku z czym biwakowanie w tych miejscach jest nielegalne.',
+      a: 'Każdy użytkownik korzysta z informacji udostępnionych poprzez aplikację na własną odpowiedzialność  i tym samym odpowiada za wszelkie ew. szkody  powstałe w rezultacie niewłaściwego użytkowania miejsc w niej wskazanych. Należy  pamiętać, że wiele z nich stanowi własność prywatną, znajduje się na obszarach chronionych i/lub leśnych, przez co biwakowanie w tych miejscach może okazać się nielegalne i wiązać się z negatywnymi konsekwencjami dla użytkownika.',
     },
     {
       q: 'Dlaczego aplikacja używa mojej lokalizacji?',
