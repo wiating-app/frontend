@@ -42,8 +42,8 @@ const ModeratorPanel = ({
         onChange={(e, value) => history.push(value)}
         indicatorColor='primary'
       >
-        <Tab label='Dziennik zmian' value='/moderator/log' />
-        <Tab label='Zgłoszenia' value='/moderator/reports' />
+        <Tab label={translations.changeLog} value='/moderator/log' />
+        <Tab label={translations.reports} value='/moderator/reports' />
       </Tabs>
 
       <Route path='/moderator/log'>

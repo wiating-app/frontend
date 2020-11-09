@@ -3,10 +3,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Grid } from '@material-ui/core'
 import Form from 'react-standalone-form'
 import { Input, Select, FormButton } from 'react-standalone-form-mui'
+import useLanguage from '../utils/useLanguage'
 
 
 const LogFilters = ({ values, handleSubmit, handleReset }) => {
   const classes = useStyles()
+  const { translations } = useLanguage()
   return (
     <Form
       fields={['id', 'reviewed_at']}
@@ -16,7 +18,7 @@ const LogFilters = ({ values, handleSubmit, handleReset }) => {
         <Grid item xs={12} sm={5} md={4}>
           <Input
             name='id'
-            label='Szukaj po ID lokacji'
+            label={translations.findById}
             initialValue={values?.id}
             noBottomGutter
           />
@@ -24,12 +26,12 @@ const LogFilters = ({ values, handleSubmit, handleReset }) => {
         <Grid item xs={12} sm={4} md={3}>
           <Select
             name='reviewed_at'
-            label='Stan weryfikacji'
+            label={translations.verificationState}
             options={[
-              { label: 'Zweryfikowane', value: 'true' },
-              { label: 'Niezweryfikowane', value: 'false' },
+              { label: translations.verified, value: 'true' },
+              { label: translations.unverified, value: 'false' },
             ]}
-            placeholder='Wszystkie'
+            placeholder={translations.all}
             initialValue={values?.reviewed_at?.toString()}
             noBottomGutter
           />
@@ -39,11 +41,11 @@ const LogFilters = ({ values, handleSubmit, handleReset }) => {
             variant='contained'
             color='primary'
             callback={handleSubmit}
-          >Filtruj</FormButton>
+          >{translations.filter}</FormButton>
         </Grid>
         {values && Object.keys(values).length
           ? <Grid item>
-            <FormButton callback={handleReset}>Resetuj filtry</FormButton>
+            <FormButton callback={handleReset}>{translations.reset}</FormButton>
           </Grid>
           : null
         }

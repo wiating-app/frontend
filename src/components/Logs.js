@@ -26,7 +26,7 @@ const Logs = ({
     : error
       ? <Typography color='error'>{translations.connectionProblem.logs}</Typography>
       : <>
-        <Typography variant='h6'>Znaleziono {rowsInTotal} pozycji:</Typography>
+        <Typography variant='h6'>{translations.itemsFound.replace('#', rowsInTotal)}:</Typography>
         <Table
           data={logs.map(item => ({
             verified: item._source.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' />,
@@ -35,13 +35,13 @@ const Logs = ({
               <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
               <Typography variant='caption' component='div'>
                 {item._source.changes.action && item._source.changes.action === 'created'
-                  ? 'Nowa lokacja'
+                  ? translations.newLocation
                   : Object.keys(item._source.changes).join(', ')
                 }
               </Typography>
             </>,
             user: <Box whiteSpace='nowrap'>{
-              item._source.modified_by === user.sub ? 'Ja' : item._source.modified_by}
+              item._source.modified_by === user.sub ? translations.you : item._source.modified_by}
             </Box>,
             actions: <Actions
               primary={[
@@ -53,10 +53,10 @@ const Logs = ({
             />,
           }))}
           labels={[
-            { name: 'Zweryfikowano', field: 'verified' },
-            { name: 'Data', field: 'timestamp' },
-            { name: 'Lokacja i edytowane pola', field: 'location' },
-            { name: 'Autor zmiany', field: 'user' },
+            { name: translations.verified, field: 'verified' },
+            { name: translations.date, field: 'timestamp' },
+            { name: translations.locationAndFields, field: 'location' },
+            { name: translations.authorOfChange, field: 'user' },
             { name: '', field: 'actions' },
           ]}
         />

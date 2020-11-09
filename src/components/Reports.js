@@ -37,13 +37,13 @@ const Reports = ({
             />,
           }))}
           labels={[
-            { name: 'Data', field: 'timestamp' },
-            { name: 'Lokacja', field: 'location' },
-            { name: 'Treść zgłoszeń', field: 'report_reason' },
+            { name: translations.date, field: 'timestamp' },
+            { name: translations.location, field: 'location' },
+            { name: translations.reportReason, field: 'report_reason' },
             { name: '', field: 'actions' },
           ]}
         />
-        : <Typography>Obecnie nie ma w systemie żadnych zgłoszeń.</Typography>
+        : <Typography>{translations.noReportsAvailable}</Typography>
 }
 
 export default Reports

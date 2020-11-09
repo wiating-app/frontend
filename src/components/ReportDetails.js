@@ -6,6 +6,7 @@ import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
+import useLanguage from '../utils/useLanguage'
 
 
 const ReportDetails = ({
@@ -14,29 +15,30 @@ const ReportDetails = ({
   loading,
   onClose,
 }) => {
+  const { translations } = useLanguage()
   return (
     <Modal short onClose={onClose}>
       <Typography variant='h5' gutterBottom>
-        Zgłoszenia do lokacji<br />
+        {translations.reportsForLocation}<br />
         <strong>{data.name} ({data.id})</strong> <OpenInNewCard
           path={`/location/${data.id}`}
           component={Button}
           variant='contained'
           color='primary'
           size='small'
-        >Pokaż</OpenInNewCard>
+        >{translations.show}</OpenInNewCard>
       </Typography>
       <Typography
         variant='body2'
         gutterBottom
-      >Data ostatniej edycji lokacji: {data.last_modified_timestamp}</Typography>
+      >{translations.dateOfLastEdit}: {data.last_modified_timestamp}</Typography>
 
       <Table
         data={data.report_reason.map((item, index) => ({
           report_reason: <Typography key={index} variant='caption' gutterBottom>{item}</Typography>
         }))}
         labels={[
-          { name: 'Treść zgłoszeń', field: 'report_reason' },
+          { name: translations.reportReason, field: 'report_reason' },
         ]}
       />
       <Grid container spacing={2} style={{ marginTop: 20 }}>
@@ -48,7 +50,7 @@ const ReportDetails = ({
             color='primary'
             to={`/moderator/log?id=${data.id}`}
             style={{ marginTop: 20 }}
-          ><List /> Pokaż logi lokacji</Button>
+          ><List /> {translations.showLocationLogs}</Button>
         </Grid>
         <Grid item>
           <Button
@@ -56,7 +58,7 @@ const ReportDetails = ({
             onClick={markAsDoneCallback}
             style={{ marginTop: 20 }}
             disabled={loading}
-          >{loading ? <Loader dark /> : <Check />} Oznacz zgłoszenia jako załatwione</Button>
+          >{loading ? <Loader dark /> : <Check />} {translations.markAsDone}</Button>
         </Grid>
       </Grid>
     </Modal>

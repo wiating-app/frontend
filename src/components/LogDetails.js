@@ -5,6 +5,7 @@ import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
+import useLanguage from '../utils/useLanguage'
 
 
 const LogDetails = ({
@@ -19,6 +20,8 @@ const LogDetails = ({
   loadingRevert,
   onClose,
 }) => {
+  const { translations } = useLanguage()
+
   const readValue = (name, value) => value
     ? value === true
       ? <Check style={{ color: '#008080' }} />
@@ -44,41 +47,41 @@ const LogDetails = ({
 
   return (
     <Modal short onClose={onClose}>
-      <Typography variant='h5' gutterBottom>Szczegóły zmiany {data.id}</Typography>
+      <Typography variant='h5' gutterBottom>{translations.detailsOfChange} {data.id}</Typography>
       <Typography
         variant='body2'
         gutterBottom
-      >Data: {data.timestamp}</Typography>
+      >{translations.date}: {data.timestamp}</Typography>
       {isModerator &&
         <Typography
           variant='body2'
           gutterBottom
-        >Użytkownik: {isMe ? 'Ja' : data.modified_by}</Typography>
+        >{translations.user}: {isMe ? translations.you : data.modified_by}</Typography>
       }
       <Typography
         variant='body2'
         gutterBottom
       >
-        Lokacja: <>
+        {translations.location}: <>
           <strong>{data.name} ({data.doc_id})</strong> <OpenInNewCard
             path={`/location/${data.doc_id}`}
             component={Button}
             variant='contained'
             color='primary'
             size='small'
-          >Pokaż</OpenInNewCard>
+          >{translations.show}</OpenInNewCard>
         </>
       </Typography>
       {isNew
-        ? <Typography variant='h6'>Utworzenie nowej lokacji</Typography>
+        ? <Typography variant='h6'>{translations.newLocationCreated}</Typography>
         : <>
-          <Typography variant='h6'>Zmiany</Typography>
+          <Typography variant='h6'>{translations.changes}</Typography>
           <Table
             data={changes}
             labels={[
-              { name: 'Pole', field: 'name' },
-              { name: 'Stara treść', field: 'old' },
-              { name: 'Nowa treść', field: 'new' },
+              { name: translations.field, field: 'name' },
+              { name: translations.oldContent, field: 'old' },
+              { name: translations.newContent, field: 'new' },
             ]}
           />
         </>
@@ -91,15 +94,15 @@ const LogDetails = ({
               color='primary'
               onClick={reviewCallback}
               disabled={data.reviewed_at}
-            >{loadingReview ? <Loader dark /> : <Check />} {data.reviewed_at ? 'Już zweryfikowano' : 'Oznacz jako zweryfikowany'}</Button>
+            >{loadingReview ? <Loader dark /> : <Check />} {data.reviewed_at ? translations.alreadyVerified : translations.markAsVerified}</Button>
           </Grid>
           <Grid item>
             <ButtonGroup>
               <Button onClick={banCallback} disabled={isMe}>
                 {loadingBan && <Loader dark />}
-                {!isMe ? 'Zbanuj autora' : 'Nie możesz zbanować sam(a) siebie'}
+                {!isMe ? translations.banAuthor : translations.cannotBanYourself}
               </Button>
-              <Button onClick={revertCallback}>{loadingRevert && <Loader dark />}Przywróć poprzednią wersję</Button>
+              <Button onClick={revertCallback}>{loadingRevert && <Loader dark />}{translations.revertThisChange}</Button>
             </ButtonGroup>
           </Grid>
         </Grid>
