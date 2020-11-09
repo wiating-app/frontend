@@ -44,7 +44,7 @@ const HistoryContainer = ({ setCachedLogDetails }) => {
       rowsPerPage={rowsPerPage}
       setDetails={data => {
         setCachedLogDetails(data)
-        history.push(`/historia/${data.id}`)
+        history.push(`/history/${data.id}`)
       }}
       onClose={() => history.push('/')}
     />

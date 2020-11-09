@@ -182,12 +182,12 @@ const App = ({ history, location: { pathname } }) => {
 
       <Switch>
         <Route exact path='/info' component={Info} />
-        <Route exact path='/legenda' render={() => <LegendPage
+        <Route exact path='/legend' render={() => <LegendPage
           activeTypes={activeTypes}
           setActiveTypes={setActiveTypes}
         />} />
-        <Route exact path='/regulamin' component={Regulamin} />
-        <Route exact path='/polityka-prywatnosci' component={PolitykaPrywatnosci} />
+        <Route exact path='/regulations' component={Regulamin} />
+        <Route exact path='/privacy-policy' component={PolitykaPrywatnosci} />
         <Route exact path='/faq' component={FaqPage} />
       </Switch>
 
@@ -199,11 +199,11 @@ const App = ({ history, location: { pathname } }) => {
         />
       </Route>
 
-      <Route path='/historia'>
+      <Route path='/history'>
         <HistoryContainer setCachedLogDetails={setCachedLogDetails} />
       </Route>
 
-      <Route exact path='/historia/:id'>
+      <Route exact path='/history/:id'>
         <LogDetailsContainer
           cachedLogDetails={cachedLogDetails}
           setCachedLogDetails={setCachedLogDetails}
