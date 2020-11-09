@@ -30,7 +30,7 @@ const LogFilters = ({ values, callback }) => {
               { label: 'Niezweryfikowane', value: 'false' },
             ]}
             placeholder='Wszystkie'
-            initialValue={values?.verified}
+            initialValue={values?.reviewed_at?.toString()}
             noBottomGutter
           />
         </Grid>

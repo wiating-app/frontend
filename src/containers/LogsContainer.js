@@ -6,37 +6,37 @@ import Logs from '../components/Logs'
 import LogFilters from '../components/LogFilters'
 import useAuth0 from '../utils/useAuth0'
 
+/* eslint-disable camelcase */
 
 const LogsContainer = ({
   setCachedLogDetails,
-  location: { search },
+  location: { search, location },
   history,
 }) => {
   const { isModerator, user } = useAuth0()
   const [logs, setLogs] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
-  const [page, setPage] = React.useState(0) // Page numeration starts at 0.
   const [logsTotal, setlogsTotal] = React.useState()
-  const rowsPerPage = 10
-  const [filters, setFilters] = React.useState(parse(search))
-  const [lastParams, setLastParams] = React.useState({})
+  const [params, setParams] = React.useState({
+    ...parse(search),
+    page: 0, // Page numeration starts at 0.
+    size: 10, // Rows per page.
+  })
 
   const getLogs = async () => {
-    const params = {
-      size: rowsPerPage,
-      offset: rowsPerPage * page,
-      ...filters,
-    }
     try {
-      // Run request only when params really changed.
-      if (JSON.stringify(params) !== JSON.stringify(lastParams)) {
-        setLastParams(params)
-        setLoading(true)
-        const { data: { logs, total } } = await api.post('get_logs', params)
-        setLogs(logs)
-        setlogsTotal(total)
-      }
+      setLoading(true)
+      const { page, size, id, reviewed_at } = params
+      const { data: { logs, total } } = await api.post('get_logs', {
+        size,
+        offset: size * page,
+        id,
+        reviewed_at,
+      })
+      setLogs(logs)
+      setlogsTotal(total)
+      // }
     } catch (err) {
       console.error(err)
       setError(true)
@@ -46,34 +46,46 @@ const LogsContainer = ({
 
   React.useEffect(() => {
     isModerator && getLogs()
-  }, [page, isModerator, filters])
+  }, [isModerator, params])
 
+  const updateSearch = newParams => {
+    const newFiltersQueryString = stringify({
+      ...params,
+      ...newParams,
+    }, true)
+    history.push(`/moderator/log${newFiltersQueryString}`)
+  }
+
+  // Parse search.
   React.useEffect(() => {
-    /* eslint-disable camelcase */
-    const { id, reviewed_at } = parse(search)
-    setFilters({
+    const { page, size, id, reviewed_at } = parse(search)
+    setParams(prevState => ({
+      page: parseInt(page) || prevState.page,
+      size: parseInt(size) || prevState.size,
       ...id && { id },
       ...reviewed_at && { reviewed_at: JSON.parse(reviewed_at) },
-    })
+    }))
   }, [search])
 
-  const handleFiltersSubmit = fields => {
-    const newFiltersQueryString = stringify(fields, true)
-    history.push(`/moderator/log${newFiltersQueryString}`)
+  const handleFitlersSubmit = fields => {
+    updateSearch({
+      ...fields,
+      page: 0, // Reset paginagion when filters change.
+    })
   }
 
   return (
     isModerator
       ? <>
-        <LogFilters values={filters} callback={handleFiltersSubmit} />
+        <LogFilters values={params} callback={handleFitlersSubmit} />
         <Logs
           logs={logs}
           loading={loading}
           error={error}
-          page={page}
-          setPage={setPage}
+          page={params.page}
+          setPage={page => updateSearch({ page })}
           rowsInTotal={logsTotal}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={params.size}
           user={user}
           setDetails={data => {
             setCachedLogDetails(data)

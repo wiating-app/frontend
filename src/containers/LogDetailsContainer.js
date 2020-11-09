@@ -50,7 +50,7 @@ const LogDetailsContainer = ({
 
   const goBackToLogs = () => {
     const pathArray = pathname.split('/')
-    history.push(`/${pathArray[1]}/${pathArray[2]}/${search || ''}`)
+    history.push(`/${pathArray[1]}/${pathArray[2]}/${search}`)
   }
 
   const reviewCallback = async () => {
