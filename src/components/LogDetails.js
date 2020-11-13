@@ -22,7 +22,7 @@ const LogDetails = ({
       ? <Check style={{ color: '#008080' }} />
       : name === 'images'
         ? <img
-          src={`${process.env.REACT_APP_CDN_URL}/${data.doc_id}/${value.replace('.jpg', '_m.jpg')}`}
+          src={`${process.env.FRONTEND_CDN_URL}/${data.doc_id}/${value.replace('.jpg', '_m.jpg')}`}
           width={100}
         />
         : value

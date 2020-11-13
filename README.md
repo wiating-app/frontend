@@ -1,22 +1,15 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2c9f2f32-c413-4b16-95a4-92b8ac302928/deploy-status)](https://app.netlify.com/sites/wiating/deploys)
 
+## Local setup
+
+1. Clone the repository and Install all dependencies with `yarn install` command.
+2. Copy `.env.example` file to `.env` and replace `XXXXX` inside with a correct
+auth client ID, which is secret.
+
+Inside the `.env` file you can override localy any environment variables.
+
+
 ## Available Scripts
-
-In the project directory, you can run:
-
-### Local setup
-
-Clone the repository and Install all dependencies with `yarn install` command.
-
-If you want to let authentication work on your local, create `.env` file in root
-of a project with the following content:
-
-```
-REACT_APP_AUTH_CLIENT=123456
-```
-
-Replace `123456` with a valid client ID.
-
 
 ### `yarn start`
 
@@ -28,7 +21,7 @@ You will also see any lint errors in the console.
 
 ### `yarn start:netlify`
 
-Runs the app in the development mode, but with the Netlify features enabled.
+Runs the app in the development mode, with the Netlify features enabled.
 The site is served on [http://localhost:8888](http://localhost:8888).
 
 ### `yarn build`

@@ -25,8 +25,8 @@ ReactDOM.render(
           : <Router history={history}>
             <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
               <Auth0Provider
-                domain={process.env.REACT_APP_AUTH_DOMAIN}
-                client_id={process.env.REACT_APP_AUTH_CLIENT}
+                domain={process.env.AUTH_DOMAIN}
+                client_id={process.env.FRONTEND_AUTH_CLIENT}
                 redirect_uri={window.location.origin}
                 responseType='token id_token'
                 getTokenSilently
