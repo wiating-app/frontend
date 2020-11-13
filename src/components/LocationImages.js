@@ -23,8 +23,8 @@ const LocationImages = ({
 
   const preparedImages = images
     ? images.map(image => ({
-      original: `${process.env.REACT_APP_CDN_URL}/${id}/${image.name}`,
-      thumbnail: `${process.env.REACT_APP_CDN_URL}/${id}/${image.name.replace('.jpg', '_m.jpg')}`,
+      original: `${process.env.FRONTEND_CDN_URL}/${id}/${image.name}`,
+      thumbnail: `${process.env.FRONTEND_CDN_URL}/${id}/${image.name.replace('.jpg', '_m.jpg')}`,
     }))
     : null
 

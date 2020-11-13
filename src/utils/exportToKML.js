@@ -10,7 +10,7 @@ const exportToKML = locations => {
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yyyy = today.getFullYear()
     const date = `${yyyy}-${mm}-${dd}`
-    const baseUrl = process.env.REACT_APP_CDN_URL
+    const baseUrl = process.env.FRONTEND_CDN_URL
 
     const header = [
       '<?xml version="1.0" encoding="UTF-8"?>',
