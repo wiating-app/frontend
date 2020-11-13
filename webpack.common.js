@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const Dotenv = require('dotenv-webpack')
 
 
 module.exports = {
@@ -73,6 +74,12 @@ module.exports = {
       exclude: [
         /_redirects$/,
       ],
+    }),
+
+
+    new Dotenv({
+      path: './.env',
+      systemvars: true,
     }),
   ],
 }
