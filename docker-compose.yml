@@ -16,4 +16,4 @@ services:
     ports:
       - '3000:3000'
     stdin_open: true
-    command: ash -c "yarn start"
+    command: "yarn start"
