@@ -10,6 +10,7 @@ import OpenInNewCard from './OpenInNewCard'
 const LogDetails = ({
   data,
   isMe,
+  isModerator,
   banCallback,
   revertCallback,
   loadingBan,
@@ -21,7 +22,7 @@ const LogDetails = ({
       ? <Check style={{ color: '#008080' }} />
       : name === 'images'
         ? <img
-          src={`${process.env.REACT_APP_CDN_URL}/${data.doc_id}/${value.replace('.jpg', '_m.jpg')}`}
+          src={`${process.env.FRONTEND_CDN_URL}/${data.doc_id}/${value.replace('.jpg', '_m.jpg')}`}
           width={100}
         />
         : value
@@ -41,15 +42,17 @@ const LogDetails = ({
 
   return (
     <Modal short onClose={onClose}>
-      <Typography variant='h5' gutterBottom>Szczegóły loga {data.id}</Typography>
+      <Typography variant='h5' gutterBottom>Szczegóły zmiany {data.id}</Typography>
       <Typography
         variant='body2'
         gutterBottom
       >Data: {data.timestamp}</Typography>
-      <Typography
-        variant='body2'
-        gutterBottom
-      >Użytkownik: {isMe ? 'Ja' : data.modified_by}</Typography>
+      {isModerator &&
+        <Typography
+          variant='body2'
+          gutterBottom
+        >Użytkownik: {isMe ? 'Ja' : data.modified_by}</Typography>
+      }
       <Typography
         variant='body2'
         gutterBottom
@@ -70,24 +73,26 @@ const LogDetails = ({
           />
         </>
       }
-      <Grid container spacing={2} style={{ marginTop: 20 }}>
-        <Grid item>
-          <Button
-            variant='contained'
-            onClick={() => banCallback(data.modified_by)}
-            disabled={isMe}
-          >
-            {loadingBan && <Loader dark />}
-            {!isMe ? 'Zbanuj autora' : 'Nie możesz zbanować sam(a) siebie'}
-          </Button>
+      {isModerator &&
+        <Grid container spacing={2} style={{ marginTop: 20 }}>
+          <Grid item>
+            <Button
+              variant='contained'
+              onClick={() => banCallback(data.modified_by)}
+              disabled={isMe}
+            >
+              {loadingBan && <Loader dark />}
+              {!isMe ? 'Zbanuj autora' : 'Nie możesz zbanować sam(a) siebie'}
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant='contained'
+              onClick={revertCallback}
+            >{loadingRevert && <Loader dark />}Przywróć poprzednią wersję</Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Button
-            variant='contained'
-            onClick={revertCallback}
-          >{loadingRevert && <Loader dark />}Przywróć poprzednią wersję</Button>
-        </Grid>
-      </Grid>
+      }
     </Modal>
   )
 }

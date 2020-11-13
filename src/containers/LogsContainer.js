@@ -6,24 +6,17 @@ import history from '../history'
 
 
 const LogsContainer = ({ setCachedLogDetails }) => {
-  const { user, isModerator, loading: loadingAuth } = useAuth0()
+  const { isModerator, user } = useAuth0()
   const [logs, setLogs] = React.useState()
-  const [loadingLogs, setLoadingLogs] = React.useState(true)
-  const [errorLogs, setErrorLogs] = React.useState(false)
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState(false)
   const [page, setPage] = React.useState(0) // Page numeration starts at 0.
   const [logsTotal, setlogsTotal] = React.useState()
   const rowsPerPage = 10
 
-  React.useEffect(() => {
-    // Invisible guarding.
-    if (!loadingAuth && !isModerator) {
-      history.push('/')
-    }
-  }, [loadingAuth])
-
   const getLogs = async page => {
     try {
-      setLoadingLogs(true)
+      setLoading(true)
       const { data: { logs, total } } = await api.post('get_logs', {
         size: rowsPerPage,
         offset: rowsPerPage * page,
@@ -32,31 +25,28 @@ const LogsContainer = ({ setCachedLogDetails }) => {
       setlogsTotal(total)
     } catch (err) {
       console.error(err)
-      setErrorLogs(true)
+      setError(true)
     }
-    setLoadingLogs(false)
+    setLoading(false)
   }
   React.useEffect(() => { isModerator && getLogs(page) }, [page, isModerator])
 
   return (
     isModerator
-      ? <>
-        <Logs
-          logs={logs}
-          loadingLogs={loadingLogs}
-          errorLogs={errorLogs}
-          page={page}
-          setPage={setPage}
-          rowsInTotal={logsTotal}
-          rowsPerPage={rowsPerPage}
-          user={user}
-          setDetails={data => {
-            setCachedLogDetails(data)
-            history.push(`/log/${data.id}`)
-          }}
-          onClose={() => history.push('/')}
-        />
-      </>
+      ? <Logs
+        logs={logs}
+        loading={loading}
+        error={error}
+        page={page}
+        setPage={setPage}
+        rowsInTotal={logsTotal}
+        rowsPerPage={rowsPerPage}
+        user={user}
+        setDetails={data => {
+          setCachedLogDetails(data)
+          history.push(`/moderator/log/${data.id}`)
+        }}
+      />
       : null
   )
 }

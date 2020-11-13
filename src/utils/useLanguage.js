@@ -21,7 +21,6 @@ export const LanguageProvider = ({ children }) => {
       ? storedLanguage
       : detectUserLanguage()
     )
-    setLanguage(detectUserLanguage())
   }, [])
 
   return (

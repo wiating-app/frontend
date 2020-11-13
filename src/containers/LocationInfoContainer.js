@@ -23,6 +23,7 @@ const LocationInfoContainer = ({
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
+  const [imageUploading, setImageUploading] = React.useState(false)
 
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
@@ -51,6 +52,7 @@ const LocationInfoContainer = ({
   }, [cachedLocation])
 
   const onImageUpload = async files => {
+    setImageUploading(true)
     try {
       await files.forEach(async file => {
         await Resizer.imageFileResizer(
@@ -68,14 +70,31 @@ const LocationInfoContainer = ({
             const { data } = await api.post(`add_image/${location.id}`, fileObject)
             setLocation(data)
             setCachedLocation(data)
+            setImageUploading(false)
+            history.push(`/location/${location.id}`)
+            enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
           },
         )
       })
-      history.push(`/location/${location.id}`)
-      enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
     } catch (error) {
       console.error(error)
+      setImageUploading(false)
       enqueueSnackbar(translations.notifications.couldNotSavePhoto, { variant: 'error' })
+    }
+  }
+
+  const handleReport = async fields => {
+    try {
+      const { reason, description } = fields
+      const summary = `${translations.reportReasons[reason]}: ${description}`
+      await api.post('report', {
+        id: location.id,
+        report_reason: summary,
+      })
+      enqueueSnackbar('Punkt zgłoszony do moderacji', { variant: 'success' })
+    } catch (err) {
+      console.error(err)
+      enqueueSnackbar(translations.notifications.couldNotReport, { variant: 'error' })
     }
   }
 
@@ -88,11 +107,13 @@ const LocationInfoContainer = ({
           <LocationImages
             images={location.images}
             id={id}
+            uploading={imageUploading}
+            onImageUpload={files => onImageUpload(files)}
           />
           <LocationInfo
             selectedLocation={location}
             loggedIn={isLoggedIn}
-            onImageUpload={files => onImageUpload(files)}
+            handleReport={handleReport}
           />
         </>
   )

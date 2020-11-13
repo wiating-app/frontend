@@ -12,6 +12,7 @@ const LogDetailsContainer = ({
   cachedLogDetails,
   setCachedLogDetails,
   match: { params: { id } },
+  location: { pathname },
   history,
 }) => {
   const [logDetails, setLogDetails] = React.useState()
@@ -98,12 +99,13 @@ const LogDetailsContainer = ({
         : <LogDetails
           data={logDetails}
           isMe={isMe}
+          isModerator={isModerator}
           banCallback={banCallback}
           revertCallback={revertCallback}
           loadingBan={loadingBan}
           loadingRevert={loadingRevert}
           onClose={() => {
-            history.push('/log')
+            history.push(`/${pathname.split('/')[1]}`)
             setCachedLogDetails(null)
           }}
         />

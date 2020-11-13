@@ -1,22 +1,15 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2c9f2f32-c413-4b16-95a4-92b8ac302928/deploy-status)](https://app.netlify.com/sites/wiating/deploys)
 
-# Available Scripts
-
-In the project directory, you can run:
-
 ## Local setup
 
-Clone the repository and Install all dependencies with `yarn install` command.
+1. Clone the repository and Install all dependencies with `yarn install` command.
+2. Copy `.env.example` file to `.env` and replace `XXXXX` inside with a correct
+auth client ID, which is secret.
 
-If you want to let authentication work on your local, create `.env` file in root
-of a project with the following content:
+Inside the `.env` file you can override localy any environment variables.
 
-```
-REACT_APP_AUTH_CLIENT=123456
-```
 
-Replace `123456` with a valid client ID.
-
+## Available Scripts
 
 ### `yarn start`
 
@@ -28,7 +21,7 @@ You will also see any lint errors in the console.
 
 ### `yarn start:netlify`
 
-Runs the app in the development mode, but with the Netlify features enabled.
+Runs the app in the development mode, with the Netlify features enabled.
 The site is served on [http://localhost:8888](http://localhost:8888).
 
 ### `yarn build`
@@ -38,7 +31,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 Your app is ready to be deployed!
 
-## Local setup -- using docker-compose
+## `docker-compose up`
 
-1. Copy `.env.development` to `.env`
-2. Run `docker-compose up`. The app should be available on http://localhost:3000/
+Start the app in a dockerized mode. The app should be available on http://localhost:3000/

@@ -15,13 +15,14 @@ import Regulamin from './components/Regulamin'
 import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
 import AcceptDataPrivacy from './components/AcceptDataPrivacy'
 import FaqPage from './components/FaqPage'
+import ModeratorPanel from './components/ModeratorPanel'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
 import AddButtonContainer from './containers/AddButtonContainer'
 import LocationInfoContainer from './containers/LocationInfoContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
-import LogsContainer from './containers/LogsContainer'
 import LogDetailsContainer from './containers/LogDetailsContainer'
+import HistoryContainer from '././containers/HistoryContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
@@ -188,11 +189,18 @@ const App = ({ history, location: { pathname } }) => {
       </Switch>
 
 
-      <Route path='/log'>
-        <LogsContainer setCachedLogDetails={setCachedLogDetails} />
+      <Route path='/moderator'>
+        <ModeratorPanel
+          cachedLogDetails={cachedLogDetails}
+          setCachedLogDetails={setCachedLogDetails}
+        />
       </Route>
 
-      <Route exact path='/log/:id'>
+      <Route path='/historia'>
+        <HistoryContainer setCachedLogDetails={setCachedLogDetails} />
+      </Route>
+
+      <Route exact path='/historia/:id'>
         <LogDetailsContainer
           cachedLogDetails={cachedLogDetails}
           setCachedLogDetails={setCachedLogDetails}
