@@ -10,6 +10,7 @@
 /history/*  /index.html 200
 /moderator/* /index.html 200
 /api/* https://serwer.wiating.eu/wiating/:splat 200
+/staging-api/* http://serwer.wiating.eu:5813/:splat 200
 https://mapa.wiating.eu/* https://wiating.eu/:splat 301!
 https://wiating.netlify.app/* https://wiating.eu/:splat 301!
 
