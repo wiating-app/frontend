@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import {
   Drawer,
   IconButton,
@@ -7,17 +8,19 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { useRecoilState } from 'recoil'
+import { isLocationTabOpenState } from '../state'
 
 
 const LocationTab = ({
-  closeLocationTab,
-  isLocationTabOpen,
-  hideMapOnMobile,
   children,
+  history,
+  location: { pathname },
 }) => {
-  const classes = useStyles(hideMapOnMobile)
+  const classes = useStyles(pathname.startsWith('/search'))
   const theme = useTheme()
   const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
+  const [isLocationTabOpen] = useRecoilState(isLocationTabOpenState)
 
   return (
     <Drawer
@@ -34,7 +37,7 @@ const LocationTab = ({
             size='small'
             className={classes.close}
             aria-label='close'
-            onClick={() => closeLocationTab()}
+            onClick={() => history.push('/')}
           ><Close /></IconButton>
           {children}
         </div>
@@ -87,4 +90,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default LocationTab
+export default withRouter(LocationTab)

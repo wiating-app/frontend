@@ -1,15 +1,16 @@
 import React from 'react'
 import { parse, stringify } from 'querystringify'
 import { withRouter } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import api from '../api'
 import Logs from '../components/Logs'
 import LogFilters from '../components/LogFilters'
 import useAuth0 from '../utils/useAuth0'
+import { cachedLogDetailsState } from '../state'
 
 /* eslint-disable camelcase */
 
 const LogsContainer = ({
-  setCachedLogDetails,
   location: { search, pathname },
   history,
 }) => {
@@ -23,6 +24,7 @@ const LogsContainer = ({
     page: 0, // Page numeration starts at 0.
     size: 10, // Rows per page.
   })
+  const [, setCachedLogDetails] = useRecoilState(cachedLogDetailsState)
 
   const getLogs = async () => {
     try {

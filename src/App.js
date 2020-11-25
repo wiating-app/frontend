@@ -7,6 +7,7 @@ import './App.css'
 import {
   editModeState,
   cachedLocationState,
+  isLocationTabOpenState,
 } from './state'
 import Layout from './components/Layout'
 import ContentWrapper from './components/ContentWrapper'
@@ -31,11 +32,9 @@ import HistoryContainer from '././containers/HistoryContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
-  const [searchResults, setSearchResults] = React.useState([])
   const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
   const [editMode, setEditMode] = useRecoilState(editModeState)
-  const isLocationTabOpen = location.pathname.startsWith('/location') || location.pathname.startsWith('/search')
-  const [cachedLogDetails, setCachedLogDetails] = React.useState()
+  const [, setIsLocationTabOpen] = useRecoilState(isLocationTabOpenState)
   const mapRef = React.useRef()
   const { closeSnackbar } = useSnackbar()
 
@@ -50,6 +49,7 @@ const App = ({ history, location: { pathname } }) => {
 
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
+    setIsLocationTabOpen(pathname.startsWith('/location') || pathname.startsWith('/search'))
     if (!pathname.startsWith('/location/')) {
       setCachedLocation(null)
     }
@@ -67,38 +67,15 @@ const App = ({ history, location: { pathname } }) => {
   }, [])
 
   return (
-    <Layout appBar={
-      <NavBarContainer
-        setSearchResults={results => {
-          setSearchResults(results)
-          setCachedLocation(null)
-        }}
-        isLocationTabOpen={isLocationTabOpen}
-      />
-    }>
+    <Layout appBar={<NavBarContainer />}>
 
       <LocationTab
-        closeLocationTab={() => {
-          setCachedLocation(null)
-          history.push('/')
-        }}
         refreshMap={async () => {
           await mapRef.current.loadMapMarkers()
         }}
-        isLocationTabOpen={isLocationTabOpen}
-        hideMapOnMobile={location.pathname.startsWith('/search')}
       >
         <Switch>
-          <Route exact path='/search'>
-            <SearchResults
-              items={searchResults}
-              setCachedLocation={location => {
-                setCachedLocation(location)
-                history.push(`/location/${location.id}`)
-              }}
-              history={history}
-            />
-          </Route>
+          <Route exact path='/search' component={SearchResults} />
 
           <Route exact path='/location/new'>
             <ContentWrapper>
@@ -113,13 +90,7 @@ const App = ({ history, location: { pathname } }) => {
 
           <Route exact path='/location/:id'>
             <LocationInfoContainer />
-            {searchResults.length
-              ? <BackToSearch onClick={() => {
-                history.push('/search')
-                setCachedLocation(null)
-              }} />
-              : null
-            }
+            <BackToSearch />
           </Route>
 
           <Route exact path='/location/:id/edit'>
@@ -146,28 +117,10 @@ const App = ({ history, location: { pathname } }) => {
       </LocationTab>
 
       <MapContainer
-        openLocationTab={point => {
-          setSearchResults([])
-          setCachedLocation(point)
-          history.push(`/location/${point.id}`)
-        }}
-        openAddMarkerTab={async ({ lat, lng: lon }) => {
-          await history.push('/location/new')
-          setCachedLocation({ location: { lat, lon } })
-        }}
-        closeTab={() => history.push('/')}
-        updateCoordinates={({ lat, lng: lon }) => {
-          setCachedLocation({ ...cachedLocation, location: { lon, lat } })
-        }}
         ref={mapRef}
-        isLocationTabOpen={isLocationTabOpen}
       />
 
-      {!editMode &&
-        <AddButtonContainer
-          setCachedLocation={setCachedLocation}
-        />
-      }
+      <AddButtonContainer />
 
       <AcceptDataPrivacy />
 
@@ -179,24 +132,9 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/faq' component={FaqPage} />
       </Switch>
 
-
-      <Route path='/moderator'>
-        <ModeratorPanel
-          cachedLogDetails={cachedLogDetails}
-          setCachedLogDetails={setCachedLogDetails}
-        />
-      </Route>
-
-      <Route path='/history'>
-        <HistoryContainer setCachedLogDetails={setCachedLogDetails} />
-      </Route>
-
-      <Route exact path='/history/:id'>
-        <LogDetailsContainer
-          cachedLogDetails={cachedLogDetails}
-          setCachedLogDetails={setCachedLogDetails}
-        />
-      </Route>
+      <Route path='/moderator' component={ModeratorPanel} />
+      <Route path='/history' component={HistoryContainer} />
+      <Route exact path='/history/:id' component={LogDetailsContainer} />
 
     </Layout>
   )

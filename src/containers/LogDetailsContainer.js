@@ -1,17 +1,16 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import { useRecoilState } from 'recoil'
 import LogDetails from '../components/LogDetails'
 import Loader from '../components/Loader'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import api from '../api'
+import { cachedLogDetailsState } from '../state'
 
 
 const LogDetailsContainer = ({
-  cachedLogDetails,
-  setCachedLogDetails,
-  refetchLogs,
   match: { params: { id } },
   location: { search, pathname },
   history,
@@ -22,6 +21,7 @@ const LogDetailsContainer = ({
   const [loadingReview, setLoadingReview] = React.useState()
   const [loadingBan, setLoadingBan] = React.useState(false)
   const [loadingRevert, setLoadingRevert] = React.useState(false)
+  const [cachedLogDetails, setCachedLogDetails] = useRecoilState(cachedLogDetailsState)
   const { user, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()

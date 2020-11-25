@@ -6,6 +6,8 @@ import {
   PersonPinCircle,
 } from '@material-ui/icons'
 import { useSnackbar } from 'notistack'
+import { useRecoilState } from 'recoil'
+import { editModeState, cachedLocationState } from '../state'
 import AddButton from '../components/AddButton'
 import useLanguage from '../utils/useLanguage'
 import useCurrentLocation from '../utils/useCurrentLocation'
@@ -13,12 +15,15 @@ import useAuth0 from '../utils/useAuth0'
 import history from '../history'
 
 
-const AddButtonContainer = ({ setCachedLocation }) => {
+const AddButtonContainer = () => {
   const { translations } = useLanguage()
   const { isLoggedIn } = useAuth0()
   const { currentLocation, error } = useCurrentLocation()
+  const [editMode] = useRecoilState(editModeState)
+  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
+  if (editMode) return null
   return (
     <AddButton
       items={[

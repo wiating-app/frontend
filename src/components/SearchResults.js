@@ -9,24 +9,27 @@ import {
   Chip,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { useRecoilState } from 'recoil'
+import { searchResultsState, cachedLocationState } from '../state'
 import useLanguage from '../utils/useLanguage'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
+import history from '../history'
 
-const SearchResults = ({
-  items,
-  setCachedLocation,
-}) => {
+const SearchResults = () => {
+  const [searchResults] = useRecoilState(searchResultsState)
+  const [, setCachedLocation] = useRecoilState(cachedLocationState)
   const classes = useStyles()
   const { translations } = useLanguage()
   return (
     <List>
-      {items.length
-        ? items.map((item, index) =>
+      {searchResults.length
+        ? searchResults.map((item, index) =>
           <React.Fragment key={index}>
             <ListItem
               className={classes.item}
               onClick={() => {
                 setCachedLocation(item)
+                history.push(`/location/${item.id}`)
               }}
             >
               <ListItemAvatar>

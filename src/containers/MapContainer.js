@@ -14,7 +14,7 @@ let cancelRequest
 const MapContainer = React.forwardRef((props, ref) => {
   const [points, setPoints] = React.useState()
   const [initalPosition, setInitalPosition] = React.useState()
-  const [activeTypes, setActiveTypes] = useRecoilState(activeTypesState)
+  const [activeTypes] = useRecoilState(activeTypesState)
   const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
   const { currentLocation, accuracy, loading, error } = useCurrentLocation()
@@ -97,7 +97,6 @@ const MapContainer = React.forwardRef((props, ref) => {
       zoom={initalPosition && initalPosition.zoom}
       {...props}
       activeTypes={activeTypes}
-      setActiveTypes={setActiveTypes}
       ref={mapRef}
     />
   )

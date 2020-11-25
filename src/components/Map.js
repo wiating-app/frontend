@@ -16,36 +16,39 @@ import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
-import { editModeState } from '../state'
+import {
+  editModeState,
+  isLocationTabOpenState,
+  cachedLocationState,
+  searchResultsState,
+} from '../state'
 import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
 import Legend from './Legend'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import exportToKML from '../utils/exportToKML'
+import history from '../history'
 
 
 const Map = React.forwardRef(({
   center,
   zoom,
-  isLocationTabOpen,
   isLoggedIn,
   currentLocation,
   points,
   locationAccuracy,
-  updateCoordinates,
   getMarkers,
   setStoredPosition,
-  openLocationTab,
-  openAddMarkerTab,
-  closeTab,
   activeTypes,
-  setActiveTypes,
 }, ref) => {
   const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
   const [previousBounds, setPreviousBounds] = React.useState()
   const mapRef = React.useRef()
   const [editMode] = useRecoilState(editModeState)
+  const [searchResults, setSearchResults] = useRecoilState(searchResultsState)
+  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [isLocationTabOpen] = useRecoilState(isLocationTabOpenState)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
@@ -99,6 +102,16 @@ const Map = React.forwardRef(({
     }
   }
 
+
+  const openAddMarkerTab = async ({ lat, lng: lon }) => {
+    await history.push('/location/new')
+    setCachedLocation({ location: { lat, lon } })
+  }
+
+  const updateCoordinates = ({ lat, lng: lon }) => {
+    setCachedLocation({ ...cachedLocation, location: { lon, lat } })
+  }
+
   React.useEffect(() => {
     // Refresh markers after active types changed.
     const handleAsync = async () => {
@@ -137,7 +150,7 @@ const Map = React.forwardRef(({
               setContextMenu(!contextMenu)
               setActiveMarker(contextMenu ? null : e.latlng)
             }
-            closeTab()
+            history.push('/')
           }
         }}
         onClick={e => {
@@ -154,7 +167,7 @@ const Map = React.forwardRef(({
           } else if (isLocationTabOpen && !editMode) {
             // Dismiss the location details drawer, when clicking on a map.
             // It does not work with react-leaflet-pixi-overlay approach.
-            // closeTab()
+            // history.push('/')
             // setContextMenu(false)
             // setActiveMarker(false)
           }
@@ -174,7 +187,9 @@ const Map = React.forwardRef(({
               iconId: `${type}_${markerSize}`,
               position: [lat, lon],
               onClick: () => {
-                openLocationTab(item)
+                setSearchResults([])
+                setCachedLocation(item)
+                history.push(`/location/${item.id}`)
                 setContextMenu(null)
                 setActiveMarker([lat, lon])
               },
