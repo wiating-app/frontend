@@ -2,7 +2,9 @@ import React from 'react'
 import { useSnackbar } from 'notistack'
 import api from '../api'
 import { withRouter } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import parse from 'coord-parser'
+import { cachedLocationState } from '../state'
 import LocationForm from '../components/LocationForm'
 import Loader from '../components/Loader'
 import useLanguage from '../utils/useLanguage'
@@ -10,14 +12,13 @@ import useAuth0 from '../utils/useAuth0'
 
 
 const LocationFormContainer = ({
-  cachedLocation,
-  setCachedLocation,
   refreshMap,
   isNew,
   history,
   match,
 }) => {
   const { params: { id } } = match
+  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
   const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
   const { translations } = useLanguage()
   const [location, setLocation] = React.useState()

@@ -6,6 +6,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import {
   editModeState,
+  cachedLocationState,
 } from './state'
 import Layout from './components/Layout'
 import ContentWrapper from './components/ContentWrapper'
@@ -30,8 +31,8 @@ import HistoryContainer from '././containers/HistoryContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
-  const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState([])
+  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
   const [editMode, setEditMode] = useRecoilState(editModeState)
   const isLocationTabOpen = location.pathname.startsWith('/location') || location.pathname.startsWith('/search')
   const [cachedLogDetails, setCachedLogDetails] = React.useState()
@@ -102,8 +103,6 @@ const App = ({ history, location: { pathname } }) => {
           <Route exact path='/location/new'>
             <ContentWrapper>
               <LocationFormContainer
-                cachedLocation={cachedLocation}
-                setCachedLocation={setCachedLocation}
                 isNew
                 refreshMap={async () => {
                   await mapRef.current.loadMapMarkers()
@@ -113,10 +112,7 @@ const App = ({ history, location: { pathname } }) => {
           </Route>
 
           <Route exact path='/location/:id'>
-            <LocationInfoContainer
-              cachedLocation={cachedLocation}
-              setCachedLocation={setCachedLocation}
-            />
+            <LocationInfoContainer />
             {searchResults.length
               ? <BackToSearch onClick={() => {
                 history.push('/search')
@@ -129,8 +125,6 @@ const App = ({ history, location: { pathname } }) => {
           <Route exact path='/location/:id/edit'>
             <ContentWrapper>
               <LocationFormContainer
-                cachedLocation={cachedLocation}
-                setCachedLocation={setCachedLocation}
                 setActiveMarker={location => mapRef.current.setActiveMarker(location)}
                 refreshMap={async () => {
                   await mapRef.current.loadMapMarkers()
@@ -143,7 +137,6 @@ const App = ({ history, location: { pathname } }) => {
             <ContentWrapper>
               <Typography variant='h4' gutterBottom>{translations.actions.editPhotos}</Typography>
               <PhotosForm
-                locationData={cachedLocation}
                 onSubmitLocation={files => onImageUpload(files)}
                 cancel={() => setLocationTabContent('markerInfo')}
               />

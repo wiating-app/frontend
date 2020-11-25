@@ -11,3 +11,13 @@ export const activeTypesState = atom({
   key: 'activeTypes',
   default: [],
 })
+
+export const cachedLocationState = atom({
+  key: 'cachedLocation',
+  default: null,
+})
+
+export const searchResultsState = atom({
+  key: 'searchResults',
+  default: [],
+})

@@ -2,8 +2,10 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Resizer from 'react-image-file-resizer'
 import dataUriToBuffer from 'data-uri-to-buffer'
+import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
 import api from '../api'
+import { cachedLocationState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import LocationImages from '../components/LocationImages'
 import LocationInfo from '../components/LocationInfo'
@@ -12,11 +14,10 @@ import useLanguage from '../utils/useLanguage'
 
 
 const LocationInfoContainer = ({
-  cachedLocation,
-  setCachedLocation,
   match: { params: { id } },
   history,
 }) => {
+  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
   const { translations } = useLanguage()
   const { isLoggedIn, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
