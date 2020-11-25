@@ -1,8 +1,12 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
+import {
+  editModeState,
+} from './state'
 import Layout from './components/Layout'
 import ContentWrapper from './components/ContentWrapper'
 import LocationTab from './components/LocationTab'
@@ -28,8 +32,7 @@ import HistoryContainer from '././containers/HistoryContainer'
 const App = ({ history, location: { pathname } }) => {
   const [cachedLocation, setCachedLocation] = React.useState()
   const [searchResults, setSearchResults] = React.useState([])
-  const [editMode, setEditMode] = React.useState()
-  const [activeTypes, setActiveTypes] = React.useState([])
+  const [editMode, setEditMode] = useRecoilState(editModeState)
   const isLocationTabOpen = location.pathname.startsWith('/location') || location.pathname.startsWith('/search')
   const [cachedLogDetails, setCachedLogDetails] = React.useState()
   const mapRef = React.useRef()
@@ -69,8 +72,6 @@ const App = ({ history, location: { pathname } }) => {
           setSearchResults(results)
           setCachedLocation(null)
         }}
-        activeTypes={activeTypes}
-        editMode={editMode}
         isLocationTabOpen={isLocationTabOpen}
       />
     }>
@@ -167,9 +168,6 @@ const App = ({ history, location: { pathname } }) => {
         }}
         ref={mapRef}
         isLocationTabOpen={isLocationTabOpen}
-        editMode={editMode}
-        activeTypes={activeTypes}
-        setActiveTypes={setActiveTypes}
       />
 
       {!editMode &&
@@ -182,10 +180,7 @@ const App = ({ history, location: { pathname } }) => {
 
       <Switch>
         <Route exact path='/info' component={Info} />
-        <Route exact path='/legend' render={() => <LegendPage
-          activeTypes={activeTypes}
-          setActiveTypes={setActiveTypes}
-        />} />
+        <Route exact path='/legend' component={LegendPage} />
         <Route exact path='/regulations' component={Regulamin} />
         <Route exact path='/privacy-policy' component={PolitykaPrywatnosci} />
         <Route exact path='/faq' component={FaqPage} />

@@ -9,12 +9,14 @@ import {
   ScaleControl,
 } from 'react-leaflet'
 import Control from 'react-leaflet-control'
+import { useRecoilState } from 'recoil'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Typography, useMediaQuery, Tooltip } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
+import { editModeState } from '../state'
 import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
 import Legend from './Legend'
@@ -26,13 +28,12 @@ const Map = React.forwardRef(({
   center,
   zoom,
   isLocationTabOpen,
-  editMode,
   isLoggedIn,
   currentLocation,
   points,
   locationAccuracy,
   updateCoordinates,
-  loadMapMarkers,
+  getMarkers,
   setStoredPosition,
   openLocationTab,
   openAddMarkerTab,
@@ -44,6 +45,7 @@ const Map = React.forwardRef(({
   const [contextMenu, setContextMenu] = React.useState()
   const [previousBounds, setPreviousBounds] = React.useState()
   const mapRef = React.useRef()
+  const [editMode] = useRecoilState(editModeState)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
@@ -57,10 +59,6 @@ const Map = React.forwardRef(({
       : currentZoom < 11
         ? 20
         : 32
-
-  React.useEffect(() => {
-    console.log('currentZoom: ', currentZoom, 'markerSize: ', markerSize)
-  }, [currentZoom])
 
   React.useEffect(() => {
     if (activeMarker && !contextMenu) {
@@ -95,19 +93,18 @@ const Map = React.forwardRef(({
     // Check whether viewport really changed to prevent a multiple calls for the
     // same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
-      loadMapMarkers(bounds)
+      getMarkers(bounds)
       setStoredPosition(mapRef.current.viewport)
       setPreviousBounds(bounds)
     }
   }
 
   React.useEffect(() => {
-    // Refresh markers when active markers are changed.
+    // Refresh markers after active types changed.
     const handleAsync = async () => {
       if (mapRef.current.leafletElement._loaded) {
         const bounds = await mapRef.current.leafletElement.getBounds()
-        loadMapMarkers(bounds)
-        handleLoadMapMarkers()
+        getMarkers(bounds)
       }
     }
     handleAsync()
@@ -275,11 +272,7 @@ const Map = React.forwardRef(({
         <ScaleControl position='bottomright' imperial={false} />
         {!isMobile && !editMode &&
           <Control position='topleft'>
-            <Legend
-              boxed
-              activeTypes={activeTypes}
-              onChange={key => setActiveTypes(key)}
-            />
+            <Legend boxed />
           </Control>
         }
       </MapComponent>

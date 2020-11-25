@@ -1,7 +1,9 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import { useMediaQuery } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
+import { activeTypesState } from '../state'
 import api from '../api'
 import useAuth0 from '../utils/useAuth0'
 import NavBar from '../components/NavBar'
@@ -12,7 +14,6 @@ const languages = ['pl', 'en']
 
 const NavBarContainer = ({
   setSearchResults,
-  activeTypes,
   isLocationTabOpen,
   history,
 }) => {
@@ -20,6 +21,7 @@ const NavBarContainer = ({
   const [searchPhrase, setSearchPhrase] = React.useState()
   const [searchLoading, setSearchLoading] = React.useState()
   const { translations, language, setLanguage } = useLanguage()
+  const [activeTypes] = useRecoilState(activeTypesState)
 
   const {
     loading,
