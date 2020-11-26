@@ -2,12 +2,12 @@ import React from 'react'
 import { useSnackbar } from 'notistack'
 import { useRecoilState } from 'recoil'
 import api, { CancelToken, isCancel } from '../api'
-import { activeTypesState, mapRefState, markersState } from '../state'
+import { activeTypesState, markersState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useUserLocation from '../utils/useUserLocation'
 import Map from '../components/Map'
 import useLanguage from '../utils/useLanguage'
-import formatData from '../utils/serializeData'
+import serializeData from '../utils/serializeData'
 
 let cancelRequest
 
@@ -15,31 +15,19 @@ let cancelRequest
 const MapContainer = props => {
   const [initalPosition, setInitalPosition] = React.useState()
   const [activeTypes] = useRecoilState(activeTypesState)
-  const [mapRef, setMapRef] = useRecoilState(mapRefState)
   const [markers, setMarkers] = useRecoilState(markersState)
   const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
   const { userLocation, accuracy, loading, error } = useUserLocation()
   const defaultPosition = [50.39805, 16.844417] // The area of Polish mountains.
 
-  const ref = React.useRef()
+  const mapRef = React.useRef()
 
   const {
     isLoggedIn,
     setStoredPosition,
     getStoredPosition,
   } = useAuth0()
-
-  React.useEffect(() => {
-    // Let map ref be accesible globally.
-    if (!mapRef && ref) {
-      setMapRef({
-        loadMapMarkers: () => {
-          ref.current.loadMapMarkers()
-        },
-      })
-    }
-  }, [mapRef, ref])
 
   const getMarkers = async bounds => {
     const { _northEast, _southWest } = bounds
@@ -63,7 +51,7 @@ const MapContainer = props => {
           cancelRequest = c
         }),
       })
-      setMarkers(points.map(item => formatData(item)))
+      setMarkers(points.map(item => serializeData(item)))
     } catch (error) {
       if (!isCancel(error)) {
         console.error(error)
@@ -101,7 +89,7 @@ const MapContainer = props => {
       zoom={initalPosition && initalPosition.zoom}
       {...props}
       activeTypes={activeTypes}
-      ref={ref}
+      ref={mapRef}
     />
   )
 }

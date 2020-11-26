@@ -4,13 +4,13 @@ import api from '../api'
 import { withRouter } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import parse from 'coord-parser'
-import { activeLocationState, mapRefState } from '../state'
+import { activeLocationState, markersState } from '../state'
 import ContentWrapper from '../components/ContentWrapper'
 import LocationForm from '../components/LocationForm'
 import Loader from '../components/Loader'
 import useLanguage from '../utils/useLanguage'
 import useAuth0 from '../utils/useAuth0'
-import formatData from '../utils/serializeData'
+import serializeData from '../utils/serializeData'
 
 
 const LocationFormContainer = ({
@@ -24,7 +24,7 @@ const LocationFormContainer = ({
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
-  const [mapRef] = useRecoilState(mapRefState)
+  const [markers, setMarkers] = useRecoilState(markersState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
@@ -54,7 +54,7 @@ const LocationFormContainer = ({
         const handleAsync = async () => {
           try {
             const { data } = await api.post('get_point', { id })
-            setActiveLocation(formatData(data))
+            setActiveLocation(serializeData(data))
           } catch (error) {
             setError(true)
           }
@@ -113,18 +113,28 @@ const LocationFormContainer = ({
       if (isNew) {
         // New marker creation.
         const { data } = await api.post('add_point', dataObject)
-        setActiveLocation(formatData(data))
+        const serializedData = serializeData(data)
+        const newMarkers = [...markers, serializedData]
+        setMarkers(newMarkers)
+        setActiveLocation(serializedData)
         history.push(`/location/${data.id}`)
         enqueueSnackbar(translations.notifications.newMarkerAdded, { variant: 'success' })
       } else {
         // Updating exisitng marker.
         const { id } = activeLocation
         const { data } = await api.post('modify_point', { id, ...dataObject })
-        setActiveLocation(formatData(data))
+        const serializedData = serializeData(data)
+        const index = markers.findIndex(item => item.id === serializedData.id)
+        const newMarkers = [
+          ...markers.slice(0, index),
+          serializedData,
+          ...markers.slice(index + 1),
+        ]
+        setMarkers(newMarkers)
+        setActiveLocation(serializedData)
         history.push(`/location/${id}`)
         enqueueSnackbar(translations.notifications.markerUpdated, { variant: 'success' })
       }
-      mapRef.loadMapMarkers()
     } catch (error) {
       if (error.type === 'parseError') {
         console.error(error.value)
@@ -139,9 +149,9 @@ const LocationFormContainer = ({
   const onDeleteLocation = async () => {
     try {
       await api.post('delete_point', { id })
-      setActiveLocation(null)
       history.push('/')
-      mapRef.loadMapMarkers()
+      setActiveLocation(null)
+      setMarkers(markers.filter(item => item.id !== id))
       enqueueSnackbar(translations.notifications.locationDeleted, { variant: 'success' })
     } catch (err) {
       console.error(err)
