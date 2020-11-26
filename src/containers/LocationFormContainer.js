@@ -45,7 +45,6 @@ const LocationFormContainer = ({
       closeSnackbar() // It is here only to dismiss the persising "Put point on map" snackbar.
       const handleAsync = async () => {
         setLoading(true)
-        await setCachedLocation(null)
         setLoading(false)
       }
       handleAsync()
@@ -63,8 +62,15 @@ const LocationFormContainer = ({
           const handleAsync = async () => {
             try {
               const { data } = await api.post('get_point', { id })
-              setLocation(data)
-              setCachedLocation(data)
+              const formattedData = {
+                ...data,
+                location: {
+                  lat: data.location.lat,
+                  lng: data.location.lon,
+                },
+              }
+              setLocation(formattedData)
+              setCachedLocation(formattedData)
             } catch (error) {
               setError(true)
             }
@@ -173,12 +179,12 @@ const LocationFormContainer = ({
             onSubmitLocation={onSubmitLocation}
             updateCurrentMarker={coords => {
               try {
-                const { lat, lon } = parse(coords)
+                const { lat, lon: lng } = parse(coords)
                 if (
                   (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
-                  (!location?.location || location.location.lat !== lat || location.location.lon !== lon)
+                  (!location?.location || location.location.lat !== lat || location.location.lng !== lng)
                 ) {
-                  setCachedLocation({ ...location, location: { lat, lon } })
+                  setCachedLocation({ ...location, location: { lat, lng } })
                 }
               } catch (err) {}
             }}

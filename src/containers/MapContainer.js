@@ -33,9 +33,6 @@ const MapContainer = props => {
     // Let map ref be accesible globally.
     if (!mapRef && ref) {
       setMapRef({
-        setActiveMarker: (coords) => {
-          ref.current.setActiveMarker(coords)
-        },
         loadMapMarkers: () => {
           ref.current.loadMapMarkers()
         },
@@ -65,7 +62,14 @@ const MapContainer = props => {
           cancelRequest = c
         }),
       })
-      setMarkers(points)
+      const formattedPoints = points.map(item => ({
+        ...item,
+        location: {
+          lat: item.location.lat,
+          lng: item.location.lon,
+        },
+      }))
+      setMarkers(formattedPoints)
     } catch (error) {
       if (!isCancel(error)) {
         console.error(error)

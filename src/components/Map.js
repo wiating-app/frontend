@@ -41,12 +41,11 @@ const Map = React.forwardRef(({
   setStoredPosition,
   activeTypes,
 }, ref) => {
-  const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
   const [previousBounds, setPreviousBounds] = React.useState()
   const mapRef = React.useRef()
   const [editMode] = useRecoilState(editModeState)
-  const [searchResults, setSearchResults] = useRecoilState(searchResultsState)
+  const [, setSearchResults] = useRecoilState(searchResultsState)
   const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
   const [isLocationTabOpen] = useRecoilState(isLocationTabOpenState)
   const theme = useTheme()
@@ -64,13 +63,14 @@ const Map = React.forwardRef(({
         : 32
 
   React.useEffect(() => {
-    if (activeMarker && !contextMenu) {
-      mapRef.current.leafletElement.panTo(activeMarker)
+    if (cachedLocation && !contextMenu) {
+      const { lat, lng } = cachedLocation.location
+      mapRef.current.leafletElement.panTo([lat, lng])
     }
-  }, [activeMarker])
+  }, [cachedLocation])
 
   React.useEffect(() => {
-    if (center && !activeMarker) {
+    if (center && !cachedLocation) {
       mapRef.current.leafletElement.flyTo(center)
     }
   }, [center])
@@ -78,14 +78,14 @@ const Map = React.forwardRef(({
   React.useEffect(() => {
     if (isMobile) {
       mapRef.current.leafletElement.invalidateSize()
+      if (cachedLocation?.location) {
+        mapRef.current.leafletElement.flyTo(cachedLocation.location)
+      }
     }
   }, [isLocationTabOpen, isMobile])
 
   // Handle refs.
   React.useImperativeHandle(ref, () => ({
-    setActiveMarker(coords) {
-      setActiveMarker(coords)
-    },
     loadMapMarkers() {
       handleLoadMapMarkers()
     },
@@ -100,16 +100,6 @@ const Map = React.forwardRef(({
       setStoredPosition(mapRef.current.viewport)
       setPreviousBounds(bounds)
     }
-  }
-
-
-  const openAddMarkerTab = async ({ lat, lng: lon }) => {
-    await history.push('/location/new')
-    setCachedLocation({ location: { lat, lon } })
-  }
-
-  const updateCoordinates = ({ lat, lng: lon }) => {
-    setCachedLocation({ ...cachedLocation, location: { lon, lat } })
   }
 
   React.useEffect(() => {
@@ -148,7 +138,7 @@ const Map = React.forwardRef(({
           if (!editMode) {
             if (isLoggedIn) {
               setContextMenu(!contextMenu)
-              setActiveMarker(contextMenu ? null : e.latlng)
+              setCachedLocation(contextMenu ? null : { location: e.latlng })
             }
             history.push('/')
           }
@@ -157,19 +147,9 @@ const Map = React.forwardRef(({
           if (contextMenu) {
             // If context menu is opened, close it.
             setContextMenu(false)
-            setActiveMarker(false)
-          } else if (editMode && isLoggedIn && !activeMarker) {
-            // If location creation form has beem opened from URL and there are no
-            // coordinates given yet, set the coordinates and active marker.
-            openAddMarkerTab(e.latlng)
-            setActiveMarker(e.latlng)
-            updateCoordinates(e.latlng)
-          } else if (isLocationTabOpen && !editMode) {
-            // Dismiss the location details drawer, when clicking on a map.
-            // It does not work with react-leaflet-pixi-overlay approach.
-            // history.push('/')
-            // setContextMenu(false)
-            // setActiveMarker(false)
+            setCachedLocation(null)
+          } else if (editMode && isLoggedIn && !cachedLocation) {
+            setCachedLocation({ location: e.latlng })
           }
         }}
       >
@@ -180,23 +160,22 @@ const Map = React.forwardRef(({
         <PixiOverlay
           map={mapRef?.current?.leafletElement}
           markers={markers.map(item => {
-            const { location: { lat, lon }, id, type } = item
+            const { location: { lat, lng }, id, type } = item
             return {
               id,
               customIcon: generateMarkerIcon(type, markerSize),
               iconId: `${type}_${markerSize}`,
-              position: [lat, lon],
+              position: [lat, lng],
               onClick: () => {
                 setSearchResults([])
                 setCachedLocation(item)
                 history.push(`/location/${item.id}`)
                 setContextMenu(null)
-                setActiveMarker([lat, lon])
               },
             }
           }) || []}
         />
-        {activeMarker &&
+        {cachedLocation &&
           <Marker
             icon={new Icon({
               iconUrl: '/active-location.svg',
@@ -204,25 +183,28 @@ const Map = React.forwardRef(({
               iconAnchor: [20, 40],
             })}
             zIndexOffset={1100}
-            position={activeMarker}
+            position={cachedLocation.location}
             draggable={editMode}
             onMoveEnd={e => {
               if (editMode) {
-                updateCoordinates(e.target.getLatLng())
+                setCachedLocation({
+                  ...cachedLocation,
+                  location: e.target.getLatLng(),
+                })
               }
             }}
           />
         }
-        {activeMarker && contextMenu &&
+        {cachedLocation && contextMenu &&
           <Popup
-            position={activeMarker}
+            position={cachedLocation.location}
             closeButton={false}
             className={classes.popup}
           >
             <ContextMenu addMarker={() => {
               setContextMenu(null)
-              openAddMarkerTab(activeMarker)
-              mapRef.current.leafletElement.setView(activeMarker)
+              history.push('/location/new')
+              mapRef.current.leafletElement.setView(cachedLocation.location)
             }} />
           </Popup>
         }

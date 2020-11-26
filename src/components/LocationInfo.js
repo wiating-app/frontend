@@ -44,7 +44,7 @@ const LocationInfo = ({
           color='textSecondary'
           gutterBottom
         >
-          {type} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lon)} <ShareButton id={selectedLocation.id} />
+          {type} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lng)} <ShareButton id={selectedLocation.id} />
         </Typography>
 
         <Typography

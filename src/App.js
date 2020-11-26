@@ -8,7 +8,6 @@ import {
   editModeState,
   cachedLocationState,
   isLocationTabOpenState,
-  mapRefState,
 } from './state'
 import Layout from './components/Layout'
 import LocationTab from './components/LocationTab'
@@ -32,22 +31,10 @@ import HistoryContainer from '././containers/HistoryContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
-  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [, setCachedLocation] = useRecoilState(cachedLocationState)
   const [editMode, setEditMode] = useRecoilState(editModeState)
   const [, setIsLocationTabOpen] = useRecoilState(isLocationTabOpenState)
-  const [mapRef] = useRecoilState(mapRefState)
   const { closeSnackbar } = useSnackbar()
-
-  React.useEffect(() => {
-    if (mapRef) {
-      if (cachedLocation) {
-        const { lat, lon } = cachedLocation.location
-        mapRef.setActiveMarker([lat, lon])
-      } else {
-        mapRef.setActiveMarker(null)
-      }
-    }
-  }, [cachedLocation, mapRef])
 
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
