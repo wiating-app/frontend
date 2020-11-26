@@ -54,6 +54,7 @@ const AddButtonContainer = () => {
           label: translations.enterCoordinates,
           icon: <BorderColor />,
           callback: () => {
+            setCachedLocation(null)
             history.push('/location/new')
           },
         },

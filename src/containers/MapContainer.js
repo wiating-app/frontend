@@ -2,7 +2,7 @@ import React from 'react'
 import { useSnackbar } from 'notistack'
 import { useRecoilState } from 'recoil'
 import api, { CancelToken, isCancel } from '../api'
-import { activeTypesState } from '../state'
+import { activeTypesState, mapRefState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useCurrentLocation from '../utils/useCurrentLocation'
 import Map from '../components/Map'
@@ -11,21 +11,37 @@ import useLanguage from '../utils/useLanguage'
 let cancelRequest
 
 
-const MapContainer = React.forwardRef((props, ref) => {
+const MapContainer = props => {
   const [points, setPoints] = React.useState()
   const [initalPosition, setInitalPosition] = React.useState()
   const [activeTypes] = useRecoilState(activeTypesState)
+  const [mapRef, setMapRef] = useRecoilState(mapRefState)
   const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
   const { currentLocation, accuracy, loading, error } = useCurrentLocation()
   const defaultPosition = [50.39805, 16.844417] // The area of Polish mountains.
 
-  const mapRef = React.useRef()
+  const ref = React.useRef()
+
   const {
     isLoggedIn,
     setStoredPosition,
     getStoredPosition,
   } = useAuth0()
+
+  React.useEffect(() => {
+    // Let map ref be accesible globally.
+    if (!mapRef && ref) {
+      setMapRef({
+        setActiveMarker: (coords) => {
+          ref.current.setActiveMarker(coords)
+        },
+        loadMapMarkers: () => {
+          ref.current.loadMapMarkers()
+        },
+      })
+    }
+  }, [mapRef, ref])
 
   const getMarkers = async bounds => {
     const { _northEast, _southWest } = bounds
@@ -60,16 +76,6 @@ const MapContainer = React.forwardRef((props, ref) => {
     }
   }
 
-  // Pass ref methods of Map component.
-  React.useImperativeHandle(ref, () => ({
-    setActiveMarker(coords) {
-      mapRef.current.setActiveMarker(coords)
-    },
-    loadMapMarkers() {
-      mapRef.current.loadMapMarkers()
-    },
-  }))
-
   React.useEffect(() => {
     // Check whether stored position is available asychronously from recognized
     // currentLocation, because currentLocation recognition may take more time.
@@ -97,9 +103,9 @@ const MapContainer = React.forwardRef((props, ref) => {
       zoom={initalPosition && initalPosition.zoom}
       {...props}
       activeTypes={activeTypes}
-      ref={mapRef}
+      ref={ref}
     />
   )
-})
+}
 
 export default MapContainer

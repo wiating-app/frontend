@@ -8,9 +8,9 @@ import {
   editModeState,
   cachedLocationState,
   isLocationTabOpenState,
+  mapRefState,
 } from './state'
 import Layout from './components/Layout'
-import ContentWrapper from './components/ContentWrapper'
 import LocationTab from './components/LocationTab'
 import SearchResults from './components/SearchResults'
 import BackToSearch from './components/BackToSearch'
@@ -35,17 +35,19 @@ const App = ({ history, location: { pathname } }) => {
   const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
   const [editMode, setEditMode] = useRecoilState(editModeState)
   const [, setIsLocationTabOpen] = useRecoilState(isLocationTabOpenState)
-  const mapRef = React.useRef()
+  const [mapRef] = useRecoilState(mapRefState)
   const { closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
-    if (cachedLocation) {
-      const { lat, lon } = cachedLocation.location
-      mapRef.current.setActiveMarker([lat, lon])
-    } else {
-      mapRef.current.setActiveMarker(null)
+    if (mapRef) {
+      if (cachedLocation) {
+        const { lat, lon } = cachedLocation.location
+        mapRef.setActiveMarker([lat, lon])
+      } else {
+        mapRef.setActiveMarker(null)
+      }
     }
-  }, [cachedLocation])
+  }, [cachedLocation, mapRef])
 
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
@@ -69,23 +71,12 @@ const App = ({ history, location: { pathname } }) => {
   return (
     <Layout appBar={<NavBarContainer />}>
 
-      <LocationTab
-        refreshMap={async () => {
-          await mapRef.current.loadMapMarkers()
-        }}
-      >
+      <LocationTab>
         <Switch>
           <Route exact path='/search' component={SearchResults} />
 
           <Route exact path='/location/new'>
-            <ContentWrapper>
-              <LocationFormContainer
-                isNew
-                refreshMap={async () => {
-                  await mapRef.current.loadMapMarkers()
-                }}
-              />
-            </ContentWrapper>
+            <LocationFormContainer isNew />
           </Route>
 
           <Route exact path='/location/:id'>
@@ -94,31 +85,20 @@ const App = ({ history, location: { pathname } }) => {
           </Route>
 
           <Route exact path='/location/:id/edit'>
-            <ContentWrapper>
-              <LocationFormContainer
-                setActiveMarker={location => mapRef.current.setActiveMarker(location)}
-                refreshMap={async () => {
-                  await mapRef.current.loadMapMarkers()
-                }}
-              />
-            </ContentWrapper>
+            <LocationFormContainer />
           </Route>
 
           {/* <Route exact path='/location/:id/photos'>
-            <ContentWrapper>
               <Typography variant='h4' gutterBottom>{translations.actions.editPhotos}</Typography>
               <PhotosForm
                 onSubmitLocation={files => onImageUpload(files)}
                 cancel={() => setLocationTabContent('markerInfo')}
               />
-            </ContentWrapper>
           </Route> */}
         </Switch>
       </LocationTab>
 
-      <MapContainer
-        ref={mapRef}
-      />
+      <MapContainer />
 
       <AddButtonContainer />
 

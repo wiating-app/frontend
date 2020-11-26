@@ -4,7 +4,8 @@ import api from '../api'
 import { withRouter } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import parse from 'coord-parser'
-import { cachedLocationState } from '../state'
+import { cachedLocationState, mapRefState } from '../state'
+import ContentWrapper from '../components/ContentWrapper'
 import LocationForm from '../components/LocationForm'
 import Loader from '../components/Loader'
 import useLanguage from '../utils/useLanguage'
@@ -12,18 +13,18 @@ import useAuth0 from '../utils/useAuth0'
 
 
 const LocationFormContainer = ({
-  refreshMap,
   isNew,
   history,
   match,
 }) => {
   const { params: { id } } = match
-  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
   const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
   const { translations } = useLanguage()
   const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
+  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [mapRef] = useRecoilState(mapRefState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
@@ -136,7 +137,7 @@ const LocationFormContainer = ({
         history.push(`/location/${id}`)
         enqueueSnackbar(translations.notifications.markerUpdated, { variant: 'success' })
       }
-      refreshMap()
+      mapRef.loadMapMarkers()
     } catch (error) {
       if (error.type === 'parseError') {
         console.error(error.value)
@@ -153,7 +154,7 @@ const LocationFormContainer = ({
       await api.post('delete_point', { id })
       setCachedLocation(null)
       history.push('/')
-      refreshMap()
+      mapRef.loadMapMarkers()
       enqueueSnackbar(translations.notifications.locationDeleted, { variant: 'success' })
     } catch (err) {
       console.error(err)
@@ -162,29 +163,32 @@ const LocationFormContainer = ({
   }
 
   return (
-    loading || loadingAuth
-      ? <Loader dark big />
-      : error
-        ? <div>Error!</div>
-        : <LocationForm
-          locationData={location}
-          onSubmitLocation={onSubmitLocation}
-          updateCurrentMarker={coords => {
-            try {
-              const { lat, lon } = parse(coords)
-              if (
-                (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
-                (!location?.location || location.location.lat !== lat || location.location.lon !== lon)
-              ) {
-                setCachedLocation({ ...location, location: { lat, lon } })
-              }
-            } catch (err) {}
-          }}
-          cancel={() => history.goBack()}
-          isModerator={isModerator}
-          onDeleteLocation={onDeleteLocation}
-          isNew={isNew}
-        />
+    <ContentWrapper>
+      {loading || loadingAuth
+        ? <Loader dark big />
+        : error
+          ? <div>Error!</div>
+          : <LocationForm
+            locationData={location}
+            onSubmitLocation={onSubmitLocation}
+            updateCurrentMarker={coords => {
+              try {
+                const { lat, lon } = parse(coords)
+                if (
+                  (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
+                  (!location?.location || location.location.lat !== lat || location.location.lon !== lon)
+                ) {
+                  setCachedLocation({ ...location, location: { lat, lon } })
+                }
+              } catch (err) {}
+            }}
+            cancel={() => history.goBack()}
+            isModerator={isModerator}
+            onDeleteLocation={onDeleteLocation}
+            isNew={isNew}
+          />
+      }
+    </ContentWrapper>
   )
 }
 

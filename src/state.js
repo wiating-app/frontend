@@ -12,6 +12,11 @@ export const isLocationTabOpenState = atom({
   default: false,
 })
 
+export const mapRefState = atom({
+  key: 'mapRef',
+  default: null,
+})
+
 export const activeTypesState = atom({
   key: 'activeTypes',
   default: [],

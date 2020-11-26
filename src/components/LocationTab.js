@@ -17,7 +17,8 @@ const LocationTab = ({
   history,
   location: { pathname },
 }) => {
-  const classes = useStyles(pathname.startsWith('/search'))
+  const coverMapOnMobile = pathname.startsWith('/search')
+  const classes = useStyles(coverMapOnMobile)
   const theme = useTheme()
   const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
   const [isLocationTabOpen] = useRecoilState(isLocationTabOpenState)
@@ -50,8 +51,8 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     backgroundColor: 'transparent',
     borderTop: 'none',
-    height: hideMapOnMobile =>
-      `calc(100vh - ${(hideMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight)}px)`,
+    height: coverMapOnMobile =>
+      `calc(100vh - ${(coverMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight)}px)`,
     boxShadow: theme.shadows[14],
     [theme.breakpoints.up('sm')]: {
       width: theme.layout.locationTabWidth,
