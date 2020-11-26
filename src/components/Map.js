@@ -19,7 +19,7 @@ import 'react-leaflet-markercluster/dist/styles.min.css'
 import {
   editModeState,
   isDrawerOpenState,
-  cachedLocationState,
+  activeLocationState,
   searchResultsState,
 } from '../state'
 import PixiOverlay from './PixiOverlay'
@@ -46,7 +46,7 @@ const Map = React.forwardRef(({
   const mapRef = React.useRef()
   const [editMode] = useRecoilState(editModeState)
   const [, setSearchResults] = useRecoilState(searchResultsState)
-  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -63,14 +63,14 @@ const Map = React.forwardRef(({
         : 32
 
   React.useEffect(() => {
-    if (cachedLocation && !contextMenu) {
-      const { lat, lng } = cachedLocation.location
+    if (activeLocation && !contextMenu) {
+      const { lat, lng } = activeLocation.location
       mapRef.current.leafletElement.panTo([lat, lng])
     }
-  }, [cachedLocation])
+  }, [activeLocation])
 
   React.useEffect(() => {
-    if (center && !cachedLocation) {
+    if (center && !activeLocation) {
       mapRef.current.leafletElement.flyTo(center)
     }
   }, [center])
@@ -78,8 +78,8 @@ const Map = React.forwardRef(({
   React.useEffect(() => {
     if (isMobile) {
       mapRef.current.leafletElement.invalidateSize()
-      if (cachedLocation?.location) {
-        mapRef.current.leafletElement.flyTo(cachedLocation.location)
+      if (activeLocation?.location) {
+        mapRef.current.leafletElement.flyTo(activeLocation.location)
       }
     }
   }, [isDrawerOpen, isMobile])
@@ -138,7 +138,7 @@ const Map = React.forwardRef(({
           if (!editMode) {
             if (isLoggedIn) {
               setContextMenu(!contextMenu)
-              setCachedLocation(contextMenu ? null : { location: e.latlng })
+              setActiveLocation(contextMenu ? null : { location: e.latlng })
             }
             history.push('/')
           }
@@ -147,10 +147,10 @@ const Map = React.forwardRef(({
           if (contextMenu) {
             // If context menu is opened, close it.
             setContextMenu(false)
-            setCachedLocation(null)
-          } else if (editMode && isLoggedIn && !cachedLocation) {
+            setActiveLocation(null)
+          } else if (editMode && isLoggedIn && !activeLocation) {
             // Add location by pinning on map mode.
-            setCachedLocation({ location: e.latlng })
+            setActiveLocation({ location: e.latlng })
             history.push('/location/new')
           }
         }}
@@ -170,14 +170,14 @@ const Map = React.forwardRef(({
               position: [lat, lng],
               onClick: () => {
                 setSearchResults([])
-                setCachedLocation(item)
+                setActiveLocation(item)
                 history.push(`/location/${item.id}`)
                 setContextMenu(null)
               },
             }
           }) || []}
         />
-        {cachedLocation &&
+        {activeLocation &&
           <Marker
             icon={new Icon({
               iconUrl: '/active-location.svg',
@@ -185,28 +185,28 @@ const Map = React.forwardRef(({
               iconAnchor: [20, 40],
             })}
             zIndexOffset={1100}
-            position={cachedLocation.location}
+            position={activeLocation.location}
             draggable={editMode}
             onMoveEnd={e => {
               if (editMode) {
-                setCachedLocation({
-                  ...cachedLocation,
+                setActiveLocation({
+                  ...activeLocation,
                   location: e.target.getLatLng(),
                 })
               }
             }}
           />
         }
-        {cachedLocation && contextMenu &&
+        {activeLocation && contextMenu &&
           <Popup
-            position={cachedLocation.location}
+            position={activeLocation.location}
             closeButton={false}
             className={classes.popup}
           >
             <ContextMenu addMarker={() => {
               setContextMenu(null)
               history.push('/location/new')
-              mapRef.current.leafletElement.setView(cachedLocation.location)
+              mapRef.current.leafletElement.setView(activeLocation.location)
             }} />
           </Popup>
         }

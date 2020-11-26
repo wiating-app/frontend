@@ -4,13 +4,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import { ViewList } from '@material-ui/icons'
 import { useRecoilState } from 'recoil'
 import useLanguage from '../utils/useLanguage'
-import { searchResultsState, cachedLocationState } from '../state'
+import { searchResultsState, activeLocationState } from '../state'
 import history from '../history'
 
 const BackToSearch = () => {
   const classes = useStyles()
   const [searchResults] = useRecoilState(searchResultsState)
-  const [, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations } = useLanguage()
 
   if (!searchResults.length) return null
@@ -18,7 +18,7 @@ const BackToSearch = () => {
     <Button
       onClick={() => {
         history.push('/search')
-        setCachedLocation(null)
+        setActiveLocation(null)
       }}
       className={classes.root}
       variant='contained'

@@ -7,7 +7,7 @@ import {
 } from '@material-ui/icons'
 import { useSnackbar } from 'notistack'
 import { useRecoilState } from 'recoil'
-import { editModeState, cachedLocationState } from '../state'
+import { editModeState, activeLocationState } from '../state'
 import AddButton from '../components/AddButton'
 import useLanguage from '../utils/useLanguage'
 import useUserLocation from '../utils/useUserLocation'
@@ -20,7 +20,7 @@ const AddButtonContainer = () => {
   const { isLoggedIn } = useAuth0()
   const { userLocation, error } = useUserLocation()
   const [editMode] = useRecoilState(editModeState)
-  const [, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [, setActiveLocation] = useRecoilState(activeLocationState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   if (editMode) return null
@@ -31,7 +31,7 @@ const AddButtonContainer = () => {
           label: translations.pointOnMap,
           icon: <PinDrop />,
           callback: () => {
-            setCachedLocation(null)
+            setActiveLocation(null)
             history.push('/pin')
             enqueueSnackbar(translations.notifications.pointOnMap, {
               variant: 'info',
@@ -54,7 +54,7 @@ const AddButtonContainer = () => {
           label: translations.enterCoordinates,
           icon: <BorderColor />,
           callback: () => {
-            setCachedLocation(null)
+            setActiveLocation(null)
             history.push('/location/new')
           },
         },
@@ -64,7 +64,7 @@ const AddButtonContainer = () => {
           callback: async () => {
             const [lat, lon] = userLocation
             await history.push('/location/new')
-            setCachedLocation({ location: { lat, lon } })
+            setActiveLocation({ location: { lat, lon } })
           },
         }] : [],
       ]}

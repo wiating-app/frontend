@@ -5,7 +5,7 @@ import dataUriToBuffer from 'data-uri-to-buffer'
 import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
 import api from '../api'
-import { cachedLocationState } from '../state'
+import { activeLocationState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import LocationImages from '../components/LocationImages'
 import LocationInfo from '../components/LocationInfo'
@@ -17,7 +17,7 @@ const LocationInfoContainer = ({
   match: { params: { id } },
   history,
 }) => {
-  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations } = useLanguage()
   const { isLoggedIn, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
@@ -27,7 +27,7 @@ const LocationInfoContainer = ({
 
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
-    if (!cachedLocation) {
+    if (!activeLocation) {
       const handleAsync = async () => {
         try {
           const { data } = await api.post('get_point', { id })
@@ -38,7 +38,7 @@ const LocationInfoContainer = ({
               lng: data.location.lon,
             },
           }
-          setCachedLocation(formattedData)
+          setActiveLocation(formattedData)
         } catch (error) {
           setError(true)
           enqueueSnackbar(translations.connectionProblem.location, { variant: 'error' })
@@ -48,7 +48,7 @@ const LocationInfoContainer = ({
     } else {
       setLoading(false)
     }
-  }, [cachedLocation])
+  }, [activeLocation])
 
   const onImageUpload = async files => {
     setImageUploading(true)
@@ -66,10 +66,10 @@ const LocationInfoContainer = ({
             const resizedFile = new File([decoded], file.name, { type: file.type })
             const fileObject = new FormData()
             fileObject.append('file', resizedFile)
-            const { data } = await api.post(`add_image/${cachedLocation.id}`, fileObject)
-            setCachedLocation(data)
+            const { data } = await api.post(`add_image/${activeLocation.id}`, fileObject)
+            setActiveLocation(data)
             setImageUploading(false)
-            history.push(`/location/${cachedLocation.id}`)
+            history.push(`/location/${activeLocation.id}`)
             enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
           },
         )
@@ -86,7 +86,7 @@ const LocationInfoContainer = ({
       const { reason, description } = fields
       const summary = `${translations.reportReasons[reason]}: ${description}`
       await api.post('report', {
-        id: cachedLocation.id,
+        id: activeLocation.id,
         report_reason: summary,
       })
       enqueueSnackbar('Punkt zgłoszony do moderacji', { variant: 'success' })
@@ -103,13 +103,13 @@ const LocationInfoContainer = ({
         ? <div>Error!</div>
         : <>
           <LocationImages
-            images={cachedLocation.images}
+            images={activeLocation.images}
             id={id}
             uploading={imageUploading}
             onImageUpload={files => onImageUpload(files)}
           />
           <LocationInfo
-            selectedLocation={cachedLocation}
+            selectedLocation={activeLocation}
             loggedIn={isLoggedIn}
             isModerator={isModerator}
             handleReport={handleReport}

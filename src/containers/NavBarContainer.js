@@ -6,7 +6,7 @@ import { useTheme } from '@material-ui/core/styles'
 import {
   activeTypesState,
   searchResultsState,
-  cachedLocationState,
+  activeLocationState,
 } from '../state'
 import api from '../api'
 import useAuth0 from '../utils/useAuth0'
@@ -22,7 +22,7 @@ const NavBarContainer = () => {
   const [searchPhrase, setSearchPhrase] = React.useState()
   const [searchLoading, setSearchLoading] = React.useState()
   const [searchResults, setSearchResults] = useRecoilState(searchResultsState)
-  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations, language, setLanguage } = useLanguage()
   const [activeTypes] = useRecoilState(activeTypesState)
 
@@ -48,7 +48,7 @@ const NavBarContainer = () => {
             ...activeTypes.length ? { point_type: activeTypes } : {},
           })
           setSearchResults(points)
-          setCachedLocation(null)
+          setActiveLocation(null)
           history.push('/search')
           setSearchLoading(false)
         }

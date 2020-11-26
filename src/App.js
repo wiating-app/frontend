@@ -6,7 +6,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import {
   editModeState,
-  cachedLocationState,
+  activeLocationState,
   isDrawerOpenState,
 } from './state'
 import Layout from './components/Layout'
@@ -31,7 +31,7 @@ import HistoryContainer from '././containers/HistoryContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
-  const [, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [, setActiveLocation] = useRecoilState(activeLocationState)
   const [editMode, setEditMode] = useRecoilState(editModeState)
   const [, setIsDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { closeSnackbar } = useSnackbar()
@@ -40,7 +40,7 @@ const App = ({ history, location: { pathname } }) => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
     setIsDrawerOpen(pathname.startsWith('/location') || pathname.startsWith('/search'))
     if (!pathname.startsWith('/location/')) {
-      setCachedLocation(null)
+      setActiveLocation(null)
     }
   }, [pathname])
 

@@ -22,8 +22,8 @@ export const activeTypesState = atom({
   default: [],
 })
 
-export const cachedLocationState = atom({
-  key: 'cachedLocation',
+export const activeLocationState = atom({
+  key: 'activeLocation',
   default: null,
 })
 
