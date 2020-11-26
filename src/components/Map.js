@@ -18,7 +18,7 @@ import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import {
   editModeState,
-  isLocationTabOpenState,
+  isDrawerOpenState,
   cachedLocationState,
   searchResultsState,
 } from '../state'
@@ -47,7 +47,7 @@ const Map = React.forwardRef(({
   const [editMode] = useRecoilState(editModeState)
   const [, setSearchResults] = useRecoilState(searchResultsState)
   const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
-  const [isLocationTabOpen] = useRecoilState(isLocationTabOpenState)
+  const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
@@ -82,7 +82,7 @@ const Map = React.forwardRef(({
         mapRef.current.leafletElement.flyTo(cachedLocation.location)
       }
     }
-  }, [isLocationTabOpen, isMobile])
+  }, [isDrawerOpen, isMobile])
 
   // Handle refs.
   React.useImperativeHandle(ref, () => ({
@@ -117,7 +117,7 @@ const Map = React.forwardRef(({
     // Use wrapper to set offset to load markers that are on the edge of a screen.
     <div
       className={classes.offsetWrapper}
-      style={isLocationTabOpen && isMobile
+      style={isDrawerOpen && isMobile
         ? isPhone
           ? { height: theme.layout.mobileMiniMapHeight }
           : { marginLeft: theme.layout.locationTabWidth }
@@ -229,7 +229,7 @@ const Map = React.forwardRef(({
             />
           </>
         }
-        {(!isLocationTabOpen || !isPhone) &&
+        {(!isDrawerOpen || !isPhone) &&
           <>
             <ZoomControl position='topright' />
             <Control position='topright' className='leaflet-bar'>
@@ -260,7 +260,7 @@ const Map = React.forwardRef(({
           </>
         }
         <Control position='bottomright'>
-          {userLocation && (!isLocationTabOpen || !isPhone) &&
+          {userLocation && (!isDrawerOpen || !isPhone) &&
             <Typography
               component='div'
               variant='caption'

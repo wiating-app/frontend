@@ -10,7 +10,7 @@ import Logo from './Logo'
 import SearchInput from './SearchInput'
 import Loader from './Loader'
 import useLanguage from '../utils/useLanguage'
-import { isLocationTabOpenState } from '../state'
+import { isDrawerOpenState } from '../state'
 
 
 const NavBar = ({
@@ -25,12 +25,12 @@ const NavBar = ({
   setLanguage,
 }) => {
   const classes = useStyles()
-  const [isLocationTabOpen] = useRecoilState(isLocationTabOpenState)
+  const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { translations } = useLanguage()
 
   return (
     <AppBar position='relative' className={classNames(classes.root, {
-      [classes.hideOnMobile]: isLocationTabOpen,
+      [classes.hideOnMobile]: isDrawerOpen,
     })}>
       <Toolbar>
         <Logo className={classes.logo} />

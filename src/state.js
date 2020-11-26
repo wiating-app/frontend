@@ -7,8 +7,8 @@ export const editModeState = atom({
   default: false,
 })
 
-export const isLocationTabOpenState = atom({
-  key: 'isLocationTabOpen',
+export const isDrawerOpenState = atom({
+  key: 'isDrawerOpen',
   default: false,
 })
 

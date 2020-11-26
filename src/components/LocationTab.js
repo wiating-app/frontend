@@ -9,7 +9,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
-import { isLocationTabOpenState } from '../state'
+import { isDrawerOpenState } from '../state'
 
 
 const LocationTab = ({
@@ -21,11 +21,11 @@ const LocationTab = ({
   const classes = useStyles(coverMapOnMobile)
   const theme = useTheme()
   const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
-  const [isLocationTabOpen] = useRecoilState(isLocationTabOpenState)
+  const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
 
   return (
     <Drawer
-      open={isLocationTabOpen}
+      open={isDrawerOpen}
       variant='persistent'
       anchor={isNotSmartphone ? 'left' : 'bottom'}
       className={classes.drawer}

@@ -7,7 +7,7 @@ import './App.css'
 import {
   editModeState,
   cachedLocationState,
-  isLocationTabOpenState,
+  isDrawerOpenState,
 } from './state'
 import Layout from './components/Layout'
 import LocationTab from './components/LocationTab'
@@ -33,12 +33,12 @@ import HistoryContainer from '././containers/HistoryContainer'
 const App = ({ history, location: { pathname } }) => {
   const [, setCachedLocation] = useRecoilState(cachedLocationState)
   const [editMode, setEditMode] = useRecoilState(editModeState)
-  const [, setIsLocationTabOpen] = useRecoilState(isLocationTabOpenState)
+  const [, setIsDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
-    setIsLocationTabOpen(pathname.startsWith('/location') || pathname.startsWith('/search'))
+    setIsDrawerOpen(pathname.startsWith('/location') || pathname.startsWith('/search'))
     if (!pathname.startsWith('/location/')) {
       setCachedLocation(null)
     }
