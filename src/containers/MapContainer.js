@@ -2,7 +2,7 @@ import React from 'react'
 import { useSnackbar } from 'notistack'
 import { useRecoilState } from 'recoil'
 import api, { CancelToken, isCancel } from '../api'
-import { activeTypesState, mapRefState } from '../state'
+import { activeTypesState, mapRefState, markersState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useCurrentLocation from '../utils/useCurrentLocation'
 import Map from '../components/Map'
@@ -12,10 +12,10 @@ let cancelRequest
 
 
 const MapContainer = props => {
-  const [points, setPoints] = React.useState()
   const [initalPosition, setInitalPosition] = React.useState()
   const [activeTypes] = useRecoilState(activeTypesState)
   const [mapRef, setMapRef] = useRecoilState(mapRefState)
+  const [markers, setMarkers] = useRecoilState(markersState)
   const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
   const { currentLocation, accuracy, loading, error } = useCurrentLocation()
@@ -65,7 +65,7 @@ const MapContainer = props => {
           cancelRequest = c
         }),
       })
-      setPoints(points)
+      setMarkers(points)
     } catch (error) {
       if (!isCancel(error)) {
         console.error(error)
@@ -96,7 +96,7 @@ const MapContainer = props => {
       isLoggedIn={isLoggedIn}
       setStoredPosition={coords => setStoredPosition(coords)}
       getMarkers={getMarkers}
-      points={points}
+      markers={markers}
       currentLocation={currentLocation}
       locationAccuracy={accuracy}
       center={initalPosition && initalPosition.center}

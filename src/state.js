@@ -27,6 +27,11 @@ export const cachedLocationState = atom({
   default: null,
 })
 
+export const markersState = atom({
+  key: 'markers',
+  default: [],
+})
+
 export const searchResultsState = atom({
   key: 'searchResults',
   default: [],

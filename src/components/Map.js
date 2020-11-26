@@ -35,7 +35,7 @@ const Map = React.forwardRef(({
   zoom,
   isLoggedIn,
   currentLocation,
-  points,
+  markers,
   locationAccuracy,
   getMarkers,
   setStoredPosition,
@@ -179,7 +179,7 @@ const Map = React.forwardRef(({
         />
         <PixiOverlay
           map={mapRef?.current?.leafletElement}
-          markers={points?.map(item => {
+          markers={markers.map(item => {
             const { location: { lat, lon }, id, type } = item
             return {
               id,
@@ -267,8 +267,8 @@ const Map = React.forwardRef(({
                 <Tooltip title='Eksportuj aktualny widok do KML' placement='left'>
                   <a
                     className={classes.customControl}
-                    onClick={() => exportToKML(points)}
-                    disabled={!points || !points.length}
+                    onClick={() => exportToKML(markers)}
+                    disabled={!markers.length}
                   >KML</a>
                 </Tooltip>
               </Control>
