@@ -41,7 +41,7 @@ const exportToKML = locations => {
       '        ]]>',
       '      </description>',
       '      <Point>',
-      `        <coordinates>${location.location.lon},${location.location.lat},0</coordinates>`,
+      `        <coordinates>${location.location.lng},${location.location.lat},0</coordinates>`,
       '      </Point>',
       '    </Placemark>',
     ], [])

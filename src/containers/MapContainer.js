@@ -7,6 +7,7 @@ import useAuth0 from '../utils/useAuth0'
 import useUserLocation from '../utils/useUserLocation'
 import Map from '../components/Map'
 import useLanguage from '../utils/useLanguage'
+import formatData from '../utils/serializeData'
 
 let cancelRequest
 
@@ -62,14 +63,7 @@ const MapContainer = props => {
           cancelRequest = c
         }),
       })
-      const formattedPoints = points.map(item => ({
-        ...item,
-        location: {
-          lat: item.location.lat,
-          lng: item.location.lon,
-        },
-      }))
-      setMarkers(formattedPoints)
+      setMarkers(points.map(item => formatData(item)))
     } catch (error) {
       if (!isCancel(error)) {
         console.error(error)

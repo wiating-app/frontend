@@ -10,6 +10,7 @@ import LocationForm from '../components/LocationForm'
 import Loader from '../components/Loader'
 import useLanguage from '../utils/useLanguage'
 import useAuth0 from '../utils/useAuth0'
+import formatData from '../utils/serializeData'
 
 
 const LocationFormContainer = ({
@@ -53,14 +54,7 @@ const LocationFormContainer = ({
         const handleAsync = async () => {
           try {
             const { data } = await api.post('get_point', { id })
-            const formattedData = {
-              ...data,
-              location: {
-                lat: data.location.lat,
-                lng: data.location.lon,
-              },
-            }
-            setActiveLocation(formattedData)
+            setActiveLocation(formatData(data))
           } catch (error) {
             setError(true)
           }
@@ -106,8 +100,8 @@ const LocationFormContainer = ({
         name,
         description,
         directions,
-        lat: lat,
-        lon: lon,
+        lat,
+        lon,
         type,
         water_exists: mapOptionToBool(water_exists),
         water_comment: water_exists && water_comment ? water_comment : null,
@@ -119,14 +113,14 @@ const LocationFormContainer = ({
       if (isNew) {
         // New marker creation.
         const { data } = await api.post('add_point', dataObject)
-        setActiveLocation(data)
+        setActiveLocation(formatData(data))
         history.push(`/location/${data.id}`)
         enqueueSnackbar(translations.notifications.newMarkerAdded, { variant: 'success' })
       } else {
         // Updating exisitng marker.
         const { id } = activeLocation
         const { data } = await api.post('modify_point', { id, ...dataObject })
-        setActiveLocation(data)
+        setActiveLocation(formatData(data))
         history.push(`/location/${id}`)
         enqueueSnackbar(translations.notifications.markerUpdated, { variant: 'success' })
       }

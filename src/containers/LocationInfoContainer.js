@@ -11,6 +11,7 @@ import LocationImages from '../components/LocationImages'
 import LocationInfo from '../components/LocationInfo'
 import Loader from '../components/Loader'
 import useLanguage from '../utils/useLanguage'
+import formatData from '../utils/serializeData'
 
 
 const LocationInfoContainer = ({
@@ -31,14 +32,7 @@ const LocationInfoContainer = ({
       const handleAsync = async () => {
         try {
           const { data } = await api.post('get_point', { id })
-          const formattedData = {
-            ...data,
-            location: {
-              lat: data.location.lat,
-              lng: data.location.lon,
-            },
-          }
-          setActiveLocation(formattedData)
+          setActiveLocation(formatData(data))
         } catch (error) {
           setError(true)
           enqueueSnackbar(translations.connectionProblem.location, { variant: 'error' })
