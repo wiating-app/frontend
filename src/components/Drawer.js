@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import {
-  Drawer,
+  Drawer as MUIDrawer,
   IconButton,
 } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -12,7 +12,7 @@ import { useRecoilState } from 'recoil'
 import { isDrawerOpenState } from '../state'
 
 
-const LocationTab = ({
+const Drawer = ({
   children,
   history,
   location: { pathname },
@@ -24,7 +24,7 @@ const LocationTab = ({
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
 
   return (
-    <Drawer
+    <MUIDrawer
       open={isDrawerOpen}
       variant='persistent'
       anchor={isNotSmartphone ? 'left' : 'bottom'}
@@ -43,7 +43,7 @@ const LocationTab = ({
           {children}
         </div>
       </PerfectScrollbar>
-    </Drawer>
+    </MUIDrawer>
   )
 }
 
@@ -91,4 +91,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default withRouter(LocationTab)
+export default withRouter(Drawer)

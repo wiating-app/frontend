@@ -10,7 +10,7 @@ import {
   isDrawerOpenState,
 } from './state'
 import Layout from './components/Layout'
-import LocationTab from './components/LocationTab'
+import Drawer from './components/Drawer'
 import SearchResults from './components/SearchResults'
 import BackToSearch from './components/BackToSearch'
 // import PhotosForm from './components/PhotosForm'
@@ -58,7 +58,7 @@ const App = ({ history, location: { pathname } }) => {
   return (
     <Layout appBar={<NavBarContainer />}>
 
-      <LocationTab>
+      <Drawer>
         <Switch>
           <Route exact path='/search' component={SearchResults} />
 
@@ -79,11 +79,11 @@ const App = ({ history, location: { pathname } }) => {
               <Typography variant='h4' gutterBottom>{translations.actions.editPhotos}</Typography>
               <PhotosForm
                 onSubmitLocation={files => onImageUpload(files)}
-                cancel={() => setLocationTabContent('markerInfo')}
+                cancel={() => setDrawerContent('markerInfo')}
               />
           </Route> */}
         </Switch>
-      </LocationTab>
+      </Drawer>
 
       <MapContainer />
 
