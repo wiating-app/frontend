@@ -20,7 +20,6 @@ const LocationFormContainer = ({
   const { params: { id } } = match
   const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
   const { translations } = useLanguage()
-  const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
   const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
@@ -33,10 +32,6 @@ const LocationFormContainer = ({
       enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
     }
   }, [loadingAuth])
-
-  React.useEffect(() => {
-    setLocation(cachedLocation)
-  }, [cachedLocation])
 
   // Make sure that form is cleaned up eg. when navigating from edit location
   // form to new location form.
@@ -54,32 +49,26 @@ const LocationFormContainer = ({
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
     if (!isNew) {
-      if (cachedLocation) {
-        setLocation(cachedLocation)
-        setLoading(false)
-      } else {
-        if (id) {
-          const handleAsync = async () => {
-            try {
-              const { data } = await api.post('get_point', { id })
-              const formattedData = {
-                ...data,
-                location: {
-                  lat: data.location.lat,
-                  lng: data.location.lon,
-                },
-              }
-              setLocation(formattedData)
-              setCachedLocation(formattedData)
-            } catch (error) {
-              setError(true)
+      if (!cachedLocation && id) {
+        const handleAsync = async () => {
+          try {
+            const { data } = await api.post('get_point', { id })
+            const formattedData = {
+              ...data,
+              location: {
+                lat: data.location.lat,
+                lng: data.location.lon,
+              },
             }
-            setLoading(false)
+            setCachedLocation(formattedData)
+          } catch (error) {
+            setError(true)
           }
-          handleAsync()
-        } else {
           setLoading(false)
         }
+        handleAsync()
+      } else {
+        setLoading(false)
       }
     }
   }, [])
@@ -130,7 +119,6 @@ const LocationFormContainer = ({
       if (isNew) {
         // New marker creation.
         const { data } = await api.post('add_point', dataObject)
-        setLocation(data)
         setCachedLocation(data)
         history.push(`/location/${data.id}`)
         enqueueSnackbar(translations.notifications.newMarkerAdded, { variant: 'success' })
@@ -138,7 +126,6 @@ const LocationFormContainer = ({
         // Updating exisitng marker.
         const { id } = cachedLocation
         const { data } = await api.post('modify_point', { id, ...dataObject })
-        setLocation(data)
         setCachedLocation(data)
         history.push(`/location/${id}`)
         enqueueSnackbar(translations.notifications.markerUpdated, { variant: 'success' })
@@ -175,16 +162,16 @@ const LocationFormContainer = ({
         : error
           ? <div>Error!</div>
           : <LocationForm
-            locationData={location}
+            locationData={cachedLocation}
             onSubmitLocation={onSubmitLocation}
             updateCurrentMarker={coords => {
               try {
                 const { lat, lon: lng } = parse(coords)
                 if (
                   (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
-                  (!location?.location || location.location.lat !== lat || location.location.lng !== lng)
+                  (!cachedLocation?.location || cachedLocation.location.lat !== lat || cachedLocation.location.lng !== lng)
                 ) {
-                  setCachedLocation({ ...location, location: { lat, lng } })
+                  setCachedLocation({ ...cachedLocation, location: { lat, lng } })
                 }
               } catch (err) {}
             }}

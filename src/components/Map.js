@@ -149,7 +149,9 @@ const Map = React.forwardRef(({
             setContextMenu(false)
             setCachedLocation(null)
           } else if (editMode && isLoggedIn && !cachedLocation) {
+            // Add location by pinning on map mode.
             setCachedLocation({ location: e.latlng })
+            history.push('/location/new')
           }
         }}
       >

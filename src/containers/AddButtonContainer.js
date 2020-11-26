@@ -20,7 +20,7 @@ const AddButtonContainer = () => {
   const { isLoggedIn } = useAuth0()
   const { currentLocation, error } = useCurrentLocation()
   const [editMode] = useRecoilState(editModeState)
-  const [cachedLocation, setCachedLocation] = useRecoilState(cachedLocationState)
+  const [, setCachedLocation] = useRecoilState(cachedLocationState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   if (editMode) return null
