@@ -4,9 +4,9 @@ import React from 'react'
 const CurrentLocationContext = React.createContext([null, () => {}])
 
 
-export const CurrentLocationProvider = ({ children }) => {
-  const [currentLocation, setCurrentLocation] = React.useState({
-    currentLocation: null,
+export const UserLocationProvider = ({ children }) => {
+  const [userLocation, userUserLocation] = React.useState({
+    userLocation: null,
     accuracy: null,
     loading: true,
     error: false,
@@ -20,8 +20,8 @@ export const CurrentLocationProvider = ({ children }) => {
           // For when getting location is a success.
           const { coords: { latitude, longitude, accuracy } } = location
           console.log('Updated user location:', [latitude, longitude], 'Accuracy:', accuracy)
-          setCurrentLocation({
-            currentLocation: [latitude, longitude],
+          userUserLocation({
+            userLocation: [latitude, longitude],
             accuracy,
             loading: false,
             error: false,
@@ -30,8 +30,8 @@ export const CurrentLocationProvider = ({ children }) => {
         function error(err) {
           // For when getting location had an error.
           console.error(err.message)
-          setCurrentLocation({
-            currentLocation: null,
+          userUserLocation({
+            userLocation: null,
             accuracy: null,
             loading: false,
             error: true,
@@ -40,8 +40,8 @@ export const CurrentLocationProvider = ({ children }) => {
       )
     } else {
       console.warn('Geolocation is not enabled on this browser.')
-      setCurrentLocation({
-        currentLocation: null,
+      userUserLocation({
+        userLocation: null,
         accuracy: null,
         loading: false,
         error: true,
@@ -61,12 +61,12 @@ export const CurrentLocationProvider = ({ children }) => {
   }, [])
 
   return (
-    <CurrentLocationContext.Provider value={currentLocation}>
+    <CurrentLocationContext.Provider value={userLocation}>
       {children}
     </CurrentLocationContext.Provider>
   )
 }
 
 
-const useCurrentLocation = () => React.useContext(CurrentLocationContext)
-export default useCurrentLocation
+const useUserLocation = () => React.useContext(CurrentLocationContext)
+export default useUserLocation

@@ -34,7 +34,7 @@ const Map = React.forwardRef(({
   center,
   zoom,
   isLoggedIn,
-  currentLocation,
+  userLocation,
   markers,
   locationAccuracy,
   getMarkers,
@@ -210,11 +210,11 @@ const Map = React.forwardRef(({
             }} />
           </Popup>
         }
-        {currentLocation &&
+        {userLocation &&
           <>
             {locationAccuracy && locationAccuracy > 30 &&
               <Circle
-                center={currentLocation}
+                center={userLocation}
                 radius={locationAccuracy}
               />
             }
@@ -225,7 +225,7 @@ const Map = React.forwardRef(({
                 iconAnchor: [12, 12],
               })}
               zIndexOffset={1000}
-              position={currentLocation}
+              position={userLocation}
             />
           </>
         }
@@ -235,12 +235,12 @@ const Map = React.forwardRef(({
             <Control position='topright' className='leaflet-bar'>
               <a
                 className={classes.customControl}
-                onClick={() => currentLocation &&
-                  mapRef.current.leafletElement.flyTo(currentLocation, 14)
+                onClick={() => userLocation &&
+                  mapRef.current.leafletElement.flyTo(userLocation, 14)
                 }
-                disabled={!currentLocation}
+                disabled={!userLocation}
               >
-                {currentLocation
+                {userLocation
                   ? <GpsFixed className={classes.customControlIcon} />
                   : <GpsNotFixed className={classes.customControlIcon} />
                 }
@@ -260,11 +260,11 @@ const Map = React.forwardRef(({
           </>
         }
         <Control position='bottomright'>
-          {currentLocation && (!isLocationTabOpen || !isPhone) &&
+          {userLocation && (!isLocationTabOpen || !isPhone) &&
             <Typography
               component='div'
               variant='caption'
-              className={classes.currentLocation}
+              className={classes.userLocation}
             >Dokładność GPS: {Math.round(locationAccuracy)} m</Typography>
           }
         </Control>
@@ -352,7 +352,7 @@ const useStyles = makeStyles(theme => ({
   customControlIcon: {
     fontSize: 18,
   },
-  currentLocation: {
+  userLocation: {
     backgroundColor: 'rgba(255,255,255,0.75)',
     padding: '0 2px',
     fontSize: 11,

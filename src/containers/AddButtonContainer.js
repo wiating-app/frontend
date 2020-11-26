@@ -10,7 +10,7 @@ import { useRecoilState } from 'recoil'
 import { editModeState, cachedLocationState } from '../state'
 import AddButton from '../components/AddButton'
 import useLanguage from '../utils/useLanguage'
-import useCurrentLocation from '../utils/useCurrentLocation'
+import useUserLocation from '../utils/useUserLocation'
 import useAuth0 from '../utils/useAuth0'
 import history from '../history'
 
@@ -18,7 +18,7 @@ import history from '../history'
 const AddButtonContainer = () => {
   const { translations } = useLanguage()
   const { isLoggedIn } = useAuth0()
-  const { currentLocation, error } = useCurrentLocation()
+  const { userLocation, error } = useUserLocation()
   const [editMode] = useRecoilState(editModeState)
   const [, setCachedLocation] = useRecoilState(cachedLocationState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
@@ -58,11 +58,11 @@ const AddButtonContainer = () => {
             history.push('/location/new')
           },
         },
-        ...currentLocation && !error ? [{
+        ...userLocation && !error ? [{
           label: translations.inCurrentLocation,
           icon: <PersonPinCircle />,
           callback: async () => {
-            const [lat, lon] = currentLocation
+            const [lat, lon] = userLocation
             await history.push('/location/new')
             setCachedLocation({ location: { lat, lon } })
           },

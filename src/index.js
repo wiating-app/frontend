@@ -10,7 +10,7 @@ import history from './history'
 import enableServiceWorker from './enableServiceWorker'
 import { LanguageProvider } from './utils/useLanguage'
 import FormThemeProvider from './utils/FormThemeProvider'
-import { CurrentLocationProvider } from './utils/useCurrentLocation'
+import { UserLocationProvider } from './utils/useUserLocation'
 import theme from './theme'
 
 const App = React.lazy(() => import('./App'))
@@ -35,9 +35,9 @@ ReactDOM.render(
                 >
                   <FormThemeProvider>
                     <CssBaseline />
-                    <CurrentLocationProvider>
+                    <UserLocationProvider>
                       <App />
-                    </CurrentLocationProvider>
+                    </UserLocationProvider>
                   </FormThemeProvider>
                 </Auth0Provider>
               </SnackbarProvider>

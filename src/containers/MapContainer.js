@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil'
 import api, { CancelToken, isCancel } from '../api'
 import { activeTypesState, mapRefState, markersState } from '../state'
 import useAuth0 from '../utils/useAuth0'
-import useCurrentLocation from '../utils/useCurrentLocation'
+import useUserLocation from '../utils/useUserLocation'
 import Map from '../components/Map'
 import useLanguage from '../utils/useLanguage'
 
@@ -18,7 +18,7 @@ const MapContainer = props => {
   const [markers, setMarkers] = useRecoilState(markersState)
   const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
-  const { currentLocation, accuracy, loading, error } = useCurrentLocation()
+  const { userLocation, accuracy, loading, error } = useUserLocation()
   const defaultPosition = [50.39805, 16.844417] // The area of Polish mountains.
 
   const ref = React.useRef()
@@ -82,7 +82,7 @@ const MapContainer = props => {
 
   React.useEffect(() => {
     // Check whether stored position is available asychronously from recognized
-    // currentLocation, because currentLocation recognition may take more time.
+    // userLocation, because userLocation recognition may take more time.
     const position = getStoredPosition()
     setInitalPosition(position || { center: defaultPosition })
   }, [])
@@ -90,8 +90,8 @@ const MapContainer = props => {
   React.useEffect(() => {
     // If user current location has been recognized and initial position is
     // default (unchanged), set user current location as an initial position.
-    if (!loading && !error && initalPosition && JSON.stringify(initalPosition.center) === JSON.stringify(defaultPosition) && currentLocation) {
-      setInitalPosition({ center: currentLocation })
+    if (!loading && !error && initalPosition && JSON.stringify(initalPosition.center) === JSON.stringify(defaultPosition) && userLocation) {
+      setInitalPosition({ center: userLocation })
     }
   }, [loading, initalPosition])
 
@@ -101,7 +101,7 @@ const MapContainer = props => {
       setStoredPosition={coords => setStoredPosition(coords)}
       getMarkers={getMarkers}
       markers={markers}
-      currentLocation={currentLocation}
+      userLocation={userLocation}
       locationAccuracy={accuracy}
       center={initalPosition && initalPosition.center}
       zoom={initalPosition && initalPosition.zoom}
