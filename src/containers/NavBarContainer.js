@@ -63,7 +63,7 @@ const NavBarContainer = ({
     ...isLoggedIn ? [
       {
         label: translations.history,
-        url: '/historia',
+        url: '/history',
       },
       {
         label: <>{translations.language}: {language.toUpperCase()}</>,
@@ -72,9 +72,9 @@ const NavBarContainer = ({
       },
     ] : [],
     { label: translations.informations, url: '/info' },
-    ...isMobile ? [{ label: translations.legend, url: '/legenda' }] : [],
-    { label: translations.termsAndConditions, url: '/regulamin' },
-    { label: translations.privacyPolicy, url: '/polityka-prywatnosci' },
+    ...isMobile ? [{ label: translations.legend, url: '/legend' }] : [],
+    { label: translations.termsAndConditions, url: '/regulations' },
+    { label: translations.privacyPolicy, url: '/privacy-policy' },
     { label: translations.faq, url: '/faq', divider: true },
     {
       label: translations.auth[isLoggedIn ? 'logout' : 'login'],

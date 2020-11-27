@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
-import { getIconUrl } from '../utils/helpers'
+import generateMarkerIcon from '../utils/generateMarkerIcon'
 
 const SearchResults = ({
   items,
@@ -30,7 +30,10 @@ const SearchResults = ({
               }}
             >
               <ListItemAvatar>
-                <img src={getIconUrl(item.type)} className={classes.listAvatar} />
+                <div
+                  dangerouslySetInnerHTML={{ __html: generateMarkerIcon(item.type) }}
+                  className={classes.listAvatar}
+                />
               </ListItemAvatar>
               <ListItemText
                 primary={item.name}

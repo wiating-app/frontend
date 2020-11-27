@@ -1,10 +1,12 @@
 import React from 'react'
-import { Button, Typography } from '@material-ui/core'
-import { Check } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
+import { Button, Typography, Grid } from '@material-ui/core'
+import { Check, List } from '@material-ui/icons'
 import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
+import useLanguage from '../utils/useLanguage'
 
 
 const ReportDetails = ({
@@ -13,30 +15,52 @@ const ReportDetails = ({
   loading,
   onClose,
 }) => {
+  const { translations } = useLanguage()
   return (
     <Modal short onClose={onClose}>
       <Typography variant='h5' gutterBottom>
-        Szczegóły zgłoszenia do lokacji <OpenInNewCard path={`/location/${data.doc_id}`}>{data.name} ({data.id})</OpenInNewCard>
+        {translations.reportsForLocation}<br />
+        <strong>{data.name} ({data.id})</strong> <OpenInNewCard
+          path={`/location/${data.id}`}
+          component={Button}
+          variant='contained'
+          color='primary'
+          size='small'
+        >{translations.show}</OpenInNewCard>
       </Typography>
       <Typography
         variant='body2'
         gutterBottom
-      >Data ostatniej edycji punktu: {data.last_modified_timestamp}</Typography>
+      >{translations.dateOfLastEdit}: {data.last_modified_timestamp}</Typography>
 
       <Table
         data={data.report_reason.map((item, index) => ({
           report_reason: <Typography key={index} variant='caption' gutterBottom>{item}</Typography>
         }))}
         labels={[
-          { name: 'Treść zgłoszenia', field: 'report_reason' },
+          { name: translations.reportReason, field: 'report_reason' },
         ]}
       />
-      <Button
-        variant='contained'
-        onClick={markAsDoneCallback}
-        style={{ marginTop: 20 }}
-        disabled={loading}
-      >{loading ? <Loader dark /> : <Check />} Oznacz wszystkie zgłoszenia jako załatwione</Button>
+      <Grid container spacing={2} style={{ marginTop: 20 }}>
+        <Grid item>
+          <Button
+            component={Link}
+            target='_blank'
+            variant='contained'
+            color='primary'
+            to={`/moderator/log?id=${data.id}`}
+            style={{ marginTop: 20 }}
+          ><List /> {translations.showLocationLogs}</Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant='contained'
+            onClick={markAsDoneCallback}
+            style={{ marginTop: 20 }}
+            disabled={loading}
+          >{loading ? <Loader dark /> : <Check />} {translations.markAsDone}</Button>
+        </Grid>
+      </Grid>
     </Modal>
   )
 }

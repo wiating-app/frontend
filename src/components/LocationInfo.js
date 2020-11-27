@@ -16,6 +16,7 @@ import useLanguage from '../utils/useLanguage'
 
 const LocationInfo = ({
   loggedIn,
+  isModerator,
   selectedLocation,
   handleReport,
 }) => {
@@ -23,7 +24,7 @@ const LocationInfo = ({
   const { translations } = useLanguage()
   const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
-  const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type]] : ''
+  const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type].label] : ''
 
   return (
     <div className={classes.root}>
@@ -115,9 +116,15 @@ const LocationInfo = ({
             variant='text'
             align='right'
           >
-            <Button
-              onClick={() => setReportIsOpen(true)}
-            >{translations.actions.report}</Button>
+            {isModerator
+              ? <Button
+                component={Link}
+                to={`/moderator/log?id=${selectedLocation.id}`}
+              >Wyświetl logi</Button>
+              : <Button
+                onClick={() => setReportIsOpen(true)}
+              >{translations.actions.report}</Button>
+            }
             <Button
               component={Link}
               to={`/location/${selectedLocation.id}/edit`}

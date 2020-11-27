@@ -169,10 +169,15 @@ const LocationFormContainer = ({
           locationData={location}
           onSubmitLocation={onSubmitLocation}
           updateCurrentMarker={coords => {
-            const { lat, lon } = parse(coords)
-            if (!location || !location.location || location.location.lat !== lat || location.location.lon !== lon) {
-              setCachedLocation({ ...location, location: { lat, lon } })
-            }
+            try {
+              const { lat, lon } = parse(coords)
+              if (
+                (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
+                (!location?.location || location.location.lat !== lat || location.location.lon !== lon)
+              ) {
+                setCachedLocation({ ...location, location: { lat, lon } })
+              }
+            } catch (err) {}
           }}
           cancel={() => history.goBack()}
           isModerator={isModerator}

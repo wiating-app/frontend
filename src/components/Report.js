@@ -1,9 +1,8 @@
 import React from 'react'
 import { Typography } from '@material-ui/core'
 import Form from 'react-standalone-form'
-import { Input, FormButton } from 'react-standalone-form-mui'
+import { Input, Select, FormButton } from 'react-standalone-form-mui'
 import Modal from './Modal'
-import Select from './Select'
 import useLanguage from '../utils/useLanguage'
 
 

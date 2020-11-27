@@ -4,15 +4,17 @@ import { Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { OpenInNew } from '@material-ui/icons'
 
-const OpenInNewCard = ({ path, children }) => {
+const OpenInNewCard = ({ path, children, component, ...otherProps }) => {
   const classes = useStyles()
   return (
     <Tooltip title='Przejdź do lokacji' placement='right'>
       <Link
         to={path}
+        component={component}
         target='_blank'
-        className={classes.link}
-      >{children} <OpenInNew style={{ fontSize: 12 }} />
+        className={!component && classes.link}
+        {...otherProps}
+      >{children} <OpenInNew className={classes.icon} />
       </Link>
     </Tooltip>
   )
@@ -27,6 +29,10 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       textDecoration: 'underline',
     },
+  },
+  icon: {
+    fontSize: 12,
+    marginLeft: theme.spacing(0.5),
   },
 }))
 

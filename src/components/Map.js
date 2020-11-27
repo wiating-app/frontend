@@ -12,13 +12,13 @@ import Control from 'react-leaflet-control'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Typography, useMediaQuery, Tooltip } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
-import { Icon, DivIcon } from 'leaflet'
-import MarkerClusterGroup from 'react-leaflet-markercluster'
+import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
+import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
 import Legend from './Legend'
-import { getIconUrl } from '../utils/helpers'
+import generateMarkerIcon from '../utils/generateMarkerIcon'
 import exportToKML from '../utils/exportToKML'
 
 
@@ -48,6 +48,19 @@ const Map = React.forwardRef(({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
   const classes = useStyles()
+
+  const currentZoom = mapRef?.current?.leafletElement?._zoom || zoom
+  const markerSize = currentZoom < 7
+    ? 6
+    : currentZoom < 10
+      ? currentZoom - 1
+      : currentZoom < 11
+        ? 20
+        : 32
+
+  React.useEffect(() => {
+    console.log('currentZoom: ', currentZoom, 'markerSize: ', markerSize)
+  }, [currentZoom])
 
   React.useEffect(() => {
     if (activeMarker && !contextMenu) {
@@ -143,9 +156,10 @@ const Map = React.forwardRef(({
             updateCoordinates(e.latlng)
           } else if (isLocationTabOpen && !editMode) {
             // Dismiss the location details drawer, when clicking on a map.
-            closeTab()
-            setContextMenu(false)
-            setActiveMarker(false)
+            // It does not work with react-leaflet-pixi-overlay approach.
+            // closeTab()
+            // setContextMenu(false)
+            // setActiveMarker(false)
           }
         }}
       >
@@ -153,44 +167,27 @@ const Map = React.forwardRef(({
           url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
           attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
         />
-        <MarkerClusterGroup
-          showCoverageOnHover={false}
-          maxClusterRadius={60}
-          disableClusteringAtZoom={11}
-          spiderfyOnMaxZoom={false}
-          iconCreateFunction={cluster => {
-            const count = cluster.getChildCount()
-            return new DivIcon({
-              html: count,
-              className: classes.woodboardCluster,
-              iconSize: [40, 40],
-            })
-          }}
-        >
-          {points && points.map(item => {
-            const { location: { lat, lon }, type } = item
-
-            return <Marker
-              key={item.id}
-              icon={new Icon({
-                iconUrl: getIconUrl(type),
-                iconSize: [30, 30],
-                iconAnchor: [15, 30],
-              })}
-              position={[lat, lon]}
-              onClick={() => {
+        <PixiOverlay
+          map={mapRef?.current?.leafletElement}
+          markers={points?.map(item => {
+            const { location: { lat, lon }, id, type } = item
+            return {
+              id,
+              customIcon: generateMarkerIcon(type, markerSize),
+              iconId: `${type}_${markerSize}`,
+              position: [lat, lon],
+              onClick: () => {
                 openLocationTab(item)
                 setContextMenu(null)
                 setActiveMarker([lat, lon])
-              }}
-              opacity={editMode || item.is_disabled ? 0.5 : 1}
-            />
-          })}
-        </MarkerClusterGroup>
+              },
+            }
+          }) || []}
+        />
         {activeMarker &&
           <Marker
             icon={new Icon({
-              iconUrl: '/location-icons/point.svg',
+              iconUrl: '/active-location.svg',
               iconSize: [40, 40],
               iconAnchor: [20, 40],
             })}
@@ -227,7 +224,7 @@ const Map = React.forwardRef(({
             }
             <Marker
               icon={new Icon({
-                iconUrl: '/location-icons/current.svg',
+                iconUrl: '/current-location.svg',
                 iconSize: [24, 24],
                 iconAnchor: [12, 12],
               })}
@@ -319,6 +316,10 @@ const useStyles = makeStyles(theme => ({
     // Add light shadow to all markers.
     '& .leaflet-marker-icon': {
       filter: 'drop-shadow(0 0 1px rgb(0,0,0))',
+    },
+    // Move PIXI markers on top of a current location marker.
+    '& .leaflet-pixi-overlay': {
+      zIndex: 1000,
     },
   },
   woodboardCluster: {

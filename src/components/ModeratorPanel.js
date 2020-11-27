@@ -27,6 +27,8 @@ const ModeratorPanel = ({
     }
   }, [loadingAuth])
 
+  const pathArray = pathname.split('/')
+
   return (
     <Modal wide onClose={() => history.push('/')}>
       <Typography
@@ -35,19 +37,19 @@ const ModeratorPanel = ({
       >{translations.administration}</Typography>
 
       <Tabs
-        value={pathname}
+        value={`/${pathArray[1]}/${pathArray[2]}`}
         className={classes.tabs}
         onChange={(e, value) => history.push(value)}
         indicatorColor='primary'
       >
-        <Tab label='Dziennik zmian' value='/moderator/log' />
-        <Tab label='Zgłoszenia' value='/moderator/zgloszenia' />
+        <Tab label={translations.changeLog} value='/moderator/log' />
+        <Tab label={translations.reports} value='/moderator/reports' />
       </Tabs>
 
       <Route path='/moderator/log'>
         <LogsContainer setCachedLogDetails={setCachedLogDetails} />
       </Route>
-      <Route path='/moderator/zgloszenia'>
+      <Route path='/moderator/reports'>
         <ReportsContainer />
       </Route>
 

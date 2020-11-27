@@ -11,13 +11,15 @@ import api from '../api'
 const LogDetailsContainer = ({
   cachedLogDetails,
   setCachedLogDetails,
+  refetchLogs,
   match: { params: { id } },
-  location: { pathname },
+  location: { search, pathname },
   history,
 }) => {
   const [logDetails, setLogDetails] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
+  const [loadingReview, setLoadingReview] = React.useState()
   const [loadingBan, setLoadingBan] = React.useState(false)
   const [loadingRevert, setLoadingRevert] = React.useState(false)
   const { user, isModerator } = useAuth0()
@@ -47,11 +49,32 @@ const LogDetailsContainer = ({
     }
   }, [cachedLogDetails, isModerator])
 
-  const banCallback = async userId => {
+  const goBackToLogs = refetch => {
+    const pathArray = pathname.split('/')
+    history.push({
+      pathname: `/${pathArray[1]}/${pathArray[2]}`,
+      search: `${search}${refetch ? '&refetchLogs=true' : ''}`,
+    })
+  }
+
+  const reviewCallback = async () => {
+    try {
+      setLoadingReview(true)
+      await api.post('log_reviewed', { log_id: logDetails.id })
+      goBackToLogs(true)
+      enqueueSnackbar('Log zweryfikowany.', { variant: 'success' })
+    } catch (err) {
+      console.error(err)
+      enqueueSnackbar('Błąd bazy danych!', { variant: 'error' })
+    }
+    setLoadingReview(false)
+  }
+
+  const banCallback = async () => {
     try {
       setLoadingBan(true)
-      await api.post('ban_user', { ban_user_id: userId })
-      enqueueSnackbar('Użytkownik został zbanowany.', { variant: 'success' })
+      await api.post('ban_user', { ban_user_id: logDetails.modified_by })
+      enqueueSnackbar('Autor zmiany został zbanowany.', { variant: 'success' })
     } catch (err) {
       console.error(err)
       enqueueSnackbar('Nie udało się zbanować użytkownika.', { variant: 'error' })
@@ -80,7 +103,7 @@ const LogDetailsContainer = ({
         }
         await api.post('modify_point', dataObject)
       }
-      history.push('/log')
+      goBackToLogs(true)
       enqueueSnackbar('Przywrócono poprzedni stan lokacji.', { variant: 'success' })
     } catch (err) {
       console.error(err)
@@ -100,12 +123,14 @@ const LogDetailsContainer = ({
           data={logDetails}
           isMe={isMe}
           isModerator={isModerator}
+          reviewCallback={reviewCallback}
           banCallback={banCallback}
           revertCallback={revertCallback}
+          loadingReview={loadingReview}
           loadingBan={loadingBan}
           loadingRevert={loadingRevert}
           onClose={() => {
-            history.push(`/${pathname.split('/')[1]}`)
+            goBackToLogs()
             setCachedLogDetails(null)
           }}
         />
