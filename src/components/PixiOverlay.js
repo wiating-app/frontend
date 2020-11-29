@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import L from 'leaflet'
 
 // pixi-overlay
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import 'leaflet-pixi-overlay'
 
 PIXI.utils.skipHello()
