@@ -144,21 +144,17 @@ const Map = React.forwardRef(({
           }
         }}
         onClick={e => {
-          alert('Tap/click test')
           if (contextMenu) {
             // If context menu is opened, close it.
             setContextMenu(false)
             setActiveMarker(false)
-            alert('Test 1')
           } else if (editMode && isLoggedIn && !activeMarker) {
             // If location creation form has beem opened from URL and there are no
             // coordinates given yet, set the coordinates and active marker.
             openAddMarkerTab(e.latlng)
             setActiveMarker(e.latlng)
             updateCoordinates(e.latlng)
-            alert('Test 2')
           } else if (isLocationTabOpen && !editMode) {
-            alert('Test 3')
             // Dismiss the location details drawer, when clicking on a map.
             // It does not work with react-leaflet-pixi-overlay approach.
             // closeTab()
@@ -324,6 +320,10 @@ const useStyles = makeStyles(theme => ({
     // Move PIXI markers on top of a current location marker.
     '& .leaflet-pixi-overlay': {
       zIndex: 1000,
+    },
+    // Duplicate pointer-events behavior for touch events.
+    '& .leaflet-overlay-pane svg': {
+      touchAction: 'none',
     },
   },
   woodboardCluster: {
