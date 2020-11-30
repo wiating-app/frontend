@@ -47,7 +47,7 @@ const Map = React.forwardRef(({
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
-  const classes = useStyles()
+  const classes = useStyles(editMode)
 
   const currentZoom = mapRef?.current?.leafletElement?._zoom || zoom
   const markerSize = currentZoom < 7
@@ -102,7 +102,7 @@ const Map = React.forwardRef(({
   }
 
   React.useEffect(() => {
-    // Refresh markers when active markers are changed.
+    // Refresh markers when active types change.
     const handleAsync = async () => {
       if (mapRef.current.leafletElement._loaded) {
         const bounds = await mapRef.current.leafletElement.getBounds()
@@ -317,9 +317,11 @@ const useStyles = makeStyles(theme => ({
     '& .leaflet-marker-icon': {
       filter: 'drop-shadow(0 0 1px rgb(0,0,0))',
     },
-    // Move PIXI markers on top of a current location marker.
     '& .leaflet-pixi-overlay': {
+      // Move PIXI markers on top of a current location marker.
       zIndex: 1000,
+      // Hide PIXI overlay while being in edit mode.
+      display: editMode => editMode ? 'none' : 'block',
     },
   },
   woodboardCluster: {

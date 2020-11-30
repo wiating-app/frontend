@@ -179,7 +179,13 @@ const LocationFormContainer = ({
               }
             } catch (err) {}
           }}
-          cancel={() => history.goBack()}
+          cancel={() => {
+            if (location?.id) {
+              history.goBack()
+            } else {
+              history.push('/')
+            }
+          }}
           isModerator={isModerator}
           onDeleteLocation={onDeleteLocation}
           isNew={isNew}
