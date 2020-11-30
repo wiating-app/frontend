@@ -80,6 +80,12 @@ const Map = React.forwardRef(({
     }
   }, [isLocationTabOpen, isMobile])
 
+  React.useEffect(() => {
+    // Trigger any leaflet event (stop is the safest one) to enforce map to refresh.
+    // Otherwise the contition around <PixiOverlay /> does not react on time.
+    mapRef.current.leafletElement.stop()
+  }, [editMode])
+
   // Handle refs.
   React.useImperativeHandle(ref, () => ({
     setActiveMarker(coords) {
@@ -102,7 +108,7 @@ const Map = React.forwardRef(({
   }
 
   React.useEffect(() => {
-    // Refresh markers when active markers are changed.
+    // Refresh markers when active types change.
     const handleAsync = async () => {
       if (mapRef.current.leafletElement._loaded) {
         const bounds = await mapRef.current.leafletElement.getBounds()
@@ -167,23 +173,25 @@ const Map = React.forwardRef(({
           url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
           attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
         />
-        <PixiOverlay
-          map={mapRef?.current?.leafletElement}
-          markers={points?.map(item => {
-            const { location: { lat, lon }, id, type } = item
-            return {
-              id,
-              customIcon: generateMarkerIcon(type, markerSize),
-              iconId: `${type}_${markerSize}`,
-              position: [lat, lon],
-              onClick: () => {
-                openLocationTab(item)
-                setContextMenu(null)
-                setActiveMarker([lat, lon])
-              },
-            }
-          }) || []}
-        />
+        {!editMode &&
+          <PixiOverlay
+            map={mapRef?.current?.leafletElement}
+            markers={points?.map(item => {
+              const { location: { lat, lon }, id, type } = item
+              return {
+                id,
+                customIcon: generateMarkerIcon(type, markerSize),
+                iconId: `${type}_${markerSize}`,
+                position: [lat, lon],
+                onClick: () => {
+                  openLocationTab(item)
+                  setContextMenu(null)
+                  setActiveMarker([lat, lon])
+                },
+              }
+            }) || []}
+          />
+        }
         {activeMarker &&
           <Marker
             icon={new Icon({
@@ -320,10 +328,6 @@ const useStyles = makeStyles(theme => ({
     // Move PIXI markers on top of a current location marker.
     '& .leaflet-pixi-overlay': {
       zIndex: 1000,
-    },
-    // Duplicate pointer-events behavior for touch events.
-    '& .leaflet-overlay-pane svg': {
-      touchAction: 'none',
     },
   },
   woodboardCluster: {
