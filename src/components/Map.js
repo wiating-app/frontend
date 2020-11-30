@@ -47,7 +47,7 @@ const Map = React.forwardRef(({
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
-  const classes = useStyles()
+  const classes = useStyles(editMode)
 
   const currentZoom = mapRef?.current?.leafletElement?._zoom || zoom
   const markerSize = currentZoom < 7
@@ -79,12 +79,6 @@ const Map = React.forwardRef(({
       mapRef.current.leafletElement.invalidateSize()
     }
   }, [isLocationTabOpen, isMobile])
-
-  React.useEffect(() => {
-    // Trigger any leaflet event (stop is the safest one) to enforce map to refresh.
-    // Otherwise the contition around <PixiOverlay /> does not react on time.
-    mapRef.current.leafletElement.stop()
-  }, [editMode])
 
   // Handle refs.
   React.useImperativeHandle(ref, () => ({
@@ -173,25 +167,23 @@ const Map = React.forwardRef(({
           url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
           attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
         />
-        {!editMode &&
-          <PixiOverlay
-            map={mapRef?.current?.leafletElement}
-            markers={points?.map(item => {
-              const { location: { lat, lon }, id, type } = item
-              return {
-                id,
-                customIcon: generateMarkerIcon(type, markerSize),
-                iconId: `${type}_${markerSize}`,
-                position: [lat, lon],
-                onClick: () => {
-                  openLocationTab(item)
-                  setContextMenu(null)
-                  setActiveMarker([lat, lon])
-                },
-              }
-            }) || []}
-          />
-        }
+        <PixiOverlay
+          map={mapRef?.current?.leafletElement}
+          markers={points?.map(item => {
+            const { location: { lat, lon }, id, type } = item
+            return {
+              id,
+              customIcon: generateMarkerIcon(type, markerSize),
+              iconId: `${type}_${markerSize}`,
+              position: [lat, lon],
+              onClick: () => {
+                openLocationTab(item)
+                setContextMenu(null)
+                setActiveMarker([lat, lon])
+              },
+            }
+          }) || []}
+        />
         {activeMarker &&
           <Marker
             icon={new Icon({
@@ -325,9 +317,11 @@ const useStyles = makeStyles(theme => ({
     '& .leaflet-marker-icon': {
       filter: 'drop-shadow(0 0 1px rgb(0,0,0))',
     },
-    // Move PIXI markers on top of a current location marker.
     '& .leaflet-pixi-overlay': {
+      // Move PIXI markers on top of a current location marker.
       zIndex: 1000,
+      // Hide PIXI overlay while being in edit mode.
+      display: editMode => editMode ? 'none' : 'block',
     },
   },
   woodboardCluster: {
