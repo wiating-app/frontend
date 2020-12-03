@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Box } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
@@ -7,6 +7,7 @@ import Loader from './Loader'
 import Pagination from './Pagination'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
+import { formatDate, formatTime } from '../utils/helpers'
 
 const History = ({
   data,
@@ -36,7 +37,7 @@ const History = ({
           : <>
             <Table
               data={data.map(item => ({
-                timestamp: item._source.timestamp,
+                timestamp: `${formatDate(item._source.timestamp)} ${formatTime(item._source.timestamp)}`,
                 location: <>
                   <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
                   <Typography variant='caption' component='div'>

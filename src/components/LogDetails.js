@@ -6,6 +6,7 @@ import Table from './Table'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
+import { formatDate, formatTime } from '../utils/helpers'
 
 
 const LogDetails = ({
@@ -51,7 +52,7 @@ const LogDetails = ({
       <Typography
         variant='body2'
         gutterBottom
-      >{translations.date}: {data.timestamp}</Typography>
+      >{translations.date}: {formatDate(data.timestamp, 'verbal')}, {formatTime(data.timestamp, 'detailed')}</Typography>
       {isModerator &&
         <Typography
           variant='body2'

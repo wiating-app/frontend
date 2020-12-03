@@ -7,6 +7,7 @@ import Actions from './Actions'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
+import { formatDate, formatTime } from '../utils/helpers'
 
 
 const Logs = ({
@@ -30,7 +31,7 @@ const Logs = ({
         <Table
           data={logs.map(item => ({
             verified: item._source.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' />,
-            timestamp: item._source.timestamp,
+            timestamp: `${formatDate(item._source.timestamp)} ${formatTime(item._source.timestamp)}`,
             location: <>
               <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
               <Typography variant='caption' component='div'>
