@@ -6,7 +6,7 @@ import api from '../api'
 import Logs from '../components/Logs'
 import LogFilters from '../components/LogFilters'
 import useAuth0 from '../utils/useAuth0'
-import { cachedLogDetailsState } from '../state'
+import { logsState, logDetailsState } from '../state'
 
 /* eslint-disable camelcase */
 
@@ -15,7 +15,6 @@ const LogsContainer = ({
   history,
 }) => {
   const { isModerator, user } = useAuth0()
-  const [logs, setLogs] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
   const [logsTotal, setlogsTotal] = React.useState()
@@ -24,7 +23,8 @@ const LogsContainer = ({
     page: 0, // Page numeration starts at 0.
     size: 10, // Rows per page.
   })
-  const [, setCachedLogDetails] = useRecoilState(cachedLogDetailsState)
+  const [logs, setLogs] = useRecoilState(logsState)
+  const [, setLogDetails] = useRecoilState(logDetailsState)
 
   const getLogs = async () => {
     try {
@@ -38,7 +38,6 @@ const LogsContainer = ({
       })
       setLogs(logs)
       setlogsTotal(total)
-      // }
     } catch (err) {
       console.error(err)
       setError(true)
@@ -106,9 +105,9 @@ const LogsContainer = ({
           rowsInTotal={logsTotal}
           rowsPerPage={params.size}
           user={user}
-          setDetails={data => {
-            setCachedLogDetails(data)
-            history.push(`/moderator/log/${data.id}${search || ''}`)
+          setDetails={async data => {
+            await setLogDetails(data)
+            history.push(`/moderator/log/${data._id}${search || ''}`)
           }}
         />
       </>

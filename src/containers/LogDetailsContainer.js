@@ -2,12 +2,13 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { useRecoilState } from 'recoil'
+import Modal from '../components/Modal'
 import LogDetails from '../components/LogDetails'
 import Loader from '../components/Loader'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import api from '../api'
-import { cachedLogDetailsState } from '../state'
+import { logDetailsState } from '../state'
 
 
 const LogDetailsContainer = ({
@@ -15,13 +16,12 @@ const LogDetailsContainer = ({
   location: { search, pathname },
   history,
 }) => {
-  const [logDetails, setLogDetails] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
   const [loadingReview, setLoadingReview] = React.useState()
   const [loadingBan, setLoadingBan] = React.useState(false)
   const [loadingRevert, setLoadingRevert] = React.useState(false)
-  const [cachedLogDetails, setCachedLogDetails] = useRecoilState(cachedLogDetailsState)
+  const [logDetails, setLogDetails] = useRecoilState(logDetailsState)
   const { user, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
@@ -29,25 +29,23 @@ const LogDetailsContainer = ({
   // Use cached log data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
     if (isModerator) {
-      if (cachedLogDetails) {
-        setLogDetails(cachedLogDetails)
-        setLoading(false)
-      } else {
+      if (!logDetails) {
         const handleAsync = async () => {
           try {
             const { data } = await api.post('get_log', { log_id: id })
-            setLogDetails(data)
-            setCachedLogDetails(data)
+            setLogDetails({ _id: id, _source: data })
           } catch (error) {
             setError(true)
+            setLoading(false)
             enqueueSnackbar(translations.connectionProblem.logs, { variant: 'error' })
           }
-          setLoading(false)
         }
         handleAsync()
+      } else {
+        setLoading(false)
       }
     }
-  }, [cachedLogDetails, isModerator])
+  }, [logDetails, isModerator])
 
   const goBackToLogs = refetch => {
     const pathArray = pathname.split('/')
@@ -115,25 +113,27 @@ const LogDetailsContainer = ({
   const isMe = logDetails && logDetails.modified_by === user.sub
 
   return (
-    loading
-      ? <Loader dark big />
-      : error
-        ? <div>Error!</div>
-        : <LogDetails
-          data={logDetails}
-          isMe={isMe}
-          isModerator={isModerator}
-          reviewCallback={reviewCallback}
-          banCallback={banCallback}
-          revertCallback={revertCallback}
-          loadingReview={loadingReview}
-          loadingBan={loadingBan}
-          loadingRevert={loadingRevert}
-          onClose={() => {
-            goBackToLogs()
-            setCachedLogDetails(null)
-          }}
-        />
+    <Modal short onClose={() => {
+      goBackToLogs()
+      setLogDetails(null)
+    }}>
+      {loading
+        ? <Loader dark big />
+        : error
+          ? <div>Error!</div>
+          : <LogDetails
+            data={logDetails._source}
+            isMe={isMe}
+            isModerator={isModerator}
+            reviewCallback={reviewCallback}
+            banCallback={banCallback}
+            revertCallback={revertCallback}
+            loadingReview={loadingReview}
+            loadingBan={loadingBan}
+            loadingRevert={loadingRevert}
+          />
+      }
+    </Modal>
   )
 }
 

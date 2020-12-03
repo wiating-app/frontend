@@ -48,7 +48,7 @@ const Logs = ({
               primary={[
                 {
                   label: translations.details,
-                  action: () => setDetails({ id: item._id, ...item._source }),
+                  action: () => setDetails(item),
                 },
               ]}
             />,

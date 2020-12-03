@@ -35,6 +35,7 @@ const LocationInfoContainer = ({
           setActiveLocation(serializeData(data))
         } catch (error) {
           setError(true)
+          setLoading(false)
           enqueueSnackbar(translations.connectionProblem.location, { variant: 'error' })
         }
       }

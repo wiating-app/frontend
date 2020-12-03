@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button, Typography, Grid, ButtonGroup } from '@material-ui/core'
 import { Check, Clear, Remove } from '@material-ui/icons'
-import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
@@ -19,7 +18,6 @@ const LogDetails = ({
   loadingReview,
   loadingBan,
   loadingRevert,
-  onClose,
 }) => {
   const { translations } = useLanguage()
 
@@ -47,7 +45,7 @@ const LogDetails = ({
   const isNew = data.changes.action && data.changes.action === 'created'
 
   return (
-    <Modal short onClose={onClose}>
+    <>
       <Typography variant='h5' gutterBottom>{translations.detailsOfChange} {data.id}</Typography>
       <Typography
         variant='body2'
@@ -108,7 +106,7 @@ const LogDetails = ({
           </Grid>
         </Grid>
       }
-    </Modal>
+    </>
   )
 }
 

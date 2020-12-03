@@ -32,7 +32,12 @@ export const searchResultsState = atom({
   default: [],
 })
 
-export const cachedLogDetailsState = atom({
-  key: 'cachedLogDetails',
+export const logsState = atom({
+  key: 'logs',
+  default: [],
+})
+
+export const logDetailsState = atom({
+  key: 'logDetails',
   default: null,
 })
