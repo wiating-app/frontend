@@ -25,7 +25,11 @@ ReactDOM.render(
           {process.env.FRONTEND_MAINTENANCE === 'true'
             ? <Maintenance />
             : <Router history={history}>
-              <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+              <SnackbarProvider
+                maxSnack={3}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                autoHideDuration={3000}
+              >
                 <Auth0Provider
                   domain={process.env.AUTH0_DOMAIN}
                   client_id={process.env.FRONTEND_AUTH0_CLIENT}
