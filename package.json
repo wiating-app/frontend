@@ -33,6 +33,7 @@
     "react-router-dom": "^5.0.1",
     "react-standalone-form": "^1.4.5",
     "react-standalone-form-mui": "^0.3.1",
+    "recoil": "^0.1.2",
     "validator": "^11.1.0",
     "workbox-window": "^5.0.0"
   },

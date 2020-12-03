@@ -5,7 +5,7 @@ import History from '../components/History'
 import history from '../history'
 
 
-const HistoryContainer = ({ setCachedLogDetails }) => {
+const HistoryContainer = () => {
   const { loading: loadingAuth } = useAuth0()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
@@ -42,10 +42,6 @@ const HistoryContainer = ({ setCachedLogDetails }) => {
       setPage={setPage}
       rowsInTotal={logsTotal}
       rowsPerPage={rowsPerPage}
-      setDetails={data => {
-        setCachedLogDetails(data)
-        history.push(`/history/${data.id}`)
-      }}
       onClose={() => history.push('/')}
     />
   )

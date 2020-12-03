@@ -9,41 +9,45 @@ import {
   ScaleControl,
 } from 'react-leaflet'
 import Control from 'react-leaflet-control'
+import { useRecoilState } from 'recoil'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Typography, useMediaQuery, Tooltip } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
+import {
+  editModeState,
+  isDrawerOpenState,
+  activeLocationState,
+  searchResultsState,
+} from '../state'
 import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
 import Legend from './Legend'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import exportToKML from '../utils/exportToKML'
+import history from '../history'
 
 
 const Map = React.forwardRef(({
   center,
   zoom,
-  isLocationTabOpen,
-  editMode,
   isLoggedIn,
-  currentLocation,
-  points,
+  userLocation,
+  markers,
   locationAccuracy,
-  updateCoordinates,
-  loadMapMarkers,
+  getMarkers,
   setStoredPosition,
-  openLocationTab,
-  openAddMarkerTab,
-  closeTab,
   activeTypes,
-  setActiveTypes,
 }, ref) => {
-  const [activeMarker, setActiveMarker] = React.useState()
   const [contextMenu, setContextMenu] = React.useState()
   const [previousBounds, setPreviousBounds] = React.useState()
   const mapRef = React.useRef()
+  const [editMode] = useRecoilState(editModeState)
+  const [, setSearchResults] = useRecoilState(searchResultsState)
+  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
+  const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
@@ -59,17 +63,14 @@ const Map = React.forwardRef(({
         : 32
 
   React.useEffect(() => {
-    console.log('currentZoom: ', currentZoom, 'markerSize: ', markerSize)
-  }, [currentZoom])
-
-  React.useEffect(() => {
-    if (activeMarker && !contextMenu) {
-      mapRef.current.leafletElement.panTo(activeMarker)
+    if (activeLocation && !contextMenu) {
+      const { lat, lng } = activeLocation.location
+      mapRef.current.leafletElement.panTo([lat, lng])
     }
-  }, [activeMarker])
+  }, [activeLocation])
 
   React.useEffect(() => {
-    if (center && !activeMarker) {
+    if (center && !activeLocation) {
       mapRef.current.leafletElement.flyTo(center)
     }
   }, [center])
@@ -77,14 +78,14 @@ const Map = React.forwardRef(({
   React.useEffect(() => {
     if (isMobile) {
       mapRef.current.leafletElement.invalidateSize()
+      if (activeLocation?.location) {
+        mapRef.current.leafletElement.flyTo(activeLocation.location)
+      }
     }
-  }, [isLocationTabOpen, isMobile])
+  }, [isDrawerOpen, isMobile])
 
   // Handle refs.
   React.useImperativeHandle(ref, () => ({
-    setActiveMarker(coords) {
-      setActiveMarker(coords)
-    },
     loadMapMarkers() {
       handleLoadMapMarkers()
     },
@@ -95,7 +96,7 @@ const Map = React.forwardRef(({
     // Check whether viewport really changed to prevent a multiple calls for the
     // same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
-      loadMapMarkers(bounds)
+      getMarkers(bounds)
       setStoredPosition(mapRef.current.viewport)
       setPreviousBounds(bounds)
     }
@@ -106,8 +107,7 @@ const Map = React.forwardRef(({
     const handleAsync = async () => {
       if (mapRef.current.leafletElement._loaded) {
         const bounds = await mapRef.current.leafletElement.getBounds()
-        loadMapMarkers(bounds)
-        handleLoadMapMarkers()
+        getMarkers(bounds)
       }
     }
     handleAsync()
@@ -117,7 +117,7 @@ const Map = React.forwardRef(({
     // Use wrapper to set offset to load markers that are on the edge of a screen.
     <div
       className={classes.offsetWrapper}
-      style={isLocationTabOpen && isMobile
+      style={isDrawerOpen && isMobile
         ? isPhone
           ? { height: theme.layout.mobileMiniMapHeight }
           : { marginLeft: theme.layout.locationTabWidth }
@@ -138,28 +138,20 @@ const Map = React.forwardRef(({
           if (!editMode) {
             if (isLoggedIn) {
               setContextMenu(!contextMenu)
-              setActiveMarker(contextMenu ? null : e.latlng)
+              setActiveLocation(contextMenu ? null : { location: e.latlng })
             }
-            closeTab()
+            history.push('/')
           }
         }}
         onClick={e => {
           if (contextMenu) {
             // If context menu is opened, close it.
             setContextMenu(false)
-            setActiveMarker(false)
-          } else if (editMode && isLoggedIn && !activeMarker) {
-            // If location creation form has beem opened from URL and there are no
-            // coordinates given yet, set the coordinates and active marker.
-            openAddMarkerTab(e.latlng)
-            setActiveMarker(e.latlng)
-            updateCoordinates(e.latlng)
-          } else if (isLocationTabOpen && !editMode) {
-            // Dismiss the location details drawer, when clicking on a map.
-            // It does not work with react-leaflet-pixi-overlay approach.
-            // closeTab()
-            // setContextMenu(false)
-            // setActiveMarker(false)
+            setActiveLocation(null)
+          } else if (editMode && isLoggedIn && !activeLocation) {
+            // Add location by pinning on map mode.
+            setActiveLocation({ location: e.latlng })
+            history.push('/location/new')
           }
         }}
       >
@@ -169,22 +161,23 @@ const Map = React.forwardRef(({
         />
         <PixiOverlay
           map={mapRef?.current?.leafletElement}
-          markers={points?.map(item => {
-            const { location: { lat, lon }, id, type } = item
+          markers={markers.map(item => {
+            const { location: { lat, lng }, id, type } = item
             return {
               id,
               customIcon: generateMarkerIcon(type, markerSize),
               iconId: `${type}_${markerSize}`,
-              position: [lat, lon],
+              position: [lat, lng],
               onClick: () => {
-                openLocationTab(item)
+                setSearchResults([])
+                setActiveLocation(item)
+                history.push(`/location/${item.id}`)
                 setContextMenu(null)
-                setActiveMarker([lat, lon])
               },
             }
           }) || []}
         />
-        {activeMarker &&
+        {activeLocation &&
           <Marker
             icon={new Icon({
               iconUrl: '/active-location.svg',
@@ -192,33 +185,36 @@ const Map = React.forwardRef(({
               iconAnchor: [20, 40],
             })}
             zIndexOffset={1100}
-            position={activeMarker}
+            position={activeLocation.location}
             draggable={editMode}
             onMoveEnd={e => {
               if (editMode) {
-                updateCoordinates(e.target.getLatLng())
+                setActiveLocation({
+                  ...activeLocation,
+                  location: e.target.getLatLng(),
+                })
               }
             }}
           />
         }
-        {activeMarker && contextMenu &&
+        {activeLocation && contextMenu &&
           <Popup
-            position={activeMarker}
+            position={activeLocation.location}
             closeButton={false}
             className={classes.popup}
           >
             <ContextMenu addMarker={() => {
               setContextMenu(null)
-              openAddMarkerTab(activeMarker)
-              mapRef.current.leafletElement.setView(activeMarker)
+              history.push('/location/new')
+              mapRef.current.leafletElement.setView(activeLocation.location)
             }} />
           </Popup>
         }
-        {currentLocation &&
+        {userLocation &&
           <>
             {locationAccuracy && locationAccuracy > 30 &&
               <Circle
-                center={currentLocation}
+                center={userLocation}
                 radius={locationAccuracy}
               />
             }
@@ -229,22 +225,22 @@ const Map = React.forwardRef(({
                 iconAnchor: [12, 12],
               })}
               zIndexOffset={1000}
-              position={currentLocation}
+              position={userLocation}
             />
           </>
         }
-        {(!isLocationTabOpen || !isPhone) &&
+        {(!isDrawerOpen || !isPhone) &&
           <>
             <ZoomControl position='topright' />
             <Control position='topright' className='leaflet-bar'>
               <a
                 className={classes.customControl}
-                onClick={() => currentLocation &&
-                  mapRef.current.leafletElement.flyTo(currentLocation, 14)
+                onClick={() => userLocation &&
+                  mapRef.current.leafletElement.flyTo(userLocation, 14)
                 }
-                disabled={!currentLocation}
+                disabled={!userLocation}
               >
-                {currentLocation
+                {userLocation
                   ? <GpsFixed className={classes.customControlIcon} />
                   : <GpsNotFixed className={classes.customControlIcon} />
                 }
@@ -255,8 +251,8 @@ const Map = React.forwardRef(({
                 <Tooltip title='Eksportuj aktualny widok do KML' placement='left'>
                   <a
                     className={classes.customControl}
-                    onClick={() => exportToKML(points)}
-                    disabled={!points || !points.length}
+                    onClick={() => exportToKML(markers)}
+                    disabled={!markers.length}
                   >KML</a>
                 </Tooltip>
               </Control>
@@ -264,22 +260,18 @@ const Map = React.forwardRef(({
           </>
         }
         <Control position='bottomright'>
-          {currentLocation && (!isLocationTabOpen || !isPhone) &&
+          {userLocation && (!isDrawerOpen || !isPhone) &&
             <Typography
               component='div'
               variant='caption'
-              className={classes.currentLocation}
+              className={classes.userLocation}
             >Dokładność GPS: {Math.round(locationAccuracy)} m</Typography>
           }
         </Control>
         <ScaleControl position='bottomright' imperial={false} />
         {!isMobile && !editMode &&
           <Control position='topleft'>
-            <Legend
-              boxed
-              activeTypes={activeTypes}
-              onChange={key => setActiveTypes(key)}
-            />
+            <Legend boxed />
           </Control>
         }
       </MapComponent>
@@ -362,7 +354,7 @@ const useStyles = makeStyles(theme => ({
   customControlIcon: {
     fontSize: 18,
   },
-  currentLocation: {
+  userLocation: {
     backgroundColor: 'rgba(255,255,255,0.75)',
     padding: '0 2px',
     fontSize: 11,

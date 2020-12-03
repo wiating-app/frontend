@@ -2,17 +2,18 @@ import React from 'react'
 import { useSnackbar } from 'notistack'
 import api from '../api'
 import { withRouter } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import parse from 'coord-parser'
+import { activeLocationState, markersState } from '../state'
+import ContentWrapper from '../components/ContentWrapper'
 import LocationForm from '../components/LocationForm'
 import Loader from '../components/Loader'
 import useLanguage from '../utils/useLanguage'
 import useAuth0 from '../utils/useAuth0'
+import serializeData from '../utils/serializeData'
 
 
 const LocationFormContainer = ({
-  cachedLocation,
-  setCachedLocation,
-  refreshMap,
   isNew,
   history,
   match,
@@ -20,9 +21,10 @@ const LocationFormContainer = ({
   const { params: { id } } = match
   const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
   const { translations } = useLanguage()
-  const [location, setLocation] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
+  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
+  const [markers, setMarkers] = useRecoilState(markersState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
@@ -32,10 +34,6 @@ const LocationFormContainer = ({
     }
   }, [loadingAuth])
 
-  React.useEffect(() => {
-    setLocation(cachedLocation)
-  }, [cachedLocation])
-
   // Make sure that form is cleaned up eg. when navigating from edit location
   // form to new location form.
   React.useEffect(() => {
@@ -43,7 +41,6 @@ const LocationFormContainer = ({
       closeSnackbar() // It is here only to dismiss the persising "Put point on map" snackbar.
       const handleAsync = async () => {
         setLoading(true)
-        await setCachedLocation(null)
         setLoading(false)
       }
       handleAsync()
@@ -53,25 +50,19 @@ const LocationFormContainer = ({
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
     if (!isNew) {
-      if (cachedLocation) {
-        setLocation(cachedLocation)
-        setLoading(false)
-      } else {
-        if (id) {
-          const handleAsync = async () => {
-            try {
-              const { data } = await api.post('get_point', { id })
-              setLocation(data)
-              setCachedLocation(data)
-            } catch (error) {
-              setError(true)
-            }
-            setLoading(false)
+      if (!activeLocation && id) {
+        const handleAsync = async () => {
+          try {
+            const { data } = await api.post('get_point', { id })
+            setActiveLocation(serializeData(data))
+          } catch (error) {
+            setError(true)
           }
-          handleAsync()
-        } else {
           setLoading(false)
         }
+        handleAsync()
+      } else {
+        setLoading(false)
       }
     }
   }, [])
@@ -109,8 +100,8 @@ const LocationFormContainer = ({
         name,
         description,
         directions,
-        lat: lat,
-        lon: lon,
+        lat,
+        lon,
         type,
         water_exists: mapOptionToBool(water_exists),
         water_comment: water_exists && water_comment ? water_comment : null,
@@ -122,20 +113,28 @@ const LocationFormContainer = ({
       if (isNew) {
         // New marker creation.
         const { data } = await api.post('add_point', dataObject)
-        setLocation(data)
-        setCachedLocation(data)
+        const serializedData = serializeData(data)
+        const newMarkers = [...markers, serializedData]
+        setMarkers(newMarkers)
+        setActiveLocation(serializedData)
         history.push(`/location/${data.id}`)
         enqueueSnackbar(translations.notifications.newMarkerAdded, { variant: 'success' })
       } else {
         // Updating exisitng marker.
-        const { id } = cachedLocation
+        const { id } = activeLocation
         const { data } = await api.post('modify_point', { id, ...dataObject })
-        setLocation(data)
-        setCachedLocation(data)
+        const serializedData = serializeData(data)
+        const index = markers.findIndex(item => item.id === serializedData.id)
+        const newMarkers = [
+          ...markers.slice(0, index),
+          serializedData,
+          ...markers.slice(index + 1),
+        ]
+        setMarkers(newMarkers)
+        setActiveLocation(serializedData)
         history.push(`/location/${id}`)
         enqueueSnackbar(translations.notifications.markerUpdated, { variant: 'success' })
       }
-      refreshMap()
     } catch (error) {
       if (error.type === 'parseError') {
         console.error(error.value)
@@ -150,9 +149,9 @@ const LocationFormContainer = ({
   const onDeleteLocation = async () => {
     try {
       await api.post('delete_point', { id })
-      setCachedLocation(null)
       history.push('/')
-      refreshMap()
+      setActiveLocation(null)
+      setMarkers(markers.filter(item => item.id !== id))
       enqueueSnackbar(translations.notifications.locationDeleted, { variant: 'success' })
     } catch (err) {
       console.error(err)
@@ -161,35 +160,38 @@ const LocationFormContainer = ({
   }
 
   return (
-    loading || loadingAuth
-      ? <Loader dark big />
-      : error
-        ? <div>Error!</div>
-        : <LocationForm
-          locationData={location}
-          onSubmitLocation={onSubmitLocation}
-          updateCurrentMarker={coords => {
-            try {
-              const { lat, lon } = parse(coords)
-              if (
-                (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
-                (!location?.location || location.location.lat !== lat || location.location.lon !== lon)
-              ) {
-                setCachedLocation({ ...location, location: { lat, lon } })
+    <ContentWrapper>
+      {loading || loadingAuth
+        ? <Loader dark big />
+        : error
+          ? <div>Error!</div>
+          : <LocationForm
+            locationData={location}
+            onSubmitLocation={onSubmitLocation}
+            updateCurrentMarker={coords => {
+              try {
+                const { lat, lon } = parse(coords)
+                if (
+                  (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
+                  (!location?.location || location.location.lat !== lat || location.location.lon !== lon)
+                ) {
+                  setCachedLocation({ ...location, location: { lat, lon } })
+                }
+              } catch (err) {}
+            }}
+            cancel={() => {
+              if (location?.id) {
+                history.goBack()
+              } else {
+                history.push('/')
               }
-            } catch (err) {}
-          }}
-          cancel={() => {
-            if (location?.id) {
-              history.goBack()
-            } else {
-              history.push('/')
-            }
-          }}
-          isModerator={isModerator}
-          onDeleteLocation={onDeleteLocation}
-          isNew={isNew}
-        />
+            }}
+            isModerator={isModerator}
+            onDeleteLocation={onDeleteLocation}
+            isNew={isNew}
+          />
+      }
+    </ContentWrapper>
   )
 }
 

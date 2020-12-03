@@ -1,27 +1,31 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import {
-  Drawer,
+  Drawer as MUIDrawer,
   IconButton,
 } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { useRecoilState } from 'recoil'
+import { isDrawerOpenState } from '../state'
 
 
-const LocationTab = ({
-  closeLocationTab,
-  isLocationTabOpen,
-  hideMapOnMobile,
+const Drawer = ({
   children,
+  history,
+  location: { pathname },
 }) => {
-  const classes = useStyles(hideMapOnMobile)
+  const coverMapOnMobile = pathname.startsWith('/search')
+  const classes = useStyles(coverMapOnMobile)
   const theme = useTheme()
   const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
+  const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
 
   return (
-    <Drawer
-      open={isLocationTabOpen}
+    <MUIDrawer
+      open={isDrawerOpen}
       variant='persistent'
       anchor={isNotSmartphone ? 'left' : 'bottom'}
       className={classes.drawer}
@@ -34,12 +38,12 @@ const LocationTab = ({
             size='small'
             className={classes.close}
             aria-label='close'
-            onClick={() => closeLocationTab()}
+            onClick={() => history.push('/')}
           ><Close /></IconButton>
           {children}
         </div>
       </PerfectScrollbar>
-    </Drawer>
+    </MUIDrawer>
   )
 }
 
@@ -47,8 +51,8 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     backgroundColor: 'transparent',
     borderTop: 'none',
-    height: hideMapOnMobile =>
-      `calc(100vh - ${(hideMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight)}px)`,
+    height: coverMapOnMobile =>
+      `calc(100vh - ${(coverMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight)}px)`,
     boxShadow: theme.shadows[14],
     [theme.breakpoints.up('sm')]: {
       width: theme.layout.locationTabWidth,
@@ -87,4 +91,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default LocationTab
+export default withRouter(Drawer)
