@@ -21,6 +21,10 @@ const LocationImages = ({
   const { translations } = useLanguage()
   const [openModal, setOpenModal] = React.useState(false)
 
+  React.useEffect(() => {
+    setOpenModal(false)
+  }, [images])
+
   const preparedImages = images
     ? images.map(image => ({
       original: `${process.env.FRONTEND_CDN_URL}/${id}/${image.name}`,
@@ -35,43 +39,45 @@ const LocationImages = ({
           ? <div className={classes.imageWrapper}>
             <div className={classes.loader}><Loader big /></div>
           </div>
-          : <Carousel
-            showArrows
-            emulateTouch
-            showThumbs={false}
-          >
-            {preparedImages.map((image, i) =>
-              <div
-                key={i}
-                className={classes.imageWrapper}
-                onClick={() => setOpenModal(true)}
-              >
-                <img src={image.thumbnail} alt='' className={classes.image} />
-              </div>
-            )}
-          </Carousel>
+          : <>
+            <Modal
+              open={openModal}
+              onClose={() => setOpenModal(false)}
+              disableAutoFocus
+              disableEnforceFocus
+            >
+              <Box boxShadow={3} className={classes.modalContent}>
+                <ImageGallery
+                  items={preparedImages}
+                  showPlayButton={false}
+                  showFullscreenButton={false}
+                />
+                <IconButton
+                  className={classes.close}
+                  onClick={() => setOpenModal(false)}
+                ><Close /></IconButton>
+              </Box>
+            </Modal>
+            <Carousel
+              showArrows
+              emulateTouch
+              showThumbs={false}
+            >
+              {preparedImages.map((image, i) =>
+                <div
+                  key={i}
+                  className={classes.imageWrapper}
+                  onClick={() => setOpenModal(true)}
+                >
+                  <img src={image.thumbnail} alt='' className={classes.image} />
+                </div>
+              )}
+            </Carousel>
+          </>
         : <div className={classes.imageWrapper}>
           <img src='/no-image.png' alt='No image' className={classes.image} />
         </div>
       }
-      <Modal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        disableAutoFocus
-        disableEnforceFocus
-      >
-        <Box boxShadow={3} className={classes.modalContent}>
-          <ImageGallery
-            items={preparedImages}
-            showPlayButton={false}
-            showFullscreenButton={false}
-          />
-          <IconButton
-            className={classes.close}
-            onClick={() => setOpenModal(false)}
-          ><Close /></IconButton>
-        </Box>
-      </Modal>
       <Button
         className={classes.addPhoto}
         size='small'
