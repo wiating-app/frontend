@@ -166,20 +166,26 @@ const LocationFormContainer = ({
         : error
           ? <div>Error!</div>
           : <LocationForm
-            locationData={activeLocation}
+            locationData={location}
             onSubmitLocation={onSubmitLocation}
             updateCurrentMarker={coords => {
               try {
-                const { lat, lon: lng } = parse(coords)
+                const { lat, lon } = parse(coords)
                 if (
                   (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
-                  (!activeLocation?.location || activeLocation.location.lat !== lat || activeLocation.location.lng !== lng)
+                  (!location?.location || location.location.lat !== lat || location.location.lon !== lon)
                 ) {
-                  setActiveLocation({ ...activeLocation, location: { lat, lng } })
+                  setCachedLocation({ ...location, location: { lat, lon } })
                 }
               } catch (err) {}
             }}
-            cancel={() => history.goBack()}
+            cancel={() => {
+              if (location?.id) {
+                history.goBack()
+              } else {
+                history.push('/')
+              }
+            }}
             isModerator={isModerator}
             onDeleteLocation={onDeleteLocation}
             isNew={isNew}
