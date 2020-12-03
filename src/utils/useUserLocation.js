@@ -19,7 +19,6 @@ export const UserLocationProvider = ({ children }) => {
         function success(location) {
           // For when getting location is a success.
           const { coords: { latitude, longitude, accuracy } } = location
-          console.log('Updated user location:', [latitude, longitude], 'Accuracy:', accuracy)
           userUserLocation({
             userLocation: [latitude, longitude],
             accuracy,
