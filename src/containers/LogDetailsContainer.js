@@ -1,27 +1,29 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import { useRecoilState } from 'recoil'
+import Modal from '../components/Modal'
 import LogDetails from '../components/LogDetails'
 import Loader from '../components/Loader'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import api from '../api'
+import { logsState, logDetailsState } from '../state'
 
 
 const LogDetailsContainer = ({
-  cachedLogDetails,
-  setCachedLogDetails,
-  refetchLogs,
   match: { params: { id } },
   location: { search, pathname },
   history,
 }) => {
-  const [logDetails, setLogDetails] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
   const [loadingReview, setLoadingReview] = React.useState()
   const [loadingBan, setLoadingBan] = React.useState(false)
   const [loadingRevert, setLoadingRevert] = React.useState(false)
+  const [logDetails, setLogDetails] = useRecoilState(logDetailsState)
+  const [logs, setLogs] = useRecoilState(logsState)
+  console.log('logDetails: ', logDetails);
   const { user, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
@@ -29,25 +31,23 @@ const LogDetailsContainer = ({
   // Use cached log data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
     if (isModerator) {
-      if (cachedLogDetails) {
-        setLogDetails(cachedLogDetails)
-        setLoading(false)
-      } else {
+      if (!logDetails) {
         const handleAsync = async () => {
           try {
             const { data } = await api.post('get_log', { log_id: id })
-            setLogDetails(data)
-            setCachedLogDetails(data)
+            setLogDetails({ _id: id, _source: data })
           } catch (error) {
             setError(true)
+            setLoading(false)
             enqueueSnackbar(translations.connectionProblem.logs, { variant: 'error' })
           }
-          setLoading(false)
         }
         handleAsync()
+      } else {
+        setLoading(false)
       }
     }
-  }, [cachedLogDetails, isModerator])
+  }, [logDetails, isModerator])
 
   const goBackToLogs = refetch => {
     const pathArray = pathname.split('/')
@@ -60,8 +60,15 @@ const LogDetailsContainer = ({
   const reviewCallback = async () => {
     try {
       setLoadingReview(true)
-      await api.post('log_reviewed', { log_id: logDetails.id })
-      goBackToLogs(true)
+      const { data } = await api.post('log_reviewed', { log_id: logDetails._id })
+      const index = logs.findIndex(item => item._id === logDetails._id)
+      const newLogs = [
+        ...logs.slice(0, index),
+        { _id: id, _source: data },
+        ...logs.slice(index + 1),
+      ]
+      setLogs(newLogs)
+      goBackToLogs()
       enqueueSnackbar('Log zweryfikowany.', { variant: 'success' })
     } catch (err) {
       console.error(err)
@@ -73,7 +80,7 @@ const LogDetailsContainer = ({
   const banCallback = async () => {
     try {
       setLoadingBan(true)
-      await api.post('ban_user', { ban_user_id: logDetails.modified_by })
+      await api.post('ban_user', { ban_user_id: logDetails._source.modified_by })
       enqueueSnackbar('Autor zmiany został zbanowany.', { variant: 'success' })
     } catch (err) {
       console.error(err)
@@ -85,18 +92,19 @@ const LogDetailsContainer = ({
   const revertCallback = async () => {
     try {
       setLoadingRevert(true)
+      const { _source } = logDetails
       // Use another endpoint if change from given log refers to image.
       // eslint-disable-next-line camelcase
-      if (logDetails.changes?.images?.new_value) {
+      if (_source.changes?.images?.new_value) {
         const dataObject = {
-          id: logDetails.doc_id,
-          image_name: logDetails.changes.images.new_value,
+          id: _source.doc_id,
+          image_name: _source.changes.images.new_value,
         }
         await api.post('delete_image', dataObject)
       } else {
         const dataObject = {
-          id: logDetails.doc_id,
-          ...Object.entries(logDetails.changes).reduce((acc, [name, value]) => ({
+          id: _source.doc_id,
+          ...Object.entries(_source.changes).reduce((acc, [name, value]) => ({
             ...acc,
             [name]: value.old_value,
           }), {}),
@@ -115,25 +123,27 @@ const LogDetailsContainer = ({
   const isMe = logDetails && logDetails.modified_by === user.sub
 
   return (
-    loading
-      ? <Loader dark big />
-      : error
-        ? <div>Error!</div>
-        : <LogDetails
-          data={logDetails}
-          isMe={isMe}
-          isModerator={isModerator}
-          reviewCallback={reviewCallback}
-          banCallback={banCallback}
-          revertCallback={revertCallback}
-          loadingReview={loadingReview}
-          loadingBan={loadingBan}
-          loadingRevert={loadingRevert}
-          onClose={() => {
-            goBackToLogs()
-            setCachedLogDetails(null)
-          }}
-        />
+    <Modal short onClose={() => {
+      goBackToLogs()
+      setLogDetails(null)
+    }}>
+      {loading
+        ? <Loader dark big />
+        : error
+          ? <div>Error!</div>
+          : <LogDetails
+            data={logDetails._source}
+            isMe={isMe}
+            isModerator={isModerator}
+            reviewCallback={reviewCallback}
+            banCallback={banCallback}
+            revertCallback={revertCallback}
+            loadingReview={loadingReview}
+            loadingBan={loadingBan}
+            loadingRevert={loadingRevert}
+          />
+      }
+    </Modal>
   )
 }
 

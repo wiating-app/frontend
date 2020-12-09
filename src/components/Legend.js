@@ -2,20 +2,23 @@ import React from 'react'
 import classNames from 'classnames'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { useRecoilState } from 'recoil'
+import { activeTypesState } from '../state'
 import locationTypes from '../utils/locationTypes'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import useLanguage from '../utils/useLanguage'
 
 
-const Legend = ({ boxed, activeTypes, onChange }) => {
+const Legend = ({ boxed }) => {
   const classes = useStyles(boxed)
+  const [activeTypes, setActiveTypes] = useRecoilState(activeTypesState)
   const { translations } = useLanguage()
 
   const handleOnClick = key => {
     if (activeTypes.includes(key) && activeTypes.length) {
-      onChange(activeTypes.filter(item => item !== key))
+      setActiveTypes(activeTypes.filter(item => item !== key))
     } else {
-      onChange([
+      setActiveTypes([
         ...activeTypes,
         key,
       ])

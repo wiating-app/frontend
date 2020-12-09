@@ -29,10 +29,11 @@ const LocationForm = ({
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
   const { translations } = useLanguage()
+  console.log('locationData: ', locationData);
 
   const locationToString = () => {
-    const { lat, lon } = locationData.location
-    return [lat, lon].toString().replace(',', ', ')
+    const { lat, lng } = locationData.location
+    return [lat, lng].toString().replace(',', ', ')
   }
 
   // Convert bool to Select option. null = null, true = 1, false = 2.

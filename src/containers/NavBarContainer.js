@@ -1,25 +1,30 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import { useMediaQuery } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
+import {
+  activeTypesState,
+  searchResultsState,
+  activeLocationState,
+} from '../state'
 import api from '../api'
 import useAuth0 from '../utils/useAuth0'
 import NavBar from '../components/NavBar'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import useLanguage from '../utils/useLanguage'
+import history from '../history'
 
 const languages = ['pl', 'en']
 
-const NavBarContainer = ({
-  setSearchResults,
-  activeTypes,
-  isLocationTabOpen,
-  history,
-}) => {
+const NavBarContainer = () => {
   const [languageSwitch, setLanguageSwitch] = React.useState()
   const [searchPhrase, setSearchPhrase] = React.useState()
   const [searchLoading, setSearchLoading] = React.useState()
+  const [searchResults, setSearchResults] = useRecoilState(searchResultsState)
+  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations, language, setLanguage } = useLanguage()
+  const [activeTypes] = useRecoilState(activeTypesState)
 
   const {
     loading,
@@ -43,6 +48,7 @@ const NavBarContainer = ({
             ...activeTypes.length ? { point_type: activeTypes } : {},
           })
           setSearchResults(points)
+          setActiveLocation(null)
           history.push('/search')
           setSearchLoading(false)
         }
@@ -102,7 +108,6 @@ const NavBarContainer = ({
         language={language}
         languages={languages}
         setLanguage={setLanguage}
-        isLocationTabOpen={isLocationTabOpen}
       />
     </>
   )
