@@ -50,7 +50,6 @@ const generateMarkerIcon = (type, size = 40) => {
       `
     } catch (err) {
       console.error(err)
-      alert(err)
     }
   }
 }
