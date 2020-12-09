@@ -166,7 +166,7 @@ const LocationFormContainer = ({
         : error
           ? <div>Error!</div>
           : <LocationForm
-            locationData={location}
+            locationData={activeLocation}
             onSubmitLocation={onSubmitLocation}
             updateCurrentMarker={coords => {
               try {

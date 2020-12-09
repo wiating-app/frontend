@@ -29,6 +29,7 @@ const LocationForm = ({
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
   const { translations } = useLanguage()
+  console.log('locationData: ', locationData);
 
   const locationToString = () => {
     const { lat, lng } = locationData.location
