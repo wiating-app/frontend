@@ -4,7 +4,7 @@ import locationPictograms from './locationPictograms'
 const generateMarkerIcon = (type, size = 40) => {
   const color = locationTypes[type]?.color || 'grey'
 
-  if (size <= 100) {
+  if (size <= 10) {
     return `
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,6 @@ const generateMarkerIcon = (type, size = 40) => {
             d="m 107.23869,80.73146 c 5.46065,5.460894 14.31537,5.460894 19.77602,0 5.461,-5.461423 5.461,-14.314381 0,-19.775734 -5.46065,-5.461352 -14.31537,-5.461352 -19.77531,0 -5.461,5.461353 -5.461,14.315017 -7.1e-4,19.775734"
           />
         </g>
-        ${locationPictograms[type].replaceAll('$COLOR', color)}
       </svg>
     `
   }
