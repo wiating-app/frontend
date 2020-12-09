@@ -4,7 +4,7 @@ import locationPictograms from './locationPictograms'
 const generateMarkerIcon = (type, size = 40) => {
   const color = locationTypes[type]?.color || 'grey'
 
-  if (size <= 10) {
+  if (size <= 100) {
     return `
       <svg
         xmlns="http://www.w3.org/2000/svg"
