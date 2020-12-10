@@ -4,11 +4,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown, Menu } from '@material-ui/icons'
 import Form from 'react-standalone-form'
 import classNames from 'classnames'
+import { useRecoilState } from 'recoil'
 import Dropdown from './Dropdown'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
 import Loader from './Loader'
 import useLanguage from '../utils/useLanguage'
+import { isDrawerOpenState } from '../state'
 
 
 const NavBar = ({
@@ -21,14 +23,14 @@ const NavBar = ({
   language,
   languages,
   setLanguage,
-  isLocationTabOpen,
 }) => {
   const classes = useStyles()
+  const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { translations } = useLanguage()
 
   return (
     <AppBar position='relative' className={classNames(classes.root, {
-      [classes.hideOnMobile]: isLocationTabOpen,
+      [classes.hideOnMobile]: isDrawerOpen,
     })}>
       <Toolbar>
         <Logo className={classes.logo} />

@@ -6,19 +6,24 @@ import {
   PersonPinCircle,
 } from '@material-ui/icons'
 import { useSnackbar } from 'notistack'
+import { useRecoilState } from 'recoil'
+import { editModeState, activeLocationState } from '../state'
 import AddButton from '../components/AddButton'
 import useLanguage from '../utils/useLanguage'
-import useCurrentLocation from '../utils/useCurrentLocation'
+import useUserLocation from '../utils/useUserLocation'
 import useAuth0 from '../utils/useAuth0'
 import history from '../history'
 
 
-const AddButtonContainer = ({ setCachedLocation }) => {
+const AddButtonContainer = () => {
   const { translations } = useLanguage()
   const { isLoggedIn } = useAuth0()
-  const { currentLocation, error } = useCurrentLocation()
+  const { userLocation, error } = useUserLocation()
+  const [editMode] = useRecoilState(editModeState)
+  const [, setActiveLocation] = useRecoilState(activeLocationState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
+  if (editMode) return null
   return (
     <AddButton
       items={[
@@ -26,7 +31,7 @@ const AddButtonContainer = ({ setCachedLocation }) => {
           label: translations.pointOnMap,
           icon: <PinDrop />,
           callback: () => {
-            setCachedLocation(null)
+            setActiveLocation(null)
             history.push('/pin')
             enqueueSnackbar(translations.notifications.pointOnMap, {
               variant: 'info',
@@ -49,16 +54,17 @@ const AddButtonContainer = ({ setCachedLocation }) => {
           label: translations.enterCoordinates,
           icon: <BorderColor />,
           callback: () => {
+            setActiveLocation(null)
             history.push('/location/new')
           },
         },
-        ...currentLocation && !error ? [{
+        ...userLocation && !error ? [{
           label: translations.inCurrentLocation,
           icon: <PersonPinCircle />,
           callback: async () => {
-            const [lat, lon] = currentLocation
+            const [lat, lon] = userLocation
             await history.push('/location/new')
-            setCachedLocation({ location: { lat, lon } })
+            setActiveLocation({ location: { lat, lng: lon } })
           },
         }] : [],
       ]}

@@ -1,11 +1,16 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
+import {
+  editModeState,
+  activeLocationState,
+  isDrawerOpenState,
+} from './state'
 import Layout from './components/Layout'
-import ContentWrapper from './components/ContentWrapper'
-import LocationTab from './components/LocationTab'
+import Drawer from './components/Drawer'
 import SearchResults from './components/SearchResults'
 import BackToSearch from './components/BackToSearch'
 // import PhotosForm from './components/PhotosForm'
@@ -26,28 +31,16 @@ import HistoryContainer from '././containers/HistoryContainer'
 
 
 const App = ({ history, location: { pathname } }) => {
-  const [cachedLocation, setCachedLocation] = React.useState()
-  const [searchResults, setSearchResults] = React.useState([])
-  const [editMode, setEditMode] = React.useState()
-  const [activeTypes, setActiveTypes] = React.useState([])
-  const isLocationTabOpen = location.pathname.startsWith('/location') || location.pathname.startsWith('/search')
-  const [cachedLogDetails, setCachedLogDetails] = React.useState()
-  const mapRef = React.useRef()
+  const [, setActiveLocation] = useRecoilState(activeLocationState)
+  const [editMode, setEditMode] = useRecoilState(editModeState)
+  const [, setIsDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
-    if (cachedLocation) {
-      const { lat, lon } = cachedLocation.location
-      mapRef.current.setActiveMarker([lat, lon])
-    } else {
-      mapRef.current.setActiveMarker(null)
-    }
-  }, [cachedLocation])
-
-  React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
+    setIsDrawerOpen(pathname.startsWith('/location') || pathname.startsWith('/search'))
     if (!pathname.startsWith('/location/')) {
-      setCachedLocation(null)
+      setActiveLocation(null)
     }
   }, [pathname])
 
@@ -63,152 +56,52 @@ const App = ({ history, location: { pathname } }) => {
   }, [])
 
   return (
-    <Layout appBar={
-      <NavBarContainer
-        setSearchResults={results => {
-          setSearchResults(results)
-          setCachedLocation(null)
-        }}
-        activeTypes={activeTypes}
-        editMode={editMode}
-        isLocationTabOpen={isLocationTabOpen}
-      />
-    }>
+    <Layout appBar={<NavBarContainer />}>
 
-      <LocationTab
-        closeLocationTab={() => {
-          setCachedLocation(null)
-          history.push('/')
-        }}
-        refreshMap={async () => {
-          await mapRef.current.loadMapMarkers()
-        }}
-        isLocationTabOpen={isLocationTabOpen}
-        hideMapOnMobile={location.pathname.startsWith('/search')}
-      >
+      <Drawer>
         <Switch>
-          <Route exact path='/search'>
-            <SearchResults
-              items={searchResults}
-              setCachedLocation={location => {
-                setCachedLocation(location)
-                history.push(`/location/${location.id}`)
-              }}
-              history={history}
-            />
-          </Route>
+          <Route exact path='/search' component={SearchResults} />
 
           <Route exact path='/location/new'>
-            <ContentWrapper>
-              <LocationFormContainer
-                cachedLocation={cachedLocation}
-                setCachedLocation={setCachedLocation}
-                isNew
-                refreshMap={async () => {
-                  await mapRef.current.loadMapMarkers()
-                }}
-              />
-            </ContentWrapper>
+            <LocationFormContainer isNew />
           </Route>
 
           <Route exact path='/location/:id'>
-            <LocationInfoContainer
-              cachedLocation={cachedLocation}
-              setCachedLocation={setCachedLocation}
-            />
-            {searchResults.length
-              ? <BackToSearch onClick={() => {
-                history.push('/search')
-                setCachedLocation(null)
-              }} />
-              : null
-            }
+            <LocationInfoContainer />
+            <BackToSearch />
           </Route>
 
           <Route exact path='/location/:id/edit'>
-            <ContentWrapper>
-              <LocationFormContainer
-                cachedLocation={cachedLocation}
-                setCachedLocation={setCachedLocation}
-                setActiveMarker={location => mapRef.current.setActiveMarker(location)}
-                refreshMap={async () => {
-                  await mapRef.current.loadMapMarkers()
-                }}
-              />
-            </ContentWrapper>
+            <LocationFormContainer />
           </Route>
 
           {/* <Route exact path='/location/:id/photos'>
-            <ContentWrapper>
               <Typography variant='h4' gutterBottom>{translations.actions.editPhotos}</Typography>
               <PhotosForm
-                locationData={cachedLocation}
                 onSubmitLocation={files => onImageUpload(files)}
-                cancel={() => setLocationTabContent('markerInfo')}
+                cancel={() => setDrawerContent('markerInfo')}
               />
-            </ContentWrapper>
           </Route> */}
         </Switch>
-      </LocationTab>
+      </Drawer>
 
-      <MapContainer
-        openLocationTab={point => {
-          setSearchResults([])
-          setCachedLocation(point)
-          history.push(`/location/${point.id}`)
-        }}
-        openAddMarkerTab={async ({ lat, lng: lon }) => {
-          await history.push('/location/new')
-          setCachedLocation({ location: { lat, lon } })
-        }}
-        closeTab={() => history.push('/')}
-        updateCoordinates={({ lat, lng: lon }) => {
-          setCachedLocation({ ...cachedLocation, location: { lon, lat } })
-        }}
-        ref={mapRef}
-        isLocationTabOpen={isLocationTabOpen}
-        editMode={editMode}
-        activeTypes={activeTypes}
-        setActiveTypes={setActiveTypes}
-      />
+      <MapContainer />
 
-      {!editMode &&
-        <AddButtonContainer
-          setCachedLocation={setCachedLocation}
-        />
-      }
+      <AddButtonContainer />
 
       <AcceptDataPrivacy />
 
       <Switch>
         <Route exact path='/info' component={Info} />
-        <Route exact path='/legend' render={() => <LegendPage
-          activeTypes={activeTypes}
-          setActiveTypes={setActiveTypes}
-        />} />
+        <Route exact path='/legend' component={LegendPage} />
         <Route exact path='/regulations' component={Regulamin} />
         <Route exact path='/privacy-policy' component={PolitykaPrywatnosci} />
         <Route exact path='/faq' component={FaqPage} />
       </Switch>
 
-
-      <Route path='/moderator'>
-        <ModeratorPanel
-          cachedLogDetails={cachedLogDetails}
-          setCachedLogDetails={setCachedLogDetails}
-        />
-      </Route>
-
-      <Route path='/history'>
-        <HistoryContainer setCachedLogDetails={setCachedLogDetails} />
-      </Route>
-
-      <Route exact path='/history/:id'>
-        <LogDetailsContainer
-          cachedLogDetails={cachedLogDetails}
-          setCachedLogDetails={setCachedLogDetails}
-        />
-      </Route>
+      <Route path='/moderator' component={ModeratorPanel} />
+      <Route path='/history' component={HistoryContainer} />
+      <Route exact path='/history/:id' component={LogDetailsContainer} />
 
     </Layout>
   )

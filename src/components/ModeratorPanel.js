@@ -11,8 +11,6 @@ import useAuth0 from '../utils/useAuth0'
 
 
 const ModeratorPanel = ({
-  cachedLogDetails,
-  setCachedLogDetails,
   history,
   location: { pathname },
 }) => {
@@ -47,17 +45,14 @@ const ModeratorPanel = ({
       </Tabs>
 
       <Route path='/moderator/log'>
-        <LogsContainer setCachedLogDetails={setCachedLogDetails} />
+        <LogsContainer />
       </Route>
       <Route path='/moderator/reports'>
         <ReportsContainer />
       </Route>
 
       <Route exact path='/moderator/log/:id'>
-        <LogDetailsContainer
-          cachedLogDetails={cachedLogDetails}
-          setCachedLogDetails={setCachedLogDetails}
-        />
+        <LogDetailsContainer />
       </Route>
     </Modal>
   )
