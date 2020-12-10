@@ -64,7 +64,7 @@ const AddButtonContainer = () => {
           callback: async () => {
             const [lat, lon] = userLocation
             await history.push('/location/new')
-            setActiveLocation({ location: { lat, lon } })
+            setActiveLocation({ location: { lat, lng: lon } })
           },
         }] : [],
       ]}
