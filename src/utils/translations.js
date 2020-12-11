@@ -163,6 +163,10 @@ export default {
     dateOfLastEdit: 'Data ostatniej edycji lokacji',
     showLocationLogs: 'Pokaż logi lokacji',
     markAsDone: 'Oznacz zgłoszenia jako załatwione',
+    export: 'Eksport',
+    exportSentence: 'Przycisk poniżej wykonuje kopię zapasową całej bazy lokacji i eksportuje ją do pliku KML.',
+    exportButton: 'Eksportuj bazę do KML',
+    iAmWorking: 'Pracuję, cierpliwości...',
   },
 
 
@@ -330,5 +334,9 @@ export default {
     dateOfLastEdit: 'Date of last edit',
     showLocationLogs: 'Show location logs',
     markAsDone: 'Mark as done',
+    export: 'Export',
+    exportSentence: 'The button below makes a backup of whole locations database and exports it to downloadable KML file.',
+    exportButton: 'Export database to KML',
+    iAmWorking: 'I am working It may take a while...',
   },
 }

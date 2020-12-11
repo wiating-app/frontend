@@ -144,6 +144,7 @@ const Map = React.forwardRef(({
           }
         }}
         onClick={e => {
+          console.log(e.latlng);
           if (contextMenu) {
             // If context menu is opened, close it.
             setContextMenu(false)
