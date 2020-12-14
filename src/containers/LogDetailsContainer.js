@@ -23,7 +23,6 @@ const LogDetailsContainer = ({
   const [loadingRevert, setLoadingRevert] = React.useState(false)
   const [logDetails, setLogDetails] = useRecoilState(logDetailsState)
   const [logs, setLogs] = useRecoilState(logsState)
-  console.log('logDetails: ', logDetails);
   const { user, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
