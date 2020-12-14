@@ -40,6 +40,10 @@ const FaqPage = () => {
       q: 'Dlaczego aplikacja używa mojej lokalizacji?',
       a: 'Wiating pyta o lokalizację w celu umiejscowienia na mapie kropki Twojego położenia. Nie wysyłamy nigdzie tej informacji.',
     },
+    {
+      q: 'Jak mogę pomóc w rozwoju aplikacji Wiating?',
+      a: 'Aplikacja wiating jest projektem open source. Jej kod znajduje się pod adresem https://github.com/wiating-app',
+    },
   ]
   return (
     <Modal>
