@@ -4,7 +4,6 @@ import { Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Carousel } from 'react-responsive-carousel'
 import ImageGallery from 'react-image-gallery'
-import Dropzone from 'react-dropzone'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
 import Loader from './Loader'
@@ -15,7 +14,7 @@ const LocationImages = ({
   images,
   id,
   uploading,
-  onImageUpload,
+  uploadImages,
 }) => {
   const classes = useStyles()
   const { translations } = useLanguage()
@@ -83,18 +82,8 @@ const LocationImages = ({
         size='small'
         variant='contained'
         color='primary'
-      >
-        <Dropzone accept='image/jpeg' onDrop={files => onImageUpload(files)}>
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                {translations.actions.addPhoto}
-              </div>
-            </section>
-          )}
-        </Dropzone>
-      </Button>
+        onClick={uploadImages}
+      >{translations.actions.addPhoto}</Button>
     </div>
   )
 }

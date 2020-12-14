@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
+import { Typography, Button } from '@material-ui/core'
 import Form from 'react-standalone-form'
 import {
   MultiImageUpload,
@@ -9,25 +9,26 @@ import {
 import useLanguage from '../utils/useLanguage'
 
 
-const PhotosForm = ({ locationData, onSubmitLocation, cancel }) => {
+const PhotosForm = ({ name, handleSubmit, cancel }) => {
   const { translations } = useLanguage()
+
   return (
-    <Form fields={['files']} allRequired>
+    <Form fields={['images']} allRequired>
+      <Typography variant='h4' gutterBottom>{translations.sendNewPhotos}</Typography>
+      <Typography gutterBottom>{name}</Typography>
+      {/* TODO: Make "add more" label translatable */}
       <MultiImageUpload
-        name='files'
+        name='images'
         mdHeight='160px'
         spacing={1}
-        initialValue={locationData && locationData.images &&
-          locationData.images.map(image => `${process.env.FRONTEND_CDN_URL}/${locationData.id}/${image.name}`)
-        }
       />
       <FormActions>
         <Button onClick={() => cancel()}>{translations.cancel}</Button>
         <FormButton
           variant='contained'
           color='primary'
-          callback={fields => onSubmitLocation(fields.files)}
-        >{translations.markerForm.cta}</FormButton>
+          callback={fields => handleSubmit(fields.images)}
+        >{translations.send}</FormButton>
       </FormActions>
     </Form>
   )

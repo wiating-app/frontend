@@ -167,6 +167,8 @@ export default {
     exportSentence: 'Przycisk poniżej wykonuje kopię zapasową całej bazy lokacji i eksportuje ją do pliku KML.',
     exportButton: 'Eksportuj bazę do KML',
     iAmWorking: 'Pracuję, cierpliwości...',
+    sendNewPhotos: 'Prześlij nowe zdjęca',
+    send: 'Prześlij',
   },
 
 
@@ -338,5 +340,7 @@ export default {
     exportSentence: 'The button below makes a backup of whole locations database and exports it to downloadable KML file.',
     exportButton: 'Export database to KML',
     iAmWorking: 'I am working It may take a while...',
+    sendNewPhotos: 'Send new photos',
+    send: 'Send',
   },
 }
