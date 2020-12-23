@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppBar, Toolbar, Typography, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { ArrowDropDown, Menu } from '@material-ui/icons'
+import { ArrowDropDown, Menu, HelpOutlineRounded } from '@material-ui/icons'
 import Form from 'react-standalone-form'
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil'
@@ -9,6 +9,7 @@ import Dropdown from './Dropdown'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
 import Loader from './Loader'
+import InfoTooltip from './InfoTooltip'
 import useLanguage from '../utils/useLanguage'
 import { isDrawerOpenState } from '../state'
 
@@ -27,6 +28,30 @@ const NavBar = ({
   const classes = useStyles()
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { translations } = useLanguage()
+  const renderVersion = () => {
+    let name
+    let info
+    console.log(window.location.hostname)
+    switch (window.location.hostname) {
+      case 'beta.wiating.eu':
+        name = 'Wersja eksperymentalna'
+        info = 'Wersja aplikacji to testów, zawierająca najnowsze funkcjonalności.'
+        break
+      case 'localhost':
+        name = 'Localhost'
+        info = 'Frontend serwowany lokalnie.'
+        break
+      default:
+        name = 'Wersja stabilna'
+        info = 'Wersja oficjalna, przetestowana przez społeczność użytkowników.'
+        break
+    }
+    return (
+      <Typography variant='caption' className={classes.version}>
+        {name} <InfoTooltip className={classes.info} icon={HelpOutlineRounded}>{info}</InfoTooltip>
+      </Typography>
+    )
+  }
 
   return (
     <AppBar position='relative' className={classNames(classes.root, {
@@ -46,7 +71,7 @@ const NavBar = ({
             loading={searchLoading}
           />
         </Form>
-        <div className={classes.grow} />
+        {renderVersion()}
         {!authLoading && !isLoggedIn &&
           <Dropdown
             items={languages.map(lang => ({
@@ -108,8 +133,14 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-  grow: {
+  version: {
     flexGrow: 1,
+    marginLeft: theme.spacing(1),
+    lineHeight: 'normal',
+    color: theme.palette.grey[500],
+  },
+  info: {
+    color: theme.palette.grey[500],
   },
 }))
 

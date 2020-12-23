@@ -16,6 +16,7 @@ import serializeData from '../utils/serializeData'
 
 const LocationInfoContainer = ({
   match: { params: { id } },
+  location: { search },
   history,
 }) => {
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
@@ -24,7 +25,6 @@ const LocationInfoContainer = ({
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
-  const [imageUploading, setImageUploading] = React.useState(false)
 
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
@@ -44,37 +44,6 @@ const LocationInfoContainer = ({
       setLoading(false)
     }
   }, [activeLocation])
-
-  const onImageUpload = async files => {
-    setImageUploading(true)
-    try {
-      await files.forEach(async file => {
-        await Resizer.imageFileResizer(
-          file,
-          1080, // Maximum width
-          1080, // Maximum height
-          'JPEG', // Format
-          80, // Quality 1-100
-          0, // Rotation
-          async uri => {
-            const decoded = dataUriToBuffer(uri)
-            const resizedFile = new File([decoded], file.name, { type: file.type })
-            const fileObject = new FormData()
-            fileObject.append('file', resizedFile)
-            const { data } = await api.post(`add_image/${activeLocation.id}`, fileObject)
-            setActiveLocation(data)
-            setImageUploading(false)
-            history.push(`/location/${activeLocation.id}`)
-            enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
-          },
-        )
-      })
-    } catch (error) {
-      console.error(error)
-      setImageUploading(false)
-      enqueueSnackbar(translations.notifications.couldNotSavePhoto, { variant: 'error' })
-    }
-  }
 
   const handleReport = async fields => {
     try {
@@ -100,8 +69,8 @@ const LocationInfoContainer = ({
           <LocationImages
             images={activeLocation.images}
             id={id}
-            uploading={imageUploading}
-            onImageUpload={files => onImageUpload(files)}
+            uploading={search === '?imageLoading=true'}
+            uploadImages={() => history.push(`/location/${id}/photos`)}
           />
           <LocationInfo
             selectedLocation={activeLocation}

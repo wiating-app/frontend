@@ -31,6 +31,18 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 Your app is ready to be deployed!
 
-## `docker-compose up`
+### `docker-compose up`
 
 Start the app in a dockerized mode. The app should be available on http://localhost:3000/
+
+
+
+## Domains
+
+Project is continuously deployed to following domains:
+
+| Domain                     | Role       | Explanation                                                                 |
+|----------------------------|------------|-----------------------------------------------------------------------------|
+| https://wiating.eu         | Production | `master` branch with a production database. Stable release.                   |
+| https://beta.wiating.eu    | Canary     | `develop` branch with a production database. Experimental release.            |
+| https://staging.wiating.eu | Staging    | `develop` branch with a staging backend. Development and testing purposes. |

@@ -13,7 +13,6 @@ import Layout from './components/Layout'
 import Drawer from './components/Drawer'
 import SearchResults from './components/SearchResults'
 import BackToSearch from './components/BackToSearch'
-// import PhotosForm from './components/PhotosForm'
 import Info from './components/Info'
 import LegendPage from './components/LegendPage'
 import Regulamin from './components/Regulamin'
@@ -26,6 +25,7 @@ import MapContainer from './containers/MapContainer'
 import AddButtonContainer from './containers/AddButtonContainer'
 import LocationInfoContainer from './containers/LocationInfoContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
+import PhotosFormContainer from './containers/PhotosFormContainer'
 import LogDetailsContainer from './containers/LogDetailsContainer'
 import HistoryContainer from '././containers/HistoryContainer'
 
@@ -75,13 +75,9 @@ const App = ({ history, location: { pathname } }) => {
             <LocationFormContainer />
           </Route>
 
-          {/* <Route exact path='/location/:id/photos'>
-              <Typography variant='h4' gutterBottom>{translations.actions.editPhotos}</Typography>
-              <PhotosForm
-                onSubmitLocation={files => onImageUpload(files)}
-                cancel={() => setDrawerContent('markerInfo')}
-              />
-          </Route> */}
+          <Route exact path='/location/:id/photos'>
+            <PhotosFormContainer />
+          </Route>
         </Switch>
       </Drawer>
 

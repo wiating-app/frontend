@@ -5,6 +5,7 @@ import { Typography, Tabs, Tab } from '@material-ui/core'
 import ReportsContainer from '../containers/ReportsContainer'
 import LogsContainer from '../containers/LogsContainer'
 import LogDetailsContainer from '../containers/LogDetailsContainer'
+import ExportContainer from '../containers/ExportContainer'
 import Modal from './Modal'
 import useLanguage from '../utils/useLanguage'
 import useAuth0 from '../utils/useAuth0'
@@ -42,6 +43,7 @@ const ModeratorPanel = ({
       >
         <Tab label={translations.changeLog} value='/moderator/log' />
         <Tab label={translations.reports} value='/moderator/reports' />
+        <Tab label={translations.export} value='/moderator/export' />
       </Tabs>
 
       <Route path='/moderator/log'>
@@ -49,6 +51,9 @@ const ModeratorPanel = ({
       </Route>
       <Route path='/moderator/reports'>
         <ReportsContainer />
+      </Route>
+      <Route path='/moderator/export'>
+        <ExportContainer />
       </Route>
 
       <Route exact path='/moderator/log/:id'>

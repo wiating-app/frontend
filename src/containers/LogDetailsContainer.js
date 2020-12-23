@@ -23,7 +23,6 @@ const LogDetailsContainer = ({
   const [loadingRevert, setLoadingRevert] = React.useState(false)
   const [logDetails, setLogDetails] = useRecoilState(logDetailsState)
   const [logs, setLogs] = useRecoilState(logsState)
-  console.log('logDetails: ', logDetails);
   const { user, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
@@ -61,13 +60,20 @@ const LogDetailsContainer = ({
     try {
       setLoadingReview(true)
       const { data } = await api.post('log_reviewed', { log_id: logDetails._id })
-      const index = logs.findIndex(item => item._id === logDetails._id)
-      const newLogs = [
-        ...logs.slice(0, index),
-        { _id: id, _source: data },
-        ...logs.slice(index + 1),
-      ]
-      setLogs(newLogs)
+      // If reviewed filter is set to false, filter reviewed item out of a list.
+      // Otherwise just update its state.
+      if (search.includes('reviewed_at=false')) {
+        const newLogs = logs.filter(item => item._id !== logDetails._id)
+        setLogs(newLogs)
+      } else {
+        const index = logs.findIndex(item => item._id === logDetails._id)
+        const newLogs = [
+          ...logs.slice(0, index),
+          { _id: id, _source: data },
+          ...logs.slice(index + 1),
+        ]
+        setLogs(newLogs)
+      }
       goBackToLogs()
       enqueueSnackbar('Log zweryfikowany.', { variant: 'success' })
     } catch (err) {

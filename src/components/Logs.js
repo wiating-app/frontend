@@ -54,11 +54,11 @@ const Logs = ({
             />,
           }))}
           labels={[
-            { name: translations.verified, field: 'verified' },
+            { name: translations.verification, field: 'verified' },
             { name: translations.date, field: 'timestamp' },
-            { name: translations.locationAndFields, field: 'location' },
+            { name: translations.locationAndFields, field: 'location', wide: true },
             { name: translations.authorOfChange, field: 'user' },
-            { name: '', field: 'actions' },
+            { name: '', field: 'actions', wide: true },
           ]}
         />
         {rowsInTotal > rowsPerPage &&

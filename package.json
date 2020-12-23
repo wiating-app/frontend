@@ -20,7 +20,6 @@
     "react-auth0-components": "^1.0.1",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
-    "react-dropzone": "^10.1.10",
     "react-image-file-resizer": "^0.2.1",
     "react-image-gallery": "^0.9.1",
     "react-leaflet": "^2.7.0",

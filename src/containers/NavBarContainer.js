@@ -1,5 +1,4 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { useMediaQuery } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
@@ -114,4 +113,4 @@ const NavBarContainer = () => {
   )
 }
 
-export default withRouter(NavBarContainer)
+export default NavBarContainer

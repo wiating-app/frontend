@@ -38,9 +38,9 @@ const Reports = ({
           }))}
           labels={[
             { name: translations.date, field: 'timestamp' },
-            { name: translations.location, field: 'location' },
-            { name: translations.reportReason, field: 'report_reason' },
-            { name: '', field: 'actions' },
+            { name: translations.location, field: 'location', wide: true },
+            { name: translations.reportReason, field: 'report_reason', wide: true },
+            { name: '', field: 'actions', wide: true },
           ]}
         />
         : <Typography>{translations.noReportsAvailable}</Typography>
