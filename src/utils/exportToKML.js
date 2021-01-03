@@ -52,7 +52,7 @@ const exportToKML = locations => {
       ...footer,
     ].join('\n')
 
-    const type = 'text/xml'
+    const type = 'text/kml'
     const blob = new Blob([xml], { type })
     const dataURI = `data:${type};charset=utf-8,${xml}`
 

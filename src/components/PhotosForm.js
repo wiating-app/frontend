@@ -2,11 +2,12 @@ import React from 'react'
 import { Typography, Button } from '@material-ui/core'
 import Form from 'react-standalone-form'
 import {
-  MultiImageUpload,
+  // MultiImageUpload,
   FormButton,
   FormActions,
 } from 'react-standalone-form-mui'
 import useLanguage from '../utils/useLanguage'
+import MultiImageUpload from './MultiImageUpload'
 
 
 const PhotosForm = ({ name, handleSubmit, cancel }) => {

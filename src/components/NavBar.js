@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Avatar } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, Avatar, Hidden } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown, Menu, HelpOutlineRounded } from '@material-ui/icons'
 import Form from 'react-standalone-form'
@@ -31,7 +31,6 @@ const NavBar = ({
   const renderVersion = () => {
     let name
     let info
-    console.log(window.location.hostname)
     switch (window.location.hostname) {
       case 'beta.wiating.eu':
         name = 'Wersja eksperymentalna'
@@ -47,9 +46,13 @@ const NavBar = ({
         break
     }
     return (
-      <Typography variant='caption' className={classes.version}>
-        {name} <InfoTooltip className={classes.info} icon={HelpOutlineRounded}>{info}</InfoTooltip>
-      </Typography>
+      <div className={classes.version}>
+        <Hidden smDown>
+          <Typography variant='caption'>
+            {name} <InfoTooltip className={classes.info} icon={HelpOutlineRounded}>{info}</InfoTooltip>
+          </Typography>
+        </Hidden>
+      </div>
     )
   }
 
