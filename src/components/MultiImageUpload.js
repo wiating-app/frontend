@@ -13,6 +13,7 @@ const MultiImageUpload = ({
   setValue,
   spacing,
   columns,
+  uploadLabel,
 }) => {
   const classes = useStyles()
   return (
@@ -83,7 +84,7 @@ const MultiImageUpload = ({
         />
         <label htmlFor={name} className={classNames(classes.wrapper, classes.label)}>
           <CloudUpload />
-          <Typography variant='caption' color='inherit'>Add more</Typography>
+          <Typography variant='caption' color='inherit'>{uploadLabel}</Typography>
         </label>
       </Grid>
     </Grid>
@@ -95,6 +96,7 @@ MultiImageUpload.defaultProps = {
   columns: 2,
   smHeight: '20vw',
   mdHeight: '12vw',
+  uploadLabel: 'Upload',
 }
 
 const useStyles = makeStyles(theme => ({

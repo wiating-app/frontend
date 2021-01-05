@@ -22,6 +22,7 @@ const PhotosForm = ({ name, handleSubmit, cancel }) => {
         name='images'
         mdHeight='160px'
         spacing={1}
+        uploadLabel={translations.upload}
       />
       <FormActions>
         <Button onClick={() => cancel()}>{translations.cancel}</Button>

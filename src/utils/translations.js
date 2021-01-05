@@ -169,6 +169,7 @@ export default {
     iAmWorking: 'Pracuję, cierpliwości...',
     sendNewPhotos: 'Prześlij nowe zdjęca',
     send: 'Prześlij',
+    upload: 'Dodaj zdjęcia',
   },
 
 
@@ -342,5 +343,6 @@ export default {
     iAmWorking: 'I am working It may take a while...',
     sendNewPhotos: 'Send new photos',
     send: 'Send',
+    upload: 'Add from drive',
   },
 }
