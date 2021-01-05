@@ -19,3 +19,9 @@ export const formatTime = (timestamp, variant = 'standard') => {
   const formatedDate = new Date(timestamp).toLocaleTimeString(undefined, dateOptions[variant])
   return formatedDate === 'Invalid Date' ? timestamp : formatedDate
 }
+
+export const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+}

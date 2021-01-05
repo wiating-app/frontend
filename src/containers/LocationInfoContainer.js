@@ -1,13 +1,11 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import Resizer from 'react-image-file-resizer'
-import dataUriToBuffer from 'data-uri-to-buffer'
 import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
 import api from '../api'
 import { activeLocationState } from '../state'
 import useAuth0 from '../utils/useAuth0'
-import LocationImages from '../components/LocationImages'
+import LocationPhotos from '../components/LocationPhotos'
 import LocationInfo from '../components/LocationInfo'
 import Loader from '../components/Loader'
 import useLanguage from '../utils/useLanguage'
@@ -66,7 +64,7 @@ const LocationInfoContainer = ({
       : error
         ? <div>Error!</div>
         : <>
-          <LocationImages
+          <LocationPhotos
             images={activeLocation.images}
             id={id}
             uploading={search === '?imageLoading=true'}

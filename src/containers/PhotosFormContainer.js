@@ -10,6 +10,7 @@ import Loader from '../components/Loader'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import serializeData from '../utils/serializeData'
+import { asyncForEach } from '../utils/helpers'
 import api from '../api'
 import { activeLocationState } from '../state'
 
@@ -25,34 +26,34 @@ const PhotosFormContainer = ({
   const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
 
+  const asyncResizeFile = file => new Promise(resolve => {
+    Resizer.imageFileResizer(
+      file,
+      1080, // Maximum width
+      1080, // Maximum height
+      'JPEG', // Format
+      80, // Quality 1-100
+      0, // Rotation
+      async uri => {
+        const decoded = dataUriToBuffer(uri)
+        const resizedFile = new File([decoded], file.name, { type: file.type })
+        const fileObject = new FormData()
+        fileObject.append('file', resizedFile)
+        const { data } = await api.post(`add_image/${activeLocation.id}`, fileObject)
+        setActiveLocation(serializeData(data))
+        resolve()
+      },
+    )
+  })
+
   const handleImageUpload = async files => {
     try {
       history.push(`/location/${activeLocation.id}?imageLoading=true`)
-      await files.forEach(async file => {
-        // Upload only images that are not initial data
-        // (initial data image is a string, uploaded image is an object).
-        if (file?.dataFile) {
-          const { dataFile } = file
-          await Resizer.imageFileResizer(
-            dataFile,
-            1080, // Maximum width
-            1080, // Maximum height
-            'JPEG', // Format
-            80, // Quality 1-100
-            0, // Rotation
-            async uri => {
-              const decoded = dataUriToBuffer(uri)
-              const resizedFile = new File([decoded], dataFile.name, { type: dataFile.type })
-              const fileObject = new FormData()
-              fileObject.append('file', resizedFile)
-              const { data } = await api.post(`add_image/${activeLocation.id}`, fileObject)
-              setActiveLocation(serializeData(data))
-              history.push(`/location/${activeLocation.id}`)
-              enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
-            },
-          )
-        }
+      await asyncForEach(files, async file => {
+        file?.dataFile && await asyncResizeFile(file.dataFile)
       })
+      history.push(`/location/${activeLocation.id}`)
+      enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
     } catch (err) {
       console.error(err)
       enqueueSnackbar(translations.notifications.couldNotSavePhoto, { variant: 'error' })
