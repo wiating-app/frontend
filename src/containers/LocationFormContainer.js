@@ -173,11 +173,13 @@ const LocationFormContainer = ({
                 const { lat, lon } = parse(coords)
                 if (
                   (typeof lat !== 'undefined' && typeof lat !== 'undefined') &&
-                  (!location?.location || location.location.lat !== lat || location.location.lon !== lon)
+                  (!activeLocation?.location || activeLocation.location.lat !== lat || activeLocation.location.lng !== lon)
                 ) {
-                  setCachedLocation({ ...location, location: { lat, lon } })
+                  setActiveLocation({ ...activeLocation, location: { lat, lng: lon } })
                 }
-              } catch (err) {}
+              } catch (err) {
+                console.error(err)
+              }
             }}
             cancel={() => {
               if (location?.id) {
