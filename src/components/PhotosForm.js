@@ -17,11 +17,11 @@ const PhotosForm = ({ name, handleSubmit, cancel }) => {
     <Form fields={['images']} allRequired>
       <Typography variant='h4' gutterBottom>{translations.sendNewPhotos}</Typography>
       <Typography gutterBottom>{name}</Typography>
-      {/* TODO: Make "add more" label translatable */}
       <MultiImageUpload
         name='images'
         mdHeight='160px'
         spacing={1}
+        uploadLabel={translations.upload}
       />
       <FormActions>
         <Button onClick={() => cancel()}>{translations.cancel}</Button>

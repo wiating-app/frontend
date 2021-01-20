@@ -10,7 +10,7 @@ import Loader from './Loader'
 import useLanguage from '../utils/useLanguage'
 
 
-const LocationImages = ({
+const LocationPhotos = ({
   images,
   id,
   uploading,
@@ -33,12 +33,12 @@ const LocationImages = ({
 
   return (
     <div className={classes.root}>
-      {images?.length
-        ? uploading
-          ? <div className={classes.imageWrapper}>
-            <div className={classes.loader}><Loader big /></div>
-          </div>
-          : <>
+      {uploading
+        ? <div className={classes.imageWrapper}>
+          <div className={classes.loader}><Loader big /></div>
+        </div>
+        : images?.length
+          ? <>
             <Modal
               open={openModal}
               onClose={() => setOpenModal(false)}
@@ -73,9 +73,9 @@ const LocationImages = ({
               )}
             </Carousel>
           </>
-        : <div className={classes.imageWrapper}>
-          <img src='/no-image.png' alt='No image' className={classes.image} />
-        </div>
+          : <div className={classes.imageWrapper}>
+            <img src='/no-image.png' alt='No image' className={classes.image} />
+          </div>
       }
       <Button
         className={classes.addPhoto}
@@ -159,4 +159,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default LocationImages
+export default LocationPhotos
