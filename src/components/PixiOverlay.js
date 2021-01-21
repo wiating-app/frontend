@@ -57,8 +57,8 @@ const PixiOverlay = ({
 
     if (loadingAny) {
       PIXILoader.load(() => setLoaded(true))
-    } else {
-      setLoaded(true)
+    // } else {
+    //   setLoaded(true)
     }
   }, [markers])
 
