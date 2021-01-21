@@ -17,12 +17,11 @@ const exportToKML = locations => {
       '  <Document>',
       '    <name>Wiating</name>',
       `    <description>Eksport z aplikacji Wiating (https://mapa.wiating.eu) z dnia ${date}.</description>`,
-      ...Object.entries(locationTypes).reduce((acc, [key, value]) => [
+      ...Object.keys(locationTypes).reduce((acc, key) => [
         ...acc,
         `    <Style id="icon-${key}">`,
         '      <IconStyle>',
-        `        <color>${value.color.replace('#', '')}</color>`,
-        '        <scale>1</scale>',
+        '        <scale>0.75</scale>',
         '        <Icon>',
         `          <href>https://beta.wiating.eu/location-icons/${key}.png</href>`,
         '        </Icon>',
