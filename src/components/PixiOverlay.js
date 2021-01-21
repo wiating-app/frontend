@@ -57,6 +57,7 @@ const PixiOverlay = ({
 
     if (loadingAny) {
       PIXILoader.load(() => setLoaded(true))
+    // These lines were commented out to fix the "Cannot add resources while the loader is running." bug."
     // } else {
     //   setLoaded(true)
     }
