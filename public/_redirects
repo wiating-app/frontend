@@ -9,6 +9,7 @@
 /log/*  /index.html 200
 /history/*  /index.html 200
 /moderator/* /index.html 200
+/location-icons/* /location-icons/:splat 200
 /api/* https://serwer.wiating.eu/wiating/:splat 200
 /staging-api/* http://serwer.wiating.eu:5813/:splat 200
 /staging-cdn/* http://serwer.wiating.eu:5813/images/:splat 200

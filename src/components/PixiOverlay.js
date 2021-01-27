@@ -43,8 +43,8 @@ const PixiOverlay = ({
     for (let marker of markers) {
       const resolvedMarkerId = marker.iconId || marker.iconColor
 
-      // skip if no ID or already cached
-      if ((!marker.iconColor && !marker.iconId) || PIXILoader.resources[`marker_${resolvedMarkerId}`]) {
+      // skip if no ID or already cached or the loader is running.
+      if ((!marker.iconColor && !marker.iconId) || PIXILoader.resources[`marker_${resolvedMarkerId}`] || PIXILoader.loading) {
         continue
       }
       loadingAny = true

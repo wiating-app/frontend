@@ -1,7 +1,6 @@
 import locationTypes from './locationTypes'
 import texts from './translations'
 
-
 const exportToKML = locations => {
   // Currently only polish language is supported.
   try {
@@ -18,6 +17,17 @@ const exportToKML = locations => {
       '  <Document>',
       '    <name>Wiating</name>',
       `    <description>Eksport z aplikacji Wiating (https://mapa.wiating.eu) z dnia ${date}.</description>`,
+      ...Object.keys(locationTypes).reduce((acc, key) => [
+        ...acc,
+        `    <Style id="icon-${key}">`,
+        '      <IconStyle>',
+        '        <scale>0.75</scale>',
+        '        <Icon>',
+        `          <href>https://beta.wiating.eu/location-icons/${key}.png</href>`,
+        '        </Icon>',
+        '      </IconStyle>',
+        '    </Style>',
+      ], []),
     ]
     const footer = [
       '  </Document>',
@@ -40,6 +50,7 @@ const exportToKML = locations => {
         : ['          <p>Brak zdjęć.</p>'],
       '        ]]>',
       '      </description>',
+      `      <styleUrl>#icon-${location.type}</styleUrl>`,
       '      <Point>',
       `        <coordinates>${location.location.lng},${location.location.lat},0</coordinates>`,
       '      </Point>',
