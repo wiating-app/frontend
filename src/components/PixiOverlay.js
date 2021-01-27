@@ -43,8 +43,8 @@ const PixiOverlay = ({
     for (let marker of markers) {
       const resolvedMarkerId = marker.iconId || marker.iconColor
 
-      // skip if no ID or already cached
-      if ((!marker.iconColor && !marker.iconId) || PIXILoader.resources[`marker_${resolvedMarkerId}`]) {
+      // skip if no ID or already cached or the loader is running.
+      if ((!marker.iconColor && !marker.iconId) || PIXILoader.resources[`marker_${resolvedMarkerId}`] || PIXILoader.loading) {
         continue
       }
       loadingAny = true
@@ -57,9 +57,8 @@ const PixiOverlay = ({
 
     if (loadingAny) {
       PIXILoader.load(() => setLoaded(true))
-    // These lines were commented out to fix the "Cannot add resources while the loader is running." bug."
-    // } else {
-    //   setLoaded(true)
+    } else {
+      setLoaded(true)
     }
   }, [markers])
 
