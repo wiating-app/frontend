@@ -49,8 +49,9 @@ const App = ({ history, location: { pathname } }) => {
   }, [editMode])
 
   React.useEffect(() => {
-    // Show info page when user visits the site first time.
-    if (!localStorage.getItem('seenInitialInfo')) {
+    // Show info screen when user visits a site for the first time,
+    // but only if first view is on a location page.
+    if (!localStorage.getItem('seenInitialInfo') && !pathname.startsWith('/location')) {
       history.push('/info')
     }
   }, [])
