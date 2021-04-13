@@ -171,6 +171,7 @@ export default {
     sendNewPhotos: 'Prześlij nowe zdjęca',
     send: 'Prześlij',
     upload: 'Dodaj zdjęcia',
+    unpublished: 'Nieopublikowane',
   },
 
 
@@ -346,5 +347,6 @@ export default {
     sendNewPhotos: 'Send new photos',
     send: 'Send',
     upload: 'Add from drive',
+    unpublished: 'Unpublished',
   },
 }
