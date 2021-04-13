@@ -48,6 +48,7 @@ const SearchResults = () => {
                   />
                   : item.description && item.description.substring(0, 70)
                 }
+                secondaryTypographyProps={{ component: 'div' }}
               />
             </ListItem>
             <Divider variant='inset' component='li' />

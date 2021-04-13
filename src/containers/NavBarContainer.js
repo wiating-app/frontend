@@ -48,8 +48,8 @@ const NavBarContainer = () => {
             ...activeTypes.length ? { point_type: activeTypes } : {},
           })
           setSearchResults(points.map(item => serializeData(item)))
-          setActiveLocation(null)
           history.push('/search')
+          setActiveLocation(null)
           setSearchLoading(false)
         }
       } else if (searchPhrase !== undefined) {

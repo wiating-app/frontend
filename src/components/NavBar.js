@@ -33,6 +33,7 @@ const NavBar = ({
     let info
     switch (window.location.hostname) {
       case 'beta.wiating.eu':
+      case 'staging.wiating.eu':
         name = 'Wersja eksperymentalna'
         info = 'Wersja aplikacji to testów, zawierająca najnowsze funkcjonalności.'
         break
