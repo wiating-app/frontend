@@ -63,6 +63,7 @@ const LocationForm = ({
         'fire_exists',
         'fire_comment',
         'is_disabled',
+        'unpublished',
       ]}
       required={[
         'name',
@@ -82,7 +83,7 @@ const LocationForm = ({
           name='name'
           label={translations.markerForm.place}
           min={5}
-          initialValue={locationData && locationData.name}
+          initialValue={locationData?.name}
         />
       </HintWrapper>
 
@@ -102,7 +103,7 @@ const LocationForm = ({
           name='description'
           label={translations.markerForm.description}
           min={40}
-          initialValue={locationData && locationData.description}
+          initialValue={locationData?.description}
           multiline
         />
       </HintWrapper>
@@ -112,7 +113,7 @@ const LocationForm = ({
           name='directions'
           label={translations.locationInfo.directions}
           min={20}
-          initialValue={locationData && locationData.directions}
+          initialValue={locationData?.directions}
           multiline
         />
       </HintWrapper>
@@ -128,7 +129,7 @@ const LocationForm = ({
               dangerouslySetInnerHTML={{ __html: generateMarkerIcon(value, 24) }}
             />,
           }))}
-          initialValue={locationData && locationData.type}
+          initialValue={locationData?.type}
         />
       </HintWrapper>
 
@@ -149,7 +150,7 @@ const LocationForm = ({
             name='water_comment'
             label={translations.markerForm.waterDescription}
             min={40}
-            initialValue={locationData && locationData.water_comment}
+            initialValue={locationData?.water_comment}
             multiline
           />
         </HintWrapper>
@@ -172,7 +173,7 @@ const LocationForm = ({
             name='fire_comment'
             label={translations.markerForm.fireDescription}
             min={40}
-            initialValue={locationData && locationData.fire_comment}
+            initialValue={locationData?.fire_comment}
             multiline
           />
         </HintWrapper>
@@ -181,8 +182,16 @@ const LocationForm = ({
       <Checkbox
         name='is_disabled'
         text={translations.locationInfo.setAsDisabled}
-        initialValue={locationData && locationData.is_disabled}
+        initialValue={locationData?.is_disabled}
       />
+
+      {!isNew && isModerator &&
+        <Checkbox
+          name='unpublished'
+          text={translations.locationInfo.unpublish}
+          initialValue={locationData?.unpublished}
+        />
+      }
 
       <FormActions>
         <Button onClick={() => cancel()}>{translations.cancel}</Button>
