@@ -38,6 +38,7 @@ const NavBar = ({
         <Form
           fields={['phrase']}
           onChange={fields => onSearch(fields.phrase)}
+          runOnChangeInitially
           className={classes.search}
         >
           <SearchInput
