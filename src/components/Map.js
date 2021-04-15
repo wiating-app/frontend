@@ -91,12 +91,15 @@ const Map = React.forwardRef(({
     },
   }))
 
-  const handleLoadMapMarkers = async () => {
+  const handleLoadMapMarkers = async newZoom => {
     const bounds = await mapRef.current.leafletElement.getBounds()
-    // Check whether viewport really changed to prevent a multiple calls for the
-    // same data.
+    // Check whether viewport really changed to prevent multiple requests for
+    // the same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
-      getMarkers(bounds)
+      // Prevend loading markers on zoom in because existing one can be used.
+      if (newZoom <= currentZoom) {
+        getMarkers(bounds)
+      }
       setStoredPosition(mapRef.current.viewport)
       setPreviousBounds(bounds)
     }
@@ -133,7 +136,9 @@ const Map = React.forwardRef(({
         maxZoom={18}
         maxBounds={[[-90, -180], [90, 180]]}
         zoomControl={false}
-        onMoveEnd={() => handleLoadMapMarkers()}
+        onMoveEnd={e => {
+          handleLoadMapMarkers(e.sourceTarget._zoom)
+        }}
         onContextMenu={e => {
           if (!editMode) {
             if (isLoggedIn) {
