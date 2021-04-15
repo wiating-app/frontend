@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography } from '@material-ui/core'
 import Modal from './Modal'
+import Version from './Version'
 import history from '../history'
 
 const Info = () => {
@@ -23,7 +24,7 @@ const Info = () => {
               className={classes.logo}
             />
             <Typography gutterBottom variant='body1'>
-              Witaj w aplikacji grupy facebookowej <a href='https://www.facebook.com/groups/938290029559772' target='_blank'>Wiating czyli chatki w górach</a>!
+              Witaj w aplikacji grupy facebookowej <br/><a href='https://www.facebook.com/groups/938290029559772' target='_blank'>Wiating czyli chatki w górach</a>!
             </Typography>
             <Button
               variant='contained'
@@ -32,6 +33,7 @@ const Info = () => {
               onClick={handleClose}
               size='large'
             >Przejdź do mapy</Button>
+            <div className={classes.version}><Version /></div>
           </div>
         </div>
         <div className={classes.footer}>
@@ -124,7 +126,10 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(6),
+    marginBottom: theme.spacing(4),
+  },
+  version: {
+    margin: '0 auto 18px',
   },
 }))
 
