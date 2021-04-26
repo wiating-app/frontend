@@ -27,6 +27,7 @@ const LocationFormContainer = ({
   const [markers, setMarkers] = useRecoilState(markersState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
+  console.log('activeLocation: ', activeLocation);
   React.useEffect(() => {
     if (!loadingAuth && !isLoggedIn) {
       history.push(`/location/${id}`)
@@ -92,6 +93,7 @@ const LocationFormContainer = ({
       fire_exists,
       fire_comment,
       is_disabled,
+      unpublished,
     } = fields
 
     try {
@@ -108,6 +110,7 @@ const LocationFormContainer = ({
         fire_exists: mapOptionToBool(fire_exists),
         fire_comment: fire_exists && fire_comment ? fire_comment : null,
         is_disabled: is_disabled || false,
+        unpublished: unpublished || false,
       }
 
       if (isNew) {
