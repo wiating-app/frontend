@@ -34,6 +34,7 @@ const LocationFormContainer = ({
         enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
       }
       // Use cached location data if avaliable, otherwise load data from endpoint.
+      // Do it after authentication check to provide bearer token in api request.
       if (!isNew) {
         if (!activeLocation && id) {
           const handleAsync = async () => {
@@ -65,9 +66,6 @@ const LocationFormContainer = ({
       handleAsync()
     }
   }, [isNew])
-
-  // React.useEffect(() => {
-  // }, [])
 
   // Convert Select option to bool. undefined = null, 1 = true, 2 = false.
   const mapOptionToBool = value => {
