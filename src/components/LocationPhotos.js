@@ -19,6 +19,7 @@ const LocationPhotos = ({
   const classes = useStyles()
   const { translations } = useLanguage()
   const [openModal, setOpenModal] = React.useState(false)
+  const [currentPhoto, setCurrentPhoto] = React.useState(0)
 
   React.useEffect(() => {
     setOpenModal(false)
@@ -50,6 +51,8 @@ const LocationPhotos = ({
                   items={preparedImages}
                   showPlayButton={false}
                   showFullscreenButton={false}
+                  startIndex={currentPhoto}
+                  onSlide={index => setCurrentPhoto(index)}
                 />
                 <IconButton
                   className={classes.close}
@@ -61,6 +64,7 @@ const LocationPhotos = ({
               showArrows
               emulateTouch
               showThumbs={false}
+              onChange={index => setCurrentPhoto(index)}
             >
               {preparedImages.map((image, i) =>
                 <div
