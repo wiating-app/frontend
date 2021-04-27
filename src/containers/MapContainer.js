@@ -8,6 +8,7 @@ import useUserLocation from '../utils/useUserLocation'
 import Map from '../components/Map'
 import useLanguage from '../utils/useLanguage'
 import serializeData from '../utils/serializeData'
+import AddButtonContainer from './AddButtonContainer'
 
 let cancelRequest
 
@@ -20,8 +21,6 @@ const MapContainer = props => {
   const { enqueueSnackbar } = useSnackbar()
   const { userLocation, accuracy, loading, error } = useUserLocation()
   const defaultPosition = [50.39805, 16.844417] // The area of Polish mountains.
-
-  const mapRef = React.useRef()
 
   const {
     isLoggedIn,
@@ -77,7 +76,7 @@ const MapContainer = props => {
     }
   }, [loading, initalPosition])
 
-  return (
+  return <>
     <Map
       isLoggedIn={isLoggedIn}
       setStoredPosition={coords => setStoredPosition(coords)}
@@ -89,9 +88,9 @@ const MapContainer = props => {
       zoom={initalPosition && initalPosition.zoom}
       {...props}
       activeTypes={activeTypes}
-      ref={mapRef}
     />
-  )
+    <AddButtonContainer />
+  </>
 }
 
 export default MapContainer

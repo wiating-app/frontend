@@ -1,13 +1,14 @@
 import React from 'react'
 import { Route, withRouter } from 'react-router-dom'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Tabs, Tab } from '@material-ui/core'
+import { Typography, Tabs, Tab, IconButton } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
 import ReportsContainer from '../containers/ReportsContainer'
 import LogsContainer from '../containers/LogsContainer'
 import LogDetailsContainer from '../containers/LogDetailsContainer'
 import ExportContainer from '../containers/ExportContainer'
 import UnpublishedContainer from '../containers/UnpublishedContainer'
-import Modal from './Modal'
 import useLanguage from '../utils/useLanguage'
 import useAuth0 from '../utils/useAuth0'
 
@@ -30,7 +31,7 @@ const ModeratorPanel = ({
   const pathArray = pathname.split('/')
 
   return (
-    <Modal wide onClose={() => history.push('/')}>
+    <PerfectScrollbar className={classes.root}>
       <Typography
         variant='h4'
         gutterBottom
@@ -64,13 +65,29 @@ const ModeratorPanel = ({
       <Route exact path='/moderator/log/:id'>
         <LogDetailsContainer />
       </Route>
-    </Modal>
+
+      <IconButton
+        className={classes.close}
+        onClick={() => history.push('/')}
+      ><Close /></IconButton>
+
+    </PerfectScrollbar>
   )
 }
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(3),
+    boxSizing: 'border-box',
+    width: '100%',
+  },
   tabs: {
     marginBottom: theme.spacing(3),
+  },
+  close: {
+    position: 'absolute',
+    top: theme.spacing(1),
+    right: theme.spacing(1),
   },
 }))
 

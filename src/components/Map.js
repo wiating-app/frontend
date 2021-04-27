@@ -30,7 +30,7 @@ import exportToKML from '../utils/exportToKML'
 import history from '../history'
 
 
-const Map = React.forwardRef(({
+const Map = ({
   center,
   zoom,
   isLoggedIn,
@@ -40,7 +40,7 @@ const Map = React.forwardRef(({
   getMarkers,
   setStoredPosition,
   activeTypes,
-}, ref) => {
+}) => {
   const [contextMenu, setContextMenu] = React.useState()
   const [previousBounds, setPreviousBounds] = React.useState()
   const mapRef = React.useRef()
@@ -84,20 +84,14 @@ const Map = React.forwardRef(({
     }
   }, [isDrawerOpen, isMobile])
 
-  // Handle refs.
-  React.useImperativeHandle(ref, () => ({
-    loadMapMarkers() {
-      handleLoadMapMarkers()
-    },
-  }))
-
   const handleLoadMapMarkers = async newZoom => {
     const bounds = await mapRef.current.leafletElement.getBounds()
     // Check whether viewport really changed to prevent multiple requests for
     // the same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
-      // Prevend loading markers on zoom in because existing one can be used.
-      if (newZoom <= currentZoom) {
+      // Prevend getMarkers on zoom in, because the current ones can be used.
+      // Load them anyway if this is the first call - previousBounds is not defined.
+      if (newZoom <= currentZoom || !previousBounds) {
         getMarkers(bounds)
       }
       setStoredPosition(mapRef.current.viewport)
@@ -282,7 +276,7 @@ const Map = React.forwardRef(({
       </MapComponent>
     </div>
   )
-})
+}
 
 Map.defaultProps = {
   zoom: 7,
