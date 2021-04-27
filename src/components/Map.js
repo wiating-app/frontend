@@ -335,10 +335,19 @@ const useStyles = makeStyles(theme => ({
     filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.5))',
   },
   popup: {
-    marginBottom: 50,
     '& .leaflet-popup-content-wrapper': {
       backgroundColor: 'transparent',
       border: 'none',
+      '&::after': {
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        width: 20,
+        height: 1,
+        left: 'calc(50% - 10px)',
+        bottom: 0,
+        backgroundColor: 'white',
+      },
     },
     '& .leaflet-popup-content': {
       margin: 0,
