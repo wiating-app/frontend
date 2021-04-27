@@ -67,8 +67,7 @@ const LocationInfoContainer = ({
         ? <div>Error!</div>
         : <>
           <LocationPhotos
-            images={activeLocation.images}
-            id={id}
+            location={activeLocation}
             uploading={search === '?imageLoading=true'}
             uploadImages={() => history.push(`/location/${id}/photos`)}
           />

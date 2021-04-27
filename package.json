@@ -10,6 +10,7 @@
     "coord-parser": "^1.0.0",
     "data-uri-to-buffer": "^3.0.0",
     "diff": "^5.0.0",
+    "image-promise": "^7.0.1",
     "leaflet": "^1.7.1",
     "leaflet-pixi-overlay": "^1.8.1",
     "leaflet.markercluster": "^1.4.1",
