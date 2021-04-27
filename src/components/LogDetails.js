@@ -1,5 +1,5 @@
 import React from 'react'
-import { diffSentences } from 'diff'
+import { diffWordsWithSpace } from 'diff'
 import { Button, Typography, Grid, ButtonGroup } from '@material-ui/core'
 import { Check, Clear, Remove } from '@material-ui/icons'
 import Table from './Table'
@@ -36,7 +36,7 @@ const LogDetails = ({
 
 
   const renderDiff = (one, other) => {
-    const diff = diffSentences(one, other)
+    const diff = diffWordsWithSpace(one, other)
 
     return <>{diff.map(({ added, removed, value }, index) => {
       const isChange = (added || removed)
@@ -47,6 +47,7 @@ const LogDetails = ({
         marginLeft: isChange ? 2 : 0,
         marginRight: isChange ? 2 : 0,
         borderRadius: isChange ? 2 : 0,
+        textDecoration: removed ? 'line-through rgba(255,0,0,.5)' : 'none',
       }}>{value}</span>
     })}</>
   }
