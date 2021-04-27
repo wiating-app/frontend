@@ -28,9 +28,28 @@ const LocationFormContainer = ({
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
-    if (!loadingAuth && !isLoggedIn) {
-      history.push(`/location/${id}`)
-      enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
+    if (!loadingAuth) {
+      if (!isLoggedIn) {
+        history.push(`/location/${id}`)
+        enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
+      }
+      // Use cached location data if avaliable, otherwise load data from endpoint.
+      if (!isNew) {
+        if (!activeLocation && id) {
+          const handleAsync = async () => {
+            try {
+              const { data } = await api.post('get_point', { id })
+              setActiveLocation(serializeData(data))
+            } catch (error) {
+              setError(true)
+            }
+            setLoading(false)
+          }
+          handleAsync()
+        } else {
+          setLoading(false)
+        }
+      }
     }
   }, [loadingAuth])
 
@@ -47,25 +66,8 @@ const LocationFormContainer = ({
     }
   }, [isNew])
 
-  // Use cached location data if avaliable, otherwise load data from endpoint.
-  React.useEffect(() => {
-    if (!isNew) {
-      if (!activeLocation && id) {
-        const handleAsync = async () => {
-          try {
-            const { data } = await api.post('get_point', { id })
-            setActiveLocation(serializeData(data))
-          } catch (error) {
-            setError(true)
-          }
-          setLoading(false)
-        }
-        handleAsync()
-      } else {
-        setLoading(false)
-      }
-    }
-  }, [])
+  // React.useEffect(() => {
+  // }, [])
 
   // Convert Select option to bool. undefined = null, 1 = true, 2 = false.
   const mapOptionToBool = value => {
