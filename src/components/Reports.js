@@ -5,7 +5,7 @@ import Actions from './Actions'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
-import { formatDate } from '../utils/helpers'
+import { formatDate, formatTime } from '../utils/helpers'
 
 
 const Reports = ({
@@ -22,7 +22,7 @@ const Reports = ({
       : reports.length
         ? <Table
           data={reports.map(item => ({
-            timestamp: formatDate(item.last_modified_timestamp),
+            timestamp: `${formatDate(item.last_modified_timestamp)} ${formatTime(item.last_modified_timestamp)}`,
             location: <OpenInNewCard path={`/location/${item.id}`}>{item.name}</OpenInNewCard>,
             report_reason: item.report_reason.map((item, index) =>
               <Typography key={index} variant='caption'>{item}</Typography>
