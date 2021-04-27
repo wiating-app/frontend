@@ -27,7 +27,6 @@ const LocationFormContainer = ({
   const [markers, setMarkers] = useRecoilState(markersState)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
-  console.log('activeLocation: ', activeLocation);
   React.useEffect(() => {
     if (!loadingAuth && !isLoggedIn) {
       history.push(`/location/${id}`)
