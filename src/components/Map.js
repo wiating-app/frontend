@@ -90,8 +90,9 @@ const Map = ({
     // the same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
       // Prevend getMarkers on zoom in, because the current ones can be used.
-      // Load them anyway if this is the first call - previousBounds is not defined.
-      if (newZoom <= currentZoom || !previousBounds) {
+      // Load them anyway if this is the first call - previousBounds is not
+      // defined, or when entering the details view on mobile - isMobile && isDrawerOpen.
+      if (newZoom <= currentZoom || !previousBounds || (isMobile && isDrawerOpen)) {
         getMarkers(bounds)
       }
       setStoredPosition(mapRef.current.viewport)
