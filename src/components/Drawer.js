@@ -49,7 +49,6 @@ const Drawer = ({
 
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
-    backgroundColor: 'transparent',
     borderTop: 'none',
     height: coverMapOnMobile =>
       `calc(100vh - ${(coverMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight)}px)`,
@@ -72,7 +71,6 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: 'white',
     minHeight: '100%',
     overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {

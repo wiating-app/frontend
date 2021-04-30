@@ -4,6 +4,7 @@ import api from '../api'
 import Reports from '../components/Reports'
 import ReportDetails from '../components/ReportDetails'
 import useAuth0 from '../utils/useAuth0'
+import serializeData from '../utils/serializeData'
 
 
 const ReportsContainer = () => {
@@ -21,7 +22,7 @@ const ReportsContainer = () => {
       const { data: { points } } = await api.post('search_points', {
         report_reason: true,
       })
-      setReports(points)
+      setReports(points.map(item => serializeData(item)))
     } catch (err) {
       console.error(err)
       setError(true)

@@ -7,6 +7,7 @@ import Table from './Table'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
+import { formatDate, formatTime } from '../utils/helpers'
 
 
 const ReportDetails = ({
@@ -31,7 +32,7 @@ const ReportDetails = ({
       <Typography
         variant='body2'
         gutterBottom
-      >{translations.dateOfLastEdit}: {data.last_modified_timestamp}</Typography>
+      >{translations.dateOfLastEdit}: {`${formatDate(data.last_modified_timestamp)} ${formatTime(data.last_modified_timestamp)}`}</Typography>
 
       <Table
         data={data.report_reason.map((item, index) => ({

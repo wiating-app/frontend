@@ -26,6 +26,7 @@ export default {
       lastUpdate: 'Ostatnia aktualizacja',
       isDisabled: 'Niedostępna / zniszczona',
       setAsDisabled: 'Oznacz jako niedostępną lub zniszczoną',
+      unpublish: 'Wstrzymaj publikację',
     },
     locationType: {
       cabin: 'Chatka',
@@ -170,6 +171,7 @@ export default {
     sendNewPhotos: 'Prześlij nowe zdjęca',
     send: 'Prześlij',
     upload: 'Dodaj zdjęcia',
+    unpublished: 'Nieopublikowane',
   },
 
 
@@ -200,6 +202,7 @@ export default {
       lastUpdate: 'Last update',
       isDisabled: 'Unavailable or destroyed',
       setAsDisabled: 'Set as unavailable/destroyed',
+      unpublish: 'Set as unpublished',
     },
     locationType: {
       cabin: 'Cabin',
@@ -344,5 +347,6 @@ export default {
     sendNewPhotos: 'Send new photos',
     send: 'Send',
     upload: 'Add from drive',
+    unpublished: 'Unpublished',
   },
 }

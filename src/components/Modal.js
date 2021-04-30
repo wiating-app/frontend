@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // height: '100%',
   },
   toolbar: {
     [theme.breakpoints.up('md')]: theme.mixins.toolbar,
@@ -66,10 +65,6 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: theme.spacing(1),
     right: theme.spacing(1),
-    // backgroundColor: 'rgba(255, 255, 255, 0.67)',
-    // '&:hover': {
-    //   backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    // },
   },
 }))
 

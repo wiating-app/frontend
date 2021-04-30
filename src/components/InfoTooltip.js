@@ -13,7 +13,6 @@ const InfoTooltip = ({
   large,
   icon,
   children,
-  className,
 }) => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
@@ -39,7 +38,7 @@ const InfoTooltip = ({
           onMouseOut={() => setOpen(false)}
           className={large ? '' : classes.smallTrigger}
         >
-          <IconComponent className={`${classes.icon} ${className || ''}`} />
+          <IconComponent className={classes.icon} />
         </TriggerComponent>
       </Tooltip>
     </ClickAwayListener>

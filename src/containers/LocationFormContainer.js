@@ -28,9 +28,29 @@ const LocationFormContainer = ({
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
-    if (!loadingAuth && !isLoggedIn) {
-      history.push(`/location/${id}`)
-      enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
+    if (!loadingAuth) {
+      if (!isLoggedIn) {
+        history.push(`/location/${id}`)
+        enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
+      }
+      // Use cached location data if avaliable, otherwise load data from endpoint.
+      // Do it after authentication check to provide bearer token in api request.
+      if (!isNew) {
+        if (!activeLocation && id) {
+          const handleAsync = async () => {
+            try {
+              const { data } = await api.post('get_point', { id })
+              setActiveLocation(serializeData(data))
+            } catch (error) {
+              setError(true)
+            }
+            setLoading(false)
+          }
+          handleAsync()
+        } else {
+          setLoading(false)
+        }
+      }
     }
   }, [loadingAuth])
 
@@ -46,26 +66,6 @@ const LocationFormContainer = ({
       handleAsync()
     }
   }, [isNew])
-
-  // Use cached location data if avaliable, otherwise load data from endpoint.
-  React.useEffect(() => {
-    if (!isNew) {
-      if (!activeLocation && id) {
-        const handleAsync = async () => {
-          try {
-            const { data } = await api.post('get_point', { id })
-            setActiveLocation(serializeData(data))
-          } catch (error) {
-            setError(true)
-          }
-          setLoading(false)
-        }
-        handleAsync()
-      } else {
-        setLoading(false)
-      }
-    }
-  }, [])
 
   // Convert Select option to bool. undefined = null, 1 = true, 2 = false.
   const mapOptionToBool = value => {
@@ -92,6 +92,7 @@ const LocationFormContainer = ({
       fire_exists,
       fire_comment,
       is_disabled,
+      unpublished,
     } = fields
 
     try {
@@ -108,6 +109,7 @@ const LocationFormContainer = ({
         fire_exists: mapOptionToBool(fire_exists),
         fire_comment: fire_exists && fire_comment ? fire_comment : null,
         is_disabled: is_disabled || false,
+        unpublished: unpublished || false,
       }
 
       if (isNew) {

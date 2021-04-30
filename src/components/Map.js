@@ -30,7 +30,7 @@ import exportToKML from '../utils/exportToKML'
 import history from '../history'
 
 
-const Map = React.forwardRef(({
+const Map = ({
   center,
   zoom,
   isLoggedIn,
@@ -40,7 +40,7 @@ const Map = React.forwardRef(({
   getMarkers,
   setStoredPosition,
   activeTypes,
-}, ref) => {
+}) => {
   const [contextMenu, setContextMenu] = React.useState()
   const [previousBounds, setPreviousBounds] = React.useState()
   const mapRef = React.useRef()
@@ -84,19 +84,17 @@ const Map = React.forwardRef(({
     }
   }, [isDrawerOpen, isMobile])
 
-  // Handle refs.
-  React.useImperativeHandle(ref, () => ({
-    loadMapMarkers() {
-      handleLoadMapMarkers()
-    },
-  }))
-
-  const handleLoadMapMarkers = async () => {
+  const handleLoadMapMarkers = async newZoom => {
     const bounds = await mapRef.current.leafletElement.getBounds()
-    // Check whether viewport really changed to prevent a multiple calls for the
-    // same data.
+    // Check whether viewport really changed to prevent multiple requests for
+    // the same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
-      getMarkers(bounds)
+      // Prevend getMarkers on zoom in, because the current ones can be used.
+      // Load them anyway if this is the first call - previousBounds is not
+      // defined, or when entering the details view on mobile - isMobile && isDrawerOpen.
+      if (newZoom <= currentZoom || !previousBounds || (isMobile && isDrawerOpen)) {
+        getMarkers(bounds)
+      }
       setStoredPosition(mapRef.current.viewport)
       setPreviousBounds(bounds)
     }
@@ -133,7 +131,9 @@ const Map = React.forwardRef(({
         maxZoom={18}
         maxBounds={[[-90, -180], [90, 180]]}
         zoomControl={false}
-        onMoveEnd={() => handleLoadMapMarkers()}
+        onMoveEnd={e => {
+          handleLoadMapMarkers(e.sourceTarget._zoom)
+        }}
         onContextMenu={e => {
           if (!editMode) {
             if (isLoggedIn) {
@@ -277,7 +277,7 @@ const Map = React.forwardRef(({
       </MapComponent>
     </div>
   )
-})
+}
 
 Map.defaultProps = {
   zoom: 7,
@@ -330,10 +330,19 @@ const useStyles = makeStyles(theme => ({
     filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.5))',
   },
   popup: {
-    marginBottom: 50,
     '& .leaflet-popup-content-wrapper': {
       backgroundColor: 'transparent',
       border: 'none',
+      '&::after': {
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        width: 20,
+        height: 1,
+        left: 'calc(50% - 10px)',
+        bottom: 0,
+        backgroundColor: 'white',
+      },
     },
     '& .leaflet-popup-content': {
       margin: 0,

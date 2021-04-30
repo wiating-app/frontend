@@ -19,29 +19,31 @@ const LocationInfoContainer = ({
 }) => {
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations } = useLanguage()
-  const { isLoggedIn, isModerator } = useAuth0()
+  const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState()
 
   // Use cached location data if avaliable, otherwise load data from endpoint.
   React.useEffect(() => {
-    if (!activeLocation) {
-      const handleAsync = async () => {
-        try {
-          const { data } = await api.post('get_point', { id })
-          setActiveLocation(serializeData(data))
-        } catch (error) {
-          setError(true)
-          setLoading(false)
-          enqueueSnackbar(translations.connectionProblem.location, { variant: 'error' })
+    if (!loadingAuth) {
+      if (!activeLocation) {
+        const handleAsync = async () => {
+          try {
+            const { data } = await api.post('get_point', { id })
+            setActiveLocation(serializeData(data))
+          } catch (error) {
+            setError(true)
+            setLoading(false)
+            enqueueSnackbar(translations.connectionProblem.location, { variant: 'error' })
+          }
         }
+        handleAsync()
+      } else {
+        setLoading(false)
       }
-      handleAsync()
-    } else {
-      setLoading(false)
     }
-  }, [activeLocation])
+  }, [activeLocation, loadingAuth])
 
   const handleReport = async fields => {
     try {
@@ -65,8 +67,7 @@ const LocationInfoContainer = ({
         ? <div>Error!</div>
         : <>
           <LocationPhotos
-            images={activeLocation.images}
-            id={id}
+            location={activeLocation}
             uploading={search === '?imageLoading=true'}
             uploadImages={() => history.push(`/location/${id}/photos`)}
           />

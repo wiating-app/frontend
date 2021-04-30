@@ -1,4 +1,5 @@
 import React from 'react'
+import { diffWordsWithSpace } from 'diff'
 import { Button, Typography, Grid, ButtonGroup } from '@material-ui/core'
 import { Check, Clear, Remove } from '@material-ui/icons'
 import Table from './Table'
@@ -21,6 +22,7 @@ const LogDetails = ({
 }) => {
   const { translations } = useLanguage()
 
+
   const readValue = (name, value) => value
     ? value === true
       ? <Check style={{ color: '#008080' }} />
@@ -32,17 +34,41 @@ const LogDetails = ({
         : value
     : value === false ? <Clear color='error' /> : <Remove color='disabled' />
 
+
+  const renderDiff = (one, other) => {
+    const diff = diffWordsWithSpace(one, other)
+
+    return <>{diff.map(({ added, removed, value }, index) => {
+      const isChange = (added || removed)
+      return <span key={index} style={{
+        backgroundColor: added ? '#acf2bd' : removed ? '#ffdcdf' : 'transparent',
+        paddingLeft: isChange ? 2 : 0,
+        paddingRight: isChange ? 2 : 0,
+        marginLeft: isChange ? 2 : 0,
+        marginRight: isChange ? 2 : 0,
+        borderRadius: isChange ? 2 : 0,
+        textDecoration: removed ? 'line-through rgba(255,0,0,.5)' : 'none',
+      }}>{value}</span>
+    })}</>
+  }
+
+
   const changes = data.changes
     ? Object.entries(data.changes)
       .filter(([name, values]) => name !== 'action')
       .map(([name, values]) => ({
         name,
         old: readValue(name, values.old_value),
-        new: readValue(name, values.new_value),
+        new: readValue(name, name === 'description' || name === 'directions'
+          ? renderDiff(values.old_value, values.new_value)
+          : values.new_value
+        ),
       }))
     : []
 
+
   const isNew = data.changes.action && data.changes.action === 'created'
+
 
   return (
     <>

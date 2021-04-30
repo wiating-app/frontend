@@ -22,7 +22,6 @@ import FaqPage from './components/FaqPage'
 import ModeratorPanel from './components/ModeratorPanel'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
-import AddButtonContainer from './containers/AddButtonContainer'
 import LocationInfoContainer from './containers/LocationInfoContainer'
 import LocationFormContainer from './containers/LocationFormContainer'
 import PhotosFormContainer from './containers/PhotosFormContainer'
@@ -49,8 +48,9 @@ const App = ({ history, location: { pathname } }) => {
   }, [editMode])
 
   React.useEffect(() => {
-    // Show info page when user visits the site first time.
-    if (!localStorage.getItem('seenInitialInfo')) {
+    // Show info screen when user visits a site for the first time,
+    // but only if first view is on a location page.
+    if (!localStorage.getItem('seenInitialInfo') && !pathname.startsWith('/location')) {
       history.push('/info')
     }
   }, [])
@@ -81,9 +81,11 @@ const App = ({ history, location: { pathname } }) => {
         </Switch>
       </Drawer>
 
-      <MapContainer />
-
-      <AddButtonContainer />
+      {/* Show only map or moderator panel at once. */}
+      <Switch>
+        <Route path='/moderator' component={ModeratorPanel} />
+        <Route component={MapContainer} />
+      </Switch>
 
       <AcceptDataPrivacy />
 
@@ -95,7 +97,6 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/faq' component={FaqPage} />
       </Switch>
 
-      <Route path='/moderator' component={ModeratorPanel} />
       <Route path='/history' component={HistoryContainer} />
       <Route exact path='/history/:id' component={LogDetailsContainer} />
 

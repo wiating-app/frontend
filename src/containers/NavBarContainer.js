@@ -2,6 +2,7 @@ import React from 'react'
 import { useRecoilState } from 'recoil'
 import { useMediaQuery } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
+import parse from 'coord-parser'
 import {
   activeTypesState,
   searchResultsState,
@@ -42,14 +43,33 @@ const NavBarContainer = () => {
       if (searchPhrase) {
         if (searchPhrase.length > 3) {
           setSearchLoading(true)
+          let coords = false
+          // Check wheter given input are geo coordinates.
+          try {
+            const { lat, lon } = parse(searchPhrase)
+            const rounded = {
+              lat: Number(lat.toFixed(1)),
+              lon: Number(lon.toFixed(1)),
+            }
+            coords = {
+              top_right: {
+                lat: rounded.lat + 0.1,
+                lon: rounded.lon + 0.1,
+              },
+              bottom_left: {
+                lat: rounded.lat - 0.1,
+                lon: rounded.lon - 0.1,
+              },
+            }
+          } catch (err) {
+          }
           const { data: { points } } = await api.post('search_points', {
-            phrase: searchPhrase,
-            // eslint-disable-next-line camelcase
+            ...coords || { phrase: searchPhrase },
             ...activeTypes.length ? { point_type: activeTypes } : {},
           })
           setSearchResults(points.map(item => serializeData(item)))
-          setActiveLocation(null)
           history.push('/search')
+          setActiveLocation(null)
           setSearchLoading(false)
         }
       } else if (searchPhrase !== undefined) {
