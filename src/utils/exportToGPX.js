@@ -9,7 +9,6 @@ const exportToGPX = locations => {
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yyyy = today.getFullYear()
     const date = `${yyyy}-${mm}-${dd}`
-    const baseUrl = process.env.FRONTEND_CDN_URL
 
     const header = [
       `<?xml version="1.0" encoding="UTF-8"?>`,
@@ -30,9 +29,10 @@ const exportToGPX = locations => {
     const placemarks = locations.reduce((acc, location) => [
       ...acc,
       `  <wpt lat="${location.location.lat}" lon="${location.location.lng}">`,
-      `    <ele>${location.id}</ele>`,
       `    <name>${location.name}</name>`,
-      `    <link>https://wiating.eu/location/${location.id}</link>`,
+      `    <link href="https://wiating.eu/location/${location.id}">`,
+      `      <text>wiating.eu</text>`,
+      `    </link>`,
       `    <sym>https://wiating.eu/location-icons/${location.type}.png</sym>`,
       `    <desc>[${texts.pl.locationType[locationTypes[location.type].label]}] ${location.description} || Wskazówki dojścia: ${location.directions || 'Brak informacji.'} || Dostęp do wody: ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'} || Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</desc>`,
       '  </wpt>',
