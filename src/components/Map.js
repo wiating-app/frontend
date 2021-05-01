@@ -11,7 +11,7 @@ import {
 import Control from 'react-leaflet-control'
 import { useRecoilState } from 'recoil'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { Typography, useMediaQuery, Tooltip } from '@material-ui/core'
+import { Typography, useMediaQuery } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -25,8 +25,8 @@ import {
 import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
 import Legend from './Legend'
+import Export from './Export'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
-import exportToKML from '../utils/exportToKML'
 import history from '../history'
 
 
@@ -248,13 +248,7 @@ const Map = ({
             </Control>
             {!editMode &&
               <Control position='topright' className='leaflet-bar'>
-                <Tooltip title='Eksportuj aktualny widok do KML' placement='left'>
-                  <a
-                    className={classes.customControl}
-                    onClick={() => exportToKML(markers)}
-                    disabled={!markers.length}
-                  >KML</a>
-                </Tooltip>
+                <Export markers={markers} className={classes.customControl} />
               </Control>
             }
           </>
