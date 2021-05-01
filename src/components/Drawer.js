@@ -10,6 +10,7 @@ import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 import { isDrawerOpenState } from '../state'
+import useKeyPress from '../utils/useKeyPress'
 
 
 const Drawer = ({
@@ -22,6 +23,12 @@ const Drawer = ({
   const theme = useTheme()
   const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
+
+  const handleOnClose = () => history.push('/')
+
+  useKeyPress('Escape', () => {
+    handleOnClose()
+  })
 
   return (
     <MUIDrawer
