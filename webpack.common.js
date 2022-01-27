@@ -20,7 +20,12 @@ module.exports = {
 
       {
         test: /\.(js|jsx)$/,
-        include: path.join(__dirname, 'src'),
+        include: [
+          path.resolve('src'),
+          path.resolve('node_modules', '@react-leaflet'),
+          path.resolve('node_modules', 'react-leaflet'),
+        ],
+        // exclude: /node_modules\/(?!(@react-leaflet|react-leaflet)\/)/i,
         use: 'babel-loader',
       },
 

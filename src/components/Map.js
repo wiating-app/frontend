@@ -1,34 +1,36 @@
-import React from 'react'
-import {
-  Map as MapComponent,
-  Marker,
-  Popup,
-  TileLayer,
-  Circle,
-  ZoomControl,
-  ScaleControl,
-} from 'react-leaflet'
-import Control from 'react-leaflet-control'
-import { useRecoilState } from 'recoil'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { Typography, useMediaQuery } from '@material-ui/core'
-import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
-import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
+
 import {
+  Circle,
+  MapContainer,
+  Marker,
+  Popup,
+  ScaleControl,
+  TileLayer,
+  ZoomControl,
+} from 'react-leaflet'
+import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
+import { Typography, useMediaQuery } from '@material-ui/core'
+import {
+  activeLocationState,
   editModeState,
   isDrawerOpenState,
-  activeLocationState,
   searchResultsState,
 } from '../state'
-import PixiOverlay from './PixiOverlay'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+
+// import PixiOverlay from './PixiOverlay'
 import ContextMenu from './ContextMenu'
-import Legend from './Legend'
+import Control from 'react-leaflet-control'
 import Export from './Export'
+import { Icon } from 'leaflet'
+import Legend from './Legend'
+import PixiOverlay from 'react-leaflet-pixi-overlay'
+import React from 'react'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import history from '../history'
-
+import { useRecoilState } from 'recoil'
 
 const Map = ({
   center,
@@ -122,7 +124,7 @@ const Map = ({
         : {}
       }
     >
-      <MapComponent
+      <MapContainer
         ref={mapRef}
         className={classes.mapOffset}
         center={center}
@@ -160,22 +162,7 @@ const Map = ({
           attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
         />
         <PixiOverlay
-          map={mapRef?.current?.leafletElement}
-          markers={markers.map(item => {
-            const { location: { lat, lng }, id, type } = item
-            return {
-              id,
-              customIcon: generateMarkerIcon(type, markerSize),
-              iconId: `${type}_${markerSize}`,
-              position: [lat, lng],
-              onClick: () => {
-                setSearchResults([])
-                setActiveLocation(item)
-                history.push(`/location/${item.id}`)
-                setContextMenu(null)
-              },
-            }
-          }) || []}
+          markers={[]}
         />
         {activeLocation &&
           <Marker
@@ -268,7 +255,7 @@ const Map = ({
             <Legend boxed />
           </Control>
         }
-      </MapComponent>
+      </MapContainer>
     </div>
   )
 }
