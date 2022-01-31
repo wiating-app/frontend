@@ -80,6 +80,7 @@ export default {
       pointOnMap: 'Wskaż dowolne miejsce na mapie.',
       urlCopied: 'Skopiowano adres URL lokacji do schowka.',
       couldNotReport: 'Nie udało się przesłać zgłoszenia.',
+      coordinatesCopied: 'Skopiowano koordynaty do schowka.',
     },
     formLabels: {
       formInvalid: 'Formularz jest niepoprawnie uzupełniony. Sprawdź pola.',
@@ -172,6 +173,8 @@ export default {
     send: 'Prześlij',
     upload: 'Dodaj zdjęcia',
     unpublished: 'Nieopublikowane',
+    navigate: 'Nawiguj w Google Maps',
+    copyCoordinates: 'Skopuj koordynaty',
   },
 
 
@@ -254,8 +257,9 @@ export default {
       locationDeleted: 'Location has been deleted.',
       couldNotDeleteLocation: 'Could not delete location.',
       pointOnMap: 'Point the location on a map.',
-      urlCopied: 'Copied the URL of current location.',
+      urlCopied: 'URL of current location copied to clipboard.',
       couldNotReport: 'Could not send the form.',
+      coordinatesCopied: 'Location coordinaties copied to clipboard.',
     },
     formLabels: {
       formInvalid: 'Form contains errors. Check all fields.',
@@ -348,5 +352,7 @@ export default {
     send: 'Send',
     upload: 'Add from drive',
     unpublished: 'Unpublished',
+    navigate: 'Navigate in Google Maps',
+    copyCoordinates: 'Copy coordinates',
   },
 }

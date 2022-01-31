@@ -1,18 +1,20 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
 import {
-  Typography,
   Button,
   ButtonGroup,
   Chip,
+  Typography,
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import ShareButton from './ShareButton'
-import Report from './Report'
-import { roundLatLng, formatDate } from '../utils/helpers'
-import locationTypes from '../utils/locationTypes'
-import useLanguage from '../utils/useLanguage'
+import { formatDate, roundLatLng } from '../utils/helpers'
 
+import CopyCoordsButton from './CopyCoordsButton'
+import { Link } from 'react-router-dom'
+import NavigateButton from './NavigateButton'
+import React from 'react'
+import Report from './Report'
+import ShareButton from './ShareButton'
+import locationTypes from '../utils/locationTypes'
+import { makeStyles } from '@material-ui/core/styles'
+import useLanguage from '../utils/useLanguage'
 
 const LocationInfo = ({
   loggedIn,
@@ -25,6 +27,8 @@ const LocationInfo = ({
   const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
   const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type].label] : ''
+  const roundedLat = roundLatLng(selectedLocation.location.lat)
+  const roundedLng = roundLatLng(selectedLocation.location.lng)
 
   return (
     <div className={classes.root}>
@@ -44,7 +48,13 @@ const LocationInfo = ({
           color='textSecondary'
           gutterBottom
         >
-          {type} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lng)} <ShareButton id={selectedLocation.id} />
+          {type} | {roundedLat}, {roundedLng}
+          {''}
+          <ShareButton id={selectedLocation.id} />
+          {''}
+          <CopyCoordsButton lat={roundedLat} lng={roundedLng} />
+          {''}
+          <NavigateButton coords={selectedLocation.location} />
         </Typography>
 
         <Typography
