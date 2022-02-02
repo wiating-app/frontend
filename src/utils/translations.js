@@ -173,7 +173,7 @@ export default {
     send: 'Prześlij',
     upload: 'Dodaj zdjęcia',
     unpublished: 'Nieopublikowane',
-    navigate: 'Nawiguj w Google Maps',
+    navigate: 'Nawiguj',
     copyCoordinates: 'Skopuj koordynaty',
   },
 
@@ -352,7 +352,7 @@ export default {
     send: 'Send',
     upload: 'Add from drive',
     unpublished: 'Unpublished',
-    navigate: 'Navigate in Google Maps',
+    navigate: 'Navigate',
     copyCoordinates: 'Copy coordinates',
   },
 }

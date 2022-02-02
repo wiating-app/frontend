@@ -3,6 +3,7 @@ import { IconButton, Tooltip } from '@material-ui/core'
 import { Directions } from '@material-ui/icons'
 import PropTypes from 'prop-types'
 import React from 'react'
+import { isMobile } from 'react-device-detect'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
 
@@ -10,15 +11,17 @@ const NavigateButton = ({ coords }) => {
   const { lat, lng } = coords
   const classes = useStyles()
   const { translations } = useLanguage()
-  const googleMapsUrl = `https://www.google.com/maps/dir/Current+Location/${lat},${lng}`
+  const link = isMobile
+    ? `geo:${lat},${lng}`
+    : `https://www.google.com/maps/dir/Current+Location/${lat},${lng}`
 
   return (
     <Tooltip title={translations.navigate} placement='bottom'>
       <IconButton
         size='small'
         component='a'
-        href={googleMapsUrl}
-        target='_blank'
+        href={link}
+        target={isMobile ? '_self' : '_blank'}
       ><Directions className={classes.icon} /></IconButton>
     </Tooltip>
   )
