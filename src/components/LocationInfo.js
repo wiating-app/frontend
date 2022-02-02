@@ -2,16 +2,15 @@ import {
   Button,
   ButtonGroup,
   Chip,
+  Grid,
   Typography,
 } from '@material-ui/core'
 import { formatDate, roundLatLng } from '../utils/helpers'
 
-import CopyCoordsButton from './CopyCoordsButton'
 import { Link } from 'react-router-dom'
-import NavigateButton from './NavigateButton'
 import React from 'react'
 import Report from './Report'
-import ShareButton from './ShareButton'
+import UtilityButtons from './UtilityButtons'
 import locationTypes from '../utils/locationTypes'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
@@ -48,13 +47,18 @@ const LocationInfo = ({
           color='textSecondary'
           gutterBottom
         >
-          {type} | {roundedLat}, {roundedLng}
-          {''}
-          <ShareButton id={selectedLocation.id} />
-          {''}
-          <CopyCoordsButton lat={roundedLat} lng={roundedLng} />
-          {''}
-          <NavigateButton coords={selectedLocation.location} />
+          <Grid container spacing={1}>
+            <Grid item>{type}</Grid>
+            <Grid item>|</Grid>
+            <Grid item>{roundedLat}, {roundedLng}</Grid>
+            <Grid item>|</Grid>
+            <Grid item>
+              <UtilityButtons
+                id={selectedLocation.id}
+                coords={selectedLocation.location}
+              />
+            </Grid>
+          </Grid>
         </Typography>
 
         <Typography
