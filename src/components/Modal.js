@@ -4,14 +4,23 @@ import { Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import history from '../history'
+import useKeyPress from '../utils/useKeyPress'
 
 
 const Modal = ({ wide, short, small, children, onClose }) => {
   const classes = useStyles({ wide, short, small })
 
+  const handleOnClose = () => {
+    onClose ? onClose() : history.goBack()
+  }
+
+  useKeyPress('Escape', () => {
+    handleOnClose()
+  })
+
   return (
     <MUIModal
-      onClose={() => onClose ? onClose() : history.goBack()}
+      onClose={handleOnClose}
       className={classes.root}
       disablePortal
       open
@@ -23,7 +32,7 @@ const Modal = ({ wide, short, small, children, onClose }) => {
             {children}
             <IconButton
               className={classes.close}
-              onClick={() => onClose ? onClose() : history.goBack()}
+              onClick={handleOnClose}
             ><Close /></IconButton>
           </PerfectScrollbar>
         </Slide>

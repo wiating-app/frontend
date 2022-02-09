@@ -1,18 +1,19 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
 import {
-  Typography,
   Button,
   ButtonGroup,
   Chip,
+  Grid,
+  Typography,
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import ShareButton from './ShareButton'
-import Report from './Report'
-import { roundLatLng, formatDate } from '../utils/helpers'
-import locationTypes from '../utils/locationTypes'
-import useLanguage from '../utils/useLanguage'
+import { formatDate, roundLatLng } from '../utils/helpers'
 
+import { Link } from 'react-router-dom'
+import React from 'react'
+import Report from './Report'
+import UtilityButtons from './UtilityButtons'
+import locationTypes from '../utils/locationTypes'
+import { makeStyles } from '@material-ui/core/styles'
+import useLanguage from '../utils/useLanguage'
 
 const LocationInfo = ({
   loggedIn,
@@ -25,6 +26,8 @@ const LocationInfo = ({
   const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
   const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type].label] : ''
+  const roundedLat = roundLatLng(selectedLocation.location.lat)
+  const roundedLng = roundLatLng(selectedLocation.location.lng)
 
   return (
     <div className={classes.root}>
@@ -44,7 +47,18 @@ const LocationInfo = ({
           color='textSecondary'
           gutterBottom
         >
-          {type} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lng)} <ShareButton id={selectedLocation.id} />
+          <Grid container spacing={1}>
+            <Grid item>{type}</Grid>
+            <Grid item>|</Grid>
+            <Grid item>{roundedLat}, {roundedLng}</Grid>
+            <Grid item>|</Grid>
+            <Grid item>
+              <UtilityButtons
+                id={selectedLocation.id}
+                coords={selectedLocation.location}
+              />
+            </Grid>
+          </Grid>
         </Typography>
 
         <Typography

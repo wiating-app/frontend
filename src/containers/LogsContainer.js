@@ -1,12 +1,13 @@
-import React from 'react'
+import { logDetailsState, logsState } from '../state'
 import { parse, stringify } from 'querystringify'
-import { withRouter } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
-import api from '../api'
-import Logs from '../components/Logs'
+
 import LogFilters from '../components/LogFilters'
+import Logs from '../components/Logs'
+import React from 'react'
+import api from '../api'
 import useAuth0 from '../utils/useAuth0'
-import { logsState, logDetailsState } from '../state'
+import { useRecoilState } from 'recoil'
+import { withRouter } from 'react-router-dom'
 
 /* eslint-disable camelcase */
 
@@ -72,7 +73,7 @@ const LogsContainer = ({
         return prevState
       } else {
         return {
-          page: parseInt(page) || prevState.page,
+          page: page !== undefined ? parseInt(page) : prevState.page,
           size: parseInt(size) || prevState.size,
           ...id && { id },
           ...reviewed_at && { reviewed_at: JSON.parse(reviewed_at) },
