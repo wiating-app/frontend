@@ -4,6 +4,7 @@ import { IconButton, Tooltip } from '@material-ui/core'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import PropTypes from 'prop-types'
 import React from 'react'
+import classNames from 'classnames'
 import { isMobile } from 'react-device-detect'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
@@ -47,7 +48,7 @@ const UtilityButtons = ({ id, coords }) => {
           href={navigateLink}
           target={isMobile ? '_self' : '_blank'}
         >
-          <Directions className={classes.biggerIcon} />
+          <Directions className={classNames(classes.icon, classes.biggerIcon)} />
         </IconButton>
       </Tooltip>
     </div>
@@ -56,14 +57,18 @@ const UtilityButtons = ({ id, coords }) => {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: -2,
     marginLeft: -2,
+    marginBottom: 4,
   },
   icon: {
-    fontSize: 16,
+    fontSize: 24,
+    color: theme.palette.grey[500],
+    '&:hover': {
+      color: theme.palette.grey[600],
+    },
   },
   biggerIcon: {
-    fontSize: 18,
+    fontSize: 26,
   },
 }))
 
