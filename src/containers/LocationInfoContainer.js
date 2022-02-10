@@ -70,7 +70,9 @@ const LocationInfoContainer = ({
             <title>{activeLocation.name} | Wiating</title>
             <meta property='og:title' content={activeLocation.name} />
             <meta property='og:description' content={activeLocation.description} />
-            <meta property='og:image' content={`${process.env.FRONTEND_CDN_URL}/${activeLocation?.id}/${activeLocation?.images[0]?.name.replace('.jpg', '_m.jpg')}`} />
+            {activeLocation.images &&
+              <meta property='og:image' content={`${process.env.FRONTEND_CDN_URL}/${activeLocation?.id}/${activeLocation.images[0]?.name.replace('.jpg', '_m.jpg')}`} />
+            }
           </Helmet>
           <LocationPhotos
             location={activeLocation}
