@@ -1,18 +1,19 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
 import {
-  Typography,
   Button,
   ButtonGroup,
   Chip,
+  Grid,
+  Typography,
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import ShareButton from './ShareButton'
-import Report from './Report'
-import { roundLatLng, formatDate } from '../utils/helpers'
-import locationTypes from '../utils/locationTypes'
-import useLanguage from '../utils/useLanguage'
+import { formatDate, roundLatLng } from '../utils/helpers'
 
+import { Link } from 'react-router-dom'
+import React from 'react'
+import Report from './Report'
+import UtilityButtons from './UtilityButtons'
+import locationTypes from '../utils/locationTypes'
+import { makeStyles } from '@material-ui/core/styles'
+import useLanguage from '../utils/useLanguage'
 
 const LocationInfo = ({
   loggedIn,
@@ -24,10 +25,13 @@ const LocationInfo = ({
   const { translations } = useLanguage()
   const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
-  const type = selectedLocation.type ? translations.locationType[locationTypes[selectedLocation.type].label] : ''
+  const type = locationTypes[selectedLocation.type]
+  const typeLabel = selectedLocation.type ? translations.locationType[type.label] : ''
+  const roundedLat = roundLatLng(selectedLocation.location.lat)
+  const roundedLng = roundLatLng(selectedLocation.location.lng)
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ borderColor: type.color }}>
       <div className={classes.main}>
         <Typography
           variant='h5'
@@ -43,9 +47,19 @@ const LocationInfo = ({
           variant='body2'
           color='textSecondary'
           gutterBottom
+          className={classes.meta}
         >
-          {type} | {roundLatLng(selectedLocation.location.lat)}, {roundLatLng(selectedLocation.location.lng)} <ShareButton id={selectedLocation.id} />
+          <Grid container spacing={1}>
+            <Grid item>{typeLabel}</Grid>
+            <Grid item>|</Grid>
+            <Grid item>{roundedLat}, {roundedLng}</Grid>
+          </Grid>
         </Typography>
+
+        <UtilityButtons
+          id={selectedLocation.id}
+          coords={selectedLocation.location}
+        />
 
         <Typography
           variant='body1'
@@ -150,9 +164,14 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     boxShadow: theme.shadows[1],
     flexGrow: 1,
+    borderTopWidth: theme.spacing(1),
+    borderTopStyle: 'solid',
   },
   main: {
     flexGrow: 1,
+  },
+  meta: {
+    marginTop: 2,
   },
   footer: {
     display: 'flex',
