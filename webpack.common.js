@@ -1,8 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 
 
@@ -63,20 +63,24 @@ module.exports = {
   },
 
   plugins: [
-    new WebpackCleanupPlugin(),
+    new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
 
-    new CopyWebpackPlugin([
-      {
-        from: '**/*',
-        to: './',
-        context: './public/',
-        ignore: ['index.html'],
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: '**/*',
+          to: './',
+          context: './public/',
+          globOptions: {
+            ignore: ['**/index.html'],
+          },
+        },
+      ],
+    }),
 
     new InjectManifest({
       swSrc: './src/serviceWorker.js',

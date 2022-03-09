@@ -1,36 +1,36 @@
-import 'leaflet/dist/leaflet.css'
-import 'react-leaflet-markercluster/dist/styles.min.css'
-
+import React from 'react'
 import {
-  Circle,
   MapContainer,
   Marker,
   Popup,
-  ScaleControl,
   TileLayer,
+  Circle,
   ZoomControl,
+  ScaleControl,
+  useMap,
+  useMapEvents,
 } from 'react-leaflet'
-import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
+// import Control from 'react-leaflet-control'
+import { useRecoilState } from 'recoil'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Typography, useMediaQuery } from '@material-ui/core'
+import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
+import { Icon } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 import {
-  activeLocationState,
   editModeState,
   isDrawerOpenState,
+  activeLocationState,
   searchResultsState,
 } from '../state'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-
 // import PixiOverlay from './PixiOverlay'
-import ContextMenu from './ContextMenu'
-import Control from 'react-leaflet-control'
-import Export from './Export'
-import { Icon } from 'leaflet'
-import Legend from './Legend'
 import PixiOverlay from 'react-leaflet-pixi-overlay'
-import React from 'react'
+import ContextMenu from './ContextMenu'
+import Legend from './Legend'
+import Export from './Export'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import history from '../history'
-import { useRecoilState } from 'recoil'
+
 
 const Map = ({
   center,
@@ -45,7 +45,9 @@ const Map = ({
 }) => {
   const [contextMenu, setContextMenu] = React.useState()
   const [previousBounds, setPreviousBounds] = React.useState()
-  const mapRef = React.useRef()
+  const map = useMap()
+  console.log('map: ', map);
+  const mapEvents = useMapEvents()
   const [editMode] = useRecoilState(editModeState)
   const [, setSearchResults] = useRecoilState(searchResultsState)
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
@@ -67,27 +69,27 @@ const Map = ({
   React.useEffect(() => {
     if (activeLocation && !contextMenu) {
       const { lat, lng } = activeLocation.location
-      mapRef.current.leafletElement.panTo([lat, lng])
+      mapEvents.panTo([lat, lng])
     }
   }, [activeLocation])
 
   React.useEffect(() => {
     if (center && !activeLocation) {
-      mapRef.current.leafletElement.flyTo(center)
+      mapEvents.flyTo(center)
     }
   }, [center])
 
   React.useEffect(() => {
     if (isMobile) {
-      mapRef.current.leafletElement.invalidateSize()
+      mapEvents.invalidateSize()
       if (activeLocation?.location) {
-        mapRef.current.leafletElement.flyTo(activeLocation.location)
+        mapEvents.flyTo(activeLocation.location)
       }
     }
   }, [isDrawerOpen, isMobile])
 
   const handleLoadMapMarkers = async newZoom => {
-    const bounds = await mapRef.current.leafletElement.getBounds()
+    const bounds = await mapEvents.getBounds()
     // Check whether viewport really changed to prevent multiple requests for
     // the same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
@@ -97,7 +99,7 @@ const Map = ({
       if (newZoom <= currentZoom || !previousBounds || (isMobile && isDrawerOpen)) {
         getMarkers(bounds)
       }
-      setStoredPosition(mapRef.current.viewport)
+      setStoredPosition(map.viewport)
       setPreviousBounds(bounds)
     }
   }
@@ -106,7 +108,7 @@ const Map = ({
     // Refresh markers when active types change.
     const handleAsync = async () => {
       if (mapRef.current.leafletElement._loaded) {
-        const bounds = await mapRef.current.leafletElement.getBounds()
+        const bounds = await mapEvents.getBounds()
         getMarkers(bounds)
       }
     }
@@ -125,7 +127,6 @@ const Map = ({
       }
     >
       <MapContainer
-        ref={mapRef}
         className={classes.mapOffset}
         center={center}
         zoom={zoom}
@@ -163,6 +164,22 @@ const Map = ({
         />
         <PixiOverlay
           markers={[]}
+          // map={mapRef?.current?.leafletElement}
+          // markers={markers.map(item => {
+          //   const { location: { lat, lng }, id, type } = item
+          //   return {
+          //     id,
+          //     customIcon: generateMarkerIcon(type, markerSize),
+          //     iconId: `${type}_${markerSize}`,
+          //     position: [lat, lng],
+          //     onClick: () => {
+          //       setSearchResults([])
+          //       setActiveLocation(item)
+          //       history.push(`/location/${item.id}`)
+          //       setContextMenu(null)
+          //     },
+          //   }
+          // }) || []}
         />
         {activeLocation &&
           <Marker
@@ -219,7 +236,7 @@ const Map = ({
         {(!isDrawerOpen || !isPhone) &&
           <>
             <ZoomControl position='topright' />
-            <Control position='topright' className='leaflet-bar'>
+            {/* <Control position='topright' className='leaflet-bar'>
               <a
                 className={classes.customControl}
                 onClick={() => userLocation &&
@@ -232,15 +249,15 @@ const Map = ({
                   : <GpsNotFixed className={classes.customControlIcon} />
                 }
               </a>
-            </Control>
-            {!editMode &&
+            </Control> */}
+            {/* {!editMode &&
               <Control position='topright' className='leaflet-bar'>
                 <Export markers={markers} className={classes.customControl} />
               </Control>
-            }
+            } */}
           </>
         }
-        <Control position='bottomright'>
+        {/* <Control position='bottomright'>
           {userLocation && (!isDrawerOpen || !isPhone) &&
             <Typography
               component='div'
@@ -248,13 +265,13 @@ const Map = ({
               className={classes.userLocation}
             >Dokładność GPS: {Math.round(locationAccuracy)} m</Typography>
           }
-        </Control>
+        </Control> */}
         <ScaleControl position='bottomright' imperial={false} />
-        {!isMobile && !editMode &&
+        {/* {!isMobile && !editMode &&
           <Control position='topleft'>
             <Legend boxed />
           </Control>
-        }
+        } */}
       </MapContainer>
     </div>
   )
