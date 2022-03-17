@@ -15,7 +15,7 @@ let cancelRequest
 
 
 const MapContainer = props => {
-  const [initalPosition, setInitalPosition] = React.useState({})
+  const [initialPosition, setInitialPosition] = React.useState({})
   const [activeTypes] = useRecoilState(activeTypesState)
   const [markers, setMarkers] = useRecoilState(markersState)
   const { translations } = useLanguage()
@@ -65,14 +65,14 @@ const MapContainer = props => {
     // Check whether stored position is available asychronously from recognized
     // userLocation, because userLocation recognition may take more time.
     const bounds = getStoredPosition()
-    if (bounds) setInitalPosition({ bounds })
+    if (bounds) setInitialPosition({ bounds })
   }, [])
 
   React.useEffect(() => {
     // If user current location has been recognized and initial position is
     // default (unchanged), set user current location as an initial position.
-    if (!loading && !error && !initalPosition.bounds && userLocation) {
-      setInitalPosition({ center: userLocation })
+    if (!loading && !error && !initialPosition.bounds && userLocation) {
+      setInitialPosition({ center: userLocation })
     }
   }, [loading])
 
@@ -84,8 +84,8 @@ const MapContainer = props => {
       markers={markers}
       userLocation={userLocation}
       locationAccuracy={accuracy}
-      center={initalPosition?.center}
-      bounds={initalPosition?.bounds}
+      center={initialPosition.center}
+      bounds={initialPosition.bounds}
       {...props}
       activeTypes={activeTypes}
     />

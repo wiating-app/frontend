@@ -101,7 +101,9 @@ export const Auth0Provider = ({
         getStoredPosition: () => {
           try {
             const bounds = localStorage.getItem('lastPosition')
-            return bounds ? JSON.parse(bounds) : false
+            return bounds && Array.isArray(bounds) // Some users may still have old value cached, which was an object.
+              ? JSON.parse(bounds)
+              : false
           } catch (error) {
             return false
           }
