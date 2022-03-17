@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { useSnackbar } from 'notistack'
-import createAuth0Client from '@auth0/auth0-spa-js'
+import React, { useContext, useEffect, useState } from 'react'
+
 import api from '../api'
+import createAuth0Client from '@auth0/auth0-spa-js'
 import useLanguage from '../utils/useLanguage'
+import { useSnackbar } from 'notistack'
 
 // Useful info about Auth0Provider configuration:
 // https://auth0.com/docs/quickstart/spa/react
@@ -89,13 +90,18 @@ export const Auth0Provider = ({
           auth0.logout(p)
           api.defaults.headers.common['Authorization'] = null
         },
-        setStoredPosition: position => {
-          localStorage.setItem('lastPosition', JSON.stringify(position))
+        setStoredPosition: bounds => {
+          const { _northEast, _southWest } = bounds
+          const safeBounds = [
+            [_northEast.lat, _northEast.lng],
+            [_southWest.lat, _southWest.lng],
+          ]
+          localStorage.setItem('lastPosition', JSON.stringify(safeBounds))
         },
         getStoredPosition: () => {
           try {
-            const position = localStorage.getItem('lastPosition')
-            return position ? JSON.parse(position) : false
+            const bounds = localStorage.getItem('lastPosition')
+            return bounds ? JSON.parse(bounds) : false
           } catch (error) {
             return false
           }

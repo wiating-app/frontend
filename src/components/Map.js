@@ -1,40 +1,40 @@
-import React from 'react'
+import 'leaflet/dist/leaflet.css'
+
 import {
+  Circle,
   MapContainer,
   Marker,
   Popup,
-  TileLayer,
-  Circle,
-  ZoomControl,
   ScaleControl,
-  useMap,
+  TileLayer,
+  ZoomControl,
   useMapEvents,
 } from 'react-leaflet'
-// import Control from 'react-leaflet-control'
-import { useRecoilState } from 'recoil'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { Typography, useMediaQuery } from '@material-ui/core'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
-import { Icon } from 'leaflet'
-import 'leaflet/dist/leaflet.css'
+import { Typography, useMediaQuery } from '@material-ui/core'
 import {
+  activeLocationState,
   editModeState,
   isDrawerOpenState,
-  activeLocationState,
   searchResultsState,
 } from '../state'
-// import PixiOverlay from './PixiOverlay'
-import PixiOverlay from 'react-leaflet-pixi-overlay'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+
 import ContextMenu from './ContextMenu'
-import Legend from './Legend'
+import Control from 'react-leaflet-custom-control'
 import Export from './Export'
+import { Icon } from 'leaflet'
+import Legend from './Legend'
+import PixiOverlay from 'react-leaflet-pixi-overlay'
+import React from 'react'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import history from '../history'
-
+import { useRecoilState } from 'recoil'
 
 const Map = ({
   center,
   zoom,
+  bounds,
   isLoggedIn,
   userLocation,
   markers,
@@ -45,9 +45,9 @@ const Map = ({
 }) => {
   const [contextMenu, setContextMenu] = React.useState()
   const [previousBounds, setPreviousBounds] = React.useState()
-  const map = useMap()
-  console.log('map: ', map);
-  const mapEvents = useMapEvents()
+
+  const mapRef = React.useRef()
+  const initiated = !!mapRef?.current
   const [editMode] = useRecoilState(editModeState)
   const [, setSearchResults] = useRecoilState(searchResultsState)
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
@@ -57,7 +57,7 @@ const Map = ({
   const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
   const classes = useStyles(editMode)
 
-  const currentZoom = mapRef?.current?.leafletElement?._zoom || zoom
+  const currentZoom = mapRef?.current?._zoom || zoom
   const markerSize = currentZoom < 7
     ? 6
     : currentZoom < 10
@@ -67,29 +67,34 @@ const Map = ({
         : 32
 
   React.useEffect(() => {
-    if (activeLocation && !contextMenu) {
+    if (activeLocation && !contextMenu && initiated) {
       const { lat, lng } = activeLocation.location
-      mapEvents.panTo([lat, lng])
+      mapRef.current.panTo([lat, lng])
     }
   }, [activeLocation])
 
   React.useEffect(() => {
-    if (center && !activeLocation) {
-      mapEvents.flyTo(center)
+    if (center && !activeLocation && initiated) {
+      mapRef.current.flyTo(center)
     }
   }, [center])
 
   React.useEffect(() => {
+    if (bounds && initiated && !activeLocation) {
+      mapRef.current.flyToBounds(bounds)
+    }
+  }, [bounds, initiated])
+
+  React.useEffect(() => {
     if (isMobile) {
-      mapEvents.invalidateSize()
-      if (activeLocation?.location) {
-        mapEvents.flyTo(activeLocation.location)
+      mapRef.current.invalidateSize()
+      if (activeLocation?.location && initiated) {
+        mapRef.current.flyTo(activeLocation.location)
       }
     }
   }, [isDrawerOpen, isMobile])
 
-  const handleLoadMapMarkers = async newZoom => {
-    const bounds = await mapEvents.getBounds()
+  const handleLoadMapMarkers = async (newZoom, bounds) => {
     // Check whether viewport really changed to prevent multiple requests for
     // the same data.
     if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
@@ -99,7 +104,7 @@ const Map = ({
       if (newZoom <= currentZoom || !previousBounds || (isMobile && isDrawerOpen)) {
         getMarkers(bounds)
       }
-      setStoredPosition(map.viewport)
+      setStoredPosition(bounds)
       setPreviousBounds(bounds)
     }
   }
@@ -107,8 +112,8 @@ const Map = ({
   React.useEffect(() => {
     // Refresh markers when active types change.
     const handleAsync = async () => {
-      if (mapRef.current.leafletElement._loaded) {
-        const bounds = await mapEvents.getBounds()
+      if (initiated) {
+        const bounds = await mapRef.current.getBounds()
         getMarkers(bounds)
       }
     }
@@ -127,6 +132,7 @@ const Map = ({
       }
     >
       <MapContainer
+        whenCreated={mapInstance => { mapRef.current = mapInstance }}
         className={classes.mapOffset}
         center={center}
         zoom={zoom}
@@ -134,52 +140,36 @@ const Map = ({
         maxZoom={18}
         maxBounds={[[-90, -180], [90, 180]]}
         zoomControl={false}
-        onMoveEnd={e => {
-          handleLoadMapMarkers(e.sourceTarget._zoom)
-        }}
-        onContextMenu={e => {
-          if (!editMode) {
-            if (isLoggedIn) {
-              setContextMenu(!contextMenu)
-              setActiveLocation(contextMenu ? null : { location: e.latlng })
-            }
-            history.push('/')
-          }
-        }}
-        onClick={e => {
-          if (contextMenu) {
-            // If context menu is opened, close it.
-            setContextMenu(false)
-            setActiveLocation(null)
-          } else if (editMode && isLoggedIn && !activeLocation) {
-            // Add location by pinning on map mode.
-            setActiveLocation({ location: e.latlng })
-            history.push('/location/new')
-          }
-        }}
       >
+        <MapEvents
+          editMode={editMode}
+          isLoggedIn={isLoggedIn}
+          contextMenu={contextMenu}
+          setContextMenu={setContextMenu}
+          activeLocation={activeLocation}
+          setActiveLocation={setActiveLocation}
+          handleLoadMapMarkers={handleLoadMapMarkers}
+        />
         <TileLayer
           url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
           attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
         />
         <PixiOverlay
-          markers={[]}
-          // map={mapRef?.current?.leafletElement}
-          // markers={markers.map(item => {
-          //   const { location: { lat, lng }, id, type } = item
-          //   return {
-          //     id,
-          //     customIcon: generateMarkerIcon(type, markerSize),
-          //     iconId: `${type}_${markerSize}`,
-          //     position: [lat, lng],
-          //     onClick: () => {
-          //       setSearchResults([])
-          //       setActiveLocation(item)
-          //       history.push(`/location/${item.id}`)
-          //       setContextMenu(null)
-          //     },
-          //   }
-          // }) || []}
+          markers={markers.map(item => {
+            const { location: { lat, lng }, id, type } = item
+            return {
+              id,
+              customIcon: generateMarkerIcon(type, markerSize),
+              iconId: `${type}_${markerSize}`,
+              position: [lat, lng],
+              onClick: () => {
+                setSearchResults([])
+                setActiveLocation(item)
+                history.push(`/location/${item.id}`)
+                setContextMenu(null)
+              },
+            }
+          }) || []}
         />
         {activeLocation &&
           <Marker
@@ -210,7 +200,7 @@ const Map = ({
             <ContextMenu addMarker={() => {
               setContextMenu(null)
               history.push('/location/new')
-              mapRef.current.leafletElement.setView(activeLocation.location)
+              mapRef.current.setView(activeLocation.location)
             }} />
           </Popup>
         }
@@ -236,7 +226,7 @@ const Map = ({
         {(!isDrawerOpen || !isPhone) &&
           <>
             <ZoomControl position='topright' />
-            {/* <Control position='topright' className='leaflet-bar'>
+            <Control position='topright'>
               <a
                 className={classes.customControl}
                 onClick={() => userLocation &&
@@ -249,15 +239,15 @@ const Map = ({
                   : <GpsNotFixed className={classes.customControlIcon} />
                 }
               </a>
-            </Control> */}
-            {/* {!editMode &&
+            </Control>
+            {!editMode &&
               <Control position='topright' className='leaflet-bar'>
                 <Export markers={markers} className={classes.customControl} />
               </Control>
-            } */}
+            }
           </>
         }
-        {/* <Control position='bottomright'>
+        <Control position='bottomright'>
           {userLocation && (!isDrawerOpen || !isPhone) &&
             <Typography
               component='div'
@@ -265,21 +255,62 @@ const Map = ({
               className={classes.userLocation}
             >Dokładność GPS: {Math.round(locationAccuracy)} m</Typography>
           }
-        </Control> */}
+        </Control>
         <ScaleControl position='bottomright' imperial={false} />
-        {/* {!isMobile && !editMode &&
+        {!isMobile && !editMode &&
           <Control position='topleft'>
             <Legend boxed />
           </Control>
-        } */}
+        }
       </MapContainer>
     </div>
   )
 }
 
 Map.defaultProps = {
+  center: [50.39805, 16.844417], // The area of Polish mountains.
   zoom: 7,
 }
+
+
+const MapEvents = ({
+  editMode,
+  isLoggedIn,
+  contextMenu,
+  setContextMenu,
+  activeLocation,
+  setActiveLocation,
+  handleLoadMapMarkers,
+}) => {
+  useMapEvents({
+    moveend: async e => {
+      const bounds = await e.target.getBounds()
+      handleLoadMapMarkers(e.sourceTarget._zoom, bounds)
+    },
+    contextmenu: e => {
+      if (!editMode) {
+        if (isLoggedIn) {
+          setContextMenu(!contextMenu)
+          setActiveLocation(contextMenu ? null : { location: e.latlng })
+        }
+        history.push('/')
+      }
+    },
+    click: e => {
+      if (contextMenu) {
+        // If context menu is opened, close it.
+        setContextMenu(false)
+        setActiveLocation(null)
+      } else if (editMode && isLoggedIn && !activeLocation) {
+        // Add location by pinning on map mode.
+        setActiveLocation({ location: e.latlng })
+        history.push('/location/new')
+      }
+    },
+  })
+  return null
+}
+
 
 const useStyles = makeStyles(theme => ({
   offsetWrapper: {
