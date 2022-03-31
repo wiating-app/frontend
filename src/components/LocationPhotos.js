@@ -1,15 +1,16 @@
-import React from 'react'
-import { Box, Button, Modal, IconButton } from '@material-ui/core'
-import loadImage from 'image-promise'
-import { Close } from '@material-ui/icons'
-import { makeStyles } from '@material-ui/core/styles'
-import { Carousel } from 'react-responsive-carousel'
-import ImageGallery from 'react-image-gallery'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
-import Loader from './Loader'
-import useLanguage from '../utils/useLanguage'
 
+import { AddAPhoto, Close } from '@material-ui/icons'
+import { Box, Button, IconButton, Modal, Tooltip } from '@material-ui/core'
+
+import { Carousel } from 'react-responsive-carousel'
+import ImageGallery from 'react-image-gallery'
+import Loader from './Loader'
+import React from 'react'
+import loadImage from 'image-promise'
+import { makeStyles } from '@material-ui/core/styles'
+import useLanguage from '../utils/useLanguage'
 
 const LocationPhotos = ({
   location,
@@ -94,13 +95,14 @@ const LocationPhotos = ({
             <img src='/no-image.png' alt='No image' className={classes.image} />
           </div>
       }
-      <Button
-        className={classes.addPhoto}
-        size='small'
-        variant='contained'
-        color='primary'
-        onClick={uploadImages}
-      >{translations.actions.addPhoto}</Button>
+      <Tooltip title={translations.actions.addPhoto} placement='bottom-left'>
+        <Button
+          className={classes.addPhoto}
+          variant='contained'
+          color='primary'
+          onClick={uploadImages}
+        ><AddAPhoto /></Button>
+      </Tooltip>
     </div>
   )
 }
@@ -125,6 +127,9 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     [theme.breakpoints.down('xs')]: {
       animation: `$appear 500ms ${theme.transitions.easing.easeInOut} forwards`,
+    },
+    '& .carousel .control-dots': {
+      marginBottom: theme.spacing(3),
     },
   },
   imageWrapper: {
@@ -187,9 +192,15 @@ const useStyles = makeStyles(theme => ({
   },
   addPhoto: {
     position: 'absolute',
-    bottom: theme.spacing(1),
+    top: theme.spacing(1),
     left: theme.spacing(1),
     padding: '1px 6px',
+    zIndex: 1,
+    color: theme.palette.primary.main,
+    backgroundColor: 'rgba(255, 255, 255, 0.67)',
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    },
   },
 }))
 

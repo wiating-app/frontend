@@ -32,6 +32,10 @@ const LocationInfo = ({
 
   return (
     <div className={classes.root}>
+      <UtilityButtons
+        id={selectedLocation.id}
+        coords={selectedLocation.location}
+      />
       <div className={classes.main}>
         <Typography
           variant='h5'
@@ -55,11 +59,6 @@ const LocationInfo = ({
             <Grid item>{roundedLat}, {roundedLng}</Grid>
           </Grid>
         </Typography>
-
-        <UtilityButtons
-          id={selectedLocation.id}
-          coords={selectedLocation.location}
-        />
 
         <Typography
           variant='body1'
@@ -159,9 +158,11 @@ const LocationInfo = ({
 
 const useStyles = makeStyles(theme => ({
   root: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing(2),
+    paddingTop: theme.spacing(4),
     boxShadow: theme.shadows[1],
     flexGrow: 1,
   },

@@ -60,6 +60,14 @@ const LocationInfoContainer = ({
     }
   }
 
+  const handleImageUpload = () => {
+    if (isLoggedIn) {
+      history.push(`/location/${id}/photos`)
+    } else {
+      enqueueSnackbar(translations.notifications.mustLogIn, { variant: 'warning' })
+    }
+  }
+
   return (
     loading
       ? <Loader dark big />
@@ -78,7 +86,7 @@ const LocationInfoContainer = ({
           <LocationPhotos
             location={activeLocation}
             uploading={search === '?imageLoading=true'}
-            uploadImages={() => history.push(`/location/${id}/photos`)}
+            uploadImages={handleImageUpload}
           />
           <LocationInfo
             selectedLocation={activeLocation}

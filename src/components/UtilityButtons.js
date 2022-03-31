@@ -4,7 +4,6 @@ import { IconButton, Tooltip } from '@material-ui/core'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import PropTypes from 'prop-types'
 import React from 'react'
-import classNames from 'classnames'
 import { isMobile } from 'react-device-detect'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
@@ -23,32 +22,39 @@ const UtilityButtons = ({ id, coords }) => {
 
   return (
     <div className={classes.root}>
-      <Tooltip title={translations.share} placement='bottom'>
+      <Tooltip title={translations.share} placement='top'>
         <CopyToClipboard
           text={locationUrl}
           onCopy={() => enqueueSnackbar(translations.notifications.urlCopied, { variant: 'success' })}
         >
-          <IconButton size='small'><Share className={classes.icon} /></IconButton>
+          <div>
+            <IconButton size='small' className={classes.button}>
+              <Share className={classes.smallerIcon} />
+            </IconButton>
+          </div>
         </CopyToClipboard>
       </Tooltip>
-      {' '}
-      <Tooltip title={translations.copyCoordinates} placement='bottom'>
+      <Tooltip title={translations.copyCoordinates} placement='top'>
         <CopyToClipboard
           text={coords}
           onCopy={() => enqueueSnackbar(translations.notifications.coordinatesCopied, { variant: 'success' })}
         >
-          <IconButton size='small'><FileCopy className={classes.icon} /></IconButton>
+          <div>
+            <IconButton size='small' className={classes.button}>
+              <FileCopy className={classes.smallerIcon} />
+            </IconButton>
+          </div>
         </CopyToClipboard>
       </Tooltip>
-      {' '}
-      <Tooltip title={translations.navigate} placement='bottom'>
+      <Tooltip title={translations.navigate} placement='top'>
         <IconButton
           size='small'
+          className={classes.button}
           component='a'
           href={navigateLink}
           target={isMobile ? '_self' : '_blank'}
         >
-          <Directions className={classNames(classes.icon, classes.biggerIcon)} />
+          <Directions />
         </IconButton>
       </Tooltip>
     </div>
@@ -57,18 +63,28 @@ const UtilityButtons = ({ id, coords }) => {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginLeft: -2,
-    marginBottom: 4,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: -theme.spacing(2),
+    margin: -theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  icon: {
-    fontSize: 24,
-    color: theme.palette.grey[500],
+  button: {
+    backgroundColor: theme.palette.primary.main,
+    color: 'white',
+    margin: theme.spacing(1),
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: 'white',
     '&:hover': {
-      color: theme.palette.grey[600],
+      backgroundColor: theme.palette.primary.light,
     },
   },
-  biggerIcon: {
-    fontSize: 26,
+  smallerIcon: {
+    transform: 'scale(0.8)',
   },
 }))
 
