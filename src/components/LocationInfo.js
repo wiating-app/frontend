@@ -31,7 +31,7 @@ const LocationInfo = ({
   const roundedLng = roundLatLng(selectedLocation.location.lng)
 
   return (
-    <div className={classes.root} style={{ borderColor: type.color }}>
+    <div className={classes.root}>
       <div className={classes.main}>
         <Typography
           variant='h5'
@@ -164,8 +164,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     boxShadow: theme.shadows[1],
     flexGrow: 1,
-    borderTopWidth: theme.spacing(1),
-    borderTopStyle: 'solid',
   },
   main: {
     flexGrow: 1,
