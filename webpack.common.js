@@ -1,8 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 
 
@@ -20,7 +20,12 @@ module.exports = {
 
       {
         test: /\.(js|jsx)$/,
-        include: path.join(__dirname, 'src'),
+        include: [
+          path.resolve('src'),
+          path.resolve('node_modules', '@react-leaflet'),
+          path.resolve('node_modules', 'react-leaflet'),
+        ],
+        // exclude: /node_modules\/(?!(@react-leaflet|react-leaflet)\/)/i,
         use: 'babel-loader',
       },
 
@@ -58,20 +63,24 @@ module.exports = {
   },
 
   plugins: [
-    new WebpackCleanupPlugin(),
+    new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
 
-    new CopyWebpackPlugin([
-      {
-        from: '**/*',
-        to: './',
-        context: './public/',
-        ignore: ['index.html'],
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: '**/*',
+          to: './',
+          context: './public/',
+          globOptions: {
+            ignore: ['**/index.html'],
+          },
+        },
+      ],
+    }),
 
     new InjectManifest({
       swSrc: './src/serviceWorker.js',

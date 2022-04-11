@@ -1,7 +1,7 @@
 import React from 'react'
 import { withFormControl } from 'react-standalone-form-mui'
 import { InputBase } from '@material-ui/core'
-import { fade, makeStyles } from '@material-ui/core/styles'
+import { alpha, makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
 import Loader from './Loader'
 
@@ -45,9 +45,9 @@ const useStyles = makeStyles(theme => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     width: 'auto',
   },

@@ -1,26 +1,26 @@
-import React from 'react'
-import { useSnackbar } from 'notistack'
-import { useRecoilState } from 'recoil'
-import api, { CancelToken, isCancel } from '../api'
 import { activeTypesState, markersState } from '../state'
-import useAuth0 from '../utils/useAuth0'
-import useUserLocation from '../utils/useUserLocation'
-import Map from '../components/Map'
-import useLanguage from '../utils/useLanguage'
-import serializeData from '../utils/serializeData'
+import api, { CancelToken, isCancel } from '../api'
+
 import AddButtonContainer from './AddButtonContainer'
+import Map from '../components/Map'
+import React from 'react'
+import serializeData from '../utils/serializeData'
+import useAuth0 from '../utils/useAuth0'
+import useLanguage from '../utils/useLanguage'
+import { useRecoilState } from 'recoil'
+import { useSnackbar } from 'notistack'
+import useUserLocation from '../utils/useUserLocation'
 
 let cancelRequest
 
 
 const MapContainer = props => {
-  const [initalPosition, setInitalPosition] = React.useState()
+  const [initialPosition, setInitialPosition] = React.useState({})
   const [activeTypes] = useRecoilState(activeTypesState)
   const [markers, setMarkers] = useRecoilState(markersState)
   const { translations } = useLanguage()
   const { enqueueSnackbar } = useSnackbar()
   const { userLocation, accuracy, loading, error } = useUserLocation()
-  const defaultPosition = [50.39805, 16.844417] // The area of Polish mountains.
 
   const {
     isLoggedIn,
@@ -64,17 +64,17 @@ const MapContainer = props => {
   React.useEffect(() => {
     // Check whether stored position is available asychronously from recognized
     // userLocation, because userLocation recognition may take more time.
-    const position = getStoredPosition()
-    setInitalPosition(position || { center: defaultPosition })
+    const bounds = getStoredPosition()
+    if (bounds) setInitialPosition({ bounds })
   }, [])
 
   React.useEffect(() => {
     // If user current location has been recognized and initial position is
     // default (unchanged), set user current location as an initial position.
-    if (!loading && !error && initalPosition && JSON.stringify(initalPosition.center) === JSON.stringify(defaultPosition) && userLocation) {
-      setInitalPosition({ center: userLocation })
+    if (!loading && !error && !initialPosition.bounds && userLocation) {
+      setInitialPosition({ center: userLocation })
     }
-  }, [loading, initalPosition])
+  }, [loading])
 
   return <>
     <Map
@@ -84,8 +84,8 @@ const MapContainer = props => {
       markers={markers}
       userLocation={userLocation}
       locationAccuracy={accuracy}
-      center={initalPosition && initalPosition.center}
-      zoom={initalPosition && initalPosition.zoom}
+      center={initialPosition.center}
+      bounds={initialPosition.bounds}
       {...props}
       activeTypes={activeTypes}
     />

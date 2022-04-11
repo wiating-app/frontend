@@ -1,17 +1,17 @@
-import React from 'react'
-import { withRouter } from 'react-router-dom'
 import {
-  Drawer as MUIDrawer,
   IconButton,
+  Drawer as MUIDrawer,
 } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+
 import { Close } from '@material-ui/icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { useRecoilState } from 'recoil'
+import React from 'react'
 import { isDrawerOpenState } from '../state'
 import useKeyPress from '../utils/useKeyPress'
-
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useRecoilState } from 'recoil'
+import { withRouter } from 'react-router-dom'
 
 const Drawer = ({
   children,
@@ -57,6 +57,7 @@ const Drawer = ({
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
     borderTop: 'none',
+    borderRight: 'none',
     height: coverMapOnMobile =>
       `calc(100vh - ${(coverMapOnMobile ? 0 : theme.layout.mobileMiniMapHeight)}px)`,
     boxShadow: theme.shadows[14],

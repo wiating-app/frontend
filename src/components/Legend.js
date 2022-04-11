@@ -1,13 +1,12 @@
 import React from 'react'
-import classNames from 'classnames'
 import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { useRecoilState } from 'recoil'
 import { activeTypesState } from '../state'
-import locationTypes from '../utils/locationTypes'
+import classNames from 'classnames'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
+import locationTypes from '../utils/locationTypes'
+import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
-
+import { useRecoilState } from 'recoil'
 
 const Legend = ({ boxed }) => {
   const classes = useStyles(boxed)
@@ -61,9 +60,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: boxed => boxed ? 'rgba(255,255,255,0.85)' : 'transparent',
     paddingTop: boxed => boxed ? theme.spacing(1) : 0,
     paddingBottom: boxed => boxed ? theme.spacing(1) : 0,
-    boxShadow: boxed => boxed ? theme.shadows[1] : 0,
     borderRadius: 4,
-    marginBottom: theme.spacing(0.5),
     minWidth: 168,
   },
   label: {

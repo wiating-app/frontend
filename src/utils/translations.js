@@ -81,6 +81,7 @@ export default {
       urlCopied: 'Skopiowano adres URL lokacji do schowka.',
       couldNotReport: 'Nie udało się przesłać zgłoszenia.',
       coordinatesCopied: 'Skopiowano koordynaty do schowka.',
+      mustLogIn: 'Musisz być zalogowany.',
     },
     formLabels: {
       formInvalid: 'Formularz jest niepoprawnie uzupełniony. Sprawdź pola.',
@@ -173,7 +174,7 @@ export default {
     send: 'Prześlij',
     upload: 'Dodaj zdjęcia',
     unpublished: 'Nieopublikowane',
-    navigate: 'Nawiguj',
+    navigate: 'Nawiguj do',
     copyCoordinates: 'Skopuj koordynaty',
   },
 
@@ -260,6 +261,7 @@ export default {
       urlCopied: 'URL of current location copied to clipboard.',
       couldNotReport: 'Could not send the form.',
       coordinatesCopied: 'Location coordinaties copied to clipboard.',
+      mustLogIn: 'You must be logged in.',
     },
     formLabels: {
       formInvalid: 'Form contains errors. Check all fields.',
@@ -352,7 +354,7 @@ export default {
     send: 'Send',
     upload: 'Add from drive',
     unpublished: 'Unpublished',
-    navigate: 'Navigate',
+    navigate: 'Navigate to',
     copyCoordinates: 'Copy coordinates',
   },
 }

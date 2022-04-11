@@ -22,32 +22,39 @@ const UtilityButtons = ({ id, coords }) => {
 
   return (
     <div className={classes.root}>
-      <Tooltip title={translations.share} placement='bottom'>
+      <Tooltip title={translations.share} placement='top'>
         <CopyToClipboard
           text={locationUrl}
           onCopy={() => enqueueSnackbar(translations.notifications.urlCopied, { variant: 'success' })}
         >
-          <IconButton size='small'><Share className={classes.icon} /></IconButton>
+          <div>
+            <IconButton size='small' className={classes.button}>
+              <Share className={classes.smallerIcon} />
+            </IconButton>
+          </div>
         </CopyToClipboard>
       </Tooltip>
-      {' '}
-      <Tooltip title={translations.copyCoordinates} placement='bottom'>
+      <Tooltip title={translations.copyCoordinates} placement='top'>
         <CopyToClipboard
           text={coords}
           onCopy={() => enqueueSnackbar(translations.notifications.coordinatesCopied, { variant: 'success' })}
         >
-          <IconButton size='small'><FileCopy className={classes.icon} /></IconButton>
+          <div>
+            <IconButton size='small' className={classes.button}>
+              <FileCopy className={classes.smallerIcon} />
+            </IconButton>
+          </div>
         </CopyToClipboard>
       </Tooltip>
-      {' '}
-      <Tooltip title={translations.navigate} placement='bottom'>
+      <Tooltip title={translations.navigate} placement='top'>
         <IconButton
           size='small'
+          className={classes.button}
           component='a'
           href={navigateLink}
           target={isMobile ? '_self' : '_blank'}
         >
-          <Directions className={classes.biggerIcon} />
+          <Directions />
         </IconButton>
       </Tooltip>
     </div>
@@ -56,14 +63,28 @@ const UtilityButtons = ({ id, coords }) => {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: -2,
-    marginLeft: -2,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: -theme.spacing(2),
+    margin: -theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  icon: {
-    fontSize: 16,
+  button: {
+    backgroundColor: theme.palette.primary.main,
+    color: 'white',
+    margin: theme.spacing(1),
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.light,
+    },
   },
-  biggerIcon: {
-    fontSize: 18,
+  smallerIcon: {
+    transform: 'scale(0.8)',
   },
 }))
 
