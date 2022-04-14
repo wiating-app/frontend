@@ -206,7 +206,7 @@ const LocationForm = ({
         <FormButton
           variant='contained'
           color='primary'
-          callback={async fields => {
+          onClick={async fields => {
             setLoading(true)
             await onSubmitLocation(fields)
             setLoading(false)

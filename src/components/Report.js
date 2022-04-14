@@ -1,10 +1,10 @@
+import { FormButton, Input, Select } from 'react-standalone-form-mui'
+
+import Form from 'react-standalone-form'
+import Modal from './Modal'
 import React from 'react'
 import { Typography } from '@material-ui/core'
-import Form from 'react-standalone-form'
-import { Input, Select, FormButton } from 'react-standalone-form-mui'
-import Modal from './Modal'
 import useLanguage from '../utils/useLanguage'
-
 
 const Report = ({ handleReport, onClose }) => {
   const [loading, setLoading] = React.useState(false)
@@ -44,7 +44,7 @@ const Report = ({ handleReport, onClose }) => {
         <FormButton
           variant='contained'
           color='primary'
-          callback={async fields => {
+          onClick={async fields => {
             setLoading(true)
             try {
               await handleReport(fields)

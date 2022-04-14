@@ -1,14 +1,13 @@
-import React from 'react'
-import { Typography, Button } from '@material-ui/core'
-import Form from 'react-standalone-form'
+import { Button, Typography } from '@material-ui/core'
 import {
-  // MultiImageUpload,
-  FormButton,
   FormActions,
+  FormButton,
 } from 'react-standalone-form-mui'
-import useLanguage from '../utils/useLanguage'
-import MultiImageUpload from './MultiImageUpload'
 
+import Form from 'react-standalone-form'
+import MultiImageUpload from './MultiImageUpload'
+import React from 'react'
+import useLanguage from '../utils/useLanguage'
 
 const PhotosForm = ({ name, handleSubmit, cancel }) => {
   const { translations } = useLanguage()
@@ -28,7 +27,7 @@ const PhotosForm = ({ name, handleSubmit, cancel }) => {
         <FormButton
           variant='contained'
           color='primary'
-          callback={fields => handleSubmit(fields.images)}
+          onClick={fields => handleSubmit(fields.images)}
         >{translations.send}</FormButton>
       </FormActions>
     </Form>
