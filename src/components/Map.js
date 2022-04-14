@@ -230,7 +230,7 @@ const Map = ({
               <a
                 className={classes.customControl}
                 onClick={() => userLocation &&
-                  mapRef.current.leafletElement.flyTo(userLocation, 14)
+                  mapRef.current.flyTo(userLocation, 14)
                 }
                 disabled={!userLocation}
               >
