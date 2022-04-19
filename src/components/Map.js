@@ -51,6 +51,7 @@ const Map = ({
   const [editMode] = useRecoilState(editModeState)
   const [, setSearchResults] = useRecoilState(searchResultsState)
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
+  console.log('activeLocation: ', activeLocation);
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -181,13 +182,15 @@ const Map = ({
             zIndexOffset={1100}
             position={activeLocation.location}
             draggable={editMode}
-            onMoveEnd={e => {
-              if (editMode) {
-                setActiveLocation({
-                  ...activeLocation,
-                  location: e.target.getLatLng(),
-                })
-              }
+            eventHandlers={{
+              moveend: e => {
+                if (editMode) {
+                  setActiveLocation({
+                    ...activeLocation,
+                    location: e.target.getLatLng(),
+                  })
+                }
+              },
             }}
           />
         }
