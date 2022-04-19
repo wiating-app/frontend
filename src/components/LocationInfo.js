@@ -4,6 +4,7 @@ import {
   Chip,
   Grid,
   Typography,
+  Divider,
 } from '@material-ui/core'
 import { formatDate, roundLatLng } from '../utils/helpers'
 
@@ -60,29 +61,31 @@ const LocationInfo = ({
           </Grid>
         </Typography>
 
-        <Typography
-          variant='body1'
-          gutterBottom
-        ><strong>{translations.locationInfo.description}:</strong> {selectedLocation.description}</Typography>
+        <Typography variant='subtitle2' className={classes.paddedText}>
+          {translations.locationInfo.description}
+        </Typography>
+
+        <Typography variant='body1' className={classes.paddedText}>
+          {selectedLocation.description}
+        </Typography>
 
         {selectedLocation.directions &&
-          <Typography
-            variant='body1'
-            gutterBottom
-          ><strong>{translations.locationInfo.directions}:</strong> {selectedLocation.directions}</Typography>
+          <>
+            <Typography variant='subtitle2' className={classes.paddedText}>
+              {translations.locationInfo.directions}
+            </Typography>
+            <Typography variant='body1' className={classes.paddedText}>
+              {selectedLocation.directions}
+            </Typography>
+          </>
         }
 
-        <div>
-          <Typography
-            variant='subtitle2'
-            component='span'
-          >{translations.locationInfo.water.label}: </Typography>
+        <Divider />
 
-          <Typography
-            variant='body2'
-            gutterBottom
-            component='span'
-          >
+        <div className={classes.paddedText}>
+
+          <Typography variant='body2' gutterBottom>
+            {translations.locationInfo.water.label}:{' '}
             {selectedLocation.water_exists === null
               ? translations.noData
               : !selectedLocation.water_exists
@@ -90,19 +93,9 @@ const LocationInfo = ({
                 : selectedLocation.water_comment || translations.available
             }
           </Typography>
-        </div>
 
-        <div>
-          <Typography
-            variant='subtitle2'
-            component='span'
-          >{translations.locationInfo.fire.label}: </Typography>
-
-          <Typography
-            variant='body2'
-            gutterBottom
-            component='span'
-          >
+          <Typography variant='body2'>
+            {translations.locationInfo.fire.label}:{' '}
             {selectedLocation.fire_exists === null
               ? translations.noData
               : !selectedLocation.fire_exists
@@ -110,6 +103,7 @@ const LocationInfo = ({
                 : selectedLocation.fire_comment || translations.available
             }
           </Typography>
+
         </div>
 
       </div>
@@ -171,6 +165,10 @@ const useStyles = makeStyles(theme => ({
   },
   meta: {
     marginTop: 2,
+  },
+  paddedText: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   footer: {
     display: 'flex',
