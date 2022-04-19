@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
@@ -13,6 +14,14 @@ module.exports = {
     path: path.join(__dirname, '/build'),
     filename: 'main.js',
     publicPath: '/',
+  },
+
+  resolve: {
+    fallback: {
+      // Buffer required by data-uri-to-buffer has been removed from Webpack 5.
+      //  Here is a polyfill.
+      buffer: require.resolve('buffer/'),
+    },
   },
 
   module: {
@@ -94,6 +103,11 @@ module.exports = {
     new Dotenv({
       path: './.env',
       systemvars: true,
+    }),
+
+    // This is also required for Buffer polyfil.
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
     }),
   ],
 }

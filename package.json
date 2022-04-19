@@ -88,6 +88,7 @@
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.2.3",
     "babel-plugin-import": "^1.12.2",
+    "buffer": "^6.0.3",
     "concurrently": "^5.1.0",
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^3.2.0",
