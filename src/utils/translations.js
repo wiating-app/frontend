@@ -41,6 +41,7 @@ export default {
       sacral: 'Miejsce sakralne',
       waterFront: 'Stanica wodna',
       emergency: 'Schronienie awaryjne',
+      firstAidKit: 'Apteczka Na Szlaku',
     },
     noResults: 'Nic nie znaleziono',
     connectionProblem: {
@@ -221,6 +222,7 @@ export default {
       sacral: 'Sacral place',
       waterFront: 'Water front',
       emergency: 'Emergency shelter',
+      firstAidKit: 'Apteczka Na Szlaku',
     },
     noResults: 'No results',
     connectionProblem: {

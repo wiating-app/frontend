@@ -48,4 +48,8 @@ export default {
     label: 'emergency',
     color: '#d40000',
   },
+  FIRST_AID_KIT: {
+    label: 'firstAidKit',
+    color: '#c11818',
+  },
 }
