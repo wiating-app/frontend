@@ -1,6 +1,4 @@
-import { FormButton, Input, Select } from 'react-standalone-form-mui'
-
-import Form from 'react-standalone-form'
+import Form, { SubmitButton, Input, Select } from 'react-form-component-mui'
 import { Grid } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
@@ -37,15 +35,15 @@ const LogFilters = ({ values, handleSubmit, handleReset }) => {
           />
         </Grid>
         <Grid item>
-          <FormButton
+          <SubmitButton
             variant='contained'
             color='primary'
             onClick={handleSubmit}
-          >{translations.filter}</FormButton>
+          >{translations.filter}</SubmitButton>
         </Grid>
         {values && Object.keys(values).length
           ? <Grid item>
-            <FormButton onClick={handleReset}>{translations.reset}</FormButton>
+            <SubmitButton onClick={handleReset}>{translations.reset}</SubmitButton>
           </Grid>
           : null
         }

@@ -1,6 +1,4 @@
-import { FormButton, Input, Select } from 'react-standalone-form-mui'
-
-import Form from 'react-standalone-form'
+import Form, { SubmitButton, Input, Select } from 'react-form-component-mui'
 import Modal from './Modal'
 import React from 'react'
 import { Typography } from '@material-ui/core'
@@ -41,7 +39,7 @@ const Report = ({ handleReport, onClose }) => {
             multiline
           />
         }
-        <FormButton
+        <SubmitButton
           variant='contained'
           color='primary'
           onClick={async fields => {
@@ -55,7 +53,7 @@ const Report = ({ handleReport, onClose }) => {
             }
           }}
           loading={loading}
-        >Wyślij</FormButton>
+        >Wyślij</SubmitButton>
       </Form>
     </Modal>
   )

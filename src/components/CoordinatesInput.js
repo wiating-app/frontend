@@ -1,5 +1,5 @@
 import React from 'react'
-import { withFormControl } from 'react-standalone-form-mui'
+import { withFormControl } from 'react-form-component-mui'
 import { Input, InputAdornment } from '@material-ui/core'
 
 

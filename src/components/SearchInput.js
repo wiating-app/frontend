@@ -1,5 +1,5 @@
 import React from 'react'
-import { withFormControl } from 'react-standalone-form-mui'
+import { withFormControl } from 'react-form-component-mui'
 import { InputBase } from '@material-ui/core'
 import { alpha, makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'

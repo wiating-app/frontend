@@ -1,13 +1,12 @@
 import React from 'react'
 import { Button, Typography } from '@material-ui/core'
-import Form from 'react-standalone-form'
-import {
+import Form, {
   Input,
   Select,
-  FormButton,
+  SubmitButton,
   Checkbox,
   FormActions,
-} from 'react-standalone-form-mui'
+} from 'react-form-component-mui'
 import CoordinatesInput from './CoordinatesInput'
 import HintWrapper from './HintWrapper'
 import ConfirmDelete from './ConfirmDelete'
@@ -203,7 +202,7 @@ const LocationForm = ({
             deleteCallback={onDeleteLocation}
           />
         }
-        <FormButton
+        <SubmitButton
           variant='contained'
           color='primary'
           onClick={async fields => {
@@ -212,7 +211,7 @@ const LocationForm = ({
             setLoading(false)
           }}
           loading={loading}
-        >{translations.save}</FormButton>
+        >{translations.save}</SubmitButton>
       </FormActions>
     </Form>
   </>

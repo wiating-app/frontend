@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormThemeProvider as RSFFormThemeProvider } from 'react-standalone-form'
+import { FormThemeProvider as RFCFormThemeProvider } from 'react-form-component-mui'
 import { useSnackbar } from 'notistack'
 import parse from 'coord-parser'
 import useLanguage from './useLanguage'
@@ -31,9 +31,9 @@ const FormThemeProvider = ({ children }) => {
   }
 
   return (
-    <RSFFormThemeProvider theme={theme}>
+    <RFCFormThemeProvider theme={theme}>
       {children}
-    </RSFFormThemeProvider>
+    </RFCFormThemeProvider>
   )
 }
 
