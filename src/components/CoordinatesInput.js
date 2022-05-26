@@ -7,7 +7,7 @@ const CoordinatesInput = ({
   name,
   value,
   placeholder,
-  required,
+  mandatory,
   setValue,
   onChange,
   addon,
@@ -16,7 +16,7 @@ const CoordinatesInput = ({
     id={name}
     onChange={e => {
       const { value } = e.target
-      setValue(name, value, required, { type: 'coordinates' })
+      setValue(name, value, mandatory, { type: 'coordinates' })
       onChange && onChange(value)
     }}
     value={value || ''}

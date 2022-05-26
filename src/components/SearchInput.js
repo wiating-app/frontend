@@ -9,7 +9,7 @@ import Loader from './Loader'
 const SearchInput = ({
   name,
   value,
-  required,
+  mandatory,
   setValue,
   placeholder,
   loading,
@@ -32,10 +32,10 @@ const SearchInput = ({
         onKeyPress={e => {
           if (e.key === 'Enter') {
             e.preventDefault()
-            setValue(name, e.target.value, required)
+            setValue(name, e.target.value, mandatory)
           }
         }}
-        onChange={e => setValue(name, e.target.value, required)}
+        onChange={e => setValue(name, e.target.value, mandatory)}
       />
     </div>
   )

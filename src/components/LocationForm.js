@@ -64,7 +64,7 @@ const LocationForm = ({
         'is_disabled',
         'unpublished',
       ]}
-      required={[
+      mandatory={[
         'name',
         'description',
         !locationData?.id && 'directions',

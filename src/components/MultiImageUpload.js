@@ -9,7 +9,7 @@ import { withFormControl } from 'react-form-component-mui'
 const MultiImageUpload = ({
   name,
   value,
-  required,
+  mandatory,
   setValue,
   spacing,
   columns,
@@ -37,7 +37,7 @@ const MultiImageUpload = ({
                 onClick={() => setValue(
                   name,
                   value.filter((subItem, subIndex) => subIndex !== index),
-                  required
+                  mandatory
                 )}
               >
                 <Delete fontSize='small' />
@@ -70,7 +70,7 @@ const MultiImageUpload = ({
                     data,
                     dataFile,
                   }],
-                  required
+                  mandatory
                 )
                 oldValue = [...oldValue, {
                   fileName,
