@@ -44,7 +44,7 @@ const NavBar = ({
           <SearchInput
             name='phrase'
             placeholder={translations.search}
-            noBottomGutter
+            size='small'
             loading={searchLoading}
           />
         </Form>

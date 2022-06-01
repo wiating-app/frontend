@@ -12,7 +12,7 @@ const LogFilters = ({ values, handleSubmit, handleReset }) => {
       fields={['id', 'reviewed_at']}
       className={classes.root}
     >
-      <Grid container alignItems='flex-end' spacing={2}>
+      <Grid container alignItems='center' spacing={2}>
         <Grid item xs={12} sm={5} md={4}>
           <Input
             name='id'

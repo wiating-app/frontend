@@ -1,18 +1,20 @@
 import React from 'react'
 import { withFormControl } from 'react-form-component-mui'
-import { Input, InputAdornment } from '@material-ui/core'
+import { TextField, InputAdornment } from '@material-ui/core'
 
 
 const CoordinatesInput = ({
   name,
   value,
+  label,
   placeholder,
   mandatory,
   setValue,
   onChange,
-  addon,
+  prefix,
+  suffix,
 }) =>
-  <Input
+  <TextField
     id={name}
     onChange={e => {
       const { value } = e.target
@@ -20,11 +22,16 @@ const CoordinatesInput = ({
       onChange && onChange(value)
     }}
     value={value || ''}
+    label={label}
     placeholder={placeholder}
-    startAdornment={addon
-      ? <InputAdornment position='start'>{addon}</InputAdornment>
-      : null
-    }
+    InputProps={{
+      startAdornment: prefix
+        ? <InputAdornment position='start'>{prefix}</InputAdornment>
+        : null,
+      endAdornment: suffix
+        ? <InputAdornment position='end'>{suffix}</InputAdornment>
+        : null,
+    }}
   />
 
 export default withFormControl(CoordinatesInput)
