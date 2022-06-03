@@ -65,6 +65,7 @@ const useStyles = makeStyles(theme => ({
     verticalAlign: 'middle',
     '& > *': {
       fontSize: '1.33em',
+      transform: 'none',
     },
   },
 }))
