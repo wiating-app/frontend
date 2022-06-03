@@ -101,7 +101,7 @@ const useStyles = makeStyles(theme => ({
   },
   search: {
     [theme.breakpoints.down('xs')]: {
-      width: 190,
+      width: 202,
     },
   },
   name: {
