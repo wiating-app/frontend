@@ -67,9 +67,9 @@ const Map = ({
         : 32
 
   React.useEffect(() => {
-    if (activeLocation && !contextMenu && initiated) {
-      const { lat, lng } = activeLocation.location
-      mapRef.current.panTo([lat, lng])
+    if (activeLocation?.location && !contextMenu && initiated && !isMobile) {
+      const newZoom = currentZoom < 10 ? 11 : undefined
+      mapRef.current.flyTo(activeLocation.location, newZoom)
     }
   }, [activeLocation])
 
@@ -89,23 +89,24 @@ const Map = ({
     if (isMobile) {
       mapRef.current.invalidateSize()
       if (activeLocation?.location && initiated) {
-        mapRef.current.flyTo(activeLocation.location)
+        const newZoom = currentZoom < 11 ? 12 : undefined
+        mapRef.current.flyTo(activeLocation.location, newZoom)
       }
     }
-  }, [isDrawerOpen, isMobile])
+  }, [activeLocation, isDrawerOpen, isMobile])
 
-  const handleLoadMapMarkers = async (newZoom, bounds) => {
+  const handleLoadMapMarkers = async (newZoom, newBounds) => {
     // Check whether viewport really changed to prevent multiple requests for
     // the same data.
-    if (JSON.stringify(bounds) !== JSON.stringify(previousBounds)) {
+    if (JSON.stringify(newBounds) !== JSON.stringify(previousBounds)) {
       // Prevend getMarkers on zoom in, because the current ones can be used.
       // Load them anyway if this is the first call - previousBounds is not
       // defined, or when entering the details view on mobile - isMobile && isDrawerOpen.
       if (newZoom <= currentZoom || !previousBounds || (isMobile && isDrawerOpen)) {
-        getMarkers(bounds)
+        getMarkers(newBounds)
       }
-      setStoredPosition(bounds)
-      setPreviousBounds(bounds)
+      setStoredPosition({ bounds: newBounds, zoom: newZoom })
+      setPreviousBounds(newBounds)
     }
   }
 
