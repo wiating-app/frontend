@@ -34,10 +34,7 @@ const ReportsContainer = () => {
   const markAsDoneCallback = async () => {
     setMarkAsDoneLoading(true)
     try {
-      await api.post('report', {
-        id: details.id,
-        report_reason: null,
-      })
+      await api.post(`report/${details.id}`, { report_reason: null })
       enqueueSnackbar('Zgłoszenie oznaczone jako załatwione.', { variant: 'success' })
       setReports(prevState => prevState.filter(item => item.id !== details.id))
       setMarkAsDoneLoading(false)

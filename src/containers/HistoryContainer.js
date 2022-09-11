@@ -17,7 +17,7 @@ const HistoryContainer = () => {
   const getHistory = async () => {
     setLoading(true)
     try {
-      const { data: { logs, total } } = await api.post('get_user_logs', {
+      const { data: { logs, total } } = await api.get('get_user_logs', {
         size: rowsPerPage,
         offset: rowsPerPage * page,
       })

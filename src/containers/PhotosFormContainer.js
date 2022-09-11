@@ -73,7 +73,7 @@ const PhotosFormContainer = ({
     if (!activeLocation) {
       const handleAsync = async () => {
         try {
-          const { data } = await api.post('get_point', { id })
+          const { data } = await api.get(`get_point/${id}`)
           setActiveLocation(serializeData(data))
         } catch (error) {
           setError(true)
