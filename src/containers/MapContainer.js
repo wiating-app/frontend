@@ -62,17 +62,17 @@ const MapContainer = props => {
   }
 
   React.useEffect(() => {
-    // Check whether stored position is available asychronously from recognized
-    // userLocation, because userLocation recognition may take more time.
-    const bounds = getStoredPosition()
-    if (bounds) setInitialPosition({ bounds })
+    // Check stored position before userLocation recognition, becuse it may take
+    // more time to get it.
+    const storedPosition = getStoredPosition()
+    if (storedPosition) setInitialPosition(storedPosition)
   }, [])
 
   React.useEffect(() => {
-    // If user current location has been recognized and initial position is
-    // default (unchanged), set user current location as an initial position.
+    // If user current location has been recognized and map position is
+    // default (unchanged), set user current location as a new initial position.
     if (!loading && !error && !initialPosition.bounds && userLocation) {
-      setInitialPosition({ center: userLocation })
+      setInitialPosition({ center: userLocation, zoom: 10 })
     }
   }, [loading])
 
@@ -86,6 +86,7 @@ const MapContainer = props => {
       locationAccuracy={accuracy}
       center={initialPosition.center}
       bounds={initialPosition.bounds}
+      zoom={initialPosition.zoom}
       {...props}
       activeTypes={activeTypes}
     />

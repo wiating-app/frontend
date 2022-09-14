@@ -90,22 +90,24 @@ export const Auth0Provider = ({
           auth0.logout(p)
           api.defaults.headers.common['Authorization'] = null
         },
-        setStoredPosition: bounds => {
+        setStoredPosition: ({ bounds, zoom }) => {
           const { _northEast, _southWest } = bounds
           const safeBounds = [
             [_northEast.lat, _northEast.lng],
             [_southWest.lat, _southWest.lng],
           ]
-          localStorage.setItem('lastPosition', JSON.stringify(safeBounds))
+          localStorage.setItem('lastPosition', JSON.stringify({
+            bounds: safeBounds,
+            zoom,
+          }))
         },
         getStoredPosition: () => {
           try {
-            const bounds = localStorage.getItem('lastPosition')
-            return bounds && Array.isArray(bounds) // Some users may still have old value cached, which was an object.
-              ? JSON.parse(bounds)
-              : false
+            const storedPosition = JSON.parse(localStorage.getItem('lastPosition'))
+            // Make sure that structure is correct.
+            return storedPosition?.bounds ? storedPosition : undefined
           } catch (error) {
-            return false
+            return undefined
           }
         },
       }}

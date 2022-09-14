@@ -33,7 +33,7 @@ const LogDetailsContainer = ({
       if (!logDetails) {
         const handleAsync = async () => {
           try {
-            const { data } = await api.post('get_log', { log_id: id })
+            const { data } = await api.get(`get_log/${id}`)
             setLogDetails({ _id: id, _source: data })
           } catch (error) {
             setError(true)
@@ -59,7 +59,7 @@ const LogDetailsContainer = ({
   const reviewCallback = async () => {
     try {
       setLoadingReview(true)
-      const { data } = await api.post('log_reviewed', { log_id: logDetails._id })
+      const { data } = await api.post(`log_reviewed/${logDetails._id}`)
       // If reviewed filter is set to false, filter reviewed item out of a list.
       // Otherwise just update its state.
       if (search.includes('reviewed_at=false')) {
@@ -86,7 +86,7 @@ const LogDetailsContainer = ({
   const banCallback = async () => {
     try {
       setLoadingBan(true)
-      await api.post('ban_user', { ban_user_id: logDetails._source.modified_by })
+      await api.post(`ban_user/${logDetails._source.modified_by}`)
       enqueueSnackbar('Autor zmiany został zbanowany.', { variant: 'success' })
     } catch (err) {
       console.error(err)
@@ -102,20 +102,18 @@ const LogDetailsContainer = ({
       // Use another endpoint if change from given log refers to image.
       // eslint-disable-next-line camelcase
       if (_source.changes?.images?.new_value) {
-        const dataObject = {
-          id: _source.doc_id,
-          image_name: _source.changes.images.new_value,
-        }
-        await api.post('delete_image', dataObject)
+        await api.delete(
+          `delete_image/${_source.doc_id}/${_source.changes.images.new_value}`
+        )
       } else {
-        const dataObject = {
-          id: _source.doc_id,
-          ...Object.entries(_source.changes).reduce((acc, [name, value]) => ({
+        const dataObject = Object.entries(_source.changes).reduce(
+          (acc, [name, value]) => ({
             ...acc,
             [name]: value.old_value,
-          }), {}),
-        }
-        await api.post('modify_point', dataObject)
+          }),
+          {}
+        )
+        await api.put(`modify_point/${_source.doc_id}`, dataObject)
       }
       goBackToLogs(true)
       enqueueSnackbar('Przywrócono poprzedni stan lokacji.', { variant: 'success' })

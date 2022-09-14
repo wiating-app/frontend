@@ -13,7 +13,7 @@ const UnpublishedContainer = () => {
   const getUnpublished = async () => {
     try {
       setLoading(true)
-      const { data: { points } } = await api.post('get_unpublished', {})
+      const { data: { points } } = await api.get('get_unpublished', {})
       setLocations(points)
     } catch (err) {
       console.error(err)

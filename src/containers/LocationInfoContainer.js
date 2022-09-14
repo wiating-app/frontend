@@ -30,7 +30,7 @@ const LocationInfoContainer = ({
       if (!activeLocation) {
         const handleAsync = async () => {
           try {
-            const { data } = await api.post('get_point', { id })
+            const { data } = await api.get(`get_point/${id}`)
             setActiveLocation(serializeData(data))
           } catch (error) {
             setError(true)
@@ -49,10 +49,7 @@ const LocationInfoContainer = ({
     try {
       const { reason, description } = fields
       const summary = `${translations.reportReasons[reason]}: ${description}`
-      await api.post('report', {
-        id: activeLocation.id,
-        report_reason: summary,
-      })
+      await api.post(`report/${activeLocation.id}`, { report_reason: summary })
       enqueueSnackbar('Punkt zgłoszony do moderacji', { variant: 'success' })
     } catch (err) {
       console.error(err)

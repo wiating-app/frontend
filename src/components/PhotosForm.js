@@ -1,10 +1,9 @@
 import { Button, Typography } from '@material-ui/core'
-import {
+import Form, {
   FormActions,
-  FormButton,
-} from 'react-standalone-form-mui'
+  SubmitButton,
+} from 'react-form-component-mui'
 
-import Form from 'react-standalone-form'
 import MultiImageUpload from './MultiImageUpload'
 import React from 'react'
 import useLanguage from '../utils/useLanguage'
@@ -24,11 +23,11 @@ const PhotosForm = ({ name, handleSubmit, cancel }) => {
       />
       <FormActions>
         <Button onClick={() => cancel()}>{translations.cancel}</Button>
-        <FormButton
+        <SubmitButton
           variant='contained'
           color='primary'
           onClick={fields => handleSubmit(fields.images)}
-        >{translations.send}</FormButton>
+        >{translations.send}</SubmitButton>
       </FormActions>
     </Form>
   )

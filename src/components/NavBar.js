@@ -2,7 +2,7 @@ import React from 'react'
 import { AppBar, Toolbar, Typography, Avatar, Hidden } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown, Menu } from '@material-ui/icons'
-import Form from 'react-standalone-form'
+import Form from 'react-form-component-mui'
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil'
 import Dropdown from './Dropdown'
@@ -44,7 +44,7 @@ const NavBar = ({
           <SearchInput
             name='phrase'
             placeholder={translations.search}
-            noBottomGutter
+            size='small'
             loading={searchLoading}
           />
         </Form>
@@ -101,7 +101,7 @@ const useStyles = makeStyles(theme => ({
   },
   search: {
     [theme.breakpoints.down('xs')]: {
-      width: 190,
+      width: 202,
     },
   },
   name: {

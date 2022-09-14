@@ -58,12 +58,14 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     pointerEvents: 'none',
+    transform: `translateY(${theme.spacing(2.4)}px)`,
   },
   smallTrigger: {
     display: 'inline-block',
     verticalAlign: 'middle',
     '& > *': {
       fontSize: '1.33em',
+      transform: 'none',
     },
   },
 }))

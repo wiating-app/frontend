@@ -3,13 +3,13 @@ import { Grid, Typography, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { CloudUpload, Delete } from '@material-ui/icons'
 import classNames from 'classnames'
-import { withFormControl } from 'react-standalone-form'
+import { withFormControl } from 'react-form-component-mui'
 
 
 const MultiImageUpload = ({
   name,
   value,
-  required,
+  mandatory,
   setValue,
   spacing,
   columns,
@@ -37,7 +37,7 @@ const MultiImageUpload = ({
                 onClick={() => setValue(
                   name,
                   value.filter((subItem, subIndex) => subIndex !== index),
-                  required
+                  mandatory
                 )}
               >
                 <Delete fontSize='small' />
@@ -70,7 +70,7 @@ const MultiImageUpload = ({
                     data,
                     dataFile,
                   }],
-                  required
+                  mandatory
                 )
                 oldValue = [...oldValue, {
                   fileName,

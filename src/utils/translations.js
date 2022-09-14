@@ -86,7 +86,7 @@ export default {
     },
     formLabels: {
       formInvalid: 'Formularz jest niepoprawnie uzupełniony. Sprawdź pola.',
-      requiredField: 'To pole jest obowiązkowe.',
+      mandatoryField: 'To pole jest obowiązkowe.',
       minChars: 'Wartość tego pola powinna mieć conajmniej :length: znaków.',
     },
     actions: {
@@ -267,7 +267,7 @@ export default {
     },
     formLabels: {
       formInvalid: 'Form contains errors. Check all fields.',
-      requiredField: 'This field is required.',
+      mandatoryField: 'This field is mandatory.',
       minChars: 'This field should have at least :length: characters.',
     },
     actions: {

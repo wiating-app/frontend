@@ -39,7 +39,7 @@ const LocationFormContainer = ({
         if (!activeLocation && id) {
           const handleAsync = async () => {
             try {
-              const { data } = await api.post('get_point', { id })
+              const { data } = await api.get(`get_point/${id}`)
               setActiveLocation(serializeData(data))
             } catch (error) {
               setError(true)
@@ -101,8 +101,7 @@ const LocationFormContainer = ({
         name,
         description,
         directions,
-        lat,
-        lon,
+        location: { lat, lon },
         type,
         water_exists: mapOptionToBool(water_exists),
         water_comment: water_exists && water_comment ? water_comment : null,
@@ -124,7 +123,7 @@ const LocationFormContainer = ({
       } else {
         // Updating exisitng marker.
         const { id } = activeLocation
-        const { data } = await api.post('modify_point', { id, ...dataObject })
+        const { data } = await api.put(`modify_point/${id}`, dataObject)
         const serializedData = serializeData(data)
         const index = markers.findIndex(item => item.id === serializedData.id)
         const newMarkers = [
