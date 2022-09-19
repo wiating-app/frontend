@@ -1,4 +1,4 @@
-import Form, { SubmitButton, Input, Select } from 'react-form-component-mui'
+import Form, { SubmitButton, Input, Select } from '@react-form-component/mui'
 import Modal from './Modal'
 import React from 'react'
 import { Typography } from '@material-ui/core'

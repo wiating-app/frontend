@@ -1,4 +1,4 @@
-import Form, { SubmitButton, Input, Select } from 'react-form-component-mui'
+import Form, { SubmitButton, Input, Select } from '@react-form-component/mui'
 import { Grid } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'

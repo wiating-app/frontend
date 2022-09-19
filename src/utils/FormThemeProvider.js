@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormThemeProvider as RFCFormThemeProvider } from 'react-form-component-mui'
+import { FormThemeProvider as RFCFormThemeProvider } from '@react-form-component/mui'
 import { useSnackbar } from 'notistack'
 import parse from 'coord-parser'
 import useLanguage from './useLanguage'

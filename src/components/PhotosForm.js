@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-ui/core'
 import Form, {
   FormActions,
   SubmitButton,
-} from 'react-form-component-mui'
+} from '@react-form-component/mui'
 
 import MultiImageUpload from './MultiImageUpload'
 import React from 'react'

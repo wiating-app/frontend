@@ -1,5 +1,5 @@
 import React from 'react'
-import { withFormControl } from 'react-form-component-mui'
+import { withFormControl } from '@react-form-component/mui'
 import { TextField } from '@material-ui/core'
 import { alpha, makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'

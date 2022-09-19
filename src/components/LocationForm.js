@@ -6,7 +6,7 @@ import Form, {
   SubmitButton,
   Checkbox,
   FormActions,
-} from 'react-form-component-mui'
+} from '@react-form-component/mui'
 import CoordinatesInput from './CoordinatesInput'
 import HintWrapper from './HintWrapper'
 import ConfirmDelete from './ConfirmDelete'
