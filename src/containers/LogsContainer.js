@@ -32,10 +32,12 @@ const LogsContainer = ({
       setLoading(true)
       const { page, size, id, reviewed_at } = params
       const { data: { logs, total } } = await api.get('get_logs', {
-        size,
-        offset: size * page,
-        id,
-        reviewed_at,
+        params: {
+          size,
+          offset: size * page,
+          id,
+          reviewed_at,
+        },
       })
       setLogs(logs)
       setlogsTotal(total)
