@@ -39,7 +39,7 @@ const Info = () => {
         <div className={classes.footer}>
           <Typography className={classes.footerLeft} variant='body2' >
             Twórcy aplikacji:<br />
-            <a href='https://github.com/frontcraft' target='_blank' >Michał Kokociński</a>, <a href='https://github.com/merito' target='_blank' >Dawid Wolski</a></Typography>
+            <a href='https://github.com/firflant' target='_blank' >Michał Kokociński</a>, <a href='https://github.com/merito' target='_blank' >Dawid Wolski</a></Typography>
           <div>
             <Typography className={classes.footerRight} variant='body2' component='div'>
               Administracja:
