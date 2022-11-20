@@ -8,6 +8,7 @@ import { isMobile } from 'react-device-detect'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
 import { useSnackbar } from 'notistack'
+import { locationToString } from '../utils/helpers'
 
 const UtilityButtons = ({ id, coords }) => {
   const { lat, lng } = coords
@@ -16,6 +17,7 @@ const UtilityButtons = ({ id, coords }) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const locationUrl = `${window.location.protocol}//${window.location.host}/location/${id}`
+  const locationString = locationToString(coords)
   const navigateLink = isMobile
     ? `geo:${lat},${lng}`
     : `https://www.google.com/maps/dir/Current+Location/${lat},${lng}`
@@ -36,7 +38,7 @@ const UtilityButtons = ({ id, coords }) => {
       </Tooltip>
       <Tooltip title={translations.copyCoordinates} placement='top'>
         <CopyToClipboard
-          text={coords}
+          text={locationString}
           onCopy={() => enqueueSnackbar(translations.notifications.coordinatesCopied, { variant: 'success' })}
         >
           <div>
