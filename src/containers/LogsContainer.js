@@ -31,11 +31,10 @@ const LogsContainer = ({
     try {
       setLoading(true)
       const { page, size, id, reviewed_at } = params
-      const { data: { logs, total } } = await api.get('get_logs', {
+      const { data: { logs, total } } = await api.get(`get_logs${id ? `/${id}` : ''}`, {
         params: {
           size,
           offset: size * page,
-          id,
           reviewed_at,
         },
       })
