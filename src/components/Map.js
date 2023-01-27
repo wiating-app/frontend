@@ -152,7 +152,7 @@ const Map = ({
           handleLoadMapMarkers={handleLoadMapMarkers}
         />
         <TileLayer
-          url='https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}'
+          url='https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png'
           attribution={`&copy; <a href="https://www.seznam.cz" target="_blank" rel="noopener">Seznam.cz, a.s.</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, &copy; NASA`}
         />
         <PixiOverlay
