@@ -149,7 +149,7 @@ const LocationFormContainer = ({
 
   const onDeleteLocation = async () => {
     try {
-      await api.post('delete_point', { id })
+      await api.delete(`delete_point/${id}`)
       history.push('/')
       setActiveLocation(null)
       setMarkers(markers.filter(item => item.id !== id))

@@ -25,3 +25,7 @@ export const asyncForEach = async (array, callback) => {
     await callback(array[index], index, array)
   }
 }
+
+export const locationToString = ({ lat, lng }) => {
+  return [lat, lng].toString().replace(',', ', ')
+}
