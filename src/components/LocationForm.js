@@ -144,7 +144,7 @@ const LocationForm = ({
           <Input
             name='water_comment'
             label={translations.markerForm.waterDescription}
-            min={40}
+            min={20}
             initialValue={locationData?.water_comment}
             multiline
           />
@@ -167,7 +167,7 @@ const LocationForm = ({
           <Input
             name='fire_comment'
             label={translations.markerForm.fireDescription}
-            min={40}
+            min={20}
             initialValue={locationData?.fire_comment}
             multiline
           />
