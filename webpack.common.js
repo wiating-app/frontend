@@ -5,6 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 
 module.exports = {
@@ -85,7 +86,7 @@ module.exports = {
           to: './',
           context: './public/',
           globOptions: {
-            ignore: ['**/index.html'],
+            ignore: ['**/index.html', '**/manifest.json'],
           },
         },
       ],
@@ -99,6 +100,18 @@ module.exports = {
       ],
     }),
 
+    new FaviconsWebpackPlugin({
+      logo: './public/favicon.png',
+      prefix: 'assets/',
+      mode: 'webapp',
+      manifest: './public/manifest.json',
+      inject: true,
+      favicons: {
+        appName: 'Wiating',
+        background: '#4c4c42',
+        theme_color: '#4c4c42',
+      },
+    }),
 
     new Dotenv({
       path: './.env',
