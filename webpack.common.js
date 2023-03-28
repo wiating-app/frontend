@@ -6,7 +6,7 @@ const { InjectManifest } = require('workbox-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const config = require('./config.json')
+const customization = require('./customization.json')
 
 
 module.exports = {
@@ -90,7 +90,7 @@ module.exports = {
           to: './',
           context: './public/',
           globOptions: {
-            ignore: ['**/index.html', '**/manifest.json'],
+            ignore: ['**/index.html', '**/manifest.json', '**/favicon.png', '**/index-template.html'],
           },
         },
         {
@@ -113,15 +113,15 @@ module.exports = {
     }),
 
     new FaviconsWebpackPlugin({
-      logo: config.branding.favicon,
+      logo: './public/favicon.png',
       prefix: 'assets/',
       mode: 'webapp',
       manifest: './public/manifest.json',
       inject: true,
       favicons: {
-        appName: config.branding.siteName,
-        background: config.branding.themeColor,
-        theme_color: config.branding.themeColor,
+        appName: customization.branding.siteName,
+        background: customization.branding.themeColor,
+        theme_color: customization.branding.themeColor,
       },
     }),
 

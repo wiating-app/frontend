@@ -19,6 +19,12 @@
 .env.test.local
 .env.production.local
 
+# Output of "prepare" script
+/customization.json
+/public/favicon.png
+/public/index.html
+
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

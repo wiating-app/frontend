@@ -2,6 +2,7 @@
   "branding": {
     "siteId": "wiating",
     "siteName": "Wiating",
+    "siteDescription": "Wiating, czyli chatki w górach.",
     "themeColor": "#4c4c42",
     "logo": ["/wiating/logo.png", "/wiating/logo@2x.png"],
     "purelogo": ["/wiating/purelogo.png", "/wiating/purelogo@2x.png"],
@@ -138,6 +139,7 @@
     "enableExport": true,
     "enableDirectionsField": true,
     "enableFireField": true,
-    "enableWaterField": true
+    "enableWaterField": true,
+    "googleAnalyticsId": "UA-169624700-1"
   }
 }
