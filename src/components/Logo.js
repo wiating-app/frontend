@@ -1,19 +1,22 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import useConfig from '../utils/useConfig'
 
 const Logo = ({ className }) => {
   const classes = useStyles()
+  const { branding } = useConfig()
+
   return (
     <div className={`${classes.root} ${className || ''}`}>
       <img
-        src='/logo-app.png'
-        srcSet='/logo-app@2x.png 2x'
+        src={branding.purelogo[0]}
+        srcSet={`${branding.purelogo[1]} 2x`}
         title='Wiating'
         alt='Wiating'
       />
       <img
-        src='/logo-app-typo.png'
-        srcSet='/logo-app-typo@2x.png 2x'
+        src={branding.logotype[0]}
+        srcSet={`${branding.logotype[1]} 2x`}
         className={classes.typo}
       />
     </div>

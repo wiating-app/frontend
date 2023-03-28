@@ -10,9 +10,9 @@ import Form, {
 import CoordinatesInput from './CoordinatesInput'
 import HintWrapper from './HintWrapper'
 import ConfirmDelete from './ConfirmDelete'
-import locationTypes from '../utils/locationTypes'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import useLanguage from '../utils/useLanguage'
+import useConfig from '../utils/useConfig'
 import { locationToString } from '../utils/helpers'
 
 
@@ -28,7 +28,8 @@ const LocationForm = ({
   const [loading, setLoading] = React.useState()
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
-  const { translations } = useLanguage()
+  const { translations, language } = useLanguage()
+  const { locationTypes } = useConfig()
 
   // Convert bool to Select option. null = null, true = 1, false = 2.
   const mapBoolToOptions = value => {
@@ -117,11 +118,11 @@ const LocationForm = ({
         <Select
           name='type'
           label={translations.markerForm.type}
-          options={Object.entries(locationTypes).map(([value, type]) => ({
-            value,
-            label: translations.locationType[type.label],
+          options={locationTypes.map(({ id, label }) => ({
+            value: id,
+            label: label[language],
             icon: <div
-              dangerouslySetInnerHTML={{ __html: generateMarkerIcon(value, 24) }}
+              dangerouslySetInnerHTML={{ __html: generateMarkerIcon(id, 24) }}
             />,
           }))}
           initialValue={locationData?.type}

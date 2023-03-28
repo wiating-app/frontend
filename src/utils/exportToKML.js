@@ -1,7 +1,7 @@
-import locationTypes from './locationTypes'
-import texts from './translations'
+import useConfig from '../utils/useConfig'
 
 const exportToKML = locations => {
+  const { locationTypes } = useConfig()
   // Currently only polish language is supported.
   try {
     const today = new Date()
@@ -17,13 +17,13 @@ const exportToKML = locations => {
       '  <Document>',
       '    <name>Wiating</name>',
       `    <description>Eksport z aplikacji Wiating (https://wiating.eu) z dnia ${date}.</description>`,
-      ...Object.keys(locationTypes).reduce((acc, key) => [
+      ...locationTypes.reduce((acc, { id }) => [
         ...acc,
-        `    <Style id="icon-${key}">`,
+        `    <Style id="icon-${id}">`,
         '      <IconStyle>',
         '        <scale>0.75</scale>',
         '        <Icon>',
-        `          <href>https://wiating.eu/location-icons/${key}.png</href>`,
+        `          <href>https://wiating.eu/location-icons/${id}.svg</href>`,
         '        </Icon>',
         '      </IconStyle>',
         '    </Style>',
@@ -40,7 +40,7 @@ const exportToKML = locations => {
       `      <name>${location.name}</name>`,
       '      <description>',
       '        <![CDATA[',
-      `          <p><strong>${texts.pl.locationType[locationTypes[location.type].label]}</strong></p>`,
+      `          <p><strong>${locationTypes.find(item => item.id === location.type).label.pl}</strong></p>`,
       `          <p>${location.description}</p>`,
       `          <p><strong>Wskazówki dojścia:</strong> ${location.directions || 'Brak informacji.'}</p>`,
       `          <p><strong>Dostęp do wody:</strong> ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'}</p>`,

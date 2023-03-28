@@ -6,6 +6,7 @@ const { InjectManifest } = require('workbox-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const config = require('./config.json')
 
 
 module.exports = {
@@ -67,6 +68,9 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: 'svg-inline-loader',
+        options: {
+          removeSVGTagAttrs: false,
+        },
       },
 
     ],
@@ -89,6 +93,14 @@ module.exports = {
             ignore: ['**/index.html', '**/manifest.json'],
           },
         },
+        {
+          from: '**/*',
+          to: './assets/location-icons',
+          context: './src/utils/locationIcons/',
+          globOptions: {
+            ignore: ['**/index.js'],
+          },
+        },
       ],
     }),
 
@@ -101,15 +113,15 @@ module.exports = {
     }),
 
     new FaviconsWebpackPlugin({
-      logo: './public/favicon.png',
+      logo: config.branding.favicon,
       prefix: 'assets/',
       mode: 'webapp',
       manifest: './public/manifest.json',
       inject: true,
       favicons: {
-        appName: 'Wiating',
-        background: '#4c4c42',
-        theme_color: '#4c4c42',
+        appName: config.branding.siteName,
+        background: config.branding.themeColor,
+        theme_color: config.branding.themeColor,
       },
     }),
 

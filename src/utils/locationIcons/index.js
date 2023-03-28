@@ -11,6 +11,7 @@ import TOWER from './tower.svg'
 import URBEX from './urbex.svg'
 import WATER_SOURCE from './water_source.svg'
 import WATERFRONT from './waterfront.svg'
+console.log('SHED: ', SHED);
 
 export default {
   CABIN,
