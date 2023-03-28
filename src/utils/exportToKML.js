@@ -1,7 +1,5 @@
-import useConfig from '../utils/useConfig'
-
-const exportToKML = locations => {
-  const { locationTypes } = useConfig()
+const exportToKML = (locations, config) => {
+  const { locationTypes, branding } = config
   // Currently only polish language is supported.
   try {
     const today = new Date()
@@ -15,15 +13,15 @@ const exportToKML = locations => {
       '<?xml version="1.0" encoding="UTF-8"?>',
       '<kml xmlns="http://www.opengis.net/kml/2.2">',
       '  <Document>',
-      '    <name>Wiating</name>',
-      `    <description>Eksport z aplikacji Wiating (https://wiating.eu) z dnia ${date}.</description>`,
-      ...locationTypes.reduce((acc, { id }) => [
+      `    <name>${branding.siteName}</name>`,
+      `    <description>Eksport z aplikacji ${branding.siteName} Wiating z dnia ${date}.</description>`,
+      ...locationTypes.reduce((acc, { id, iconId }) => [
         ...acc,
         `    <Style id="icon-${id}">`,
         '      <IconStyle>',
         '        <scale>0.75</scale>',
         '        <Icon>',
-        `          <href>https://wiating.eu/location-icons/${id}.svg</href>`,
+        `          <href>https://beta.wiating.eu/location-icons/${iconId}.svg</href>`,
         '        </Icon>',
         '      </IconStyle>',
         '    </Style>',

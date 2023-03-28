@@ -95,8 +95,8 @@ module.exports = {
         },
         {
           from: '**/*',
-          to: './assets/location-icons',
-          context: './src/utils/locationIcons/',
+          to: './location-icons',
+          context: './src/locationIcons/',
           globOptions: {
             ignore: ['**/index.js'],
           },

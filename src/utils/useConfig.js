@@ -14,11 +14,11 @@ export const ConfigProvider = ({ children }) => {
     }
 
     const handleAsync = async () => {
-      const { data: config } = await axios.get('/wiating/config.json')
+      const { data: config } = await axios.get('/wiating/customization.json')
       // Inject svg icons into location types.
       let locationTypes = []
       await asyncForEach(config.locationTypes, async item => {
-        const iconFile = await import(`./locationIcons/${item.iconId}.svg`)
+        const iconFile = await import(`../locationIcons/${item.iconId}.svg`)
         locationTypes = [...locationTypes, {
           ...item,
           icon: iconFile.default,
