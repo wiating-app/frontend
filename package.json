@@ -39,11 +39,9 @@
   },
   "scripts": {
     "prepare": "eval ./prepare.js",
-    "prestart": "yarn prepare",
-    "start": "webpack serve --config webpack.dev.js",
-    "start:netlify": "concurrently --kill-others 'yarn start' 'netlify dev'",
-    "prebuild": "yarn prepare",
-    "build": "webpack --config webpack.prod.js"
+    "start": "yarn prepare && webpack serve --config webpack.dev.js",
+    "start:netlify": "yarn prepare && concurrently --kill-others 'yarn start' 'netlify dev'",
+    "build": "yarn prepare && webpack --config webpack.prod.js"
   },
   "babel": {
     "presets": [
