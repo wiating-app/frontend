@@ -5,7 +5,7 @@ import Actions from './Actions'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
-import locationTypes from '../utils/locationTypes'
+import useConfig from '../utils/useConfig'
 import history from '../history'
 
 
@@ -14,7 +14,9 @@ const UnpublishedLocations = ({
   error,
   locations,
 }) => {
-  const { translations } = useLanguage()
+  const { translations, language } = useLanguage()
+  const { locationTypes } = useConfig()
+
   return loading
     ? <Loader dark big />
     : error
@@ -24,7 +26,7 @@ const UnpublishedLocations = ({
         <Table
           data={locations.map(item => ({
             name: <OpenInNewCard path={`/location/${item.id}`}>{item.name}</OpenInNewCard>,
-            type: item.type ? translations.locationType[locationTypes[item.type].label] : '',
+            type: item.type ? locationTypes.find(item => item.id === item.type).label[language] : '',
             actions: <Actions
               primary={[
                 {

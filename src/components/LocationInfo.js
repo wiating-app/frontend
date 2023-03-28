@@ -12,9 +12,9 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 import Report from './Report'
 import UtilityButtons from './UtilityButtons'
-import locationTypes from '../utils/locationTypes'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
+import useConfig from '../utils/useConfig'
 
 const LocationInfo = ({
   loggedIn,
@@ -23,11 +23,12 @@ const LocationInfo = ({
   handleReport,
 }) => {
   const classes = useStyles()
-  const { translations } = useLanguage()
+  const { translations, language } = useLanguage()
+  const { locationTypes } = useConfig()
   const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
-  const type = locationTypes[selectedLocation.type]
-  const typeLabel = selectedLocation.type ? translations.locationType[type.label] : ''
+  const type = locationTypes.find(item => item.id === selectedLocation.type)
+  const typeLabel = selectedLocation.type ? type.label[language] : ''
   const roundedLat = roundLatLng(selectedLocation.location.lat)
   const roundedLng = roundLatLng(selectedLocation.location.lng)
 

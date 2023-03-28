@@ -5,6 +5,8 @@ const CopyPlugin = require('copy-webpack-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const customization = require('./customization.json')
 
 
 module.exports = {
@@ -66,6 +68,9 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: 'svg-inline-loader',
+        options: {
+          removeSVGTagAttrs: false,
+        },
       },
 
     ],
@@ -85,7 +90,15 @@ module.exports = {
           to: './',
           context: './public/',
           globOptions: {
-            ignore: ['**/index.html'],
+            ignore: ['**/index.html', '**/manifest.json', '**/favicon.png', '**/index-template.html'],
+          },
+        },
+        {
+          from: '**/*',
+          to: './location-icons',
+          context: './src/locationIcons/',
+          globOptions: {
+            ignore: ['**/index.js'],
           },
         },
       ],
@@ -99,6 +112,24 @@ module.exports = {
       ],
     }),
 
+    new FaviconsWebpackPlugin({
+      logo: './public/favicon.png',
+      prefix: 'assets/',
+      mode: 'webapp',
+      inject: true,
+      favicons: {
+        appName: customization.branding.siteName,
+        background: customization.branding.themeColor,
+        theme_color: customization.branding.themeColor,
+        display: 'standalone',
+        start_url: '.',
+        preferRelatedApplications: true,
+        icons: {
+          appleStartup: false,
+          yandex: false,
+        },
+      },
+    }),
 
     new Dotenv({
       path: './.env',

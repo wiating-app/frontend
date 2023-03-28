@@ -15,8 +15,8 @@ import SearchResults from './components/SearchResults'
 import BackToSearch from './components/BackToSearch'
 import Info from './components/Info'
 import LegendPage from './components/LegendPage'
-import Regulamin from './components/Regulamin'
-import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
+import TermsAndConditions from './components/TermsAndConditions'
+import PrivacyPolicy from './components/PrivacyPolicy'
 import AcceptDataPrivacy from './components/AcceptDataPrivacy'
 import FaqPage from './components/FaqPage'
 import ModeratorPanel from './components/ModeratorPanel'
@@ -92,8 +92,8 @@ const App = ({ history, location: { pathname } }) => {
       <Switch>
         <Route exact path='/info' component={Info} />
         <Route exact path='/legend' component={LegendPage} />
-        <Route exact path='/regulations' component={Regulamin} />
-        <Route exact path='/privacy-policy' component={PolitykaPrywatnosci} />
+        <Route exact path='/terms-and-conditions' component={TermsAndConditions} />
+        <Route exact path='/privacy-policy' component={PrivacyPolicy} />
         <Route exact path='/faq' component={FaqPage} />
       </Switch>
 
