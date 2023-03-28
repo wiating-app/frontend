@@ -116,12 +116,18 @@ module.exports = {
       logo: './public/favicon.png',
       prefix: 'assets/',
       mode: 'webapp',
-      manifest: './public/manifest.json',
       inject: true,
       favicons: {
         appName: customization.branding.siteName,
         background: customization.branding.themeColor,
         theme_color: customization.branding.themeColor,
+        display: 'standalone',
+        start_url: '.',
+        preferRelatedApplications: true,
+        icons: {
+          appleStartup: false,
+          yandex: false,
+        },
       },
     }),
 
