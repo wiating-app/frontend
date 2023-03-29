@@ -175,7 +175,7 @@
     }
   ],
   "settings": {
-    "enableVerification": true,
+    "enableVerification": false,
     "enableReport": true,
     "enableExport": true,
     "enableDirectionsField": true,

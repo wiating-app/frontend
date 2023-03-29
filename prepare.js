@@ -29,7 +29,7 @@ const applyConfig = async () => {
   }
 }
 
-// Do PNG copies of SVG icons for the purpose of KML export.
+// Generate PNG copies of SVG icons for the purpose of KML export.
 const svgIconsToPng = async () => {
   try {
     const files = await fs.readdir('src/locationIcons')

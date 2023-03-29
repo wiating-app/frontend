@@ -3,10 +3,13 @@ import { Grid } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
+import useConfig from '../utils/useConfig'
 
 const LogFilters = ({ values, handleSubmit, handleReset }) => {
   const classes = useStyles()
   const { translations } = useLanguage()
+  const { settings: { enableVerification } } = useConfig()
+
   return (
     <Form
       fields={['id', 'reviewed_at']}
@@ -21,19 +24,21 @@ const LogFilters = ({ values, handleSubmit, handleReset }) => {
             noBottomGutter
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <Select
-            name='reviewed_at'
-            label={translations.verificationState}
-            options={[
-              { label: translations.verified, value: 'true' },
-              { label: translations.unverified, value: 'false' },
-            ]}
-            placeholder={translations.all}
-            initialValue={values?.reviewed_at?.toString()}
-            noBottomGutter
-          />
-        </Grid>
+        {enableVerification &&
+          <Grid item xs={12} sm={4} md={3}>
+            <Select
+              name='reviewed_at'
+              label={translations.verificationState}
+              options={[
+                { label: translations.verified, value: 'true' },
+                { label: translations.unverified, value: 'false' },
+              ]}
+              placeholder={translations.all}
+              initialValue={values?.reviewed_at?.toString()}
+              noBottomGutter
+            />
+          </Grid>
+        }
         <Grid item>
           <SubmitButton
             variant='contained'

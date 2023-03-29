@@ -2,6 +2,7 @@ import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
+import useConfig from './utils/useConfig'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import {
@@ -34,6 +35,7 @@ const App = ({ history, location: { pathname } }) => {
   const [editMode, setEditMode] = useRecoilState(editModeState)
   const [, setIsDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { closeSnackbar } = useSnackbar()
+  const { faq } = useConfig()
 
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
@@ -94,7 +96,7 @@ const App = ({ history, location: { pathname } }) => {
         <Route exact path='/legend' component={LegendPage} />
         <Route exact path='/terms-and-conditions' component={TermsAndConditions} />
         <Route exact path='/privacy-policy' component={PrivacyPolicy} />
-        <Route exact path='/faq' component={FaqPage} />
+        {faq && <Route exact path='/faq' component={FaqPage} />}
       </Switch>
 
       <Route path='/history' component={HistoryContainer} />

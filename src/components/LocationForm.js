@@ -29,7 +29,11 @@ const LocationForm = ({
   const [hasWater, setHasWater] = React.useState()
   const [hasFire, setHasFire] = React.useState()
   const { translations, language } = useLanguage()
-  const { locationTypes } = useConfig()
+  const { locationTypes, settings: {
+    enableDirectionsField,
+    enableFireField,
+    enableWaterField,
+  } } = useConfig()
 
   // Convert bool to Select option. null = null, true = 1, false = 2.
   const mapBoolToOptions = value => {
@@ -51,20 +55,18 @@ const LocationForm = ({
       fields={[
         'name',
         'description',
-        'directions',
+        ...enableDirectionsField ? ['directions'] : [],
         'type',
         'location',
-        'water_exists',
-        'water_comment',
-        'fire_exists',
-        'fire_comment',
+        ...enableWaterField ? ['water_exists', 'water_comment'] : [],
+        ...enableFireField ? ['fire_exists', 'fire_comment'] : [],
         'is_disabled',
         'unpublished',
       ]}
       mandatory={[
         'name',
         'description',
-        'directions',
+        ...enableDirectionsField ? ['directions'] : [],
         'type',
         'location',
       ]}
@@ -104,15 +106,17 @@ const LocationForm = ({
         />
       </HintWrapper>
 
-      <HintWrapper message={translations.markerForm.directionsHint}>
-        <Input
-          name='directions'
-          label={translations.locationInfo.directions}
-          min={20}
-          initialValue={locationData?.directions}
-          multiline
-        />
-      </HintWrapper>
+      {enableDirectionsField &&
+        <HintWrapper message={translations.markerForm.directionsHint}>
+          <Input
+            name='directions'
+            label={translations.locationInfo.directions}
+            min={20}
+            initialValue={locationData?.directions}
+            multiline
+          />
+        </HintWrapper>
+      }
 
       <HintWrapper message={translations.markerForm.typeHint}>
         <Select
@@ -129,50 +133,58 @@ const LocationForm = ({
         />
       </HintWrapper>
 
-      <Select
-        name='water_exists'
-        label={translations.locationInfo.water.label}
-        initialValue={locationData && mapBoolToOptions(locationData.water_exists)}
-        placeholder={translations.noData}
-        options={[
-          { label: translations.locationInfo.water.true, value: 1 },
-          { label: translations.locationInfo.water.false, value: 2 },
-        ]}
-      />
-
-      {hasWater &&
-        <HintWrapper message={translations.markerForm.waterDescriptionHint}>
-          <Input
-            name='water_comment'
-            label={translations.markerForm.waterDescription}
-            min={20}
-            initialValue={locationData?.water_comment}
-            multiline
+      {enableWaterField &&
+        <>
+          <Select
+            name='water_exists'
+            label={translations.locationInfo.water.label}
+            initialValue={locationData && mapBoolToOptions(locationData.water_exists)}
+            placeholder={translations.noData}
+            options={[
+              { label: translations.locationInfo.water.true, value: 1 },
+              { label: translations.locationInfo.water.false, value: 2 },
+            ]}
           />
-        </HintWrapper>
+
+          {hasWater &&
+            <HintWrapper message={translations.markerForm.waterDescriptionHint}>
+              <Input
+                name='water_comment'
+                label={translations.markerForm.waterDescription}
+                min={20}
+                initialValue={locationData?.water_comment}
+                multiline
+              />
+            </HintWrapper>
+          }
+        </>
       }
 
-      <Select
-        name='fire_exists'
-        label={translations.locationInfo.fire.label}
-        initialValue={locationData && mapBoolToOptions(locationData.fire_exists)}
-        placeholder={translations.noData}
-        options={[
-          { label: translations.locationInfo.fire.true, value: 1 },
-          { label: translations.locationInfo.fire.false, value: 2 },
-        ]}
-      />
-
-      {hasFire &&
-        <HintWrapper message={translations.markerForm.fireDescriptionHint}>
-          <Input
-            name='fire_comment'
-            label={translations.markerForm.fireDescription}
-            min={20}
-            initialValue={locationData?.fire_comment}
-            multiline
+      {enableFireField &&
+        <>
+          <Select
+            name='fire_exists'
+            label={translations.locationInfo.fire.label}
+            initialValue={locationData && mapBoolToOptions(locationData.fire_exists)}
+            placeholder={translations.noData}
+            options={[
+              { label: translations.locationInfo.fire.true, value: 1 },
+              { label: translations.locationInfo.fire.false, value: 2 },
+            ]}
           />
-        </HintWrapper>
+
+          {hasFire &&
+            <HintWrapper message={translations.markerForm.fireDescriptionHint}>
+              <Input
+                name='fire_comment'
+                label={translations.markerForm.fireDescription}
+                min={20}
+                initialValue={locationData?.fire_comment}
+                multiline
+              />
+            </HintWrapper>
+          }
+        </>
       }
 
       <Checkbox

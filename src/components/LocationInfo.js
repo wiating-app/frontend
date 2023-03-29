@@ -24,7 +24,12 @@ const LocationInfo = ({
 }) => {
   const classes = useStyles()
   const { translations, language } = useLanguage()
-  const { locationTypes } = useConfig()
+  const { locationTypes, settings: {
+    enableReport,
+    enableDirectionsField,
+    enableFireField,
+    enableWaterField,
+  } } = useConfig()
   const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
   const type = locationTypes.find(item => item.id === selectedLocation.type)
@@ -70,7 +75,7 @@ const LocationInfo = ({
           {selectedLocation.description}
         </Typography>
 
-        {selectedLocation.directions &&
+        {enableDirectionsField && selectedLocation.directions &&
           <>
             <Typography variant='subtitle2' className={classes.paddedText}>
               {translations.locationInfo.directions}
@@ -83,29 +88,35 @@ const LocationInfo = ({
 
         <Divider />
 
-        <div className={classes.paddedText}>
+        {(enableFireField || enableWaterField) &&
+          <div className={classes.paddedText}>
 
-          <Typography variant='body2' gutterBottom>
-            {translations.locationInfo.water.label}:{' '}
-            {selectedLocation.water_exists === null
-              ? translations.noData
-              : !selectedLocation.water_exists
-                ? translations.unavailable
-                : selectedLocation.water_comment || translations.available
+            {enableFireField &&
+              <Typography variant='body2' gutterBottom>
+                {translations.locationInfo.water.label}:{' '}
+                {selectedLocation.water_exists === null
+                  ? translations.noData
+                  : !selectedLocation.water_exists
+                    ? translations.unavailable
+                    : selectedLocation.water_comment || translations.available
+                }
+              </Typography>
             }
-          </Typography>
 
-          <Typography variant='body2'>
-            {translations.locationInfo.fire.label}:{' '}
-            {selectedLocation.fire_exists === null
-              ? translations.noData
-              : !selectedLocation.fire_exists
-                ? translations.unavailable
-                : selectedLocation.fire_comment || translations.available
+            {enableWaterField &&
+              <Typography variant='body2'>
+                {translations.locationInfo.fire.label}:{' '}
+                {selectedLocation.fire_exists === null
+                  ? translations.noData
+                  : !selectedLocation.fire_exists
+                    ? translations.unavailable
+                    : selectedLocation.fire_comment || translations.available
+                }
+              </Typography>
             }
-          </Typography>
 
-        </div>
+          </div>
+        }
 
       </div>
 
@@ -129,7 +140,7 @@ const LocationInfo = ({
                 component={Link}
                 to={`/moderator/log?id=${selectedLocation.id}`}
               >Wyświetl logi</Button>
-              : <Button
+              : enableReport && <Button
                 onClick={() => setReportIsOpen(true)}
               >{translations.actions.report}</Button>
             }

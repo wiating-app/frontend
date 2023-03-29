@@ -28,6 +28,8 @@ const Export = ({ markers, className }) => {
     setAnchorEl(null)
   }
 
+  if (!config.settings.enableExport) return null
+
   return (
     <Tooltip title='Eksport lokacji z wyświetlanego obszaru' placement='left'>
       <div>

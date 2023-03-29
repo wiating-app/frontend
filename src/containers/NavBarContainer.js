@@ -14,6 +14,7 @@ import NavBar from '../components/NavBar'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import useLanguage from '../utils/useLanguage'
 import serializeData from '../utils/serializeData'
+import useConfig from '../utils/useConfig'
 import history from '../history'
 
 const languages = ['pl', 'en']
@@ -26,6 +27,7 @@ const NavBarContainer = () => {
   const [, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations, language, setLanguage } = useLanguage()
   const [activeTypes] = useRecoilState(activeTypesState)
+  const { faq } = useConfig()
 
   const {
     loading,
@@ -101,7 +103,7 @@ const NavBarContainer = () => {
     ...isMobile ? [{ label: translations.legend, url: '/legend' }] : [],
     { label: translations.termsAndConditions, url: '/regulations' },
     { label: translations.privacyPolicy, url: '/privacy-policy' },
-    { label: translations.faq, url: '/faq', divider: true },
+    ...faq ? [{ label: translations.faq, url: '/faq', divider: true }] : [],
     {
       label: translations.auth[isLoggedIn ? 'logout' : 'login'],
       callback: () => isLoggedIn ? logout() : loginWithRedirect({}),

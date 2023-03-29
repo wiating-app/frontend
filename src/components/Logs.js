@@ -8,6 +8,7 @@ import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
 import { formatDate, formatTime } from '../utils/helpers'
+import useConfig from '../utils/useConfig'
 
 
 const Logs = ({
@@ -22,6 +23,8 @@ const Logs = ({
   setDetails,
 }) => {
   const { translations } = useLanguage()
+  const { settings: { enableVerification } } = useConfig()
+
   return loading
     ? <Loader dark big />
     : error
@@ -30,7 +33,7 @@ const Logs = ({
         <Typography variant='h6'>{translations.itemsFound.replace('#', rowsInTotal)}:</Typography>
         <Table
           data={logs.map(item => ({
-            verified: item._source.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' />,
+            ...enableVerification ? { verified: item._source.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' /> } : {},
             timestamp: `${formatDate(item._source.timestamp)} ${formatTime(item._source.timestamp)}`,
             location: <>
               <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
@@ -54,7 +57,7 @@ const Logs = ({
             />,
           }))}
           labels={[
-            { name: translations.verification, field: 'verified' },
+            ...enableVerification ? [{ name: translations.verification, field: 'verified' }] : [],
             { name: translations.date, field: 'timestamp' },
             { name: translations.locationAndFields, field: 'location', wide: true },
             { name: translations.authorOfChange, field: 'user' },
