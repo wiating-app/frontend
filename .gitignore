@@ -23,6 +23,7 @@
 /customization.json
 /public/favicon.png
 /public/index.html
+/public/location-icons
 
 # logs
 npm-debug.log*

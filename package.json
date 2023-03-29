@@ -111,6 +111,7 @@
     "netlify-cli": "^2.35.0",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
     "postcss-loader": "^3.0.0",
+    "sharp": "^0.32.0",
     "style-loader": "^1.0.0",
     "svg-inline-loader": "^0.8.2",
     "terser-webpack-plugin": "^5.3.1",

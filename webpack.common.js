@@ -93,14 +93,6 @@ module.exports = {
             ignore: ['**/index.html', '**/manifest.json', '**/favicon.png', '**/index-template.html'],
           },
         },
-        {
-          from: '**/*',
-          to: './location-icons',
-          context: './src/locationIcons/',
-          globOptions: {
-            ignore: ['**/index.js'],
-          },
-        },
       ],
     }),
 

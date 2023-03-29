@@ -21,7 +21,7 @@ const exportToKML = (locations, config) => {
         '      <IconStyle>',
         '        <scale>0.75</scale>',
         '        <Icon>',
-        `          <href>https://beta.wiating.eu/location-icons/${iconId}.svg</href>`,
+        `          <href>https://beta.wiating.eu/location-icons/${iconId}.png</href>`,
         '        </Icon>',
         '      </IconStyle>',
         '    </Style>',
