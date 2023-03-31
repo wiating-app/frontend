@@ -9,15 +9,15 @@ const Logo = ({ className }) => {
   return (
     <div className={`${classes.root} ${className || ''}`}>
       <img
-        src={branding.purelogo[0]}
-        srcSet={`${branding.purelogo[1]} 2x`}
-        title='Wiating'
-        alt='Wiating'
+        src={`${process.env.CUSTOMIZATION_URL}/purelogo.png`}
+        srcSet={`${process.env.CUSTOMIZATION_URL}/purelogo@2x.png 2x`}
+        alt={branding.siteName}
       />
       <img
-        src={branding.logotype[0]}
-        srcSet={`${branding.logotype[1]} 2x`}
+        src={`${process.env.CUSTOMIZATION_URL}/logotype.png`}
+        srcSet={`${process.env.CUSTOMIZATION_URL}/logotype@2x.png 2x`}
         className={classes.typo}
+        alt=''
       />
     </div>
   )

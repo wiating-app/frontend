@@ -1,18 +1,27 @@
 #!/usr/bin/env node
+const fsSync = require('fs')
 const fs = require('fs/promises')
+const axios = require('axios')
 const sharp = require('sharp')
 require('dotenv').config()
 
 const applyConfig = async () => {
   try {
+    const customizationApi = axios.create({
+      baseURL: process.env.CUSTOMIZATION_URL,
+      timeout: 10000,
+    })
+
     // Read config
-    const config = await fs.readFile(process.env.CUSTOMIZATION_URL, 'utf8')
-    await fs.writeFile('customization.json', config)
-    const { branding, settings } = JSON.parse(config)
+    const { data: config } = await customizationApi.get('customization.json')
+    await fs.writeFile('customization.json', JSON.stringify(config))
+    const { branding, settings } = config
 
     // Get favicon source
-    const favicon = await fs.readFile(branding.favicon)
-    await fs.writeFile('public/favicon.png', favicon)
+    const { data } = await customizationApi.get('favicon.png', {
+      responseType: 'stream',
+    })
+    data.pipe(fsSync.createWriteStream('public/favicon.png'));
 
     // Update tags in index.html
     const indexFile = await fs.readFile('public/index-template.html', 'utf8')

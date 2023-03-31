@@ -21,8 +21,8 @@ const Info = () => {
         <div className={classes.main}>
           <div>
             <img
-              src={branding.logo[0]}
-              srcSet={`${branding.logo[1]} 2x`}
+              src={`${process.env.CUSTOMIZATION_URL}/logo.png`}
+              srcSet={`${process.env.CUSTOMIZATION_URL}/logo@2x.png 2x`}
               className={classes.logo}
             />
             <Typography gutterBottom variant='body1' dangerouslySetInnerHTML={{ __html: branding.info }} />

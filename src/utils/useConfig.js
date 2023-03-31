@@ -14,7 +14,12 @@ export const ConfigProvider = ({ children }) => {
     }
 
     const handleAsync = async () => {
-      const { data: config } = await axios.get('/wiating/customization.json')
+      const customizationApi = axios.create({
+        baseURL: process.env.CUSTOMIZATION_URL,
+        timeout: 10000,
+      })
+
+      const { data: config } = await customizationApi.get('/customization.json')
       // Inject svg icons into location types.
       let locationTypes = []
       await asyncForEach(config.locationTypes, async item => {
@@ -24,9 +29,10 @@ export const ConfigProvider = ({ children }) => {
           icon: iconFile.default,
         }]
       })
+
       // Load regulations and privacy policy content.
-      const { data: termsAndConditions } = await axios.get(config.termsAndConditions)
-      const { data: privacyPolicy } = await axios.get(config.privacyPolicy)
+      const { data: termsAndConditions } = await customizationApi.get(config.termsAndConditions)
+      const { data: privacyPolicy } = await customizationApi.get(config.privacyPolicy)
       const parsedConfig = {
         ...config,
         locationTypes,
