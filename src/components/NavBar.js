@@ -11,6 +11,7 @@ import SearchInput from './SearchInput'
 import Loader from './Loader'
 import Version from './Version'
 import useLanguage from '../utils/useLanguage'
+import useConfig from '../utils/useConfig'
 import { isDrawerOpenState } from '../state'
 
 
@@ -25,14 +26,20 @@ const NavBar = ({
   languages,
   setLanguage,
 }) => {
-  const classes = useStyles()
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { translations } = useLanguage()
+  const { branding: { themeColor, lightTheme } } = useConfig()
+  const classes = useStyles({ themeColor })
 
   return (
-    <AppBar position='relative' className={classNames(classes.root, {
-      [classes.hideOnMobile]: isDrawerOpen,
-    })}>
+    <AppBar
+      position='relative'
+      color={lightTheme ? 'transparent' : undefined}
+      className={classNames(classes.root, {
+        [classes.hideOnMobile]: isDrawerOpen,
+      })}
+      // style={{ backgroundColor: themeColor }}
+    >
       <Toolbar>
         <Logo className={classes.logo} />
         <Form
@@ -87,6 +94,7 @@ const NavBar = ({
 const useStyles = makeStyles(theme => ({
   root: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: ({ themeColor }) => themeColor || undefined,
   },
   hideOnMobile: {
     [theme.breakpoints.down('xs')]: {

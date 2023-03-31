@@ -1,0 +1,73 @@
+{
+  "branding": {
+    "siteId": "apteczka-na-szlaku",
+    "siteName": "Apteczka Na Szlaku",
+    "siteDescription": "Apteczka Na Szlaku",
+    "themeColor": "#fff",
+    "lightTheme": true,
+    "logo": ["/apteczka-na-szlaku/logo.png", "/apteczka-na-szlaku/logo@2x.png"],
+    "purelogo": ["/apteczka-na-szlaku/purelogo.png", "/apteczka-na-szlaku/purelogo@2x.png"],
+    "logotype": ["/apteczka-na-szlaku/logotype.png", "/apteczka-na-szlaku/logotype@2x.png"],
+    "favicon": "public/apteczka-na-szlaku/favicon.png",
+    "info": "Aplikacja inicjatywy <a href='https://apteczkanaszlaku.eu//' target='_blank'>Apteczka Na Szlaku</a>",
+    "adminInfo": "Administracja:<div style={{ marginLeft: 4 }}>Daniel Wojnar (<a href='mailto:apteczkanaszlaku@gmail.com'>apteczkanaszlaku@gmail.com</a>)"
+  },
+  "locationTypes": [
+    {
+      "id": "FIRST_AID_KIT",
+      "label": {
+        "pl": "Apteczka Na Szlaku",
+        "en": "First Aid Kit"
+      },
+      "iconId": "medical",
+      "color": "#c11818"
+    },
+    {
+      "id": "AED",
+      "label": {
+        "pl": "AED Na Szlaku",
+        "en": "AED"
+      },
+      "iconId": "medical",
+      "color": "#c11818"
+    },
+    {
+      "id": "GOPR_ALLYEAR",
+      "label": {
+        "pl": "GOPR Całoroczny",
+        "en": "GOPR All year"
+      },
+      "iconId": "warden",
+      "color": "#1175e8"
+    },
+    {
+      "id": "GOPR_SEASONAL",
+      "label": {
+        "pl": "GOPR Sezonowy",
+        "en": "GOPR Seasonal"
+      },
+      "iconId": "warden",
+      "color": "#fc7e2f"
+    },
+    {
+      "id": "TOPR",
+      "label": {
+        "pl": "TOPR",
+        "en": "TOPR"
+      },
+      "iconId": "warden",
+      "color": "#333333"
+    }
+  ],
+  "termsAndConditions": "/apteczka-na-szlaku/terms-and-conditions.html",
+  "privacyPolicy": "/apteczka-na-szlaku/privacy-policy.html",
+  "settings": {
+    "enableVerification": false,
+    "enableReport": false,
+    "enableExport": false,
+    "enableDirectionsField": false,
+    "enableFireField": false,
+    "enableWaterField": false,
+    "googleAnalyticsId": "UA-169624700-1"
+  }
+}

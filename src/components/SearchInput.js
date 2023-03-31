@@ -4,6 +4,7 @@ import { TextField } from '@material-ui/core'
 import { alpha, makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
 import Loader from './Loader'
+import useConfig from '../utils/useConfig'
 
 
 const SearchInput = ({
@@ -15,7 +16,8 @@ const SearchInput = ({
   size,
   loading,
 }) => {
-  const classes = useStyles()
+  const { branding: { lightTheme } } = useConfig()
+  const classes = useStyles({ lightTheme })
   return (
     <TextField
       id={name}
@@ -49,34 +51,26 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     margin: 0,
     width: 'auto',
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    backgroundColor: ({ lightTheme }) => alpha(lightTheme ? theme.palette.common.black : theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+      backgroundColor: ({ lightTheme }) => alpha(lightTheme ? theme.palette.common.black : theme.palette.common.white, 0.25),
     },
     '& fieldset': {
       border: 'none',
     },
   },
   icon: {
-    color: 'white',
+    color: ({ lightTheme }) => lightTheme ? theme.palette.grey[500] : 'white',
     height: '100%',
-    // position: 'absolute',
-    // pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    // width: theme.spacing(5),
-    // [theme.breakpoints.up('sm')]: {
-    //   width: theme.spacing(7),
-    // },
   },
   input: {
-    color: 'white',
-    // padding: theme.spacing(1),
+    color: ({ lightTheme }) => lightTheme ? undefined : 'white',
     paddingLeft: theme.spacing(1),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      // paddingLeft: theme.spacing(7),
       width: 200,
     },
   },

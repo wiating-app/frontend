@@ -4,6 +4,7 @@
     "siteName": "Wiating",
     "siteDescription": "Wiating, czyli chatki w górach.",
     "themeColor": "#4c4c42",
+    "lightTheme": false,
     "logo": ["/wiating/logo.png", "/wiating/logo@2x.png"],
     "purelogo": ["/wiating/purelogo.png", "/wiating/purelogo@2x.png"],
     "logotype": ["/wiating/logotype.png", "/wiating/logotype@2x.png"],

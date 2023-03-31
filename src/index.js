@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import { Router } from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
 import { CssBaseline } from '@material-ui/core'
-import { ThemeProvider } from '@material-ui/core/styles'
 import { RecoilRoot } from 'recoil'
 import { Auth0Provider } from './utils/useAuth0'
 import history from './history'
@@ -13,7 +12,7 @@ import { LanguageProvider } from './utils/useLanguage'
 import { ConfigProvider } from './utils/useConfig'
 import FormThemeProvider from './utils/FormThemeProvider'
 import { UserLocationProvider } from './utils/useUserLocation'
-import theme from './theme'
+import ThemeProvider from './ThemeProvider'
 
 const App = React.lazy(() => import('./App'))
 const Maintenance = React.lazy(() => import('./components/Maintenance'))
@@ -25,7 +24,7 @@ ReactDOM.render(
       <RecoilRoot>
         <LanguageProvider>
           <ConfigProvider>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider>
               {process.env.FRONTEND_MAINTENANCE === 'true'
                 ? <Maintenance />
                 : <Router history={history}>
