@@ -24,12 +24,18 @@ const applyConfig = async () => {
     data.pipe(fsSync.createWriteStream('public/favicon.png'));
 
     // Update tags in index.html
-    const indexFile = await fs.readFile('public/index-template.html', 'utf8')
-    const updatedIndexFile = indexFile
+    const indexTemplate = await fs.readFile('public/index-template.html', 'utf8')
+    const analyticsTemplate = await fs.readFile('public/analytics-template.html', 'utf8')
+
+    const updatedAnalytics = settings.googleAnalyticsId
+      ? analyticsTemplate.replace(/\$ANALYTICSID/g, settings.googleAnalyticsId)
+      : ''
+
+    const updatedIndexFile = indexTemplate
       .replace(/\$NAME/g, branding.siteName)
       .replace(/\$DESCRIPTION/g, branding.siteDescription)
       .replace(/\$IMAGE/g, branding.logo)
-      .replace(/\$ANALYTICSID/g, settings.googleAnalyticsId)
+      .replace(/\$ANALYTICS/g, updatedAnalytics)
 
     await fs.writeFile('public/index.html', updatedIndexFile)
     console.log('Customization config applied.')

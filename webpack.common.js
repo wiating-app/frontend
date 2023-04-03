@@ -90,7 +90,7 @@ module.exports = {
           to: './',
           context: './public/',
           globOptions: {
-            ignore: ['**/index.html', '**/manifest.json', '**/favicon.png', '**/index-template.html'],
+            ignore: ['**/index.html', '**/manifest.json', '**/favicon.png', '**/index-template.html', '**/analytics-template.html'],
           },
         },
       ],
