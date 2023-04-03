@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import classNames from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import useConfig from '../utils/useConfig'
 
@@ -7,7 +9,7 @@ const Logo = ({ className }) => {
   const { branding } = useConfig()
 
   return (
-    <div className={`${classes.root} ${className || ''}`}>
+    <Link to='/' className={classNames(classes.root, className)}>
       <img
         src={`${process.env.CUSTOMIZATION_URL}/purelogo.png`}
         srcSet={`${process.env.CUSTOMIZATION_URL}/purelogo@2x.png 2x`}
@@ -19,7 +21,7 @@ const Logo = ({ className }) => {
         className={classes.typo}
         alt=''
       />
-    </div>
+    </Link>
   )
 }
 
