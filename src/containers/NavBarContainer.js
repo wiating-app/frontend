@@ -27,7 +27,7 @@ const NavBarContainer = () => {
   const [, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations, language, setLanguage } = useLanguage()
   const [activeTypes] = useRecoilState(activeTypesState)
-  const { faq } = useConfig()
+  const { faq, termsAndConditions } = useConfig()
 
   const {
     loading,
@@ -101,7 +101,7 @@ const NavBarContainer = () => {
     ] : [],
     { label: translations.informations, url: '/info' },
     ...isMobile ? [{ label: translations.legend, url: '/legend' }] : [],
-    { label: translations.termsAndConditions, url: '/regulations' },
+    ...termsAndConditions ? [{ label: translations.termsAndConditions, url: '/terms-and-conditions' }] : [],
     { label: translations.privacyPolicy, url: '/privacy-policy' },
     ...faq ? [{ label: translations.faq, url: '/faq', divider: true }] : [],
     {
