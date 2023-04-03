@@ -33,7 +33,7 @@ const AddButtonContainer = () => {
           callback: () => {
             setActiveLocation(null)
             history.push('/pin')
-            enqueueSnackbar(translations.notifications.pointOnMap, {
+            enqueueSnackbar(translations.pointOnMap, {
               variant: 'info',
               anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
               persist: true,

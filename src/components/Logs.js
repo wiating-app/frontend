@@ -28,7 +28,7 @@ const Logs = ({
   return loading
     ? <Loader dark big />
     : error
-      ? <Typography color='error'>{translations.connectionProblem.logs}</Typography>
+      ? <Typography color='error'>{translations.connectionProblemLogs}</Typography>
       : <>
         <Typography variant='h6'>{translations.itemsFound.replace('#', rowsInTotal)}:</Typography>
         <Table

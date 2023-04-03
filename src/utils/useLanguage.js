@@ -1,11 +1,13 @@
 import React from 'react'
 import translationsFile from './translations'
 import detectUserLanguage from './detectUserLanguage'
+import useConfig from '../utils/useConfig'
 
 export const LanguageContext = React.createContext([null, () => {}])
 
 export const LanguageProvider = ({ children }) => {
   const [translations, setTranslations] = React.useState(null)
+  const { translations: customTranslations = {} } = useConfig()
 
   const setLanguage = language => {
     setTranslations({

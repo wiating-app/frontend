@@ -51,7 +51,7 @@ const LocationInfo = ({
           <Chip
             size='small'
             color='secondary'
-            label={translations.locationInfo.isDisabled}
+            label={translations.isDisabled}
           />
         }
         <Typography
@@ -68,7 +68,7 @@ const LocationInfo = ({
         </Typography>
 
         <Typography variant='subtitle2' className={classes.paddedText}>
-          {translations.locationInfo.description}
+          {translations.description}
         </Typography>
 
         <Typography variant='body1' className={classes.paddedText}>
@@ -78,7 +78,7 @@ const LocationInfo = ({
         {enableDirectionsField && selectedLocation.directions &&
           <>
             <Typography variant='subtitle2' className={classes.paddedText}>
-              {translations.locationInfo.directions}
+              {translations.directions}
             </Typography>
             <Typography variant='body1' className={classes.paddedText}>
               {selectedLocation.directions}
@@ -91,9 +91,9 @@ const LocationInfo = ({
         {(enableFireField || enableWaterField) &&
           <div className={classes.paddedText}>
 
-            {enableFireField &&
+            {enableWaterField &&
               <Typography variant='body2' gutterBottom>
-                {translations.locationInfo.water.label}:{' '}
+                {translations.waterLabel}:{' '}
                 {selectedLocation.water_exists === null
                   ? translations.noData
                   : !selectedLocation.water_exists
@@ -103,9 +103,9 @@ const LocationInfo = ({
               </Typography>
             }
 
-            {enableWaterField &&
+            {enableFireField &&
               <Typography variant='body2'>
-                {translations.locationInfo.fire.label}:{' '}
+                {translations.fireLabel}:{' '}
                 {selectedLocation.fire_exists === null
                   ? translations.noData
                   : !selectedLocation.fire_exists
@@ -127,7 +127,7 @@ const LocationInfo = ({
             variant='caption'
             align='right'
             color='textSecondary'
-          >{translations.locationInfo.lastUpdate}: {formatDate(updatedAt)}</Typography>
+          >{translations.lastUpdate}: {formatDate(updatedAt)}</Typography>
         }
         {loggedIn &&
           <ButtonGroup
@@ -142,12 +142,12 @@ const LocationInfo = ({
               >Wyświetl logi</Button>
               : enableReport && <Button
                 onClick={() => setReportIsOpen(true)}
-              >{translations.actions.report}</Button>
+              >{translations.report}</Button>
             }
             <Button
               component={Link}
               to={`/location/${selectedLocation.id}/edit`}
-            >{translations.actions.edit}</Button>
+            >{translations.edit}</Button>
           </ButtonGroup>
         }
       </div>

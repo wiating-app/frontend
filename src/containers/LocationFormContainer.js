@@ -119,7 +119,7 @@ const LocationFormContainer = ({
         setMarkers(newMarkers)
         setActiveLocation(serializedData)
         history.push(`/location/${data.id}`)
-        enqueueSnackbar(translations.notifications.newMarkerAdded, { variant: 'success' })
+        enqueueSnackbar(translations.newMarkerAdded, { variant: 'success' })
       } else {
         // Updating exisitng marker.
         const { id } = activeLocation
@@ -134,15 +134,15 @@ const LocationFormContainer = ({
         setMarkers(newMarkers)
         setActiveLocation(serializedData)
         history.push(`/location/${id}`)
-        enqueueSnackbar(translations.notifications.markerUpdated, { variant: 'success' })
+        enqueueSnackbar(translations.markerUpdated, { variant: 'success' })
       }
     } catch (error) {
       if (error.type === 'parseError') {
         console.error(error.value)
-        enqueueSnackbar(translations.notifications.wrongCoordsFormat, { variant: 'error' })
+        enqueueSnackbar(translations.wrongCoordsFormat, { variant: 'error' })
       } else {
         console.error(error)
-        enqueueSnackbar(translations.notifications.couldNotSaveMarker, { variant: 'error' })
+        enqueueSnackbar(translations.couldNotSaveMarker, { variant: 'error' })
       }
     }
   }
@@ -153,10 +153,10 @@ const LocationFormContainer = ({
       history.push('/')
       setActiveLocation(null)
       setMarkers(markers.filter(item => item.id !== id))
-      enqueueSnackbar(translations.notifications.locationDeleted, { variant: 'success' })
+      enqueueSnackbar(translations.locationDeleted, { variant: 'success' })
     } catch (err) {
       console.error(err)
-      enqueueSnackbar(translations.notifications.couldNotDeleteLocation, { variant: 'error' })
+      enqueueSnackbar(translations.couldNotDeleteLocation, { variant: 'error' })
     }
   }
 

@@ -105,7 +105,7 @@ const NavBarContainer = () => {
     { label: translations.privacyPolicy, url: '/privacy-policy' },
     ...faq ? [{ label: translations.faq, url: '/faq', divider: true }] : [],
     {
-      label: translations.auth[isLoggedIn ? 'logout' : 'login'],
+      label: translations[isLoggedIn ? 'logout' : 'login'],
       callback: () => isLoggedIn ? logout() : loginWithRedirect({}),
     },
   ]

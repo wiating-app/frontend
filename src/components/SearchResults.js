@@ -44,7 +44,7 @@ const SearchResults = () => {
                   ? <Chip
                     size='small'
                     color='secondary'
-                    label={translations.locationInfo.isDisabled}
+                    label={translations.isDisabled}
                   />
                   : item.description && item.description.substring(0, 70)
                 }

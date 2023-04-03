@@ -35,7 +35,7 @@ const LocationInfoContainer = ({
           } catch (error) {
             setError(true)
             setLoading(false)
-            enqueueSnackbar(translations.connectionProblem.location, { variant: 'error' })
+            enqueueSnackbar(translations.connectionProblemLocation, { variant: 'error' })
           }
         }
         handleAsync()
@@ -53,7 +53,7 @@ const LocationInfoContainer = ({
       enqueueSnackbar('Punkt zgłoszony do moderacji', { variant: 'success' })
     } catch (err) {
       console.error(err)
-      enqueueSnackbar(translations.notifications.couldNotReport, { variant: 'error' })
+      enqueueSnackbar(translations.couldNotReport, { variant: 'error' })
     }
   }
 
@@ -61,7 +61,7 @@ const LocationInfoContainer = ({
     if (isLoggedIn) {
       history.push(`/location/${id}/photos`)
     } else {
-      enqueueSnackbar(translations.notifications.mustLogIn, { variant: 'warning' })
+      enqueueSnackbar(translations.mustLogIn, { variant: 'warning' })
     }
   }
 

@@ -20,7 +20,7 @@ const UnpublishedLocations = ({
   return loading
     ? <Loader dark big />
     : error
-      ? <Typography color='error'>{translations.connectionProblem.logs}</Typography>
+      ? <Typography color='error'>{translations.connectionProblemLogs}</Typography>
       : <>
         <Typography variant='h6'>{translations.itemsFound.replace('#', locations.length)}:</Typography>
         <Table
@@ -30,7 +30,7 @@ const UnpublishedLocations = ({
             actions: <Actions
               primary={[
                 {
-                  label: translations.actions.edit,
+                  label: translations.edit,
                   action: () => history.push(`/location/${item.id}/edit`),
                 },
               ]}

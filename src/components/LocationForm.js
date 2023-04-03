@@ -49,7 +49,7 @@ const LocationForm = ({
 
   return <>
     <Typography variant='h4' gutterBottom>
-      {translations[`markerForm.heading.${isNew ? 'addMarker' : 'editMarker'}`]}
+      {translations[isNew ? 'addMarker' : 'editMarker']}
     </Typography>
     <Form
       fields={[
@@ -76,19 +76,19 @@ const LocationForm = ({
       }}
     >
 
-      <HintWrapper message={translations.markerForm.placeHint}>
+      <HintWrapper message={translations.locationNameHint}>
         <Input
           name='name'
-          label={translations.markerForm.place}
+          label={translations.locationName}
           min={5}
           initialValue={locationData?.name}
         />
       </HintWrapper>
 
-      <HintWrapper message={translations.markerForm.locationHint}>
+      <HintWrapper message={translations.locationHint}>
         <CoordinatesInput
           name='location'
-          label={translations.markerForm.location}
+          label={translations.coordinates}
           initialValue={locationData && locationToString(locationData.location)}
           onChange={value => {
             updateCurrentMarker(value)
@@ -96,10 +96,10 @@ const LocationForm = ({
         />
       </HintWrapper>
 
-      <HintWrapper message={translations.markerForm.descriptionHint}>
+      <HintWrapper message={translations.descriptionHint}>
         <Input
           name='description'
-          label={translations.markerForm.description}
+          label={translations.description}
           min={40}
           initialValue={locationData?.description}
           multiline
@@ -110,7 +110,7 @@ const LocationForm = ({
         <HintWrapper message={translations.markerForm.directionsHint}>
           <Input
             name='directions'
-            label={translations.locationInfo.directions}
+            label={translations.directions}
             min={20}
             initialValue={locationData?.directions}
             multiline
@@ -118,10 +118,10 @@ const LocationForm = ({
         </HintWrapper>
       }
 
-      <HintWrapper message={translations.markerForm.typeHint}>
+      <HintWrapper message={translations.locationTypeHint}>
         <Select
           name='type'
-          label={translations.markerForm.type}
+          label={translations.locationType}
           options={locationTypes.map(({ id, label }) => ({
             value: id,
             label: label[language],
@@ -137,20 +137,20 @@ const LocationForm = ({
         <>
           <Select
             name='water_exists'
-            label={translations.locationInfo.water.label}
+            label={translations.waterLabel}
             initialValue={locationData && mapBoolToOptions(locationData.water_exists)}
             placeholder={translations.noData}
             options={[
-              { label: translations.locationInfo.water.true, value: 1 },
-              { label: translations.locationInfo.water.false, value: 2 },
+              { label: translations.waterTrue, value: 1 },
+              { label: translations.waterFalse, value: 2 },
             ]}
           />
 
           {hasWater &&
-            <HintWrapper message={translations.markerForm.waterDescriptionHint}>
+            <HintWrapper message={translations.waterDescriptionHint}>
               <Input
                 name='water_comment'
-                label={translations.markerForm.waterDescription}
+                label={translations.waterDescription}
                 min={20}
                 initialValue={locationData?.water_comment}
                 multiline
@@ -164,20 +164,20 @@ const LocationForm = ({
         <>
           <Select
             name='fire_exists'
-            label={translations.locationInfo.fire.label}
+            label={translations.fireLabel}
             initialValue={locationData && mapBoolToOptions(locationData.fire_exists)}
             placeholder={translations.noData}
             options={[
-              { label: translations.locationInfo.fire.true, value: 1 },
-              { label: translations.locationInfo.fire.false, value: 2 },
+              { label: translations.fireTrue, value: 1 },
+              { label: translations.fireFalse, value: 2 },
             ]}
           />
 
           {hasFire &&
-            <HintWrapper message={translations.markerForm.fireDescriptionHint}>
+            <HintWrapper message={translations.fireDescriptionHint}>
               <Input
                 name='fire_comment'
-                label={translations.markerForm.fireDescription}
+                label={translations.fireDescription}
                 min={20}
                 initialValue={locationData?.fire_comment}
                 multiline
@@ -189,14 +189,14 @@ const LocationForm = ({
 
       <Checkbox
         name='is_disabled'
-        text={translations.locationInfo.setAsDisabled}
+        text={translations.setAsDisabled}
         initialValue={locationData?.is_disabled}
       />
 
       {!isNew && isModerator &&
         <Checkbox
           name='unpublished'
-          text={translations.locationInfo.unpublish}
+          text={translations.unpublish}
           initialValue={locationData?.unpublished}
         />
       }
