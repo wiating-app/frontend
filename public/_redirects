@@ -12,6 +12,7 @@
 /location-icons/* /location-icons/:splat 200
 /api/* https://serwer.wiating.eu/wiating/:splat 200
 /v2-api/* http://serwer.wiating.eu:5813/:splat 200
+/apteczka-api/* http://95.216.179.144:5813/:splat 200
 https://mapa.wiating.eu/* https://wiating.eu/:splat 301!
 https://wiating.netlify.app/* https://wiating.eu/:splat 301!
 
