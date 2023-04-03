@@ -41,23 +41,16 @@ const Info = () => {
             Twórcy aplikacji:<br />
             <a href='https://github.com/firflant' target='_blank' >Michał Kokociński</a>, <a href='https://github.com/merito' target='_blank' >Dawid Wolski</a></Typography>
           <div>
-            <Typography className={classes.footerRight} variant='body2' component='div' dangerouslySetInnerHTML={{ __html: branding.adminInfo }} />
-            <div className={classes.partner}>
-              <Typography className={classes.footerRight} variant='body2' component='div'>
-                Opiekun prawny:
-                <div style={{ marginLeft: 4 }}>
-                  Weronika Bednarska
-                  <a href='https://soinlaw.com' target='_blank'>
-                    <img
-                      src='/soinlaw.png'
-                      alt='SO IN LAW'
-                      title='SO IN LAW'
-                      className={classes.partnerLogo}
-                    />
-                  </a>
-                </div>
+            {branding.adminInfo &&
+              <Typography className={classes.footerRight} variant='body2' component='div' >
+                Administracja: <div dangerouslySetInnerHTML={{ __html: branding.adminInfo }} />
               </Typography>
-            </div>
+            }
+            {branding.legalInfo &&
+              <Typography className={classes.footerRight} variant='body2' component='div'>
+                Opiekun prawny: <div dangerouslySetInnerHTML={{ __html: branding.legalInfo }} />
+              </Typography>
+            }
           </div>
         </div>
       </div>
@@ -105,19 +98,16 @@ const useStyles = makeStyles(theme => ({
   footerRight: {
     [theme.breakpoints.up('sm')]: {
       textAlign: 'right',
-      display: 'flex',
+      '& > *': {
+        display: 'inline',
+      },
     },
-  },
-  partner: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  partnerLogo: {
-    width: 86,
-    display: 'inline-block',
-    verticalAlign: 'middle',
-    margin: '-5px 0 -8px 5px',
+    '& img': {
+      height: 30,
+      display: 'inline-block',
+      verticalAlign: 'middle',
+      margin: '-5px 0 -8px 5px',
+    },
   },
   button: {
     marginTop: theme.spacing(4),
