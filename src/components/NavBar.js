@@ -29,7 +29,6 @@ const NavBar = ({
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { translations } = useLanguage()
   const { branding: { themeColor, lightTheme }, settings: { showVersionInfo } } = useConfig()
-  console.log('showVersionInfo: ', showVersionInfo);
   const classes = useStyles({ themeColor })
 
   return (
