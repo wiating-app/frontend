@@ -11,8 +11,9 @@ export const LanguageProvider = ({ children }) => {
 
   const setLanguage = language => {
     setTranslations({
-      id: language,
       ...translationsFile[language],
+      ...customTranslations[language],
+      id: language,
     })
     localStorage.setItem('language', language)
   }

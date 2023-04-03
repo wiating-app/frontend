@@ -22,8 +22,8 @@ ReactDOM.render(
   <React.Suspense fallback={<div>Loading...</div>}>
     <ErrorHandler>
       <RecoilRoot>
-        <LanguageProvider>
-          <ConfigProvider>
+        <ConfigProvider>
+          <LanguageProvider>
             <ThemeProvider>
               {process.env.FRONTEND_MAINTENANCE === 'true'
                 ? <Maintenance />
@@ -51,8 +51,8 @@ ReactDOM.render(
                 </Router>
               }
             </ThemeProvider>
-          </ConfigProvider>
-        </LanguageProvider>
+          </LanguageProvider>
+        </ConfigProvider>
       </RecoilRoot>
     </ErrorHandler>
   </React.Suspense>, document.getElementById('root'))
