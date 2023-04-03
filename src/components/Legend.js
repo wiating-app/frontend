@@ -3,15 +3,16 @@ import { Typography } from '@material-ui/core'
 import { activeTypesState } from '../state'
 import classNames from 'classnames'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
-import locationTypes from '../utils/locationTypes'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
+import useConfig from '../utils/useConfig'
 import { useRecoilState } from 'recoil'
 
 const Legend = ({ boxed }) => {
   const classes = useStyles(boxed)
   const [activeTypes, setActiveTypes] = useRecoilState(activeTypesState)
-  const { translations } = useLanguage()
+  const { translations, language } = useLanguage()
+  const { locationTypes } = useConfig()
 
   const handleOnClick = key => {
     if (activeTypes.includes(key) && activeTypes.length) {
@@ -30,20 +31,20 @@ const Legend = ({ boxed }) => {
         variant={boxed ? 'subtitle2' : 'h5'}
         className={classes.label}
       >{translations.legend}:</Typography>
-      {Object.entries(locationTypes).map(([key, { label }]) =>
+      {locationTypes.map(({ id, label }) =>
         <div
           className={classNames(classes.item, {
-            [classes.active]: activeTypes.includes(key) || !activeTypes.length,
+            [classes.active]: activeTypes.includes(id) || !activeTypes.length,
           })}
-          key={key}
-          onClick={() => handleOnClick(key)}
+          key={id}
+          onClick={() => handleOnClick(id)}
         >
           <div
-            dangerouslySetInnerHTML={{ __html: generateMarkerIcon(key, boxed ? 24 : 30) }}
+            dangerouslySetInnerHTML={{ __html: generateMarkerIcon(id, boxed ? 24 : 30) }}
             className={classes.icon}
           />
           <Typography variant={boxed ? 'caption' : 'body1'}>
-            {translations.locationType[label]}
+            {label[language]}
           </Typography>
         </div>
       )}

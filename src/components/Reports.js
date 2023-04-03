@@ -18,7 +18,7 @@ const Reports = ({
   return loading
     ? <Loader dark big />
     : error
-      ? <Typography color='error'>{translations.connectionProblem.logs}</Typography>
+      ? <Typography color='error'>{translations.connectionProblemLogs}</Typography>
       : reports.length
         ? <Table
           data={reports.map(item => ({

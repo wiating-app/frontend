@@ -27,7 +27,7 @@ const UtilityButtons = ({ id, coords }) => {
       <Tooltip title={translations.share} placement='top'>
         <CopyToClipboard
           text={locationUrl}
-          onCopy={() => enqueueSnackbar(translations.notifications.urlCopied, { variant: 'success' })}
+          onCopy={() => enqueueSnackbar(translations.urlCopied, { variant: 'success' })}
         >
           <div>
             <IconButton size='small' className={classes.button}>
@@ -39,7 +39,7 @@ const UtilityButtons = ({ id, coords }) => {
       <Tooltip title={translations.copyCoordinates} placement='top'>
         <CopyToClipboard
           text={locationString}
-          onCopy={() => enqueueSnackbar(translations.notifications.coordinatesCopied, { variant: 'success' })}
+          onCopy={() => enqueueSnackbar(translations.coordinatesCopied, { variant: 'success' })}
         >
           <div>
             <IconButton size='small' className={classes.button}>

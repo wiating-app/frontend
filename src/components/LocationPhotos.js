@@ -95,7 +95,7 @@ const LocationPhotos = ({
             <img src='/no-image.png' alt='No image' className={classes.image} />
           </div>
       }
-      <Tooltip title={translations.actions.addPhoto} placement='bottom-left'>
+      <Tooltip title={translations.addPhoto} placement='bottom-left'>
         <Button
           className={classes.addPhoto}
           variant='contained'

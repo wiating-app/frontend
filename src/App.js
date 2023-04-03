@@ -2,6 +2,7 @@ import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
+import useConfig from './utils/useConfig'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './App.css'
 import {
@@ -15,8 +16,8 @@ import SearchResults from './components/SearchResults'
 import BackToSearch from './components/BackToSearch'
 import Info from './components/Info'
 import LegendPage from './components/LegendPage'
-import Regulamin from './components/Regulamin'
-import PolitykaPrywatnosci from './components/PolitykaPrywatnosci'
+import TermsAndConditions from './components/TermsAndConditions'
+import PrivacyPolicy from './components/PrivacyPolicy'
 import AcceptDataPrivacy from './components/AcceptDataPrivacy'
 import FaqPage from './components/FaqPage'
 import ModeratorPanel from './components/ModeratorPanel'
@@ -34,6 +35,7 @@ const App = ({ history, location: { pathname } }) => {
   const [editMode, setEditMode] = useRecoilState(editModeState)
   const [, setIsDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { closeSnackbar } = useSnackbar()
+  const { faq } = useConfig()
 
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
@@ -92,9 +94,9 @@ const App = ({ history, location: { pathname } }) => {
       <Switch>
         <Route exact path='/info' component={Info} />
         <Route exact path='/legend' component={LegendPage} />
-        <Route exact path='/regulations' component={Regulamin} />
-        <Route exact path='/privacy-policy' component={PolitykaPrywatnosci} />
-        <Route exact path='/faq' component={FaqPage} />
+        <Route exact path='/terms-and-conditions' component={TermsAndConditions} />
+        <Route exact path='/privacy-policy' component={PrivacyPolicy} />
+        {faq && <Route exact path='/faq' component={FaqPage} />}
       </Switch>
 
       <Route path='/history' component={HistoryContainer} />

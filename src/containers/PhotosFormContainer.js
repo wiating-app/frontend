@@ -53,10 +53,10 @@ const PhotosFormContainer = ({
         file?.dataFile && await asyncResizeFile(file.dataFile)
       })
       history.push(`/location/${activeLocation.id}`)
-      enqueueSnackbar(translations.notifications.photoAdded, { variant: 'success' })
+      enqueueSnackbar(translations.photoAdded, { variant: 'success' })
     } catch (err) {
       console.error(err)
-      enqueueSnackbar(translations.notifications.couldNotSavePhoto, { variant: 'error' })
+      enqueueSnackbar(translations.couldNotSavePhoto, { variant: 'error' })
       history.push(`/location/${activeLocation.id}`)
     }
   }
@@ -78,7 +78,7 @@ const PhotosFormContainer = ({
         } catch (error) {
           setError(true)
           setLoading(false)
-          enqueueSnackbar(translations.connectionProblem.location, { variant: 'error' })
+          enqueueSnackbar(translations.connectionProblemLocation, { variant: 'error' })
         }
       }
       handleAsync()

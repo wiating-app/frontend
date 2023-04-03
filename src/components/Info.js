@@ -4,9 +4,11 @@ import { Button, Typography } from '@material-ui/core'
 import Modal from './Modal'
 import Version from './Version'
 import history from '../history'
+import useConfig from '../utils/useConfig'
 
 const Info = () => {
   const classes = useStyles()
+  const { branding } = useConfig()
 
   const handleClose = () => {
     localStorage.setItem('seenInitialInfo', 'true')
@@ -19,13 +21,11 @@ const Info = () => {
         <div className={classes.main}>
           <div>
             <img
-              src='/logo-full.png'
-              srcSet='/logo-full@2x.png 2x'
+              src={`${process.env.CUSTOMIZATION_URL}/logo.png`}
+              srcSet={`${process.env.CUSTOMIZATION_URL}/logo@2x.png 2x`}
               className={classes.logo}
             />
-            <Typography gutterBottom variant='body1'>
-              Witaj w aplikacji grupy facebookowej <br/><a href='https://www.facebook.com/groups/938290029559772' target='_blank'>Wiating czyli chatki w górach</a>!
-            </Typography>
+            <Typography gutterBottom variant='body1' dangerouslySetInnerHTML={{ __html: branding.info }} />
             <Button
               variant='contained'
               color='primary'
@@ -41,12 +41,7 @@ const Info = () => {
             Twórcy aplikacji:<br />
             <a href='https://github.com/firflant' target='_blank' >Michał Kokociński</a>, <a href='https://github.com/merito' target='_blank' >Dawid Wolski</a></Typography>
           <div>
-            <Typography className={classes.footerRight} variant='body2' component='div'>
-              Administracja:
-              <div style={{ marginLeft: 4 }}>
-                Dariusz Hajduk (<a href='mailto:wiating@wiating.eu'>wiating@wiating.eu</a>)
-              </div>
-            </Typography>
+            <Typography className={classes.footerRight} variant='body2' component='div' dangerouslySetInnerHTML={{ __html: branding.adminInfo }} />
             <div className={classes.partner}>
               <Typography className={classes.footerRight} variant='body2' component='div'>
                 Opiekun prawny:

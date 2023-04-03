@@ -38,7 +38,7 @@ const LogDetailsContainer = ({
           } catch (error) {
             setError(true)
             setLoading(false)
-            enqueueSnackbar(translations.connectionProblem.logs, { variant: 'error' })
+            enqueueSnackbar(translations.connectionProblemLogs, { variant: 'error' })
           }
         }
         handleAsync()

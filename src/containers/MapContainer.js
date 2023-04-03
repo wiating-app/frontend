@@ -54,7 +54,7 @@ const MapContainer = props => {
     } catch (error) {
       if (!isCancel(error)) {
         console.error(error)
-        enqueueSnackbar(translations.connectionProblem.map, { variant: 'error' })
+        enqueueSnackbar(translations.connectionProblemMap, { variant: 'error' })
       } else {
         process.env.NODE_ENV === 'development' && console.log('Previous request canceled.')
       }

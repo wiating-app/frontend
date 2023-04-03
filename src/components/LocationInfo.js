@@ -12,9 +12,9 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 import Report from './Report'
 import UtilityButtons from './UtilityButtons'
-import locationTypes from '../utils/locationTypes'
 import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
+import useConfig from '../utils/useConfig'
 
 const LocationInfo = ({
   loggedIn,
@@ -23,11 +23,17 @@ const LocationInfo = ({
   handleReport,
 }) => {
   const classes = useStyles()
-  const { translations } = useLanguage()
+  const { translations, language } = useLanguage()
+  const { locationTypes, settings: {
+    enableReport,
+    enableDirectionsField,
+    enableFireField,
+    enableWaterField,
+  } } = useConfig()
   const [reportIsOpen, setReportIsOpen] = React.useState()
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
-  const type = locationTypes[selectedLocation.type]
-  const typeLabel = selectedLocation.type ? translations.locationType[type.label] : ''
+  const type = locationTypes.find(item => item.id === selectedLocation.type)
+  const typeLabel = selectedLocation.type ? type.label[language] : ''
   const roundedLat = roundLatLng(selectedLocation.location.lat)
   const roundedLng = roundLatLng(selectedLocation.location.lng)
 
@@ -45,7 +51,7 @@ const LocationInfo = ({
           <Chip
             size='small'
             color='secondary'
-            label={translations.locationInfo.isDisabled}
+            label={translations.isDisabled}
           />
         }
         <Typography
@@ -62,17 +68,17 @@ const LocationInfo = ({
         </Typography>
 
         <Typography variant='subtitle2' className={classes.paddedText}>
-          {translations.locationInfo.description}
+          {translations.description}
         </Typography>
 
         <Typography variant='body1' className={classes.paddedText}>
           {selectedLocation.description}
         </Typography>
 
-        {selectedLocation.directions &&
+        {enableDirectionsField && selectedLocation.directions &&
           <>
             <Typography variant='subtitle2' className={classes.paddedText}>
-              {translations.locationInfo.directions}
+              {translations.directions}
             </Typography>
             <Typography variant='body1' className={classes.paddedText}>
               {selectedLocation.directions}
@@ -82,29 +88,35 @@ const LocationInfo = ({
 
         <Divider />
 
-        <div className={classes.paddedText}>
+        {(enableFireField || enableWaterField) &&
+          <div className={classes.paddedText}>
 
-          <Typography variant='body2' gutterBottom>
-            {translations.locationInfo.water.label}:{' '}
-            {selectedLocation.water_exists === null
-              ? translations.noData
-              : !selectedLocation.water_exists
-                ? translations.unavailable
-                : selectedLocation.water_comment || translations.available
+            {enableWaterField &&
+              <Typography variant='body2' gutterBottom>
+                {translations.waterLabel}:{' '}
+                {selectedLocation.water_exists === null
+                  ? translations.noData
+                  : !selectedLocation.water_exists
+                    ? translations.unavailable
+                    : selectedLocation.water_comment || translations.available
+                }
+              </Typography>
             }
-          </Typography>
 
-          <Typography variant='body2'>
-            {translations.locationInfo.fire.label}:{' '}
-            {selectedLocation.fire_exists === null
-              ? translations.noData
-              : !selectedLocation.fire_exists
-                ? translations.unavailable
-                : selectedLocation.fire_comment || translations.available
+            {enableFireField &&
+              <Typography variant='body2'>
+                {translations.fireLabel}:{' '}
+                {selectedLocation.fire_exists === null
+                  ? translations.noData
+                  : !selectedLocation.fire_exists
+                    ? translations.unavailable
+                    : selectedLocation.fire_comment || translations.available
+                }
+              </Typography>
             }
-          </Typography>
 
-        </div>
+          </div>
+        }
 
       </div>
 
@@ -115,7 +127,7 @@ const LocationInfo = ({
             variant='caption'
             align='right'
             color='textSecondary'
-          >{translations.locationInfo.lastUpdate}: {formatDate(updatedAt)}</Typography>
+          >{translations.lastUpdate}: {formatDate(updatedAt)}</Typography>
         }
         {loggedIn &&
           <ButtonGroup
@@ -128,14 +140,14 @@ const LocationInfo = ({
                 component={Link}
                 to={`/moderator/log?id=${selectedLocation.id}`}
               >Wyświetl logi</Button>
-              : <Button
+              : enableReport && <Button
                 onClick={() => setReportIsOpen(true)}
-              >{translations.actions.report}</Button>
+              >{translations.report}</Button>
             }
             <Button
               component={Link}
               to={`/location/${selectedLocation.id}/edit`}
-            >{translations.actions.edit}</Button>
+            >{translations.edit}</Button>
           </ButtonGroup>
         }
       </div>

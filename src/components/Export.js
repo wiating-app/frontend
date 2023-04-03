@@ -3,14 +3,16 @@ import { Menu, Tooltip, MenuItem } from '@material-ui/core'
 import { GetApp } from '@material-ui/icons'
 import exportToKML from '../utils/exportToKML'
 import exportToGPX from '../utils/exportToGPX'
+import useConfig from '../utils/useConfig'
 
 
 const Export = ({ markers, className }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
+  const config = useConfig()
   const items = [
     {
       label: 'Pobierz plik KML',
-      callback: () => exportToKML(markers),
+      callback: () => exportToKML(markers, config),
     },
     {
       label: 'Pobierz plik GPX',
@@ -25,6 +27,8 @@ const Export = ({ markers, className }) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  if (!config.settings.enableExport) return null
 
   return (
     <Tooltip title='Eksport lokacji z wyświetlanego obszaru' placement='left'>

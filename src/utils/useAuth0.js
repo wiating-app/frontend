@@ -53,7 +53,7 @@ export const Auth0Provider = ({
           setUser(user)
           setIsLoggedIn(isAuthenticated || false)
           checkModerator(user)
-          enqueueSnackbar(translations.auth.loginSuccessful, { variant: 'success' })
+          enqueueSnackbar(translations.loginSuccessful, { variant: 'success' })
         } else {
           // Restore user session from auth0.
           const isAuthenticated = await auth0FromHook.isAuthenticated()
@@ -68,7 +68,7 @@ export const Auth0Provider = ({
         }
       } catch (err) {
         console.error(err)
-        enqueueSnackbar(translations.notifications.couldNotRestoreSession, { variant: 'error' })
+        enqueueSnackbar(translations.couldNotRestoreSession, { variant: 'error' })
       }
 
       setLoading(false)

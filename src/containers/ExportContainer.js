@@ -6,11 +6,14 @@ import api from '../api'
 import useLanguage from '../utils/useLanguage'
 import serializeData from '../utils/serializeData'
 import exportToKML from '../utils/exportToKML'
+import useConfig from '../utils/useConfig'
+
 
 const ExportContainer = () => {
   const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
   const [loading, setLoading] = React.useState(false)
+  const config = useConfig()
 
   const handleExport = async () => {
     setLoading(true)
@@ -26,7 +29,7 @@ const ExportContainer = () => {
         },
       })
       const serializedPoints = points.map(item => serializeData(item))
-      await exportToKML(serializedPoints)
+      await exportToKML(serializedPoints, config)
       setLoading(false)
     } catch (err) {
       console.error(err)
