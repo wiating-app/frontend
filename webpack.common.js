@@ -114,7 +114,7 @@ module.exports = {
         background: customization.branding.themeColor,
         theme_color: customization.branding.themeColor,
         display: 'standalone',
-        start_url: '.',
+        start_url: '/',
         preferRelatedApplications: true,
         icons: {
           appleStartup: false,
