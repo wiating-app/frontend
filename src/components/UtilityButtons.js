@@ -75,7 +75,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   button: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
     color: 'white',
     margin: theme.spacing(1),
     borderWidth: 2,
