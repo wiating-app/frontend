@@ -107,7 +107,7 @@ const LocationForm = ({
       </HintWrapper>
 
       {enableDirectionsField &&
-        <HintWrapper message={translations.markerForm.directionsHint}>
+        <HintWrapper message={translations.directionsHint}>
           <Input
             name='directions'
             label={translations.directions}

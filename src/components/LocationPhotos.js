@@ -196,7 +196,7 @@ const useStyles = makeStyles(theme => ({
     left: theme.spacing(1),
     padding: '1px 6px',
     zIndex: 1,
-    color: theme.palette.primary.main,
+    color: theme.palette.grey[800],
     backgroundColor: 'rgba(255, 255, 255, 0.67)',
     '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.9)',

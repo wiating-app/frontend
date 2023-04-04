@@ -348,19 +348,6 @@ const useStyles = makeStyles(theme => ({
       display: editMode => editMode ? 'none' : 'block',
     },
   },
-  woodboardCluster: {
-    backgroundColor: 'transparent',
-    backgroundImage: 'url(/woodboard.svg)',
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    display: 'flex !important',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 'bold',
-    color: '#522d19',
-    filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.5))',
-  },
   popup: {
     '& .leaflet-popup-content-wrapper': {
       backgroundColor: 'transparent',

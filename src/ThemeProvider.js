@@ -4,12 +4,15 @@ import useConfig from './utils/useConfig'
 
 
 const ThemeProvider = ({ children }) => {
-  const { branding: { themeColor } } = useConfig()
+  const { branding: { themeColor, secondaryColor } } = useConfig()
 
   const theme = createTheme({
     palette: {
       primary: {
         main: themeColor,
+      },
+      secondary: {
+        main: secondaryColor || themeColor,
       },
     },
     layout: {
