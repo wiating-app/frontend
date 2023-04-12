@@ -38,7 +38,7 @@ const LocationInfo = ({
   const roundedLng = roundLatLng(selectedLocation.location.lng)
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id='cy-locationinfo'>
       <UtilityButtons
         id={selectedLocation.id}
         coords={selectedLocation.location}

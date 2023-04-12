@@ -141,6 +141,7 @@ const Map = ({
         maxZoom={18}
         maxBounds={[[-90, -180], [90, 180]]}
         zoomControl={false}
+        id='cy-map'
       >
         <MapEvents
           editMode={editMode}

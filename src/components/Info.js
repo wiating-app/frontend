@@ -16,7 +16,7 @@ const Info = () => {
   }
 
   return (
-    <Modal onClose={handleClose} short>
+    <Modal onClose={handleClose} short id='cy-info'>
       <div className={classes.root}>
         <div className={classes.main}>
           <div>

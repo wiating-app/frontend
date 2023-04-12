@@ -38,7 +38,7 @@ const NavBar = ({
       className={classNames(classes.root, {
         [classes.hideOnMobile]: isDrawerOpen,
       })}
-      // style={{ backgroundColor: themeColor }}
+      id='cy-navbar'
     >
       <Toolbar>
         <Logo className={classes.logo} />
