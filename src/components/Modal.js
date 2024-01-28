@@ -7,7 +7,7 @@ import history from '../history'
 import useKeyPress from '../utils/useKeyPress'
 
 
-const Modal = ({ wide, short, small, children, onClose }) => {
+const Modal = ({ wide, short, small, children, onClose, id }) => {
   const classes = useStyles({ wide, short, small })
 
   const handleOnClose = () => {
@@ -24,6 +24,7 @@ const Modal = ({ wide, short, small, children, onClose }) => {
       className={classes.root}
       disablePortal
       open
+      id={id}
     >
       <>
         <div className={classes.toolbar} />

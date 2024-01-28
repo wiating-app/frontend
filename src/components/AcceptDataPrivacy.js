@@ -21,7 +21,7 @@ const AcceptDataPrivacy = () => {
   }
 
   return isVisible
-    ? <Modal onClose={acceptDataPrivacy} short>
+    ? <Modal onClose={acceptDataPrivacy} short id='cy-privacy'>
       <h2>Informacja o prywatności</h2>
       <p>Na naszej stronie używamy różnych technologii do zbierania i przetwarzania danych osobowych w celu personalizowania treści i reklam oraz analizowania ruchu na stronie i w Internecie. Do tego celu możemy zbierać Twoje IP lub inne dane osobowe, które nam podasz.</p>
       <p>Administratorem danych osobowych jest <em>Administracja Grupy Wiating - Dariusz Hajduk</em>, adres e-mail: wiating@wiating.eu</p>

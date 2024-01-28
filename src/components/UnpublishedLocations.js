@@ -26,7 +26,7 @@ const UnpublishedLocations = ({
         <Table
           data={locations.map(item => ({
             name: <OpenInNewCard path={`/location/${item.id}`}>{item.name}</OpenInNewCard>,
-            type: item.type ? locationTypes.find(item => item.id === item.type).label[language] : '',
+            type: item.type ? locationTypes.find(type => type.id === item.type).label[language] : '',
             actions: <Actions
               primary={[
                 {
