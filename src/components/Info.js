@@ -25,15 +25,24 @@ const Info = () => {
               srcSet={`${process.env.CUSTOMIZATION_URL}/logo@2x.png 2x`}
               className={classes.logo}
             />
+            <div className={classes.version}><Version /></div>
             <Typography gutterBottom variant='body1' dangerouslySetInnerHTML={{ __html: branding.info }} />
             <Button
               variant='contained'
               color='primary'
-              className={classes.button}
+              className={classes.buttonToMap}
               onClick={handleClose}
               size='large'
             >Przejdź do mapy</Button>
-            <div className={classes.version}><Version /></div>
+            <Button
+              variant='text'
+              className={classes.buttonSupport}
+              a
+              href='https://patronite.pl/Wiating.eu'
+              size='large'
+              target='_blank'
+              rel='noopener noreferrer'
+            >Wesprzyj nas</Button>
           </div>
         </div>
         <div className={classes.footer}>
@@ -77,7 +86,7 @@ const useStyles = makeStyles(theme => ({
   },
   logo: {
     maxWidth: '100%',
-    margin: '0 auto 34px',
+    margin: '0 auto 24px',
     display: 'block',
   },
   footer: {
@@ -109,9 +118,17 @@ const useStyles = makeStyles(theme => ({
       margin: '-5px 0 -8px 5px',
     },
   },
-  button: {
+  buttonToMap: {
     marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'block',
+  },
+  buttonSupport: {
+    marginTop: theme.spacing(2),
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'block',
   },
   version: {
     margin: '0 auto 18px',
