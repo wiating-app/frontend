@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Avatar, Hidden } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, Avatar, Button, Hidden } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ArrowDropDown, Menu } from '@material-ui/icons'
 import Form from '@react-form-component/mui'
@@ -58,6 +58,16 @@ const NavBar = ({
         <div className={classes.version}>
           {showVersionInfo && <Hidden smDown><Version /></Hidden>}
         </div>
+        <Button
+          variant='contained'
+          color='default'
+          className={classes.buttonSupport}
+          a
+          href='https://patronite.pl/Wiating.eu'
+          size='medium'
+          target='_blank'
+          rel='noopener noreferrer'
+        >Wesprzyj nas</Button>
         {!authLoading && !isLoggedIn &&
           <Dropdown
             items={languages.map(lang => ({
@@ -125,6 +135,11 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     lineHeight: 'normal',
     color: theme.palette.grey[500],
+  },
+  buttonSupport: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
 }))
 
