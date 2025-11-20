@@ -1,0 +1,220 @@
+import React from 'react'
+import { useSnackbar } from 'notistack'
+import { getPoint } from '../api/getPoint'
+import { addPoint, LocationFormData } from '../api/addPoint'
+import { modifyPoint } from '../api/modifyPoint'
+import { deletePoint } from '../api/deletePoint'
+import { useHistory, useParams } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import parse from 'coord-parser'
+import { activeLocationState, markersState } from '../state'
+import ContentWrapper from '../components/ContentWrapper'
+import LocationForm from '../components/LocationForm'
+import Loader from '../components/Loader'
+import useLanguage from '../utils/useLanguage'
+import useAuth0 from '../utils/useAuth0'
+import { Location } from '../typings'
+
+interface LocationFormContainerProps {
+  isNew?: boolean
+}
+
+interface LocationFormFields {
+  name: string
+  description?: string
+  directions?: string
+  type?: string | number
+  location: string
+  water_exists?: number
+  water_comment?: string
+  fire_exists?: number
+  fire_comment?: string
+  is_disabled?: boolean
+  unpublished?: boolean
+}
+
+const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
+  isNew,
+}) => {
+  const history = useHistory()
+  const { id } = useParams<{ id?: string }>()
+  const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
+  const { translations } = useLanguage()
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState(false)
+  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
+  const [markers, setMarkers] = useRecoilState(markersState)
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+
+  React.useEffect(() => {
+    if (!loadingAuth) {
+      if (!isLoggedIn) {
+        history.push(`/location/${id}`)
+        enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
+      }
+      // Use cached location data if avaliable, otherwise load data from endpoint.
+      // Do it after authentication check to provide bearer token in api request.
+      if (!isNew) {
+        if (!activeLocation && id) {
+          const handleAsync = async () => {
+            try {
+              const data = await getPoint(id)
+              setActiveLocation(data)
+            } catch (error) {
+              setError(true)
+            }
+            setLoading(false)
+          }
+          handleAsync()
+        } else {
+          setLoading(false)
+        }
+      }
+    }
+  }, [loadingAuth])
+
+  // Make sure that form is cleaned up eg. when navigating from edit location
+  // form to new location form.
+  React.useEffect(() => {
+    if (isNew) {
+      closeSnackbar() // It is here only to dismiss the persising "Put point on map" snackbar.
+      const handleAsync = async () => {
+        setLoading(true)
+        setLoading(false)
+      }
+      handleAsync()
+    }
+  }, [isNew])
+
+  // Convert Select option to bool. undefined = null, 1 = true, 2 = false.
+  const mapOptionToBool = (value?: number): boolean | null => {
+    switch (value) {
+      case 1:
+        return true
+      case 2:
+        return false
+      default:
+        return null
+    }
+  }
+
+  const onSubmitLocation = async (fields: LocationFormFields) => {
+    /* eslint-disable camelcase */
+    const {
+      name,
+      description,
+      directions,
+      type,
+      location,
+      water_exists,
+      water_comment,
+      fire_exists,
+      fire_comment,
+      is_disabled,
+      unpublished,
+    } = fields
+
+    try {
+      const { lat, lon } = parse(location)
+      const dataObject = {
+        name,
+        description,
+        directions,
+        location: { lat, lon },
+        type,
+        water_exists: mapOptionToBool(water_exists),
+        water_comment: water_exists && water_comment ? water_comment : null,
+        fire_exists: mapOptionToBool(fire_exists),
+        fire_comment: fire_exists && fire_comment ? fire_comment : null,
+        is_disabled: is_disabled || false,
+        unpublished: unpublished || false,
+      }
+
+      if (isNew) {
+        // New marker creation.
+        const data = await addPoint(dataObject)
+        const newMarkers = [...markers, data]
+        setMarkers(newMarkers)
+        setActiveLocation(data)
+        history.push(`/location/${data.id}`)
+        enqueueSnackbar(translations.newMarkerAdded, { variant: 'success' })
+      } else {
+        // Updating exisitng marker.
+        const { id: locationId } = activeLocation!
+        const data = await modifyPoint(locationId, dataObject)
+        const index = markers.findIndex((item: any) => item.id === data.id)
+        const newMarkers = [
+          ...markers.slice(0, index),
+          data,
+          ...markers.slice(index + 1),
+        ]
+        setMarkers(newMarkers)
+        setActiveLocation(data)
+        history.push(`/location/${locationId}`)
+        enqueueSnackbar(translations.markerUpdated, { variant: 'success' })
+      }
+    } catch (error: any) {
+      if (error.type === 'parseError') {
+        console.error(error.value)
+        enqueueSnackbar(translations.wrongCoordsFormat, { variant: 'error' })
+      } else {
+        console.error(error)
+        enqueueSnackbar(translations.couldNotSaveMarker, { variant: 'error' })
+      }
+    }
+  }
+
+  const onDeleteLocation = async () => {
+    if (!id) return
+    try {
+      await deletePoint(id)
+      history.push('/')
+      setActiveLocation(null)
+      setMarkers(markers.filter((item: any) => item.id !== id) as Location[])
+      enqueueSnackbar(translations.locationDeleted, { variant: 'success' })
+    } catch (err) {
+      console.error(err)
+      enqueueSnackbar(translations.couldNotDeleteLocation, { variant: 'error' })
+    }
+  }
+
+  return (
+    <ContentWrapper>
+      {loading || loadingAuth
+        ? <Loader dark big />
+        : error
+          ? <div>Error!</div>
+          : <LocationForm
+            locationData={activeLocation}
+            onSubmitLocation={onSubmitLocation}
+            updateCurrentMarker={(coords: string) => {
+              try {
+                const { lat, lon } = parse(coords)
+                if (
+                  (typeof lat !== 'undefined' && typeof lon !== 'undefined') &&
+                  (!activeLocation?.location || activeLocation.location.lat !== lat || activeLocation.location.lng !== lon)
+                ) {
+                  setActiveLocation({ ...activeLocation, location: { lat, lng: lon } } as Location)
+                }
+              } catch (err) {
+                console.error(err)
+              }
+            }}
+            cancel={() => {
+              if (activeLocation?.id) {
+                history.goBack()
+              } else {
+                history.push('/')
+              }
+            }}
+            isModerator={isModerator}
+            onDeleteLocation={onDeleteLocation}
+            isNew={isNew}
+          />
+      }
+    </ContentWrapper>
+  )
+}
+
+export default LocationFormContainer
+
