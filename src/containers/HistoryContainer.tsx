@@ -48,4 +48,3 @@ const HistoryContainer = () => {
 }
 
 export default HistoryContainer
-

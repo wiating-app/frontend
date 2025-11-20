@@ -4,4 +4,3 @@ export default (): string => {
     (navigator as any).userLanguage
   return code.includes('pl') ? 'pl' : 'en'
 }
-

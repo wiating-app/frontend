@@ -142,4 +142,3 @@ const LogDetailsContainer: React.FC = () => {
 }
 
 export default LogDetailsContainer
-

@@ -217,4 +217,3 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default LocationPhotos
-

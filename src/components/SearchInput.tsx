@@ -87,4 +87,3 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default withFormControl(SearchInput)
-

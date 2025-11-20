@@ -32,12 +32,14 @@ const LocationInfo = ({
 }: LocationInfoProps) => {
   const classes = useStyles()
   const { translations, language } = useLanguage()
-  const { locationTypes, settings: {
-    enableReport,
-    enableDirectionsField,
-    enableFireField,
-    enableWaterField,
-  } } = useConfig()
+  const {
+    locationTypes, settings: {
+      enableReport,
+      enableDirectionsField,
+      enableFireField,
+      enableWaterField,
+    },
+  } = useConfig()
   const [reportIsOpen, setReportIsOpen] = React.useState(false)
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
   const type = locationTypes.find(item => item.id === selectedLocation.type)
@@ -105,8 +107,8 @@ const LocationInfo = ({
                 {selectedLocation.water_exists === null
                   ? translations.noData
                   : !selectedLocation.water_exists
-                    ? translations.unavailable
-                    : selectedLocation.water_comment || translations.available
+                      ? translations.unavailable
+                      : selectedLocation.water_comment || translations.available
                 }
               </Typography>
             }
@@ -117,8 +119,8 @@ const LocationInfo = ({
                 {selectedLocation.fire_exists === null
                   ? translations.noData
                   : !selectedLocation.fire_exists
-                    ? translations.unavailable
-                    : selectedLocation.fire_comment || translations.available
+                      ? translations.unavailable
+                      : selectedLocation.fire_comment || translations.available
                 }
               </Typography>
             }
@@ -198,4 +200,3 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default LocationInfo
-

@@ -24,4 +24,3 @@ export const getUserLogs = async (params: GetUserLogsParams): Promise<{ logs: Lo
     total: data.total,
   }
 }
-

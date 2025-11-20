@@ -52,7 +52,7 @@ export const Auth0Provider = ({
           const user = await auth0FromHook.getUser()
           const token = await auth0FromHook.getTokenSilently()
           const isAuthenticated = await auth0FromHook.isAuthenticated()
-          api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          api.defaults.headers.common.Authorization = `Bearer ${token}`
           setUser((user as User) || null)
           setIsLoggedIn(isAuthenticated || false)
           checkModerator((user as User) || null)
@@ -63,7 +63,7 @@ export const Auth0Provider = ({
           if (isAuthenticated) {
             const user = await auth0FromHook.getUser()
             const token = await auth0FromHook.getTokenSilently()
-            api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+            api.defaults.headers.common.Authorization = `Bearer ${token}`
             setUser((user as User) || null)
             setIsLoggedIn(isAuthenticated || false)
             checkModerator((user as User) || null)
@@ -125,7 +125,7 @@ export const Auth0Provider = ({
     }
     contextValue.logout = (options?: any) => {
       auth0.logout(options)
-      api.defaults.headers.common['Authorization'] = null as any
+      api.defaults.headers.common.Authorization = null as any
     }
     contextValue.getTokenSilently = async (options?: any) => {
       return await auth0.getTokenSilently(options)
@@ -148,4 +148,3 @@ const useAuth0 = (): Auth0ContextInterface => {
 }
 
 export default useAuth0
-

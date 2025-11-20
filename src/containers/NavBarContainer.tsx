@@ -91,17 +91,19 @@ const NavBarContainer = () => {
 
   const links = [
     ...isModerator ? [{ label: translations.administration, url: '/moderator/log' }] : [],
-    ...isLoggedIn ? [
-      {
-        label: translations.history,
-        url: '/history',
-      },
-      {
-        label: <>{translations.language}: {language.toUpperCase()}</>,
-        callback: () => setLanguageSwitch(true),
-        divider: true,
-      },
-    ] : [],
+    ...isLoggedIn
+      ? [
+          {
+            label: translations.history,
+            url: '/history',
+          },
+          {
+            label: <>{translations.language}: {language.toUpperCase()}</>,
+            callback: () => setLanguageSwitch(true),
+            divider: true,
+          },
+        ]
+      : [],
     { label: translations.informations, url: '/info' },
     ...isMobile ? [{ label: translations.legend, url: '/legend' }] : [],
     ...termsAndConditions ? [{ label: translations.termsAndConditions, url: '/terms-and-conditions' }] : [],
@@ -139,4 +141,3 @@ const NavBarContainer = () => {
 }
 
 export default NavBarContainer
-

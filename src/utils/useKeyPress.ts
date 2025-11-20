@@ -9,4 +9,3 @@ export default function useKeypress(key: string, action: () => void): void {
     return () => window.removeEventListener('keyup', onKeyup)
   }, [key, action])
 }
-

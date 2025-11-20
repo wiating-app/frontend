@@ -11,4 +11,3 @@ export const getPoint = async (id: string): Promise<Location> => {
   const { data } = await api.get<GetPointResponse>(`get_point/${id}`)
   return serializeData(data)
 }
-

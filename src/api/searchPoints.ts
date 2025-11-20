@@ -24,4 +24,3 @@ export const searchPoints = async (params: SearchParams): Promise<Location[]> =>
   const { data } = await api.post<SearchPointsResponse>('search_points', params)
   return data.points.map(item => serializeData(item))
 }
-

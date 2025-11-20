@@ -8,4 +8,3 @@ const LegendPage = () =>
   </Modal>
 
 export default LegendPage
-

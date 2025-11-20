@@ -107,4 +107,3 @@ const useStyles = makeStyles<Theme, StyleProps>(theme => ({
 }))
 
 export default Drawer
-

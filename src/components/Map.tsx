@@ -168,7 +168,7 @@ const Map = ({
         />
         <TileLayer
           url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-          attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`}
+          attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
         />
         <PixiOverlay
           markers={markers.map(item => {
@@ -410,4 +410,3 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default Map
-

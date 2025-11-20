@@ -36,4 +36,3 @@ export const asyncForEach = async <T>(
 export const locationToString = ({ lat, lng }: { lat: number; lng: number }): string => {
   return [lat, lng].toString().replace(',', ', ')
 }
-

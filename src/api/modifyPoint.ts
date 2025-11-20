@@ -15,4 +15,3 @@ export const modifyPoint = async (
   const { data: response } = await api.put<ModifyPointResponse>(`modify_point/${id}`, data)
   return serializeData(response)
 }
-

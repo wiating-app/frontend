@@ -53,4 +53,3 @@ const UnpublishedLocations = ({
 }
 
 export default UnpublishedLocations
-

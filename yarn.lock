@@ -2395,15 +2395,10 @@
     throttle-debounce "^3.0.1"
     validator "^13.7.0"
 
-"@react-leaflet/core@^1.1.1":
+"@react-leaflet/core@1.1.1", "@react-leaflet/core@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@react-leaflet/core/-/core-1.1.1.tgz#827fd05bb542cf874116176d8ef48d5b12163f81"
   integrity sha512-7PGLWa9MZ5x/cWy8EH2VzI4T8q5WpuHbixzCDXqixP/WyqwIrg5NDUPgYuFnB4IEIZF+6nA265mYzswFo/h1Pw==
-
-"@react-leaflet/core@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@react-leaflet/core/-/core-3.0.0.tgz#34ccc280ce7d8ac5c09f2b3d5fffded450bdf1a2"
-  integrity sha512-3EWmekh4Nz+pGcr+xjf0KNyYfC3U2JjnkWsh0zcqaexYqmmB5ZhH37kz41JXGmKzpaMZCnPofBBm64i+YrEvGQ==
 
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
@@ -12539,14 +12534,7 @@ react-leaflet-pixi-overlay@^3.0.0:
     leaflet-pixi-overlay "^1.8.1"
     pixi.js "^5.2.0"
 
-react-leaflet@*, react-leaflet@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-5.0.0.tgz#945d40bad13b69e8606278b19446b00bab57376a"
-  integrity sha512-CWbTpr5vcHw5bt9i4zSlPEVQdTVcML390TjeDG0cK59z1ylexpqC6M1PJFjV8jD7CF+ACBFsLIDs6DRMoLEofw==
-  dependencies:
-    "@react-leaflet/core" "^3.0.0"
-
-react-leaflet@^3.2.5:
+react-leaflet@*, react-leaflet@3.2.5, react-leaflet@^3.2.5, react-leaflet@^5.0.0:
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-3.2.5.tgz#bec0bfab9dd8c2b030ea630f7a0687a60322ca7d"
   integrity sha512-Z3KZ+4SijsRbbrt2I1a3ZDY6+V6Pm91eYTdxTN18G6IOkFRsJo1BuSPLFnyFrlF3WDjQFPEcTPkEgD1VEeAoBg==

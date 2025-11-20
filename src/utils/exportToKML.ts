@@ -1,5 +1,4 @@
-import { Location } from '../typings'
-import { Config } from '../typings'
+import { Location, Config } from '../typings'
 
 const exportToKML = (locations: Location[], config: Config): void => {
   const { locationTypes, branding } = config
@@ -86,4 +85,3 @@ const exportToKML = (locations: Location[], config: Config): void => {
 }
 
 export default exportToKML
-

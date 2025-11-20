@@ -110,4 +110,3 @@ const PhotosFormContainer = () => {
 }
 
 export default PhotosFormContainer
-

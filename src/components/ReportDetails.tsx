@@ -46,7 +46,7 @@ const ReportDetails = ({
 
       <Table
         data={data.report_reason.map((item, index) => ({
-          report_reason: <Typography key={index} variant='caption' gutterBottom>{item}</Typography>
+          report_reason: <Typography key={index} variant='caption' gutterBottom>{item}</Typography>,
         }))}
         labels={[
           { name: translations.reportReason, field: 'report_reason' },
@@ -77,4 +77,3 @@ const ReportDetails = ({
 }
 
 export default ReportDetails
-

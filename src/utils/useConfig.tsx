@@ -62,4 +62,3 @@ const useConfig = (): Config | null => {
 }
 
 export default useConfig
-

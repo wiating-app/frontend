@@ -13,4 +13,3 @@ export const getReports = async (): Promise<Location[]> => {
   })
   return data.points.map(item => serializeData(item))
 }
-

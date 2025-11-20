@@ -25,6 +25,11 @@ module.exports = {
       //  Here is a polyfill.
       buffer: require.resolve('buffer/'),
     },
+    alias: {
+      // Force react-leaflet-custom-control to use the project's react-leaflet version
+      '@react-leaflet/core': path.resolve(__dirname, 'node_modules/@react-leaflet/core'),
+      'react-leaflet': path.resolve(__dirname, 'node_modules/react-leaflet'),
+    },
   },
 
   module: {

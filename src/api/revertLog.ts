@@ -20,4 +20,3 @@ export const revertLog = async (logDetails: LogDetails): Promise<void> => {
     await api.put(`modify_point/${_source.doc_id}`, dataObject)
   }
 }
-

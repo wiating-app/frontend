@@ -58,15 +58,17 @@ const AddButtonContainer = () => {
             history.push('/location/new')
           },
         },
-        ...userLocation && !error ? [{
-          label: translations.inCurrentLocation,
-          icon: <PersonPinCircle />,
-          callback: async () => {
-            const [lat, lon] = userLocation
-            await history.push('/location/new')
-            setActiveLocation({ location: { lat, lng: lon } } as Partial<Location>)
-          },
-        }] : [],
+        ...userLocation && !error
+          ? [{
+              label: translations.inCurrentLocation,
+              icon: <PersonPinCircle />,
+              callback: async () => {
+                const [lat, lon] = userLocation
+                await history.push('/location/new')
+                setActiveLocation({ location: { lat, lng: lon } } as Partial<Location>)
+              },
+            }]
+          : [],
       ]}
       isLoggedIn={isLoggedIn}
     />
@@ -74,4 +76,3 @@ const AddButtonContainer = () => {
 }
 
 export default AddButtonContainer
-

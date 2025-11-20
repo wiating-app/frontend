@@ -29,4 +29,3 @@ export const addPoint = async (data: LocationFormData): Promise<Location> => {
   const { data: response } = await api.post<AddPointResponse>('add_point', data)
   return serializeData(response)
 }
-

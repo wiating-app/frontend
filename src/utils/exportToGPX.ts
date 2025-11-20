@@ -14,16 +14,16 @@ const exportToGPX = (locations: Location[]): void => {
     const date = `${yyyy}-${mm}-${dd}`
 
     const header = [
-      `<?xml version="1.0" encoding="UTF-8"?>`,
-      `<gpx version="1.1" creator="Wiating" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">`,
-      `  <metadata>`,
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<gpx version="1.1" creator="Wiating" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">',
+      '  <metadata>',
       '    <name>Wiating</name>',
       `    <desc>Eksport z aplikacji Wiating z dnia ${date}.</desc>`,
-      `    <link href="https://wiating.eu">`,
-      `      <text>Wiating</text>`,
-      `    </link>`,
+      '    <link href="https://wiating.eu">',
+      '      <text>Wiating</text>',
+      '    </link>',
       `    <time>${date}</time>`,
-      `  </metadata>`,
+      '  </metadata>',
     ]
     const footer = [
       '</gpx>',
@@ -34,8 +34,8 @@ const exportToGPX = (locations: Location[]): void => {
       `  <wpt lat="${location.location.lat}" lon="${location.location.lng}">`,
       `    <name>${location.name}</name>`,
       `    <link href="https://wiating.eu/location/${location.id}">`,
-      `      <text>wiating.eu</text>`,
-      `    </link>`,
+      '      <text>wiating.eu</text>',
+      '    </link>',
       `    <sym>https://wiating.eu/location-icons/${location.type}.svg</sym>`,
       `    <desc>[${locationTypes.find(item => item.id === location.type)?.label.pl || ''}] ${location.description || ''} || Wskazówki dojścia: ${location.directions || 'Brak informacji.'} || Dostęp do wody: ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'} || Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</desc>`,
       '  </wpt>',
@@ -69,4 +69,3 @@ const exportToGPX = (locations: Location[]): void => {
 }
 
 export default exportToGPX
-

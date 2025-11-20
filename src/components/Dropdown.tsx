@@ -70,4 +70,3 @@ const Dropdown = ({ children, items, anchorOrigin }: DropdownProps) => {
 }
 
 export default Dropdown
-

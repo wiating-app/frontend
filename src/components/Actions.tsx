@@ -88,4 +88,3 @@ const Actions = ({ primary, secondary }: ActionsProps) => {
 }
 
 export default Actions
-

@@ -42,4 +42,3 @@ const generateMarkerIcon = (type: string | number, size: number = 40): string | 
 }
 
 export default generateMarkerIcon
-

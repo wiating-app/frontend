@@ -71,4 +71,3 @@ const Export = ({ markers, className }: ExportProps) => {
 }
 
 export default Export
-

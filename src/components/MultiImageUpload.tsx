@@ -153,4 +153,3 @@ const useStyles = makeStyles<import('@material-ui/core/styles').Theme, StyleProp
 }))
 
 export default withFormControl(MultiImageUpload)
-

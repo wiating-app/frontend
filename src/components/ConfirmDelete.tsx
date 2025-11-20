@@ -55,4 +55,3 @@ const ConfirmDelete = ({
 }
 
 export default ConfirmDelete
-

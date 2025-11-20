@@ -47,4 +47,3 @@ const CoordinatesInput = ({
   />
 
 export default withFormControl(CoordinatesInput)
-

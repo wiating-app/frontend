@@ -15,4 +15,3 @@ const Loader = ({ dark, big }: LoaderProps) =>
   />
 
 export default Loader
-

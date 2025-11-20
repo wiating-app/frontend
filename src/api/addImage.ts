@@ -16,4 +16,3 @@ export const addImage = async (
   const { data } = await api.post<AddImageResponse>(`add_image/${locationId}`, fileObject)
   return serializeData(data)
 }
-

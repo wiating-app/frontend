@@ -71,4 +71,3 @@ const useLanguage = (): UseLanguageReturn => {
 }
 
 export default useLanguage
-

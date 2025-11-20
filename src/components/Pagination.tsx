@@ -25,4 +25,3 @@ const Pagination = ({ count, rowsPerPage, page, callback }: PaginationProps) =>
   />
 
 export default Pagination
-

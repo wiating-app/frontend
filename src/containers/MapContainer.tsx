@@ -101,4 +101,3 @@ const MapContainer = (props: MapContainerProps) => {
 }
 
 export default MapContainer
-

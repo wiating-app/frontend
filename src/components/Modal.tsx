@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal as MUIModal, IconButton, Slide } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import history from '../history'
 import useKeyPress from '../utils/useKeyPress'
@@ -57,8 +57,6 @@ interface StyleProps {
   small?: boolean
 }
 
-import { Theme } from '@material-ui/core/styles'
-
 const useStyles = makeStyles<Theme, StyleProps>(theme => ({
   root: {
     display: 'flex',
@@ -96,4 +94,3 @@ const useStyles = makeStyles<Theme, StyleProps>(theme => ({
 }))
 
 export default Modal
-

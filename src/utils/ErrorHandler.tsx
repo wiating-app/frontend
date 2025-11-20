@@ -14,4 +14,3 @@ const ErrorHandler = ({ children }: ErrorHandlerProps) => {
 }
 
 export default ErrorHandler
-

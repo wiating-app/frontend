@@ -136,4 +136,3 @@ export interface Config {
     }
   }
 }
-

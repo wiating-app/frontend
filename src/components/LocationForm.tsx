@@ -40,11 +40,13 @@ const LocationForm = ({
   const [hasWater, setHasWater] = React.useState(false)
   const [hasFire, setHasFire] = React.useState(false)
   const { translations, language } = useLanguage()
-  const { locationTypes, settings: {
-    enableDirectionsField,
-    enableFireField,
-    enableWaterField,
-  } } = useConfig()
+  const {
+    locationTypes, settings: {
+      enableDirectionsField,
+      enableFireField,
+      enableWaterField,
+    },
+  } = useConfig()
 
   // Convert bool to Select option. null = null, true = 1, false = 2.
   const mapBoolToOptions = (value?: boolean | null): number | null => {
@@ -237,4 +239,3 @@ const LocationForm = ({
 }
 
 export default LocationForm
-

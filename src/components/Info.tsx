@@ -136,4 +136,3 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default Info
-

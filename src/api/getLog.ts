@@ -10,4 +10,3 @@ export const getLog = async (id: string): Promise<LogDetails> => {
   const { data } = await api.get<GetLogResponse>(`get_log/${id}`)
   return { _id: id, _source: data as LogSource }
 }
-

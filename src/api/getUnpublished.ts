@@ -11,4 +11,3 @@ export const getUnpublished = async (): Promise<Location[]> => {
   const { data } = await api.get<GetUnpublishedResponse>('get_unpublished', {})
   return data.points.map(item => serializeData(item))
 }
-

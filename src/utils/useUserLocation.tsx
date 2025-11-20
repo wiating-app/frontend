@@ -85,4 +85,3 @@ const useUserLocation = (): UserLocationState => {
 }
 
 export default useUserLocation
-

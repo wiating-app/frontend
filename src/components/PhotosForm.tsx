@@ -41,4 +41,3 @@ const PhotosForm = ({ name, images, handleSubmit, cancel }: PhotosFormProps) => 
 }
 
 export default PhotosForm
-

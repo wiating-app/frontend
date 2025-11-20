@@ -6,4 +6,3 @@ export const reportPoint = async (
 ): Promise<void> => {
   await api.post(`report/${id}`, { report_reason: reportReason })
 }
-

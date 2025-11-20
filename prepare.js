@@ -21,7 +21,7 @@ const applyConfig = async () => {
     const { data } = await customizationApi.get('favicon.png', {
       responseType: 'stream',
     })
-    data.pipe(fsSync.createWriteStream('public/favicon.png'));
+    data.pipe(fsSync.createWriteStream('public/favicon.png'))
 
     // Update tags in index.html
     const indexTemplate = await fs.readFile('public/index-template.html', 'utf8')

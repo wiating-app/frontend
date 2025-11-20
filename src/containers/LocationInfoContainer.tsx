@@ -98,4 +98,3 @@ const LocationInfoContainer: React.FC = () => {
 }
 
 export default LocationInfoContainer
-

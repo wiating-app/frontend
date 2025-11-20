@@ -81,4 +81,3 @@ const useStyles = makeStyles<Theme>(theme => ({
 }))
 
 export default InfoTooltip
-

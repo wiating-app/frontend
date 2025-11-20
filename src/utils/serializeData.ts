@@ -27,4 +27,3 @@ export default (data: any): Location => {
       : new Date(),
   } as Location
 }
-

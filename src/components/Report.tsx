@@ -65,4 +65,3 @@ const Report = ({ handleReport, onClose }: ReportProps) => {
 }
 
 export default Report
-

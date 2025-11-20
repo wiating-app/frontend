@@ -31,4 +31,3 @@ export const getPoints = async (
   }, config)
   return data.points.map(item => serializeData(item))
 }
-
