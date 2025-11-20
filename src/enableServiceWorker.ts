@@ -1,15 +1,15 @@
 import { Workbox } from 'workbox-window'
 
-export default function() {
+export default function(): void {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       const wb = new Workbox('/service-worker.js')
 
       // Fires when the registered service worker has installed but is waiting to activate.
-      wb.addEventListener('waiting', event => {
+      wb.addEventListener('waiting', () => {
         if (window.confirm('Dostępna jest nowsza wersja aplikacji. Czy chcesz przeładować widok?')) {
           // Set up a listener that will reload the page as soon as the previously waiting service worker has taken control.
-          wb.addEventListener('controlling', event => {
+          wb.addEventListener('controlling', () => {
             window.location.reload()
           })
 
@@ -23,3 +23,4 @@ export default function() {
     })
   }
 }
+

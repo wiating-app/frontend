@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
+import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
 import useConfig from './utils/useConfig'
@@ -30,7 +30,7 @@ import LogDetailsContainer from './containers/LogDetailsContainer'
 import HistoryContainer from '././containers/HistoryContainer'
 
 
-const App = ({ history, location: { pathname } }) => {
+const App = ({ history, location: { pathname } }: RouteComponentProps) => {
   const [, setActiveLocation] = useRecoilState(activeLocationState)
   const [editMode, setEditMode] = useRecoilState(editModeState)
   const [, setIsDrawerOpen] = useRecoilState(isDrawerOpenState)

@@ -2,8 +2,11 @@ import React from 'react'
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@material-ui/core/styles'
 import useConfig from './utils/useConfig'
 
+interface ThemeProviderProps {
+  children: React.ReactNode
+}
 
-const ThemeProvider = ({ children }) => {
+const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const { branding: { themeColor, secondaryColor } } = useConfig()
 
   const theme = createTheme({
@@ -15,6 +18,7 @@ const ThemeProvider = ({ children }) => {
         main: secondaryColor || themeColor,
       },
     },
+    // @ts-ignore - custom layout property
     layout: {
       locationTabWidth: 400,
       mobileMiniMapHeight: 200,

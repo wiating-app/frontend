@@ -10,7 +10,7 @@ const customization = require('./customization.json')
 
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.tsx',
 
   output: {
     path: path.join(__dirname, '/build'),
@@ -19,6 +19,7 @@ module.exports = {
   },
 
   resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     fallback: {
       // Buffer required by data-uri-to-buffer has been removed from Webpack 5.
       //  Here is a polyfill.
@@ -28,6 +29,21 @@ module.exports = {
 
   module: {
     rules: [
+
+      {
+        test: /\.(ts|tsx)$/,
+        include: [
+          path.resolve('src'),
+          path.resolve('node_modules', '@react-leaflet'),
+          path.resolve('node_modules', 'react-leaflet'),
+        ],
+        use: {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: false,
+          },
+        },
+      },
 
       {
         test: /\.(js|jsx)$/,
@@ -97,7 +113,7 @@ module.exports = {
     }),
 
     new InjectManifest({
-      swSrc: './src/serviceWorker.js',
+      swSrc: './src/serviceWorker.ts',
       swDest: 'service-worker.js',
       exclude: [
         /_redirects$/,
