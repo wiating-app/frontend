@@ -23,7 +23,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import ContextMenu from './ContextMenu'
 import Control from 'react-leaflet-custom-control'
 import Export from './Export'
-import { Icon } from 'leaflet'
+import { Icon, LatLngBounds } from 'leaflet'
 import Legend from './Legend'
 import PixiOverlay from 'react-leaflet-pixi-overlay'
 import React from 'react'
@@ -57,11 +57,12 @@ const Map = ({
   setStoredPosition,
   activeTypes,
 }: MapProps) => {
-  const [contextMenu, setContextMenu] = React.useState(false)
-  const [previousBounds, setPreviousBounds] = React.useState<any>()
+  const [contextMenu, setContextMenu] = React.useState<boolean>(false)
+  const [previousBounds, setPreviousBounds] = React.useState<LatLngBounds | undefined>()
 
   const mapRef = React.useRef<any>()
   const initiated = !!mapRef?.current
+  const positionInitializedRef = React.useRef(false)
   const [editMode] = useRecoilState(editModeState)
   const [, setSearchResults] = useRecoilState(searchResultsState)
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
@@ -87,17 +88,20 @@ const Map = ({
     }
   }, [activeLocation])
 
+  // Only apply center/bounds on initial mount, not on every prop change
+  // This prevents the map from jumping back to stored position when user pans
   React.useEffect(() => {
-    if (center && !activeLocation && initiated) {
-      mapRef.current.flyTo(center)
+    if (!positionInitializedRef.current && initiated) {
+      if (bounds && !activeLocation) {
+        // Bounds take precedence over center
+        mapRef.current.flyToBounds(bounds)
+        positionInitializedRef.current = true
+      } else if (center && !activeLocation) {
+        mapRef.current.flyTo(center)
+        positionInitializedRef.current = true
+      }
     }
-  }, [center])
-
-  React.useEffect(() => {
-    if (bounds && initiated && !activeLocation) {
-      mapRef.current.flyToBounds(bounds)
-    }
-  }, [bounds, initiated])
+  }, [center, bounds, initiated, activeLocation])
 
   React.useEffect(() => {
     if (isMobile) {
@@ -241,10 +245,24 @@ const Map = ({
             />
           </>
         }
-        {(!isDrawerOpen || !isPhone) &&
-          <>
-            <ZoomControl position='topright' />
-            <Control position='topright'>
+        {(!isDrawerOpen || !isPhone) && <ZoomControl position='topright' />}
+        {/*
+          NOTE: We use container={{ style: { display: ... } }} instead of conditional rendering
+          for Control components from react-leaflet-custom-control.
+
+          The react-leaflet-custom-control library moves DOM nodes to Leaflet's control containers
+          using append/prepend, but doesn't properly clean up when components unmount. When React
+          tries to unmount a conditionally rendered Control component, it attempts to remove the
+          node from its expected parent, but the node has already been moved to Leaflet's container,
+          causing "Failed to execute 'removeChild'" errors.
+
+          Solution: Keep Control components always mounted but hide them with CSS display: none.
+          This avoids the unmount/remount cycle that causes DOM conflicts.
+
+          Note: Standard react-leaflet components like ZoomControl can be conditionally rendered
+          safely as they properly handle React lifecycle and Leaflet's control API.
+        */}
+        <Control position='topright' container={{ style: { display: (!isDrawerOpen || !isPhone) ? 'block' : 'none' } }}>
               <a
                 className={classes.customControl}
                 onClick={() => userLocation &&
@@ -258,13 +276,9 @@ const Map = ({
                 }
               </a>
             </Control>
-            {!editMode &&
-              <Control position='topright'>
+        <Control position='topright' container={{ style: { display: ((!isDrawerOpen || !isPhone) && !editMode) ? 'block' : 'none' } }}>
                 <Export markers={markers} className={classes.customControl} />
               </Control>
-            }
-          </>
-        }
         <Control position='bottomright'>
           {userLocation && (!isDrawerOpen || !isPhone) &&
             <Typography
@@ -275,11 +289,9 @@ const Map = ({
           }
         </Control>
         <ScaleControl position='bottomright' imperial={false} />
-        {!isMobile && !editMode &&
-          <Control position='topleft'>
+        <Control position='topleft' container={{ style: { display: (!isMobile && !editMode) ? 'block' : 'none' } }}>
             <Legend boxed />
           </Control>
-        }
       </MapContainer>
     </div>
   )
@@ -325,7 +337,7 @@ const MapEvents = ({
         setContextMenu(false)
         setActiveLocation(null)
       } else if (editMode && isLoggedIn && !activeLocation) {
-        // Add location by pinning on map mode.
+        // Handle mode of setting location by pinning on map.
         setActiveLocation({ location: e.latlng } as Location)
         history.push('/location/new')
       }

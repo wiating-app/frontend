@@ -1,4 +1,5 @@
 import { atom } from 'recoil'
+import { Location } from './typings'
 
 // Global app state.
 
@@ -17,17 +18,17 @@ export const activeTypesState = atom<any[]>({
   default: [],
 })
 
-export const activeLocationState = atom<any | null>({
+export const activeLocationState = atom<Location | null>({
   key: 'activeLocation',
   default: null,
 })
 
-export const markersState = atom<any[]>({
+export const markersState = atom<Location[]>({
   key: 'markers',
   default: [],
 })
 
-export const searchResultsState = atom<any[]>({
+export const searchResultsState = atom<Location[]>({
   key: 'searchResults',
   default: [],
 })

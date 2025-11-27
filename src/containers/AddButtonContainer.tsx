@@ -65,7 +65,8 @@ const AddButtonContainer = () => {
               callback: async () => {
                 const [lat, lon] = userLocation
                 await history.push('/location/new')
-                setActiveLocation({ location: { lat, lng: lon } } as Partial<Location>)
+                // Partial location will be completed by the form
+                setActiveLocation({ location: { lat, lng: lon } } as any as Location)
               },
             }]
           : [],

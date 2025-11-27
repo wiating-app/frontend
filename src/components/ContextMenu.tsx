@@ -15,7 +15,10 @@ const ContextMenu = ({ addMarker }: ContextMenuProps) => {
     <Paper className={classes.root}>
       <MenuList>
         <MenuItem
-          onClick={addMarker}
+          onClick={(e) => {
+            e.stopPropagation() // Prevent map click event from being triggered.
+            addMarker()
+          }}
         >{translations.addMarkerHere}</MenuItem>
       </MenuList>
     </Paper>

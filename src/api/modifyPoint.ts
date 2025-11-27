@@ -9,7 +9,7 @@ interface ModifyPointResponse {
 }
 
 export const modifyPoint = async (
-  id: string,
+  id: string | number,
   data: LocationFormData
 ): Promise<Location> => {
   const { data: response } = await api.put<ModifyPointResponse>(`modify_point/${id}`, data)

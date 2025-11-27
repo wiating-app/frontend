@@ -43,7 +43,7 @@ const App = () => {
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
     setIsDrawerOpen(pathname.startsWith('/location') || pathname.startsWith('/search'))
-    if (!pathname.startsWith('/location/')) {
+    if (!pathname.startsWith('/location')) {
       setActiveLocation(null)
     }
   }, [pathname])
