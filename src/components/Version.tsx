@@ -1,8 +1,6 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
 import { HelpOutlineRounded } from '@material-ui/icons'
-import InfoTooltip from './InfoTooltip'
-
+import { Tooltip } from './Tooltip'
 
 const Version = () => {
   let name: string
@@ -11,21 +9,22 @@ const Version = () => {
     case 'beta.wiating.eu':
     case 'staging.wiating.eu':
       name = 'Wersja eksperymentalna'
-      info = 'Wersja aplikacji to testów, zawierająca najnowsze funkcjonalności.'
+      info = 'Wersja testowa, zawierająca najnowsze funkcjonalności'
       break
     case 'localhost':
       name = 'Localhost'
-      info = 'Frontend serwowany lokalnie.'
+      info = 'Frontend serwowany lokalnie'
       break
     default:
       name = 'Wersja stabilna'
-      info = 'Wersja oficjalna, przetestowana przez społeczność użytkowników.'
+      info = 'Wersja oficjalna, przetestowana przez społeczność użytkowników'
       break
   }
   return (
-    <Typography variant='caption'>
-      {name} <InfoTooltip icon={HelpOutlineRounded}>{info}</InfoTooltip>
-    </Typography>
+    <Tooltip content={info} position="below" tooltipClassName="text-xs text-white">
+    {name}{' '}
+      <HelpOutlineRounded className="inline-block align-middle text-base" />
+    </Tooltip>
   )
 }
 

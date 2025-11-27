@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
-import { makeStyles } from '@material-ui/core/styles'
 import useConfig from '../utils/useConfig'
 
 interface LogoProps {
@@ -9,11 +8,10 @@ interface LogoProps {
 }
 
 const Logo = ({ className }: LogoProps) => {
-  const classes = useStyles()
   const { branding } = useConfig()
 
   return (
-    <Link to='/' className={classNames(classes.root, className)}>
+    <Link to='/' className={classNames('flex items-center', className)}>
       <img
         src={`${process.env.CUSTOMIZATION_URL}/purelogo.png`}
         srcSet={`${process.env.CUSTOMIZATION_URL}/purelogo@2x.png 2x`}
@@ -22,24 +20,11 @@ const Logo = ({ className }: LogoProps) => {
       <img
         src={`${process.env.CUSTOMIZATION_URL}/logotype.png`}
         srcSet={`${process.env.CUSTOMIZATION_URL}/logotype@2x.png 2x`}
-        className={classes.typo}
+        className="ml-2 hidden sm:block"
         alt=''
       />
     </Link>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  typo: {
-    marginLeft: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-}))
 
 export default Logo

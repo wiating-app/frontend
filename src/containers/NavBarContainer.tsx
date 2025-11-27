@@ -15,7 +15,6 @@ import LanguageSwitcher from '../components/LanguageSwitcher'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
 import history from '../history'
-import { Location } from '../typings'
 
 const languages = ['pl', 'en']
 

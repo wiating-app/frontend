@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Menu, MenuItem } from '@material-ui/core'
+import classNames from 'classnames'
 
 interface DropdownItem {
   label: React.ReactNode
@@ -19,52 +19,105 @@ interface DropdownProps {
 }
 
 const Dropdown = ({ children, items, anchorOrigin }: DropdownProps) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [isOpen, setIsOpen] = React.useState(false)
+  const dropdownRef = React.useRef<HTMLDivElement>(null)
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
+  const handleClick = () => {
+    setIsOpen(!isOpen)
   }
 
   const handleClose = () => {
-    setAnchorEl(null)
+    setIsOpen(false)
   }
+
+  React.useEffect(() => {
+    if (!isOpen) return
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        handleClose()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isOpen])
 
   const defaultAnchorOrigin = {
     vertical: 'bottom' as const,
     horizontal: 'right' as const,
   }
 
+  const origin = anchorOrigin || defaultAnchorOrigin
+
+  const getMenuPositionClasses = () => {
+    const vertical = origin.vertical === 'top'
+      ? 'bottom-full mb-1'
+      : 'top-full mt-1'
+    const horizontal =
+      origin.horizontal === 'left'
+        ? 'left-0'
+        : origin.horizontal === 'center'
+          ? 'left-1/2 -translate-x-1/2'
+          : 'right-0'
+    return `${vertical} ${horizontal}`
+  }
+
   return (
-    <div>
-      <Button
-        aria-controls='simple-menu'
-        color='inherit'
-        aria-haspopup='true'
+    <div className="relative" ref={dropdownRef}>
+      <button
+        type="button"
         onClick={handleClick}
-      >{children}</Button>
-      <Menu
-        id='simple-menu'
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        getContentAnchorEl={null}
-        anchorOrigin={anchorOrigin || defaultAnchorOrigin}
+        className="flex items-center bg-transparent border-none cursor-pointer p-0 text-inherit"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
       >
-        {items.map((item, index) => item.url
-          ? <MenuItem
-            component={Link}
-            to={item.url}
-            key={index}
-            onClick={() => handleClose()}
-            divider={item.divider}
-          >{item.label}</MenuItem>
-          : <MenuItem key={index} divider={item.divider} onClick={() => {
-            item.callback?.()
-            handleClose()
-          }}>{item.label}</MenuItem>
-        )}
-      </Menu>
+        {children}
+      </button>
+      {isOpen && (
+        <div
+          className={classNames(
+            'absolute z-50 min-w-[160px] w-auto bg-white rounded-md shadow-lg py-1 border border-gray-200',
+            getMenuPositionClasses()
+          )}
+          role="menu"
+          aria-orientation="vertical"
+        >
+          {items.map((item, index) => {
+            const showDivider = item.divider && index > 0
+            const itemClasses = 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer no-underline whitespace-nowrap'
+
+            return (
+              <React.Fragment key={index}>
+                {showDivider && <div className="bg-gray-200 h-px" />}
+                {item.url
+                  ? (
+                      <Link
+                        to={item.url}
+                        className={itemClasses}
+                        onClick={handleClose}
+                      >
+                        {item.label}
+                      </Link>
+                    )
+                  : (
+                      <div
+                        className={itemClasses}
+                        onClick={() => {
+                          item.callback?.()
+                          handleClose()
+                        }}
+                      >
+                        {item.label}
+                      </div>
+                    )}
+              </React.Fragment>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
