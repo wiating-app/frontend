@@ -1,5 +1,4 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 
 interface LayoutProps {
   appBar: React.ReactNode
@@ -7,7 +6,6 @@ interface LayoutProps {
 }
 
 const Layout = ({ appBar, children }: LayoutProps) => {
-  const classes = useStyles()
   const [documentHeight, setDocumentHeight] = React.useState<string>()
 
   React.useEffect(() => {
@@ -27,28 +25,15 @@ const Layout = ({ appBar, children }: LayoutProps) => {
 
   return (
     <div
-      className={classes.root}
+      className="flex flex-col h-screen"
       style={documentHeight ? { height: documentHeight } : {}}
     >
       {appBar}
-      <div className={classes.content}>
+      <div className="flex-1 flex overflow-hidden">
         {children}
       </div>
     </div>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-  },
-  content: {
-    flexGrow: 1,
-    display: 'flex',
-    overflow: 'hidden',
-  },
-}))
 
 export default Layout
