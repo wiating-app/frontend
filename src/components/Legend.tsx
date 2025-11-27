@@ -1,9 +1,7 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
 import { activeTypesState } from '../state'
 import classNames from 'classnames'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
-import { makeStyles, Theme } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
 import { useRecoilState } from 'recoil'
@@ -13,7 +11,6 @@ interface LegendProps {
 }
 
 const Legend = ({ boxed = false }: LegendProps) => {
-  const classes = useStyles({ boxed })
   const [activeTypes, setActiveTypes] = useRecoilState(activeTypesState)
   const { translations, language } = useLanguage()
   const { locationTypes } = useConfig()
@@ -30,72 +27,60 @@ const Legend = ({ boxed = false }: LegendProps) => {
   }
 
   return (
-    <div className={classes.root}>
-      <Typography
-        variant={boxed ? 'subtitle2' : 'h5'}
-        className={classes.label}
-      >{translations.legend}:</Typography>
-      {locationTypes.map(({ id, label }) =>
-        <div
-          className={classNames(classes.item, {
-            [classes.active]: activeTypes.includes(id) || !activeTypes.length,
-          })}
-          key={id}
-          onClick={() => handleOnClick(id)}
-        >
-          <div
-            dangerouslySetInnerHTML={{ __html: generateMarkerIcon(id, boxed ? 24 : 30) }}
-            className={classes.icon}
-          />
-          <Typography variant={boxed ? 'caption' : 'body1'}>
-            {label[language]}
-          </Typography>
-        </div>
+    <div
+      className={classNames(
+        'rounded min-w-[168px]',
+        {
+          'bg-white/85 pt-2 pb-2': boxed,
+          'bg-transparent': !boxed,
+        }
       )}
+    >
+      <div
+        className={classNames(
+          {
+            'pl-2 pb-1': boxed,
+            'pl-0 pb-2': !boxed,
+          }
+        )}
+      >
+        <span className={boxed ? 'text-sm font-medium' : 'text-2xl font-medium'}>
+          {translations.legend}:
+        </span>
+      </div>
+      {locationTypes.map(({ id, label }) => {
+        const isActive = activeTypes.includes(id) || !activeTypes.length
+        return (
+          <div
+            key={id}
+            className={classNames(
+              'flex items-center cursor-pointer hover:bg-white',
+              {
+                'pt-1 pb-1 pl-2 pr-2': boxed,
+                'pt-2 pb-2 pl-0 pr-0': !boxed,
+                'opacity-50': !isActive,
+                'opacity-100': isActive,
+              }
+            )}
+            onClick={() => handleOnClick(id)}
+          >
+            <div
+              dangerouslySetInnerHTML={{ __html: generateMarkerIcon(id, boxed ? 24 : 30) }}
+              className="mr-1.5 -mb-1.5 -ml-0.5"
+            />
+            <span className={classNames(
+              boxed ? 'text-xs' : 'text-base',
+              {
+                'font-medium': isActive,
+              }
+            )}>
+              {label[language]}
+            </span>
+          </div>
+        )
+      })}
     </div>
   )
 }
-
-interface StyleProps {
-  boxed: boolean
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(theme => ({
-  root: {
-    backgroundColor: ({ boxed }) => boxed ? 'rgba(255,255,255,0.85)' : 'transparent',
-    paddingTop: ({ boxed }) => boxed ? theme.spacing(1) : 0,
-    paddingBottom: ({ boxed }) => boxed ? theme.spacing(1) : 0,
-    borderRadius: 4,
-    minWidth: 168,
-  },
-  label: {
-    paddingLeft: ({ boxed }) => boxed ? theme.spacing(1) : 0,
-    paddingBottom: ({ boxed }) => boxed ? 4 : theme.spacing(1),
-  },
-  icon: {
-    marginRight: 6,
-    marginBottom: -5,
-    marginLeft: -2,
-  },
-  item: {
-    paddingTop: ({ boxed }) => boxed ? 4 : theme.spacing(1),
-    paddingBottom: ({ boxed }) => boxed ? 4 : theme.spacing(1),
-    paddingLeft: ({ boxed }) => boxed ? theme.spacing(1) : 0,
-    paddingRight: ({ boxed }) => boxed ? theme.spacing(1) : 0,
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    opacity: 0.5,
-    '&:hover': {
-      backgroundColor: 'white',
-    },
-  },
-  active: {
-    opacity: 1,
-    '& span': {
-      fontWeight: theme.typography.fontWeightMedium,
-    },
-  },
-}))
 
 export default Legend

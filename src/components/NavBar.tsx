@@ -60,19 +60,19 @@ const NavBar = ({
       className={classNames(
         'relative z-[1201] shadow',
         {
-          'hidden sm:block': isDrawerOpen,
+          'hidden md:block': isDrawerOpen,
         }
       )}
       style={{ backgroundColor: lightTheme ? 'transparent' : themeColor || undefined }}
       id='cy-navbar'
     >
       <div className="flex items-center min-h-[64px] px-4">
-        <Logo className="mr-4 hidden sm:flex" />
+        <Logo className="mr-4 hidden lg:flex" />
         <Form
           fields={['phrase']}
           onChange={(fields: any) => onSearch(fields.phrase)}
           runOnChangeInitially
-          className="w-[202px] sm:w-auto"
+          className="w-[202px] md:w-auto"
         >
           <SearchInput
             name='phrase'
@@ -82,7 +82,7 @@ const NavBar = ({
           />
         </Form>
         <div className="flex-1 ml-2 opacity-30">
-          {showVersionInfo && <div className="hidden sm:block"><Version /></div>}
+          {showVersionInfo && <div className="hidden lg:block"><Version /></div>}
         </div>
         <div className="flex gap-4 items-center text-white">
           <Button
@@ -113,7 +113,7 @@ const NavBar = ({
                   <Avatar alt={user?.name} src={user?.picture}>
                     {!user?.picture && `${user?.given_name?.charAt(0) || ''}${user?.family_name?.charAt(0) || ''}`}
                   </Avatar>
-                  <span className="ml-2 normal-case text-white text-md whitespace-nowrap hidden sm:inline">{user?.name && user.name}</span>
+                  <span className="ml-2 normal-case text-white text-md whitespace-nowrap hidden md:inline">{user?.name && user.name}</span>
                   <ArrowDropDown className="text-white" />
                 </div>
                 : <Menu className="text-white" />
