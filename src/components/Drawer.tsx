@@ -1,21 +1,22 @@
-import {
-  IconButton,
-  Drawer as MUIDrawer,
-} from '@material-ui/core'
-import { makeStyles, useTheme, Theme } from '@material-ui/core/styles'
-
+import { useTheme } from '@material-ui/core/styles'
 import { Close } from '@material-ui/icons'
-import PerfectScrollbar from 'react-perfect-scrollbar'
 import React from 'react'
 import { isDrawerOpenState } from '../state'
 import useKeyPress from '../utils/useKeyPress'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useRecoilState } from 'recoil'
 import { useHistory, useLocation } from 'react-router-dom'
+import IconButton from './IconButton'
+import classNames from 'classnames'
+import PerfectScrollbar from 'react-perfect-scrollbar'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
 interface DrawerProps {
   children: React.ReactNode
 }
+
+export const DRAWER_WIDTH = 400
+const MOBILE_MINI_MAP_HEIGHT = 200
 
 const Drawer: React.FC<DrawerProps> = ({
   children,
@@ -24,7 +25,6 @@ const Drawer: React.FC<DrawerProps> = ({
   const location = useLocation()
   const { pathname } = location
   const coverMapOnMobile = pathname.startsWith('/search')
-  const classes = useStyles(coverMapOnMobile)
   const theme = useTheme()
   const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
@@ -35,75 +35,48 @@ const Drawer: React.FC<DrawerProps> = ({
     handleOnClose()
   })
 
+  const mobileHeight = coverMapOnMobile
+    ? '100vh'
+    : `calc(100vh - ${MOBILE_MINI_MAP_HEIGHT}px)`
+
   return (
-    <MUIDrawer
-      open={isDrawerOpen}
-      variant='persistent'
-      anchor={isNotSmartphone ? 'left' : 'bottom'}
-      className={classes.drawer}
-      classes={{ paper: classes.drawerPaper }}
+    <div
+      className={classNames(
+        'fixed z-[1200] bg-white flex-shrink-0 transition-transform duration-300 ease-in-out shadow-2xl bottom-0',
+        isNotSmartphone ? 'top-16 left-0' : 'left-0 right-0',
+      )}
+      style={{
+        ...(isNotSmartphone
+          ? {
+              width: `${DRAWER_WIDTH}px`,
+              transform: isDrawerOpen ? 'translateX(0)' : 'translateX(-100%)',
+            }
+          : {
+              height: mobileHeight,
+              transform: isDrawerOpen ? 'translateY(0)' : 'translateY(100%)',
+            }),
+      }}
     >
-      <div className={classes.toolbar} />
-      <PerfectScrollbar>
-        <div className={classes.inner}>
-          <IconButton
-            size='small'
-            className={classes.close}
-            aria-label='close'
-            onClick={() => history.push('/')}
-          ><Close /></IconButton>
-          {children}
-        </div>
+
+      {/* Scrollable content */}
+      <PerfectScrollbar
+        options={{
+          suppressScrollX: true,
+        }}
+        className="flex flex-col min-h-full"
+      >
+        <IconButton
+          size='small'
+          className="absolute top-2 right-2 z-[1000] bg-white/67 hover:bg-white/90"
+          aria-label='close'
+          onClick={() => history.push('/')}
+        >
+          <Close />
+        </IconButton>
+        {children}
       </PerfectScrollbar>
-    </MUIDrawer>
+    </div>
   )
 }
-
-interface StyleProps {
-  coverMapOnMobile: boolean
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(theme => ({
-  drawerPaper: {
-    borderTop: 'none',
-    borderRight: 'none',
-    height: ({ coverMapOnMobile }) =>
-      `calc(100vh - ${(coverMapOnMobile ? 0 : (theme as any).layout.mobileMiniMapHeight)}px)`,
-    boxShadow: theme.shadows[14],
-    [theme.breakpoints.up('sm')]: {
-      width: (theme as any).layout.locationTabWidth,
-      height: '100% !important',
-      boxShadow: theme.shadows[3],
-    },
-  },
-  drawer: {
-    flexShrink: 0,
-  },
-  toolbar: {
-    [theme.breakpoints.up('sm')]: {
-      ...theme.mixins.toolbar,
-    },
-  },
-  inner: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100%',
-    overflowX: 'hidden',
-    [theme.breakpoints.down('sm')]: {
-      boxShadow: theme.shadows[4],
-    },
-  },
-  close: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    right: theme.spacing(1),
-    zIndex: theme.zIndex.mobileStepper,
-    backgroundColor: 'rgba(255, 255, 255, 0.67)',
-    '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    },
-  },
-}))
 
 export default Drawer

@@ -1,17 +1,18 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
 
-import { AddAPhoto, Close } from '@material-ui/icons'
-import { Box, Button, IconButton, Modal, Tooltip } from '@material-ui/core'
-
+import { AddAPhoto, KeyboardBackspace } from '@material-ui/icons'
 import { Carousel } from 'react-responsive-carousel'
 import ImageGallery from 'react-image-gallery'
 import Loader from './Loader'
 import React from 'react'
+import { createPortal } from 'react-dom'
 import loadImage from 'image-promise'
-import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
 import { Location, Image } from '../typings'
+import Button from './Button'
+import IconButton from './IconButton'
+import { Tooltip } from './Tooltip'
 
 interface LocationPhotosProps {
   location: Location
@@ -29,7 +30,6 @@ const LocationPhotos = ({
   uploading,
   uploadImages,
 }: LocationPhotosProps) => {
-  const classes = useStyles()
   const { translations } = useLanguage()
   const [openModal, setOpenModal] = React.useState(false)
   const [currentPhoto, setCurrentPhoto] = React.useState(0)
@@ -59,161 +59,101 @@ const LocationPhotos = ({
   }, [location])
 
   return (
-    <div className={classes.root}>
+    <div className="relative bg-gray-300 h-[50vw] sm:h-[260px] animate-fade-in">
       {loading || uploading
-        ? <div className={classes.imageWrapper}>
-          <div className={classes.loader}><Loader big /></div>
-        </div>
+        ? (
+            <div className="h-[260px] max-sm:h-[50vw]">
+              <div className="h-full flex items-center justify-center">
+                <Loader big />
+              </div>
+            </div>
+          )
         : location.images?.length
-          ? <>
-            <Modal
-              open={openModal}
-              onClose={() => setOpenModal(false)}
-              disableAutoFocus
-              disableEnforceFocus
-            >
-              <Box boxShadow={3} className={classes.modalContent}>
-                <ImageGallery
-                  items={preparedImages}
-                  showPlayButton={false}
-                  showFullscreenButton={false}
-                  startIndex={currentPhoto}
-                  onSlide={(index: number) => setCurrentPhoto(index)}
-                />
-                <IconButton
-                  className={classes.close}
-                  onClick={() => setOpenModal(false)}
-                ><Close /></IconButton>
-              </Box>
-            </Modal>
-            <Carousel
-              showArrows
-              emulateTouch
-              showThumbs={false}
-              onChange={(index: number) => setCurrentPhoto(index)}
-            >
-              {preparedImages.map((image, i) =>
-                <div
-                  key={i}
-                  className={classes.imageWrapper}
-                  onClick={() => setOpenModal(true)}
+          ? (
+              <>
+                {openModal && createPortal(
+                  <div
+                    className="fixed inset-0 z-[1300] flex items-center justify-center bg-black/90"
+                    onClick={() => setOpenModal(false)}
+                  >
+                    <div
+                      className="absolute w-full md:left-0 md:right-0 md:w-auto"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <style>{`
+                        /* ensure full height for gallery container and slides */
+                        .image-gallery-image {
+                          height: 70vh;
+                        }
+                      `}</style>
+                      <ImageGallery
+                        items={preparedImages}
+                        showPlayButton={false}
+                        showFullscreenButton={false}
+                        startIndex={currentPhoto}
+                        onSlide={(index: number) => setCurrentPhoto(index)}
+                      />
+                    </div>
+                      <IconButton
+                        className="absolute top-3 left-3 z-[1400]"
+                        onClick={() => setOpenModal(false)}
+                        transparent
+                      >
+                        <KeyboardBackspace />
+                      </IconButton>
+                  </div>,
+                  document.body
+                )}
+                <style>{`
+                  /* react-responsive-carousel: spacing for navigation dots */
+                  .carousel .control-dots {
+                    margin-bottom: 24px;
+                  }
+                `}</style>
+                <Carousel
+                  showArrows
+                  emulateTouch
+                  showThumbs={false}
+                  onChange={(index: number) => setCurrentPhoto(index)}
                 >
-                  <img src={image.thumbnail} alt='' className={classes.image} />
-                </div>
-              )}
-            </Carousel>
-          </>
-          : <div className={classes.imageWrapper}>
-            <img src='/no-image.png' alt='No image' className={classes.image} />
-          </div>
+                  {preparedImages.map((image, i) => (
+                    <div
+                      key={i}
+                      className="h-[260px] max-sm:h-[50vw] cursor-pointer"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      <img
+                        src={image.thumbnail}
+                        alt=""
+                        className="object-cover w-full h-full"
+                        style={{ minWidth: 0, minHeight: 0, flexShrink: 0 }}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+              </>
+            )
+          : (
+              <div className="h-[260px] max-sm:h-[50vw]">
+                <img
+                  src="/no-image.png"
+                  alt="No image"
+                  className="object-cover w-full h-full"
+                  style={{ minWidth: 0, minHeight: 0, flexShrink: 0 }}
+                />
+              </div>
+            )
       }
-      <Tooltip title={translations.addPhoto} placement='bottom-start'>
-        <Button
-          className={classes.addPhoto}
-          variant='contained'
-          color='primary'
+        <button
+          className="absolute top-2 left-2 px-1.5 text-gray-800 bg-gray-200 hover:bg-gray-100 border-none cursor-pointer rounded"
           onClick={uploadImages}
-        ><AddAPhoto /></Button>
-      </Tooltip>
+        >
+          <Tooltip content={translations.addPhoto} position="below">
+            <AddAPhoto />
+          </Tooltip>
+        </button>
     </div>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  '@keyframes appear': {
-    '0%': {
-      height: 0,
-      opacity: 0,
-      backgroundColor: 'transparent',
-    },
-    '100%': {
-      height: '50vw',
-      opacity: 1,
-      backgroundColor: theme.palette.grey[300],
-    },
-  },
-  root: {
-    position: 'relative',
-    height: 240,
-    backgroundColor: theme.palette.grey[300],
-    overflow: 'hidden',
-    [theme.breakpoints.down('xs')]: {
-      animation: `$appear 500ms ${theme.transitions.easing.easeInOut} forwards`,
-    },
-    '& .carousel .control-dots': {
-      marginBottom: theme.spacing(3),
-    },
-  },
-  imageWrapper: {
-    height: 240,
-    [theme.breakpoints.down('xs')]: {
-      height: '50vw',
-    },
-  },
-  image: {
-    objectFit: 'cover',
-    width: '100%',
-    height: '100%',
-  },
-  loader: {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modalContent: {
-    position: 'relative',
-    backgroundColor: 'white',
-    height: '100vh',
-    [theme.breakpoints.up('md')]: {
-      width: '80vw',
-      height: '80vh',
-      marginTop: '6vw',
-      marginLeft: '10vw',
-    },
-    '& .image-gallery, & .image-gallery-content, & .image-gallery-swipe, & .image-gallery-slides, & .image-gallery-slides *': {
-      height: '100%',
-    },
-    '& .image-gallery-slide-wrapper': {
-      height: 'calc(100% - 80px)',
-      [theme.breakpoints.up('sm')]: {
-        height: 'calc(100% - 110px)',
-      },
-    },
-    '& .image-gallery-image': {
-      backgroundColor: theme.palette.grey[900],
-      height: '100%',
-      '& img': {
-        objectFit: 'contain',
-        width: '100%',
-        height: '100%',
-      },
-    },
-  },
-  close: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    right: theme.spacing(1),
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-    '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    },
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-  addPhoto: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    left: theme.spacing(1),
-    padding: '1px 6px',
-    zIndex: 1,
-    color: theme.palette.grey[800],
-    backgroundColor: 'rgba(255, 255, 255, 0.67)',
-    '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    },
-  },
-}))
 
 export default LocationPhotos

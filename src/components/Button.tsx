@@ -1,12 +1,12 @@
 import React from 'react'
 import classNames from 'classnames'
 import useConfig from '../utils/useConfig'
+import { Link } from 'react-router-dom'
 
 type ButtonProps = {
   variant?: 'default' | 'primary' | 'secondary' | 'bare' | 'outlined'
   size?: 'small' | 'medium' | 'large'
   href?: string
-  component?: React.ElementType
   className?: string
   disabled?: boolean
   onClick?: React.MouseEventHandler<HTMLElement>
@@ -17,15 +17,15 @@ type ButtonProps = {
   id?: string
   role?: string
   title?: string
+  to?: string
 }
 
 const Button = ({
-  variant = 'bare',
+  variant = 'default',
   size = 'medium',
   className,
   children,
   href,
-  component,
   disabled = false,
   onClick,
   target,
@@ -34,6 +34,7 @@ const Button = ({
   id,
   role,
   title,
+  to,
 }: ButtonProps) => {
   const { branding: { themeColor, secondaryColor } } = useConfig()
 
@@ -56,9 +57,9 @@ const Button = ({
 
   // Variant class mappings
   const variantClasses = {
-    default: 'bg-gray-300 text-gray-800 hover:bg-gray-400 shadow-md hover:shadow-lg',
-    primary: colorValue ? 'text-white shadow-md hover:shadow-lg' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg',
-    secondary: colorValue ? 'text-white shadow-md hover:shadow-lg' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg',
+    default: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
+    primary: colorValue ? 'text-white' : 'bg-blue-600 hover:bg-blue-700 text-white',
+    secondary: colorValue ? 'text-white' : 'bg-blue-600 hover:bg-blue-700 text-white',
     bare: 'bg-transparent text-gray-700 hover:bg-gray-100',
     outlined: 'border-2 border-gray-300 text-gray-700 bg-transparent hover:bg-gray-50',
   }
@@ -95,8 +96,8 @@ const Button = ({
   const style = getStyle()
 
   // Render as anchor if href is provided
-  if (href || component === 'a') {
-    const Component = component || 'a'
+  if (href || to) {
+    const Component = to ? Link : 'a'
     return (
       <Component
         href={href}
@@ -109,6 +110,7 @@ const Button = ({
         id={id}
         role={role}
         title={title}
+        to={to}
       >
         {children}
       </Component>

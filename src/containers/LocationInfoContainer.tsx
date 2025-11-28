@@ -11,7 +11,6 @@ import useLanguage from '../utils/useLanguage'
 import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
-import { Location } from '../typings'
 
 const LocationInfoContainer: React.FC = () => {
   const history = useHistory()

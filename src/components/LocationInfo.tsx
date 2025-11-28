@@ -1,21 +1,13 @@
-import {
-  Button,
-  ButtonGroup,
-  Chip,
-  Grid,
-  Typography,
-  Divider,
-} from '@material-ui/core'
 import { formatDate, roundLatLng } from '../utils/helpers'
-
 import { Link } from 'react-router-dom'
 import React from 'react'
 import Report from './Report'
 import UtilityButtons from './UtilityButtons'
-import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
 import { Location } from '../typings'
+import Button from './Button'
+import Chip from './Chip'
 
 interface LocationInfoProps {
   loggedIn: boolean
@@ -30,7 +22,6 @@ const LocationInfo = ({
   selectedLocation,
   handleReport,
 }: LocationInfoProps) => {
-  const classes = useStyles()
   const { translations, language } = useLanguage()
   const {
     locationTypes, settings: {
@@ -48,61 +39,53 @@ const LocationInfo = ({
   const roundedLng = roundLatLng(selectedLocation.location.lng)
 
   return (
-    <div className={classes.root} id='cy-locationinfo'>
+    <div className="relative flex flex-col p-4 pt-8 shadow-md flex-grow" id='cy-locationinfo'>
       <UtilityButtons
         id={selectedLocation.id}
         coords={selectedLocation.location}
       />
-      <div className={classes.main}>
-        <Typography
-          variant='h5'
-        >{selectedLocation.name}</Typography>
-        {selectedLocation.is_disabled &&
-          <Chip
-            size='small'
-            color='secondary'
-            label={translations.isDisabled}
-          />
-        }
-        <Typography
-          variant='body2'
-          color='textSecondary'
-          gutterBottom
-          className={classes.meta}
-        >
-          <Grid container spacing={1}>
-            <Grid item>{typeLabel}</Grid>
-            <Grid item>|</Grid>
-            <Grid item>{roundedLat}, {roundedLng}</Grid>
-          </Grid>
-        </Typography>
+      <div className="flex-grow">
+        <div className="flex items-center gap-2">
+          <div className="text-2xl font-medium leading-tight">{selectedLocation.name}</div>
+          {selectedLocation.is_disabled && (
+            <Chip
+              size='small'
+              color='secondary'
+              label={translations.isDisabled}
+            />
+          )}
+        </div>
+        <div className="text-sm text-gray-500 mt-0.5 mb-4">
+          <div className="flex items-center gap-2 flex-wrap">
+            <div>{typeLabel}</div>
+            <div>|</div>
+            <div>{roundedLat}, {roundedLng}</div>
+          </div>
+        </div>
 
-        <Typography variant='subtitle2' className={classes.paddedText}>
+        <div className="text-sm font-medium text-gray-500 mt-4 mb-4">
           {translations.description}
-        </Typography>
+        </div>
 
-        <Typography variant='body1' className={classes.paddedText}>
+        <div className="text-base mb-4">
           {selectedLocation.description}
-        </Typography>
+        </div>
 
-        {enableDirectionsField && selectedLocation.directions &&
+        {enableDirectionsField && selectedLocation.directions && (
           <>
-            <Typography variant='subtitle2' className={classes.paddedText}>
+            <div className="text-sm font-medium text-gray-500 mt-4 mb-4">
               {translations.directions}
-            </Typography>
-            <Typography variant='body1' className={classes.paddedText}>
+            </div>
+            <div className="text-base mb-4">
               {selectedLocation.directions}
-            </Typography>
+            </div>
           </>
-        }
+        )}
 
-        <Divider />
-
-        {(enableFireField || enableWaterField) &&
-          <div className={classes.paddedText}>
-
-            {enableWaterField &&
-              <Typography variant='body2' gutterBottom>
+        {(enableFireField || enableWaterField) && (
+          <div>
+            {enableWaterField && (
+              <div className="text-sm">
                 {translations.waterLabel}:{' '}
                 {selectedLocation.water_exists === null
                   ? translations.noData
@@ -110,11 +93,11 @@ const LocationInfo = ({
                       ? translations.unavailable
                       : selectedLocation.water_comment || translations.available
                 }
-              </Typography>
-            }
+              </div>
+            )}
 
-            {enableFireField &&
-              <Typography variant='body2'>
+            {enableFireField && (
+              <div className="text-sm">
                 {translations.fireLabel}:{' '}
                 {selectedLocation.fire_exists === null
                   ? translations.noData
@@ -122,81 +105,54 @@ const LocationInfo = ({
                       ? translations.unavailable
                       : selectedLocation.fire_comment || translations.available
                 }
-              </Typography>
-            }
-
+              </div>
+            )}
           </div>
-        }
-
+        )}
       </div>
 
-      <div className={classes.footer}>
-        {updatedAt &&
-          <Typography
-            component='div'
-            variant='caption'
-            align='right'
-            color='textSecondary'
-            >{translations.lastUpdate}: {formatDate(updatedAt)}</Typography>
-        }
-        {loggedIn &&
-          <ButtonGroup
-            size='small'
-            variant='text'
-          >
+      <div className="h-px bg-gray-200 mt-5 mb-4" />
+
+      <div className="flex flex-col items-end">
+        {updatedAt && (
+          <div className="text-xs text-gray-600 text-right mb-2">
+            {translations.lastUpdate}: {formatDate(updatedAt)}
+          </div>
+        )}
+        {loggedIn && (
+          <div className="flex gap-2">
             {isModerator
-              ? <Button
-                component={Link}
-                to={`/moderator/log?id=${selectedLocation.id}`}
-              >Wyświetl logi</Button>
-              : enableReport && <Button
-                onClick={() => setReportIsOpen(true)}
-              >{translations.report}</Button>
+              ? (
+                  <Button
+                    to={`/moderator/log?id=${selectedLocation.id}`}
+                  >
+                    Wyświetl logi
+                  </Button>
+                )
+              : enableReport && (
+                <Button
+                  onClick={() => setReportIsOpen(true)}
+                >
+                  {translations.report}
+                </Button>
+              )
             }
             <Button
-              component={Link}
               to={`/location/${selectedLocation.id}/edit`}
-            >{translations.edit}</Button>
-          </ButtonGroup>
-        }
+            >
+              {translations.edit}
+            </Button>
+          </div>
+        )}
       </div>
-      {reportIsOpen &&
+      {reportIsOpen && (
         <Report
           handleReport={handleReport}
           onClose={() => setReportIsOpen(false)}
         />
-      }
+      )}
     </div>
   )
 }
-
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(4),
-    boxShadow: theme.shadows[1],
-    flexGrow: 1,
-  },
-  main: {
-    flexGrow: 1,
-  },
-  meta: {
-    marginTop: 2,
-  },
-  paddedText: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-  footer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    marginTop: theme.spacing(2),
-  },
-}))
 
 export default LocationInfo
