@@ -60,7 +60,7 @@ const NavBar = ({
       className={classNames(
         'relative z-[1201] shadow',
         {
-          'hidden md:block': isDrawerOpen,
+          'hidden sm:block': isDrawerOpen,
         }
       )}
       style={{ backgroundColor: lightTheme ? 'transparent' : themeColor || undefined }}

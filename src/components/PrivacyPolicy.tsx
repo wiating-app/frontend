@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
   const { privacyPolicy } = useConfig()
   return (
     <Modal>
-      <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+      <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
     </Modal>
   )
 }

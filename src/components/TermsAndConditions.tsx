@@ -6,7 +6,7 @@ const TermsAndConditions = () => {
   const { termsAndConditions } = useConfig()
   return (
     <Modal>
-      <div dangerouslySetInnerHTML={{ __html: termsAndConditions }} />
+      <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: termsAndConditions }} />
     </Modal>
   )
 }
