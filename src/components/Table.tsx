@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  Table as MUITable,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
 
 interface TableLabel {
   name: React.ReactNode
@@ -20,67 +13,39 @@ interface TableProps {
 }
 
 const Table = ({ labels, data }: TableProps) => {
-  const classes = useStyles()
   return (
-    <MUITable>
-      <TableHead className={classes.head}>
-        <TableRow className={classes.cell}>
+    <table className="w-full border-collapse">
+      <thead className="hidden sm:table-header-group">
+        <tr className="border-b border-solid border-gray-300 border-t-0 border-l-0 border-r-0">
           {labels.map((label, index) => (
-            <TableCell key={index} className={classes.cell}>
+            <th key={index} className="px-4 py-2 text-left leading-tight">
               {label.name}
-            </TableCell>
+            </th>
           ))}
-        </TableRow>
-      </TableHead>
-      <TableBody className={classes.body}>
+        </tr>
+      </thead>
+      <tbody className="block sm:table-row-group">
         {data.map((row, index) =>
-          <TableRow key={index} className={classes.row}>
+          <tr
+            key={index}
+            className="flex flex-wrap border-b border-solid border-gray-300 border-t-0 border-l-0 border-r-0 py-3 sm:table-row sm:py-0"
+          >
             {labels.map((label, index) => (
-              <TableCell
+              <td
                 key={index}
-                className={`${classes.cell} ${label.wide ? classes.cellWide : ''}`}
+                className={classNames(
+                  'block px-0 py-1 leading-tight sm:table-cell sm:px-4 sm:py-2',
+                  label.wide && 'min-w-full sm:min-w-0'
+                )}
               >
                 {row[label.field]}
-              </TableCell>
+              </td>
             ))}
-          </TableRow>
+          </tr>
         )}
-      </TableBody>
-    </MUITable>
+      </tbody>
+    </table>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  // Make table responsive.
-  [theme.breakpoints.down('sm')]: {
-    head: {
-      display: 'none',
-    },
-    body: {
-      display: 'block',
-    },
-    row: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      borderBottomWidth: 1,
-      borderColor: theme.palette.grey[400],
-      borderBottomStyle: 'solid',
-      paddingTop: theme.spacing(1.5),
-      paddingBottom: theme.spacing(1.5),
-    },
-    cell: {
-      display: 'block',
-      paddingLeft: 0,
-      paddingRight: 0,
-      paddingTop: theme.spacing(0.5),
-      paddingBottom: theme.spacing(0.5),
-      lineHeight: 1.3,
-      border: 'none',
-    },
-    cellWide: {
-      minWidth: '100%',
-    },
-  },
-}))
 
 export default Table

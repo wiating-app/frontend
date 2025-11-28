@@ -1,9 +1,9 @@
 import React from 'react'
 import { Route, useHistory, useLocation } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Tabs, Tab, IconButton } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
+import Tabs, { Tab } from './Tabs'
+import IconButton from './IconButton'
 import ReportsContainer from '../containers/ReportsContainer'
 import LogsContainer from '../containers/LogsContainer'
 import LogDetailsContainer from '../containers/LogDetailsContainer'
@@ -18,29 +18,24 @@ const ModeratorPanel: React.FC = () => {
   const { pathname } = location
   const { translations } = useLanguage()
   const { loading: loadingAuth, isModerator } = useAuth0()
-  const classes = useStyles()
 
   React.useEffect(() => {
     // Invisible guarding.
     if (!loadingAuth && !isModerator) {
       history.push('/')
     }
-  }, [loadingAuth])
+  }, [loadingAuth, isModerator, history])
 
   const pathArray = pathname.split('/')
 
   return (
-    <PerfectScrollbar className={classes.root}>
-      <Typography
-        variant='h4'
-        gutterBottom
-      >{translations.administration}</Typography>
+    <PerfectScrollbar className="p-6 box-border w-full relative">
+      <h2 className="text-2xl font-medium mb-6">{translations.administration}</h2>
 
       <Tabs
         value={`/${pathArray[1]}/${pathArray[2]}`}
-        className={classes.tabs}
+        className="mb-6"
         onChange={(e: React.ChangeEvent<{}>, value: string) => history.push(value)}
-        indicatorColor='primary'
       >
         <Tab label={translations.changeLog} value='/moderator/log' />
         <Tab label={translations.reports} value='/moderator/reports' />
@@ -66,28 +61,13 @@ const ModeratorPanel: React.FC = () => {
       </Route>
 
       <IconButton
-        className={classes.close}
+        className="absolute top-2 right-2"
         onClick={() => history.push('/')}
-      ><Close /></IconButton>
-
+      >
+        <Close />
+      </IconButton>
     </PerfectScrollbar>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(3),
-    boxSizing: 'border-box',
-    width: '100%',
-  },
-  tabs: {
-    marginBottom: theme.spacing(3),
-  },
-  close: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    right: theme.spacing(1),
-  },
-}))
 
 export default ModeratorPanel
