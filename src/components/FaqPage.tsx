@@ -7,7 +7,7 @@ const FaqPage = () => {
   const { faq } = useConfig()
   return (
     <Modal>
-      <h2>Pytania i odpowiedzi</h2>
+      <h2 className="text-2xl font-medium mb-6">Pytania i odpowiedzi</h2>
       <Accordion>
         {faq?.map((item: any, index: number) =>
           <AccordionItem title={item.q} key={index}>

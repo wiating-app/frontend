@@ -1,11 +1,6 @@
 import React from 'react'
-import {
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  Typography,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { ExpandMore } from '@material-ui/icons'
+import classNames from 'classnames'
 
 const AccordionContext = React.createContext<[string | false | undefined, (value: string | false) => void]>([undefined, () => {}])
 
@@ -26,7 +21,6 @@ const Accordion = ({ children }: AccordionProps) => {
 
 export default Accordion
 
-
 interface AccordionItemProps {
   title: string
   children: React.ReactNode
@@ -35,63 +29,56 @@ interface AccordionItemProps {
 
 export const AccordionItem = ({ title, children, initiallyExpanded }: AccordionItemProps) => {
   const [expanded, setExpanded] = React.useContext(AccordionContext)
-  const classes = useStyles()
-  const index = title.replace(' ', '-') // Use title as an unique identifier.
+  const index = title.replace(/\s+/g, '-') // Use title as a unique identifier
 
   React.useEffect(() => {
     if (initiallyExpanded) {
       setExpanded(index)
     }
-  }, [])
+  }, [initiallyExpanded, index, setExpanded])
 
-  const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    setExpanded(newExpanded ? panel : false)
+  const isExpanded = expanded === index
+
+  const handleClick = () => {
+    setExpanded(isExpanded ? false : index)
   }
 
   return (
-    <ExpansionPanel
-      className={classes.root}
-      expanded={expanded === index}
-      classes={{ expanded: classes.expanded }}
-      onChange={handleChange(index)}
-      square
+    <div
+      className={classNames(
+        'border border-gray-200 -mb-px',
+        isExpanded && 'last:mb-8'
+      )}
     >
-      <ExpansionPanelSummary
-        className={classes.summary}
+      <button
+        type="button"
+        onClick={handleClick}
+        className="w-full flex items-center justify-between bg-gray-100 hover:bg-gray-200 min-h-[56px] px-4 py-3 cursor-pointer transition-colors text-left outline-none focus:outline-none border-b border-t-0 border-l-0 border-r-0 border-gray-300"
         aria-controls={`${index}-content`}
         id={`${index}-header`}
+        aria-expanded={isExpanded}
       >
-        <Typography variant='subtitle2'>{title}</Typography>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.details}>
-        {children}
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+        <span className="font-medium text-sm">{title}</span>
+        <ExpandMore
+          className={classNames(
+            'transition-transform duration-200 text-gray-600',
+            isExpanded && 'rotate-180'
+          )}
+        />
+      </button>
+      <div
+        id={`${index}-content`}
+        role="region"
+        aria-labelledby={`${index}-header`}
+        className={classNames(
+          'overflow-hidden transition-all duration-200',
+          isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+        )}
+      >
+        <div className="p-4 block">
+          {children}
+        </div>
+      </div>
+    </div>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    border: '1px solid rgba(0, 0, 0, .125)',
-    boxShadow: 'none',
-    '&:not(:last-child)': {
-      borderBottomWidth: 0,
-    },
-    '&:last-child': {
-      marginBottom: `${theme.spacing(4)}px !important`,
-    },
-  },
-  expanded: {
-    borderBottomWidth: '1px !important',
-  },
-  summary: {
-    backgroundColor: 'rgba(0, 0, 0, .03)',
-    borderBottom: '1px solid rgba(0, 0, 0, .125)',
-    marginBottom: -1,
-    minHeight: 56,
-  },
-  details: {
-    padding: theme.spacing(2),
-    display: 'block',
-  },
-}))
