@@ -1,10 +1,9 @@
 import Button from './Button'
 import Heading from './Heading'
 import Typography from './Typography'
-import Form, {
-  FormActions,
-  SubmitButton,
-} from '@react-form-component/mui'
+import Form from 'react-form-component'
+import FormActions from './Inputs/FormActions'
+import SubmitButton from './Inputs/SubmitButton'
 
 import MultiImageUpload from './MultiImageUpload'
 import React from 'react'
@@ -32,8 +31,7 @@ const PhotosForm = ({ name, handleSubmit, cancel }: PhotosFormProps) => {
       <FormActions>
         <Button variant="bare" onClick={() => cancel()}>{translations.cancel}</Button>
         <SubmitButton
-          {...({ variant: 'contained' } as any)}
-          color='primary'
+          variant='primary'
           onClick={(fields: any) => handleSubmit(fields.images)}
         >{translations.send}</SubmitButton>
       </FormActions>

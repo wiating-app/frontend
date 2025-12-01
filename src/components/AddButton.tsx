@@ -2,7 +2,6 @@ import React from 'react'
 import Typography from './Typography'
 import Menu, { MenuItem } from './Menu'
 import { Tooltip } from './Tooltip'
-import { Fade } from '@material-ui/core'
 import { AddLocation } from '@material-ui/icons'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
@@ -43,23 +42,21 @@ const AddButton = ({ items, isLoggedIn }: AddButtonProps) => {
         {isOpen && (
           <>
             <div className="fixed inset-0 z-[1100]" onClick={() => setIsOpen(null)} />
-            <Fade in={Boolean(isOpen)}>
-              <div
-                className="fixed z-[1200]"
-                style={{
-                  top: menuPosition.top,
-                  left: menuPosition.left,
-                  transform: 'translateY(-100%)',
-                }}
-              >
-                <Menu
-                  items={items}
-                  onClose={() => setIsOpen(null)}
-                  header={<Typography variant='subtitle2'>{translations.addMarker}</Typography>}
-                  className="min-w-[240px]"
-                />
-              </div>
-            </Fade>
+            <div
+              className="fixed z-[1200]"
+              style={{
+                top: menuPosition.top,
+                left: menuPosition.left,
+                transform: 'translateY(-100%)',
+              }}
+            >
+              <Menu
+                items={items}
+                onClose={() => setIsOpen(null)}
+                header={<Typography variant='subtitle2'>{translations.addMarker}</Typography>}
+                className="min-w-[240px]"
+              />
+            </div>
           </>
         )}
       </div>

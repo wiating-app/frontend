@@ -2390,16 +2390,6 @@
     eventemitter3 "^3.1.0"
     url "^0.11.0"
 
-"@react-form-component/mui@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@react-form-component/mui/-/mui-1.0.0.tgz#42f187b6a86ca708372abcc1873178bff230befb"
-  integrity sha512-711Q6gLKfl1SAU7IU4mhZuGqHD0+2jvKJLwxxDrHMA0ri4Fey6MOnq+EsR6TExR2v9Ez3LDaOxEIZhdJ4zPS7g==
-  dependencies:
-    classnames "^2.3.1"
-    react-form-component "2.4.2"
-    throttle-debounce "^3.0.1"
-    validator "^13.7.0"
-
 "@react-leaflet/core@1.1.1", "@react-leaflet/core@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@react-leaflet/core/-/core-1.1.1.tgz#827fd05bb542cf874116176d8ef48d5b12163f81"
@@ -12560,10 +12550,10 @@ react-fast-compare@^3.1.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.2.tgz#929a97a532304ce9fee4bcae44234f1ce2c21d49"
   integrity sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==
 
-react-form-component@2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/react-form-component/-/react-form-component-2.4.2.tgz#0ae57a8838fb683f1027c49e2af3f054541f3a4e"
-  integrity sha512-dM7HLpZ+gaqhdhe3WwAGsNDiwifDlMlrmbjyYF+7VB8l9yzWqDNUCYcYYFs9WZF/qKaGn1bp8TyRkUCYP+fptQ==
+react-form-component@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/react-form-component/-/react-form-component-2.8.0.tgz#5ad6e0fb5d3e6e91127b3d11eb8ad998aeb9da8b"
+  integrity sha512-QTC6aGR5jpieOP511dbqDI2yVMg934pBqWnkcDGU2oRjqjhGW/181kHry2H88txorC/CsJ8zBVBNtxEO1nV12g==
   dependencies:
     classnames "^2.3.1"
     polished "^4.1.4"

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import useConfig from '../utils/useConfig'
 import { Link } from 'react-router-dom'
 
-type ButtonProps = {
+export type ButtonProps = {
   variant?: 'default' | 'primary' | 'secondary' | 'bare' | 'outlined' | 'danger'
   size?: 'small' | 'medium' | 'large'
   href?: string

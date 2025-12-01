@@ -3,7 +3,7 @@ import Typography from './Typography'
 import IconButton from './IconButton'
 import { CloudUpload, Delete } from '@material-ui/icons'
 import classNames from 'classnames'
-import { withFormControl } from '@react-form-component/mui'
+import withFormControl from './Inputs/withFormControl'
 
 
 interface ImageFile {

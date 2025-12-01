@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSnackbar } from 'notistack'
 import { getPoint } from '../api/getPoint'
-import { addPoint, LocationFormData } from '../api/addPoint'
+import { addPoint } from '../api/addPoint'
 import { modifyPoint } from '../api/modifyPoint'
 import { deletePoint } from '../api/deletePoint'
 import { useHistory, useParams } from 'react-router-dom'
@@ -60,7 +60,7 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
             try {
               const data = await getPoint(id)
               setActiveLocation(data)
-            } catch (error) {
+            } catch (_error) {
               setError(true)
             }
             setLoading(false)

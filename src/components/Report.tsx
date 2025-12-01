@@ -1,4 +1,7 @@
-import Form, { SubmitButton, Input, Select } from '@react-form-component/mui'
+import Form from 'react-form-component'
+import SubmitButton from './Inputs/SubmitButton'
+import Input from './Inputs/Input'
+import Select from './Inputs/Select'
 import Modal from './Modal'
 import React from 'react'
 import Heading from './Heading'
@@ -43,8 +46,7 @@ const Report = ({ handleReport, onClose }: ReportProps) => {
           />
         }
         <SubmitButton
-          {...({ variant: 'contained' } as any)}
-          color='primary'
+          variant='primary'
           onClick={async (fields: any) => {
             setLoading(true)
             try {

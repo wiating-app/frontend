@@ -1,4 +1,7 @@
-import Form, { SubmitButton, Input, Select } from '@react-form-component/mui'
+import Form from 'react-form-component'
+import SubmitButton from './Inputs/SubmitButton'
+import Input from './Inputs/Input'
+import Select from './Inputs/Select'
 import React from 'react'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
@@ -48,8 +51,7 @@ const LogFilters = ({ values, handleSubmit, handleReset }: LogFiltersProps) => {
         }
         <div>
           <SubmitButton
-            {...({ variant: 'contained' } as any)}
-            color='primary'
+            variant='primary'
             onClick={handleSubmit}
           >{translations.filter}</SubmitButton>
         </div>

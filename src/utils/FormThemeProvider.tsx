@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormThemeProvider as RFCFormThemeProvider } from '@react-form-component/mui'
+import { FormThemeProvider as RFCFormThemeProvider } from 'react-form-component'
 import { useSnackbar } from 'notistack'
 import parse from 'coord-parser'
 import useLanguage from './useLanguage'
@@ -23,7 +23,7 @@ const FormThemeProvider = ({ children }: FormThemeProviderProps) => {
           try {
             parse(value)
             return false
-          } catch (err) {
+          } catch (_err) {
             return 'Niepoprawny format współrzędnych.'
           }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ArrowDropDown, Menu } from '@material-ui/icons'
-import Form from '@react-form-component/mui'
+import Form from 'react-form-component'
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil'
 import Dropdown from './Dropdown'
@@ -77,8 +77,8 @@ const NavBar = ({
           <SearchInput
             name='phrase'
             placeholder={translations.search}
-            size='small'
             loading={searchLoading}
+            noBottomGutter
           />
         </Form>
         <div className="flex-1 ml-2 opacity-30">

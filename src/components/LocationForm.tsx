@@ -1,14 +1,12 @@
 import React from 'react'
 import Button from './Button'
 import Heading from './Heading'
-import Form, {
-  Input,
-  Select,
-  SubmitButton,
-  Checkbox,
-  FormActions,
-} from '@react-form-component/mui'
-import CoordinatesInput from './CoordinatesInput'
+import Form from 'react-form-component'
+import Input from './Inputs/Input'
+import Select from './Inputs/Select'
+import SubmitButton from './Inputs/SubmitButton'
+import Checkbox from './Inputs/Checkbox'
+import FormActions from './Inputs/FormActions'
 import HintWrapper from './HintWrapper'
 import ConfirmDelete from './ConfirmDelete'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
@@ -100,10 +98,11 @@ const LocationForm = ({
       </HintWrapper>
 
       <HintWrapper message={translations.locationHint}>
-        <CoordinatesInput
+        <Input
           name='location'
           label={translations.coordinates}
           initialValue={locationData && locationToString(locationData.location)}
+          type='coordinates'
           onChange={value => {
             updateCurrentMarker(value)
           }}
@@ -225,8 +224,7 @@ const LocationForm = ({
           />
         }
         <SubmitButton
-          {...({ variant: 'contained' } as any)}
-          color='primary'
+          variant='primary'
           onClick={async (fields: any) => {
             setLoading(true)
             await onSubmitLocation(fields)
