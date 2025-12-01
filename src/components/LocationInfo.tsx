@@ -1,5 +1,4 @@
 import { formatDate, roundLatLng } from '../utils/helpers'
-import { Link } from 'react-router-dom'
 import React from 'react'
 import Report from './Report'
 import UtilityButtons from './UtilityButtons'
@@ -7,6 +6,8 @@ import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
 import { Location } from '../typings'
 import Button from './Button'
+import ButtonGroup from './ButtonGroup'
+import Typography from './Typography'
 import Chip from './Chip'
 
 interface LocationInfoProps {
@@ -66,26 +67,25 @@ const LocationInfo = ({
         <div className="text-sm font-medium text-gray-500 mt-4 mb-4">
           {translations.description}
         </div>
-
-        <div className="text-base mb-4">
+        <Typography gutterBottom>
           {selectedLocation.description}
-        </div>
+        </Typography>
 
         {enableDirectionsField && selectedLocation.directions && (
           <>
             <div className="text-sm font-medium text-gray-500 mt-4 mb-4">
               {translations.directions}
             </div>
-            <div className="text-base mb-4">
+            <Typography gutterBottom>
               {selectedLocation.directions}
-            </div>
+            </Typography>
           </>
         )}
 
         {(enableFireField || enableWaterField) && (
           <div>
             {enableWaterField && (
-              <div className="text-sm">
+              <Typography variant="body2">
                 {translations.waterLabel}:{' '}
                 {selectedLocation.water_exists === null
                   ? translations.noData
@@ -93,11 +93,11 @@ const LocationInfo = ({
                       ? translations.unavailable
                       : selectedLocation.water_comment || translations.available
                 }
-              </div>
+              </Typography>
             )}
 
             {enableFireField && (
-              <div className="text-sm">
+              <Typography variant="body2">
                 {translations.fireLabel}:{' '}
                 {selectedLocation.fire_exists === null
                   ? translations.noData
@@ -105,7 +105,7 @@ const LocationInfo = ({
                       ? translations.unavailable
                       : selectedLocation.fire_comment || translations.available
                 }
-              </div>
+              </Typography>
             )}
           </div>
         )}
@@ -120,7 +120,7 @@ const LocationInfo = ({
           </div>
         )}
         {loggedIn && (
-          <div className="flex gap-2">
+          <ButtonGroup>
             {isModerator
               ? (
                   <Button
@@ -142,7 +142,7 @@ const LocationInfo = ({
             >
               {translations.edit}
             </Button>
-          </div>
+          </ButtonGroup>
         )}
       </div>
       {reportIsOpen && (

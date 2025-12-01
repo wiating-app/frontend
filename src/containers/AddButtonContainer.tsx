@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
+import Button from '../components/Button'
 import {
   PinDrop,
   BorderColor,
@@ -40,8 +40,7 @@ const AddButtonContainer = () => {
               action: (key: string | number) =>
                 <Button
                   size='small'
-                  variant='contained'
-                  color='primary'
+                  variant='primary'
                   onClick={() => {
                     closeSnackbar(key)
                     history.push('/')

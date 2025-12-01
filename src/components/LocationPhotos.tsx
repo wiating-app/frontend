@@ -148,7 +148,7 @@ const LocationPhotos = ({
           className="absolute top-2 left-2 px-1.5 text-gray-800 bg-gray-200 hover:bg-gray-100 border-none cursor-pointer rounded"
           onClick={uploadImages}
         >
-          <Tooltip content={translations.addPhoto} position="below">
+          <Tooltip content={translations.addPhoto} anchor="right-center">
             <AddAPhoto />
           </Tooltip>
         </button>

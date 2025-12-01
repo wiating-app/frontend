@@ -1,7 +1,6 @@
 import React from 'react'
 import { useRecoilState } from 'recoil'
-import { useMediaQuery } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '../utils/useMediaQuery'
 import parse from 'coord-parser'
 import {
   activeTypesState,
@@ -36,8 +35,7 @@ const NavBarContainer = () => {
     isModerator,
     logout,
   } = useAuth0()
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMobile = useMediaQuery('(max-width: 600px)')
 
   React.useEffect(() => {
     const handleAsync = async () => {

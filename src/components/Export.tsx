@@ -1,11 +1,11 @@
 import React from 'react'
-import { Menu, Tooltip, MenuItem } from '@material-ui/core'
+import Menu from './Menu'
+import { Tooltip } from './Tooltip'
 import { GetApp } from '@material-ui/icons'
 import exportToKML from '../utils/exportToKML'
 import exportToGPX from '../utils/exportToGPX'
 import useConfig from '../utils/useConfig'
 import { Location } from '../typings'
-
 
 interface ExportProps {
   markers: Location[]
@@ -13,7 +13,7 @@ interface ExportProps {
 }
 
 const Export = ({ markers, className }: ExportProps) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [isOpen, setIsOpen] = React.useState(false)
   const config = useConfig()
   const items = [
     {
@@ -26,45 +26,37 @@ const Export = ({ markers, className }: ExportProps) => {
     },
   ]
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
+  const handleClick = () => {
+    setIsOpen(!isOpen)
   }
 
   const handleClose = () => {
-    setAnchorEl(null)
+    setIsOpen(false)
   }
 
   if (!config.settings.enableExport) return null
 
   return (
-    <Tooltip title='Eksport lokacji z wyświetlanego obszaru' placement='left'>
-      <div>
+    <Tooltip content='Eksport lokacji z wyświetlanego obszaru' anchor='left-center'>
+      <div className="relative">
         <a
-          aria-controls='simple-menu'
-          color='inherit'
+          aria-controls='export-menu'
           aria-haspopup='true'
           className={className}
           onClick={handleClick}
         ><GetApp style={{ fontSize: 20 }} /></a>
-        <Menu
-          id='simple-menu'
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-        >
-          {items.map((item, index) =>
-            <MenuItem key={index} onClick={() => {
-              item.callback()
-              handleClose()
-            }}>{item.label}</MenuItem>
-          )}
-        </Menu>
+        {isOpen && (
+          <>
+            <div className="fixed inset-0 z-10" onClick={handleClose} />
+            <div className="absolute top-full left-0 mt-1 z-20">
+              <Menu
+                items={items}
+                onClose={handleClose}
+                className="min-w-[200px]"
+              />
+            </div>
+          </>
+        )}
       </div>
     </Tooltip>
   )

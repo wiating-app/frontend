@@ -1,15 +1,12 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import Button from './Button'
 import { ViewList } from '@material-ui/icons'
 import { useRecoilState } from 'recoil'
 import useLanguage from '../utils/useLanguage'
 import { searchResultsState, activeLocationState } from '../state'
 import history from '../history'
-import { Location } from '../typings'
 
 const BackToSearch = () => {
-  const classes = useStyles()
   const [searchResults] = useRecoilState(searchResultsState)
   const [, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations } = useLanguage()
@@ -21,20 +18,11 @@ const BackToSearch = () => {
         history.push('/search')
         setActiveLocation(null)
       }}
-      className={classes.root}
-      variant='contained'
+      className="absolute top-4 left-4 z-10"
+      variant='primary'
       size='small'
     ><ViewList /> {translations.backToResults}</Button>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    left: theme.spacing(1),
-    zIndex: theme.zIndex.mobileStepper,
-  },
-}))
 
 export default BackToSearch

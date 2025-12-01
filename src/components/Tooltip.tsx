@@ -5,7 +5,7 @@ import classNames from 'classnames'
 type TooltipProps = {
   content?: ReactNode
   className?: string
-  position?: 'above' | 'below'
+  anchor?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right' | 'left-center' | 'right-center'
   delay?: number
   tooltipClassName?: string
 }
@@ -14,7 +14,7 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   content,
   children,
   className,
-  position = 'above',
+  anchor = 'top-center',
   delay = 750,
   tooltipClassName = 'inline-block',
 }) => {
@@ -30,13 +30,43 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     }
 
     const rect = e.currentTarget.getBoundingClientRect()
-    const tooltipTop =
-      position === 'above'
-        ? rect.top - 8
-        : rect.bottom + 8
+    let tooltipTop = 0
+    let tooltipLeft = 0
 
-    // Anchor to left
-    const tooltipLeft = rect.left
+    switch (anchor) {
+      case 'top-left':
+        tooltipTop = rect.top - 8
+        tooltipLeft = rect.left
+        break
+      case 'top-center':
+        tooltipTop = rect.top - 8
+        tooltipLeft = rect.left + rect.width / 2
+        break
+      case 'top-right':
+        tooltipTop = rect.top - 8
+        tooltipLeft = rect.right
+        break
+      case 'bottom-left':
+        tooltipTop = rect.bottom + 8
+        tooltipLeft = rect.left
+        break
+      case 'bottom-center':
+        tooltipTop = rect.bottom + 8
+        tooltipLeft = rect.left + rect.width / 2
+        break
+      case 'bottom-right':
+        tooltipTop = rect.bottom + 8
+        tooltipLeft = rect.right
+        break
+      case 'left-center':
+        tooltipTop = rect.top + rect.height / 2
+        tooltipLeft = rect.left - 8
+        break
+      case 'right-center':
+        tooltipTop = rect.top + rect.height / 2
+        tooltipLeft = rect.right + 8
+        break
+    }
 
     setTooltipPosition({
       top: tooltipTop,
@@ -65,6 +95,29 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     }
   }, [])
 
+  const getTransform = () => {
+    switch (anchor) {
+      case 'top-left':
+        return 'translate(0, -100%)'
+      case 'top-center':
+        return 'translate(-50%, -100%)'
+      case 'top-right':
+        return 'translate(-100%, -100%)'
+      case 'bottom-left':
+        return 'translate(0, 0)'
+      case 'bottom-center':
+        return 'translate(-50%, 0)'
+      case 'bottom-right':
+        return 'translate(-100%, 0)'
+      case 'left-center':
+        return 'translate(-100%, -50%)'
+      case 'right-center':
+        return 'translate(0, -50%)'
+      default:
+        return 'translate(-50%, -100%)'
+    }
+  }
+
   const tooltipElement = isVisible && content
     ? (
         <div
@@ -75,6 +128,7 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
           style={{
             top: `${tooltipPosition.top}px`,
             left: `${tooltipPosition.left}px`,
+            transform: getTransform(),
           }}
         >
           {content}

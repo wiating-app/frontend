@@ -1,6 +1,6 @@
 import React from 'react'
-import { Grid, Typography, IconButton } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import Typography from './Typography'
+import IconButton from './IconButton'
 import { CloudUpload, Delete } from '@material-ui/icons'
 import classNames from 'classnames'
 import { withFormControl } from '@react-form-component/mui'
@@ -41,25 +41,29 @@ const MultiImageUpload = ({
   smHeight = '20vw',
   mdHeight = '12vw',
 }: MultiImageUploadProps) => {
-  const classes = useStyles({ smHeight, mdHeight })
+  const gapClass = spacing === 1 ? 'gap-2' : spacing === 2 ? 'gap-4' : 'gap-6'
+  const colWidth = columns === 2 ? 'sm:w-6/12' : 'sm:w-full'
+
   return (
-    <Grid container spacing={spacing as any}>
+    <div className={`flex flex-wrap ${gapClass}`}>
       {value &&
         value.map((item, index) =>
-          <Grid item sm={(12 / columns) as any} key={index}>
-            <Grid
-              container
-              alignItems='center'
-              justify='center'
-              className={classes.wrapper}
+          <div className={`${colWidth}`} key={index}>
+            <div
+              className="flex items-center justify-center bg-gray-100 p-4 relative"
+              style={{
+                height: '33vw',
+                maxHeight: mdHeight,
+              }}
             >
               <img
                 src={item.data || item as any}
-                className={classes.image}
+                className="max-w-full max-h-full"
                 alt={`Uploaded file ${index}`}
               />
               <IconButton
-                className={classes.delete}
+                size="small"
+                className="absolute top-0 right-0"
                 onClick={() => setValue(
                   name,
                   value.filter((subItem, subIndex) => subIndex !== index),
@@ -68,14 +72,14 @@ const MultiImageUpload = ({
               >
                 <Delete fontSize='small' />
               </IconButton>
-            </Grid>
-          </Grid>
+            </div>
+          </div>
         )
       }
-      <Grid item sm={(12 / columns) as any}>
+      <div className={colWidth}>
         <input
           accept='image/*'
-          className={classes.input}
+          className="hidden"
           id={name}
           multiple
           type='file'
@@ -104,52 +108,20 @@ const MultiImageUpload = ({
             })
           }}
         />
-        <label htmlFor={name} className={classNames(classes.wrapper, classes.label)}>
+        <label
+          htmlFor={name}
+          className="flex flex-col cursor-pointer items-center justify-center bg-gray-100 p-4 text-gray-500 hover:bg-gray-200"
+          style={{
+            height: '33vw',
+            maxHeight: mdHeight,
+          }}
+        >
           <CloudUpload />
           <Typography variant='caption' color='inherit'>{uploadLabel}</Typography>
         </label>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   )
 }
-
-const useStyles = makeStyles<import('@material-ui/core/styles').Theme, StyleProps>(theme => ({
-  wrapper: {
-    backgroundColor: theme.palette.grey[100],
-    padding: theme.spacing(2),
-    height: '33vw',
-    position: 'relative',
-    [theme.breakpoints.up('sm')]: {
-      height: ({ smHeight }) => smHeight,
-    },
-    [theme.breakpoints.up('md')]: {
-      height: ({ mdHeight }) => mdHeight,
-      maxHeight: theme.spacing(30),
-    },
-  },
-  image: {
-    maxWidth: '100%',
-    maxHeight: '100%',
-  },
-  input: {
-    display: 'none',
-  },
-  label: {
-    display: 'flex',
-    flexDirection: 'column',
-    cursor: 'pointer',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: theme.palette.grey[500],
-    '&:hover': {
-      backgroundColor: theme.palette.grey[200],
-    },
-  },
-  delete: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-}))
 
 export default withFormControl(MultiImageUpload)

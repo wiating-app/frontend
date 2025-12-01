@@ -1,9 +1,11 @@
 import React from 'react'
-import { Typography, Box } from '@material-ui/core'
+import Heading from './Heading'
+import Typography from './Typography'
 import { Check, Remove } from '@material-ui/icons'
 import Table from './Table'
 import Pagination from './Pagination'
-import Actions from './Actions'
+import Button from './Button'
+import ButtonGroup from './ButtonGroup'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
@@ -42,31 +44,28 @@ const Logs = ({
     : error
       ? <Typography color='error'>{translations.connectionProblemLogs}</Typography>
       : <>
-        <Typography variant='h6'>{translations.itemsFound.replace('#', rowsInTotal || 0)}:</Typography>
+        <Heading level={6}>{translations.itemsFound.replace('#', rowsInTotal || 0)}:</Heading>
         <Table
           data={logs.map(item => ({
             ...enableVerification ? { verified: item._source.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' /> } : {},
             timestamp: `${formatDate(item._source.timestamp)} ${formatTime(item._source.timestamp)}`,
             location: <>
               <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
-              <Typography variant='caption' component='div'>
+              <Typography variant='caption'>
                 {item._source.changes?.action && item._source.changes.action === 'created'
                   ? translations.newLocation
                   : Object.keys(item._source.changes || {}).join(', ')
                 }
               </Typography>
             </>,
-            user: <Box whiteSpace='nowrap'>{
+            user: <div className="whitespace-nowrap">{
               item._source.modified_by === user?.sub ? translations.you : item._source.modified_by}
-            </Box>,
-            actions: <Actions
-              primary={[
-                {
-                  label: translations.details,
-                  action: () => setDetails(item),
-                },
-              ]}
-            />,
+            </div>,
+            actions: <ButtonGroup>
+              <Button variant='primary' size='small' onClick={() => setDetails(item)}>
+                {translations.details}
+              </Button>
+            </ButtonGroup>,
           }))}
           labels={[
             ...enableVerification ? [{ name: translations.verification, field: 'verified' }] : [],

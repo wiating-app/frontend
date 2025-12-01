@@ -1,7 +1,8 @@
 import Form, { SubmitButton, Input, Select } from '@react-form-component/mui'
 import Modal from './Modal'
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import Heading from './Heading'
+import Typography from './Typography'
 import useLanguage from '../utils/useLanguage'
 
 interface ReportProps {
@@ -18,10 +19,7 @@ const Report = ({ handleReport, onClose }: ReportProps) => {
 
   return (
     <Modal short onClose={onClose}>
-      <Typography
-        variant='h4'
-        gutterBottom
-      >Zgłoś nieprawidłowość</Typography>
+      <Heading level={4} gutterBottom>Zgłoś nieprawidłowość</Heading>
       <Typography gutterBottom>Znalazłeś/aś nieprawidłowość w punkcie? </Typography>
       <Form
         fields={['reason', 'description']}

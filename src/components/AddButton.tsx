@@ -1,86 +1,70 @@
 import React from 'react'
-import {
-  Fab,
-  Typography,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Tooltip,
-  Fade,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import Typography from './Typography'
+import Menu, { MenuItem } from './Menu'
+import { Tooltip } from './Tooltip'
+import { Fade } from '@material-ui/core'
 import { AddLocation } from '@material-ui/icons'
 import useLanguage from '../utils/useLanguage'
-
-
-interface AddButtonItem {
-  label: string
-  icon: React.ReactNode
-  callback: () => void
-}
+import useConfig from '../utils/useConfig'
 
 interface AddButtonProps {
-  items: AddButtonItem[]
+  items: MenuItem[]
   isLoggedIn: boolean
 }
 
 const AddButton = ({ items, isLoggedIn }: AddButtonProps) => {
-  const classes = useStyles()
   const { translations } = useLanguage()
+  const { branding: { themeColor } } = useConfig()
   const [isOpen, setIsOpen] = React.useState<null | HTMLElement>(null)
+  const [menuPosition, setMenuPosition] = React.useState({ top: 0, left: 0 })
+
+  const handleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    setMenuPosition({
+      top: rect.top - 8, // 8px gap above button
+      left: rect.left - 200, // menu width approx
+    })
+    setIsOpen(e.currentTarget)
+  }
 
   return (
     isLoggedIn
-      ? <div className={classes.root}>
-        <Tooltip title={translations.addMarker} placement='left'>
-          <Fab
-            color='primary'
-            size='medium'
+      ? <div className="fixed right-2 bottom-20 z-[1050]">
+        <Tooltip content={translations.addMarker}>
+          <button
+            className="w-14 h-14 rounded-full shadow-lg text-white flex items-center justify-center hover:shadow-xl transition-shadow"
+            style={{ backgroundColor: themeColor }}
             aria-label='Add'
-            onClick={e => setIsOpen(e.currentTarget)}
+            onClick={handleOpen}
             aria-owns={isOpen ? 'plus-menu' : undefined}
             aria-haspopup='true'
-          ><AddLocation /></Fab>
+          ><AddLocation /></button>
         </Tooltip>
-        <Menu
-          id='plus-menu'
-          anchorEl={isOpen}
-          open={Boolean(isOpen)}
-          onClose={() => setIsOpen(null)}
-          TransitionComponent={Fade}
-        >
-          <MenuItem className={classes.title}>
-            <Typography variant='subtitle2'>{translations.addMarker}</Typography>
-          </MenuItem>
-          {items.map((item, index) =>
-            <MenuItem
-              key={index}
-              onClick={() => {
-                setIsOpen(null)
-                item.callback()
-              }}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
-            </MenuItem>
-          )}
-        </Menu>
+        {isOpen && (
+          <>
+            <div className="fixed inset-0 z-[1100]" onClick={() => setIsOpen(null)} />
+            <Fade in={Boolean(isOpen)}>
+              <div
+                className="fixed z-[1200]"
+                style={{
+                  top: menuPosition.top,
+                  left: menuPosition.left,
+                  transform: 'translateY(-100%)',
+                }}
+              >
+                <Menu
+                  items={items}
+                  onClose={() => setIsOpen(null)}
+                  header={<Typography variant='subtitle2'>{translations.addMarker}</Typography>}
+                  className="min-w-[240px]"
+                />
+              </div>
+            </Fade>
+          </>
+        )}
       </div>
       : null
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    position: 'fixed',
-    right: theme.spacing(1),
-    bottom: theme.spacing(10),
-    zIndex: theme.zIndex.speedDial,
-  },
-  title: {
-    pointerEvents: 'none',
-  },
-}))
 
 export default AddButton

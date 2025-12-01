@@ -1,7 +1,9 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import Heading from './Heading'
+import Typography from './Typography'
 import Table from './Table'
-import Actions from './Actions'
+import Button from './Button'
+import ButtonGroup from './ButtonGroup'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
@@ -29,19 +31,16 @@ const UnpublishedLocations = ({
     : error
       ? <Typography color='error'>{translations.connectionProblemLogs}</Typography>
       : <>
-        <Typography variant='h6'>{translations.itemsFound.replace('#', locations?.length || 0)}:</Typography>
+        <Heading level={6}>{translations.itemsFound.replace('#', locations?.length || 0)}:</Heading>
         <Table
           data={locations?.map(item => ({
             name: <OpenInNewCard path={`/location/${item.id}`}>{item.name}</OpenInNewCard>,
             type: item.type ? locationTypes.find(type => type.id === item.type)?.label[language] || '' : '',
-            actions: <Actions
-              primary={[
-                {
-                  label: translations.edit,
-                  action: () => history.push(`/location/${item.id}/edit`),
-                },
-              ]}
-            />,
+            actions: <ButtonGroup>
+              <Button variant='primary' size='small' onClick={() => history.push(`/location/${item.id}/edit`)}>
+                {translations.edit}
+              </Button>
+            </ButtonGroup>,
           })) || []}
           labels={[
             { name: translations.name, field: 'name' },

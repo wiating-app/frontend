@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Typography } from '@material-ui/core'
+import Button from './Button'
+import Heading from './Heading'
 import Form, {
   Input,
   Select,
@@ -61,9 +62,9 @@ const LocationForm = ({
   }
 
   return <>
-    <Typography variant='h4' gutterBottom>
+    <Heading level={4} gutterBottom>
       {translations[isNew ? 'addMarker' : 'editMarker']}
-    </Typography>
+    </Heading>
     <Form
       fields={[
         'name',

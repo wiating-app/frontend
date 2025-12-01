@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, useHistory, useLocation } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { Close } from '@material-ui/icons'
+import Heading from './Heading'
 import Tabs, { Tab } from './Tabs'
 import IconButton from './IconButton'
 import ReportsContainer from '../containers/ReportsContainer'
@@ -30,7 +31,7 @@ const ModeratorPanel: React.FC = () => {
 
   return (
     <PerfectScrollbar className="p-6 box-border w-full relative">
-      <h2 className="text-2xl font-medium mb-6">{translations.administration}</h2>
+      <Heading level={5} gutterBottom>{translations.administration}</Heading>
 
       <Tabs
         value={`/${pathArray[1]}/${pathArray[2]}`}

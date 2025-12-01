@@ -1,5 +1,7 @@
 import React from 'react'
-import { Box, Typography, Button } from '@material-ui/core'
+import Button from './Button'
+import ButtonGroup from './ButtonGroup'
+import Typography from './Typography'
 import Modal from './Modal'
 import useLanguage from '../utils/useLanguage'
 
@@ -24,30 +26,30 @@ const ConfirmDelete = ({
       await deleteCallback(id, name)
       setIsOpen(false)
       setLoading(false)
-    } catch (err) {
+    } catch (_err) {
       setLoading(false)
     }
   }
   return (
     <>
       <Button
-        variant='text'
+        variant='danger'
         onClick={() => setIsOpen(true)}
-      ><Box color='error.main'>{translations.delete}</Box></Button>
+      >{translations.delete}</Button>
       {isOpen &&
         <Modal small>
           <Typography gutterBottom>{translations.confirmDeleteLocation}</Typography>
-          <Button
-            variant='contained'
-            onClick={() => setIsOpen(false)}
-            style={{ marginRight: '10px' }}
-          >{translations.cancel}</Button>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleDelete}
-            disabled={loading}
-          >{translations.delete}</Button>
+          <ButtonGroup>
+            <Button
+              variant='bare'
+              onClick={() => setIsOpen(false)}
+            >{translations.cancel}</Button>
+            <Button
+              variant='primary'
+              onClick={handleDelete}
+              disabled={loading}
+            >{translations.delete}</Button>
+          </ButtonGroup>
         </Modal>
       }
     </>

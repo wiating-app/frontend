@@ -46,14 +46,14 @@ export const AccordionItem = ({ title, children, initiallyExpanded }: AccordionI
   return (
     <div
       className={classNames(
-        'border border-gray-200 -mb-px',
+        'border border-gray-200 -mb-px rounded-sm',
         isExpanded && 'last:mb-8'
       )}
     >
       <button
         type="button"
         onClick={handleClick}
-        className="w-full flex items-center justify-between bg-gray-100 hover:bg-gray-200 min-h-[56px] px-4 py-3 cursor-pointer transition-colors text-left outline-none focus:outline-none border-b border-t-0 border-l-0 border-r-0 border-gray-300"
+        className="w-full flex items-center justify-between bg-gray-100 hover:bg-gray-200 min-h-[56px] px-4 py-3 cursor-pointer transition-colors text-left outline-none focus:outline-none border-b border-t-0 border-l-0 border-r-0 border-gray-300 rounded-sm"
         aria-controls={`${index}-content`}
         id={`${index}-header`}
         aria-expanded={isExpanded}

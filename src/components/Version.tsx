@@ -27,8 +27,8 @@ const Version = ({ dark = false, className }: VersionProps) => {
       break
   }
   return (
-    <Tooltip content={info} position="below" tooltipClassName={classNames(
-      'text-xs',
+    <Tooltip content={info} anchor="right-center" tooltipClassName={classNames(
+      'text-xs cursor-help',
       dark ? 'text-gray-800' : 'text-white',
       className,
     )}>

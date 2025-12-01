@@ -1,6 +1,6 @@
 import React from 'react'
-import { Grid } from '@material-ui/core'
-import InfoTooltip from './InfoTooltip'
+import { Tooltip } from './Tooltip'
+import { InfoOutlined } from '@material-ui/icons'
 
 
 interface HintWrapperProps {
@@ -10,16 +10,16 @@ interface HintWrapperProps {
 
 const HintWrapper = ({ message, children }: HintWrapperProps) => {
   return (
-    <Grid container justify='space-between'>
-      <Grid item xs={11}>
+    <div className="flex justify-between">
+      <div className="flex-[11]">
         {children}
-      </Grid>
-      <Grid item xs={1}>
-        <div>
-          <InfoTooltip large placement='left-start'>{message}</InfoTooltip>
-        </div>
-      </Grid>
-    </Grid>
+      </div>
+      <div className="flex-1 pt-2">
+        <Tooltip content={message} anchor="right-center" delay={0} tooltipClassName="cursor-help">
+          <InfoOutlined />
+        </Tooltip>
+      </div>
+    </div>
   )
 }
 

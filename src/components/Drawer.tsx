@@ -1,9 +1,8 @@
-import { useTheme } from '@material-ui/core/styles'
 import { Close } from '@material-ui/icons'
 import React from 'react'
 import { isDrawerOpenState } from '../state'
 import useKeyPress from '../utils/useKeyPress'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import useMediaQuery from '../utils/useMediaQuery'
 import { useRecoilState } from 'recoil'
 import { useHistory, useLocation } from 'react-router-dom'
 import IconButton from './IconButton'
@@ -25,8 +24,7 @@ const Drawer: React.FC<DrawerProps> = ({
   const location = useLocation()
   const { pathname } = location
   const coverMapOnMobile = pathname.startsWith('/search')
-  const theme = useTheme()
-  const isNotSmartphone = useMediaQuery(theme.breakpoints.up('sm'))
+  const isNotSmartphone = useMediaQuery('(min-width: 600px)')
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
 
   const handleOnClose = () => history.push('/')

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Tooltip } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Tooltip } from './Tooltip'
 import { OpenInNew } from '@material-ui/icons'
 
 interface OpenInNewCardProps {
@@ -12,35 +11,18 @@ interface OpenInNewCardProps {
 }
 
 const OpenInNewCard = ({ path, children, component, ...otherProps }: OpenInNewCardProps) => {
-  const classes = useStyles()
   return (
-    <Tooltip title='Przejdź do lokacji' placement='right'>
+    <Tooltip content='Przejdź do lokacji'>
       <Link
         to={path}
         component={component}
         target='_blank'
-        className={!component && classes.link}
+        className={!component ? 'cursor-pointer font-bold text-gray-900 no-underline hover:underline' : ''}
         {...otherProps}
-      >{children} <OpenInNew className={classes.icon} />
+      >{children} <OpenInNew className="text-xs ml-1" />
       </Link>
     </Tooltip>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  link: {
-    cursor: 'pointer',
-    fontWeight: theme.typography.fontWeightBold as any,
-    color: theme.palette.text.primary,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  icon: {
-    fontSize: 12,
-    marginLeft: theme.spacing(0.5),
-  },
-}))
 
 export default OpenInNewCard

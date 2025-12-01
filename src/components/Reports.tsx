@@ -1,7 +1,8 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import Typography from './Typography'
 import Table from './Table'
-import Actions from './Actions'
+import Button from './Button'
+import ButtonGroup from './ButtonGroup'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
 import useLanguage from '../utils/useLanguage'
@@ -37,14 +38,11 @@ const Reports = ({
                 <Typography key={index} variant='caption'>{item}</Typography>
               )
               : <Typography variant='caption'>{item.report_reason || ''}</Typography>,
-            actions: <Actions
-              primary={[
-                {
-                  label: translations.details,
-                  action: () => setDetails(item),
-                },
-              ]}
-            />,
+            actions: <ButtonGroup>
+              <Button variant='primary' size='small' onClick={() => setDetails(item)}>
+                {translations.details}
+              </Button>
+            </ButtonGroup>,
           }))}
           labels={[
             { name: translations.date, field: 'timestamp' },

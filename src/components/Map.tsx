@@ -11,16 +11,17 @@ import {
   useMapEvents,
 } from 'react-leaflet'
 import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
-import { Typography, useMediaQuery } from '@material-ui/core'
+import Typography from './Typography'
+import Menu from './Menu'
+import useMediaQuery from '../utils/useMediaQuery'
+import useLanguage from '../utils/useLanguage'
 import {
   activeLocationState,
   editModeState,
   isDrawerOpenState,
   searchResultsState,
 } from '../state'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
 
-import ContextMenu from './ContextMenu'
 import Control from 'react-leaflet-custom-control'
 import Export from './Export'
 import { Icon, LatLngBounds } from 'leaflet'
@@ -67,10 +68,9 @@ const Map = ({
   const [, setSearchResults] = useRecoilState(searchResultsState)
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-  const isPhone = useMediaQuery(theme.breakpoints.down('xs'))
-  const classes = useStyles(editMode)
+  const isMobile = useMediaQuery('(max-width: 600px)')
+  const isPhone = useMediaQuery('(max-width: 480px)')
+  const { translations } = useLanguage()
 
   const currentZoom = mapRef?.current?._zoom || zoom
   const markerSize = currentZoom < 7
@@ -139,28 +139,51 @@ const Map = ({
     handleAsync()
   }, [activeTypes])
 
+  const MOBILE_MINI_MAP_HEIGHT = 200
+  const LOCATION_TAB_WIDTH = 400
+
+  const mapOffsetStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: '-1rem',
+    bottom: '-2rem',
+    right: '-1rem',
+  }
+
   return (
     // Use wrapper to set offset to load markers that are on the edge of a screen.
-    <div
-      className={classes.offsetWrapper}
-      style={isDrawerOpen && isMobile
-        ? isPhone
-          ? { height: (theme as any).layout.mobileMiniMapHeight }
-          : { marginLeft: (theme as any).layout.locationTabWidth }
-        : {}
-      }
-    >
-      <MapContainer
-        whenCreated={(mapInstance: any) => { mapRef.current = mapInstance }}
-        className={classes.mapOffset}
-        center={center}
-        zoom={zoom}
-        minZoom={5}
-        maxZoom={18}
-        maxBounds={[[-90, -180], [90, 180]]}
-        zoomControl={false}
-        id='cy-map'
+    <>
+      <style>{`
+        .map-container .leaflet-right { right: 1rem; }
+        .map-container .leaflet-bottom { bottom: 2rem; }
+        .map-container .leaflet-left { left: 1rem; }
+        .map-container .leaflet-marker-icon { filter: drop-shadow(0 0 1px rgb(0,0,0)); }
+        .map-container .leaflet-pixi-overlay { z-index: 1000; ${editMode ? 'display: none;' : 'display: block;'} }
+        .map-popup .leaflet-popup-content-wrapper { background-color: transparent; border: none; }
+        .map-popup .leaflet-popup-content-wrapper::after { content: ""; display: block; position: absolute; width: 20px; height: 1px; left: calc(50% - 10px); bottom: 0; background-color: white; }
+        .map-popup .leaflet-popup-content { margin: 0; border-radius: 0; border: none; }
+      `}</style>
+      <div
+        className="flex-grow relative"
+        style={isDrawerOpen && isMobile
+          ? isPhone
+            ? { height: MOBILE_MINI_MAP_HEIGHT }
+            : { marginLeft: LOCATION_TAB_WIDTH }
+          : {}
+        }
       >
+        <MapContainer
+          whenCreated={(mapInstance: any) => { mapRef.current = mapInstance }}
+          className="map-container"
+          style={mapOffsetStyle}
+          center={center}
+          zoom={zoom}
+          minZoom={5}
+          maxZoom={18}
+          maxBounds={[[-90, -180], [90, 180]]}
+          zoomControl={false}
+          id='cy-map'
+        >
         <MapEvents
           editMode={editMode}
           isLoggedIn={isLoggedIn}
@@ -217,13 +240,20 @@ const Map = ({
           <Popup
             position={activeLocation.location}
             closeButton={false}
-            className={classes.popup}
+            className="map-popup"
           >
-            <ContextMenu addMarker={() => {
-              setContextMenu(false)
-              history.push('/location/new')
-              mapRef.current.setView(activeLocation.location)
-            }} />
+            <Menu
+              items={[
+                {
+                  label: translations.addMarkerHere,
+                  callback: () => {
+                    setContextMenu(false)
+                    history.push('/location/new')
+                    mapRef.current.setView(activeLocation.location)
+                  },
+                },
+              ]}
+            />
           </Popup>
         }
         {userLocation &&
@@ -263,37 +293,37 @@ const Map = ({
           safely as they properly handle React lifecycle and Leaflet's control API.
         */}
         <Control position='topright' container={{ style: { display: (!isDrawerOpen || !isPhone) ? 'block' : 'none' } }}>
-              <a
-                className={classes.customControl}
-                onClick={() => userLocation &&
-                  mapRef.current.flyTo(userLocation, 14)
-                }
-                style={{ pointerEvents: userLocation ? 'auto' : 'none', opacity: userLocation ? 1 : 0.33 }}
-              >
-                {userLocation
-                  ? <GpsFixed className={classes.customControlIcon} />
-                  : <GpsNotFixed className={classes.customControlIcon} />
-                }
-              </a>
-            </Control>
+          <a
+            className="flex items-center justify-center cursor-pointer"
+            onClick={() => userLocation &&
+              mapRef.current.flyTo(userLocation, 14)
+            }
+            style={{ pointerEvents: userLocation ? 'auto' : 'none', opacity: userLocation ? 1 : 0.33 }}
+          >
+            {userLocation
+              ? <GpsFixed className="text-lg" />
+              : <GpsNotFixed className="text-lg" />
+            }
+          </a>
+        </Control>
         <Control position='topright' container={{ style: { display: ((!isDrawerOpen || !isPhone) && !editMode) ? 'block' : 'none' } }}>
-                <Export markers={markers} className={classes.customControl} />
-              </Control>
+          <Export markers={markers} className="flex items-center justify-center cursor-pointer" />
+        </Control>
         <Control position='bottomright'>
           {userLocation && (!isDrawerOpen || !isPhone) &&
             <Typography
-              component='div'
               variant='caption'
-              className={classes.userLocation}
+              className="bg-white/75 px-0.5 text-[11px]"
             >Dokładność GPS: {Math.round(locationAccuracy || 0)} m</Typography>
           }
         </Control>
         <ScaleControl position='bottomright' imperial={false} />
         <Control position='topleft' container={{ style: { display: (!isMobile && !editMode) ? 'block' : 'none' } }}>
-            <Legend boxed />
-          </Control>
-      </MapContainer>
-    </div>
+          <Legend boxed />
+        </Control>
+        </MapContainer>
+      </div>
+    </>
   )
 }
 
@@ -345,80 +375,5 @@ const MapEvents = ({
   })
   return null
 }
-
-
-const useStyles = makeStyles(theme => ({
-  offsetWrapper: {
-    flexGrow: 1,
-    position: 'relative',
-  },
-  // Map offset to load markers that are on the edge of a screen.
-  mapOffset: {
-    position: 'absolute',
-    top: 0,
-    left: theme.spacing(-2),
-    bottom: theme.spacing(-4),
-    right: theme.spacing(-2),
-    // Offset must be compensed on controls.
-    '& .leaflet-right': {
-      right: theme.spacing(2),
-    },
-    '& .leaflet-bottom': {
-      bottom: theme.spacing(4),
-    },
-    '& .leaflet-left': {
-      left: theme.spacing(2),
-    },
-    // Add light shadow to all markers.
-    '& .leaflet-marker-icon': {
-      filter: 'drop-shadow(0 0 1px rgb(0,0,0))',
-    },
-    '& .leaflet-pixi-overlay': {
-      // Move PIXI markers on top of a current location marker.
-      zIndex: 1000,
-      // Hide PIXI overlay while being in edit mode.
-      display: (editMode: boolean) => editMode ? 'none' : 'block',
-    },
-  },
-  popup: {
-    '& .leaflet-popup-content-wrapper': {
-      backgroundColor: 'transparent',
-      border: 'none',
-      '&::after': {
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        width: 20,
-        height: 1,
-        left: 'calc(50% - 10px)',
-        bottom: 0,
-        backgroundColor: 'white',
-      },
-    },
-    '& .leaflet-popup-content': {
-      margin: 0,
-      borderRadius: 0,
-      border: 'none',
-    },
-  },
-  customControl: {
-    display: 'flex !important',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    '&[disabled]': {
-      pointerEvents: 'none',
-      opacity: 0.33,
-    },
-  },
-  customControlIcon: {
-    fontSize: 18,
-  },
-  userLocation: {
-    backgroundColor: 'rgba(255,255,255,0.75)',
-    padding: '0 2px',
-    fontSize: 11,
-  },
-}))
 
 export default Map

@@ -1,17 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import classNames from 'classnames'
-
-interface DropdownItem {
-  label: React.ReactNode
-  url?: string
-  callback?: () => void
-  divider?: boolean
-}
+import Menu, { MenuItem } from './Menu'
 
 interface DropdownProps {
   children: React.ReactNode
-  items: DropdownItem[]
+  items: MenuItem[]
   anchorOrigin?: {
     vertical: 'top' | 'bottom'
     horizontal: 'left' | 'center' | 'right'
@@ -20,7 +13,6 @@ interface DropdownProps {
 
 const Dropdown = ({ children, items, anchorOrigin }: DropdownProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
-  const dropdownRef = React.useRef<HTMLDivElement>(null)
 
   const handleClick = () => {
     setIsOpen(!isOpen)
@@ -29,21 +21,6 @@ const Dropdown = ({ children, items, anchorOrigin }: DropdownProps) => {
   const handleClose = () => {
     setIsOpen(false)
   }
-
-  React.useEffect(() => {
-    if (!isOpen) return
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        handleClose()
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isOpen])
 
   const defaultAnchorOrigin = {
     vertical: 'bottom' as const,
@@ -66,7 +43,7 @@ const Dropdown = ({ children, items, anchorOrigin }: DropdownProps) => {
   }
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative">
       <button
         type="button"
         onClick={handleClick}
@@ -77,46 +54,21 @@ const Dropdown = ({ children, items, anchorOrigin }: DropdownProps) => {
         {children}
       </button>
       {isOpen && (
-        <div
-          className={classNames(
-            'absolute z-50 min-w-[160px] w-auto bg-white rounded-md shadow-lg py-1 border border-gray-200',
-            getMenuPositionClasses()
-          )}
-          role="menu"
-          aria-orientation="vertical"
-        >
-          {items.map((item, index) => {
-            const showDivider = item.divider && index > 0
-            const itemClasses = 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer no-underline whitespace-nowrap'
-
-            return (
-              <React.Fragment key={index}>
-                {showDivider && <div className="bg-gray-200 h-px" />}
-                {item.url
-                  ? (
-                      <Link
-                        to={item.url}
-                        className={itemClasses}
-                        onClick={handleClose}
-                      >
-                        {item.label}
-                      </Link>
-                    )
-                  : (
-                      <div
-                        className={itemClasses}
-                        onClick={() => {
-                          item.callback?.()
-                          handleClose()
-                        }}
-                      >
-                        {item.label}
-                      </div>
-                    )}
-              </React.Fragment>
-            )
-          })}
-        </div>
+        <>
+          <div className="fixed inset-0 z-40" onClick={handleClose} />
+          <div
+            className={classNames(
+              'absolute z-50 w-auto border border-gray-200',
+              getMenuPositionClasses()
+            )}
+          >
+            <Menu
+              items={items}
+              onClose={handleClose}
+              className="whitespace-nowrap"
+            />
+          </div>
+        </>
       )}
     </div>
   )

@@ -97,7 +97,6 @@ const PhotosFormContainer = () => {
           : <>
             <PhotosForm
               name={activeLocation?.name}
-              images={activeLocation?.images}
               handleSubmit={handleImageUpload}
               cancel={() => {
                 history.push(`/location/${id}`)

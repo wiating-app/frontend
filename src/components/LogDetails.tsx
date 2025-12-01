@@ -1,6 +1,9 @@
 import React from 'react'
 import { diffWordsWithSpace } from 'diff'
-import { Button, Typography, Grid, ButtonGroup } from '@material-ui/core'
+import Button from './Button'
+import Heading from './Heading'
+import Typography from './Typography'
+import ButtonGroup from './ButtonGroup'
 import { Check, Clear, Remove } from '@material-ui/icons'
 import Table from './Table'
 import Loader from './Loader'
@@ -86,35 +89,29 @@ const LogDetails = ({
 
   return (
     <>
-      <Typography variant='h5' gutterBottom>{translations.detailsOfChange} {data.id}</Typography>
-      <Typography
-        variant='body2'
-        gutterBottom
-      >{translations.date}: {formatDate(data.timestamp, 'verbal')}, {formatTime(data.timestamp, 'detailed')}</Typography>
+      <Heading level={5} gutterBottom>{translations.detailsOfChange} {data.id}</Heading>
+      <Typography variant='body2' gutterBottom>
+        {translations.date}: {formatDate(data.timestamp, 'verbal')}, {formatTime(data.timestamp, 'detailed')}
+      </Typography>
       {isModerator &&
-        <Typography
-          variant='body2'
-          gutterBottom
-        >{translations.user}: {isMe ? translations.you : data.modified_by}</Typography>
+        <Typography variant='body2' gutterBottom>
+          {translations.user}: {isMe ? translations.you : data.modified_by}
+        </Typography>
       }
-      <Typography
-        variant='body2'
-        gutterBottom
-      >
+      <Typography variant='body2' gutterBottom>
         {translations.location}: <>
           <strong>{data.name} ({data.doc_id})</strong> <OpenInNewCard
             path={`/location/${data.doc_id}`}
-            component={Button}
-            variant='contained'
-            color='primary'
+            component={Button as any}
+            variant='primary'
             size='small'
           >{translations.show}</OpenInNewCard>
         </>
       </Typography>
       {isNew
-        ? <Typography variant='h6'>{translations.newLocationCreated}</Typography>
+        ? <Heading level={6}>{translations.newLocationCreated}</Heading>
         : <>
-          <Typography variant='h6'>{translations.changes}</Typography>
+          <Heading level={6}>{translations.changes}</Heading>
           <Table
             data={changes}
             labels={[
@@ -126,16 +123,15 @@ const LogDetails = ({
         </>
       }
       {isModerator &&
-        <Grid container spacing={2} style={{ marginTop: 20 }}>
-          <Grid item>
+        <div className="flex gap-4 mt-5">
+          <div>
             <Button
-              variant='contained'
-              color='primary'
+              variant='primary'
               onClick={reviewCallback}
               disabled={!!data.reviewed_at}
             >{loadingReview ? <Loader dark /> : <Check />} {data.reviewed_at ? translations.alreadyVerified : translations.markAsVerified}</Button>
-          </Grid>
-          <Grid item>
+          </div>
+          <div>
             <ButtonGroup>
               <Button onClick={banCallback} disabled={isMe}>
                 {loadingBan && <Loader dark />}
@@ -143,8 +139,8 @@ const LogDetails = ({
               </Button>
               <Button onClick={revertCallback}>{loadingRevert && <Loader dark />}{translations.revertThisChange}</Button>
             </ButtonGroup>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       }
     </>
   )

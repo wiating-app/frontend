@@ -1,4 +1,6 @@
-import { Button, Typography } from '@material-ui/core'
+import Button from './Button'
+import Heading from './Heading'
+import Typography from './Typography'
 import Form, {
   FormActions,
   SubmitButton,
@@ -10,17 +12,16 @@ import useLanguage from '../utils/useLanguage'
 
 interface PhotosFormProps {
   name?: string
-  images?: any[]
   handleSubmit: (images: any[]) => void
   cancel: () => void
 }
 
-const PhotosForm = ({ name, images, handleSubmit, cancel }: PhotosFormProps) => {
+const PhotosForm = ({ name, handleSubmit, cancel }: PhotosFormProps) => {
   const { translations } = useLanguage()
 
   return (
     <Form fields={['images']} allMandatory>
-      <Typography variant='h4' gutterBottom>{translations.sendNewPhotos}</Typography>
+      <Heading level={4} gutterBottom>{translations.sendNewPhotos}</Heading>
       <Typography gutterBottom>{name}</Typography>
       <MultiImageUpload
         name='images'
@@ -29,7 +30,7 @@ const PhotosForm = ({ name, images, handleSubmit, cancel }: PhotosFormProps) => 
         uploadLabel={translations.upload}
       />
       <FormActions>
-        <Button onClick={() => cancel()}>{translations.cancel}</Button>
+        <Button variant="bare" onClick={() => cancel()}>{translations.cancel}</Button>
         <SubmitButton
           {...({ variant: 'contained' } as any)}
           color='primary'

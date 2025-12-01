@@ -1,12 +1,12 @@
 import React from 'react'
-import { Typography, Button, Grid } from '@material-ui/core'
+import Typography from '../components/Typography'
+import Button from '../components/Button'
 import { useSnackbar } from 'notistack'
 import Loader from '../components/Loader'
 import { getPoints } from '../api/getPoints'
 import useLanguage from '../utils/useLanguage'
 import exportToKML from '../utils/exportToKML'
 import useConfig from '../utils/useConfig'
-import { Location } from '../typings'
 
 const ExportContainer = () => {
   const { enqueueSnackbar } = useSnackbar()
@@ -39,24 +39,23 @@ const ExportContainer = () => {
   return (
     <>
       <Typography gutterBottom>{translations.exportSentence}</Typography>
-      <Grid container alignItems='center' spacing={1}>
-        <Grid item>
+      <div className="flex items-center gap-2">
+        <div>
           <Button
-            variant='contained'
-            color='primary'
+            variant='primary'
             disabled={loading}
             onClick={handleExport}
           >
             {loading && <Loader />}
             {translations.exportButton}
           </Button>
-        </Grid>
+        </div>
         {loading &&
-          <Grid item>
+          <div>
             <Typography>{translations.iAmWorking}</Typography>
-          </Grid>
+          </div>
         }
-      </Grid>
+      </div>
     </>
   )
 }

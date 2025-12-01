@@ -1,7 +1,5 @@
 import Form, { SubmitButton, Input, Select } from '@react-form-component/mui'
-import { Grid } from '@material-ui/core'
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
 
@@ -16,26 +14,25 @@ interface LogFiltersProps {
 }
 
 const LogFilters = ({ values, handleSubmit, handleReset }: LogFiltersProps) => {
-  const classes = useStyles()
   const { translations } = useLanguage()
   const { settings: { enableVerification } } = useConfig()
 
   return (
     <Form
       fields={['id', 'reviewed_at']}
-      className={classes.root}
+      className="mb-6"
     >
-      <Grid container alignItems='center' spacing={2}>
-        <Grid item xs={12} sm={5} md={4}>
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="w-full sm:w-5/12 md:w-4/12">
           <Input
             name='id'
             label={translations.findById}
             initialValue={values?.id}
             noBottomGutter
           />
-        </Grid>
+        </div>
         {enableVerification &&
-          <Grid item xs={12} sm={4} md={3}>
+          <div className="w-full sm:w-4/12 md:w-3/12">
             <Select
               name='reviewed_at'
               label={translations.verificationState}
@@ -47,30 +44,24 @@ const LogFilters = ({ values, handleSubmit, handleReset }: LogFiltersProps) => {
               initialValue={values?.reviewed_at?.toString()}
               noBottomGutter
             />
-          </Grid>
+          </div>
         }
-        <Grid item>
+        <div>
           <SubmitButton
             {...({ variant: 'contained' } as any)}
             color='primary'
             onClick={handleSubmit}
           >{translations.filter}</SubmitButton>
-        </Grid>
+        </div>
         {values && Object.keys(values).length
-          ? <Grid item>
+          ? <div>
             <SubmitButton onClick={handleReset}>{translations.reset}</SubmitButton>
-          </Grid>
+          </div>
           : null
         }
-      </Grid>
+      </div>
     </Form>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginBottom: theme.spacing(3),
-  },
-}))
 
 export default LogFilters

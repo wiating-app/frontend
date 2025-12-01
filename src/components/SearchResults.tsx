@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Divider,
-  Typography,
-  Chip,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import Chip from './Chip'
 import { useRecoilState } from 'recoil'
 import { searchResultsState, activeLocationState } from '../state'
 import useLanguage from '../utils/useLanguage'
@@ -19,59 +10,46 @@ import { Location } from '../typings'
 const SearchResults = () => {
   const [searchResults] = useRecoilState(searchResultsState)
   const [, setActiveLocation] = useRecoilState(activeLocationState)
-  const classes = useStyles()
   const { translations } = useLanguage()
   return (
-    <List>
+    <ul className="list-none p-0 m-0">
       {searchResults && searchResults.length
         ? searchResults.map((item, index) =>
           <React.Fragment key={index}>
-            <ListItem
-              className={classes.item}
+            <li
+              className="flex items-center p-4 cursor-pointer hover:bg-gray-100"
               onClick={() => {
                 setActiveLocation(item as Location)
                 history.push(`/location/${item.id}`)
               }}
             >
-              <ListItemAvatar>
+              <div className="mr-4">
                 <div
                   dangerouslySetInnerHTML={{ __html: generateMarkerIcon(item.type) }}
-                  className={classes.listAvatar}
+                  className="w-11 h-11"
                 />
-              </ListItemAvatar>
-              <ListItemText
-                primary={item.name}
-                secondary={item.is_disabled
-                  ? <Chip
-                    size='small'
-                    color='secondary'
-                    label={translations.isDisabled}
-                  />
-                  : item.description && item.description.substring(0, 70)
-                }
-                secondaryTypographyProps={{ component: 'div' }}
-              />
-            </ListItem>
-            <Divider variant='inset' component='li' />
+              </div>
+              <div className="flex-1">
+                <div className="font-medium">{item.name}</div>
+                <div className="text-sm text-gray-600">
+                  {item.is_disabled
+                    ? <Chip
+                      size='small'
+                      color='secondary'
+                      label={translations.isDisabled}
+                    />
+                    : item.description && item.description.substring(0, 70)
+                  }
+                </div>
+              </div>
+            </li>
+            <hr className="border-t border-gray-200 ml-16" />
           </React.Fragment>
         )
-        : <Typography variant='subtitle1' align='center'>{translations.noResults}</Typography>
+        : <div className="text-base font-medium text-center p-4">{translations.noResults}</div>
       }
-    </List>
+    </ul>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  item: {
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: theme.palette.grey[100],
-    },
-  },
-  listAvatar: {
-    width: 45,
-    height: 45,
-  },
-}))
 
 export default SearchResults

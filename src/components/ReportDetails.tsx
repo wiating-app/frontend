@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Typography, Grid } from '@material-ui/core'
+import Button from './Button'
+import Heading from './Heading'
+import Typography from './Typography'
 import { Check, List } from '@material-ui/icons'
 import Modal from './Modal'
 import Table from './Table'
@@ -29,20 +31,18 @@ const ReportDetails = ({
   const { translations } = useLanguage()
   return (
     <Modal short onClose={onClose}>
-      <Typography variant='h5' gutterBottom>
+      <Heading level={5} gutterBottom>
         {translations.reportsForLocation}<br />
         <strong>{data.name} ({data.id})</strong> <OpenInNewCard
           path={`/location/${data.id}`}
-          component={Button}
-          variant='contained'
-          color='primary'
+          component={Button as any}
+          variant='primary'
           size='small'
         >{translations.show}</OpenInNewCard>
+      </Heading>
+      <Typography variant='body2' gutterBottom>
+        {translations.dateOfLastEdit}: {`${formatDate(data.last_modified_timestamp)} ${formatTime(data.last_modified_timestamp)}`}
       </Typography>
-      <Typography
-        variant='body2'
-        gutterBottom
-      >{translations.dateOfLastEdit}: {`${formatDate(data.last_modified_timestamp)} ${formatTime(data.last_modified_timestamp)}`}</Typography>
 
       <Table
         data={data.report_reason.map((item, index) => ({
@@ -52,26 +52,24 @@ const ReportDetails = ({
           { name: translations.reportReason, field: 'report_reason' },
         ]}
       />
-      <Grid container spacing={2} style={{ marginTop: 20 }}>
-        <Grid item>
+      <div className="flex gap-4 mt-5">
+        <div>
           <Button
-            component={Link}
-            target='_blank'
-            variant='contained'
-            color='primary'
             to={`/moderator/log?id=${data.id}`}
-            style={{ marginTop: 20 }}
+            target='_blank'
+            variant='primary'
+            className="mt-5"
           ><List /> {translations.showLocationLogs}</Button>
-        </Grid>
-        <Grid item>
+        </div>
+        <div>
           <Button
-            variant='contained'
+            variant='default'
             onClick={markAsDoneCallback}
-            style={{ marginTop: 20 }}
+            className="mt-5"
             disabled={loading}
           >{loading ? <Loader dark /> : <Check />} {translations.markAsDone}</Button>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </Modal>
   )
 }

@@ -1,41 +1,39 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import Heading from './Heading'
+import Typography from './Typography'
+import { Build } from '@material-ui/icons'
+import useConfig from '../utils/useConfig'
 
 const Maintenance = () => {
-  const classes = useStyles()
+  const { branding: { themeColor } } = useConfig()
+
   return (
-    <div className={classes.root}>
-      <Typography
-        variant='h4'
-        className={classes.heading}
-      >W serwisie Wiating trwają właśnie prace serwisowe.</Typography>
-      <Typography
-        variant='h5'
-        className={classes.subheading}
-      >Spróbuj ponownie później.</Typography>
+    <div
+      className="flex flex-col items-center justify-center w-full h-screen p-4"
+      style={{ backgroundColor: themeColor }}
+    >
+      <div className="max-w-2xl mx-auto text-center">
+        <div className="mb-8 flex justify-center">
+          <div className="bg-white/20 rounded-full p-8 backdrop-blur-sm">
+            <Build className="text-white" style={{ fontSize: '64px' }} />
+          </div>
+        </div>
+
+        <Heading level={2} className="mb-6 text-white font-light">
+          Prace serwisowe
+        </Heading>
+
+        <Typography variant="body1" className="mb-8 text-white/90 text-lg leading-relaxed">
+          W serwisie Wiating trwają właśnie prace konserwacyjne.
+          Przepraszamy za niedogodności.
+        </Typography>
+
+        <Typography variant="body2" className="text-white/75">
+          Spróbuj ponownie później.
+        </Typography>
+      </div>
     </div>
   )
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    width: '100%',
-    height: '100vh',
-    backgroundColor: theme.palette.primary.main,
-  },
-  heading: {
-    marginBottom: theme.spacing(4),
-    color: 'white',
-  },
-  subheading: {
-    color: 'white',
-  },
-}))
 
 export default Maintenance

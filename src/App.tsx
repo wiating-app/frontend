@@ -4,7 +4,6 @@ import { useRecoilState } from 'recoil'
 import { useSnackbar } from 'notistack'
 import useConfig from './utils/useConfig'
 import 'react-perfect-scrollbar/dist/css/styles.css'
-import './App.css'
 import {
   editModeState,
   activeLocationState,

@@ -19,8 +19,4 @@ module.exports = {
   plugins: [
     require('@tailwindcss/typography'),
   ],
-  corePlugins: {
-    // Disable preflight to avoid conflicts with Material-UI
-    preflight: false,
-  },
 }

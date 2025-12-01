@@ -1,5 +1,6 @@
 import React from 'react'
 import Modal from './Modal'
+import Heading from './Heading'
 import Accordion, { AccordionItem } from './Accordion'
 import useConfig from '../utils/useConfig'
 
@@ -7,7 +8,7 @@ const FaqPage = () => {
   const { faq } = useConfig()
   return (
     <Modal>
-      <h2 className="text-2xl font-medium mb-6">Pytania i odpowiedzi</h2>
+      <Heading level={5} gutterBottom>Pytania i odpowiedzi</Heading>
       <Accordion>
         {faq?.map((item: any, index: number) =>
           <AccordionItem title={item.q} key={index}>
