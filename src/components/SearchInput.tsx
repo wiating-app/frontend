@@ -45,7 +45,7 @@ const SearchInput = ({
   )
 
   const iconClasses = classNames(
-    'flex items-center justify-center h-full px-3',
+    'flex items-center justify-center h-full pl-3 pr-1 sm:pr-2',
     {
       'text-gray-500': lightTheme,
       'text-white': !lightTheme,

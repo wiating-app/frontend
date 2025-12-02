@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
 
+// Breakpoint defined inside the hook
+const PHONE_BREAKPOINT = 640
+
 /**
- * Custom hook to replace Material-UI's useMediaQuery
- * @param query - Media query string (e.g., '(min-width: 600px)')
- * @returns boolean indicating if the media query matches
+ * Custom hook for phone breakpoint detection
+ * @returns Object with isPhone and isNotPhone boolean values
  */
-const useMediaQuery = (query: string): boolean => {
-  const [matches, setMatches] = useState(() => {
+const useMediaQuery = (): { isPhone: boolean; isNotPhone: boolean } => {
+  const [isPhone, setIsPhone] = useState(() => {
     if (typeof window !== 'undefined') {
-      return window.matchMedia(query).matches
+      return window.matchMedia(`(max-width: ${PHONE_BREAKPOINT - 1}px)`).matches
     }
     return false
   })
@@ -16,33 +18,36 @@ const useMediaQuery = (query: string): boolean => {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const mediaQuery = window.matchMedia(query)
+    const phoneQuery = window.matchMedia(`(max-width: ${PHONE_BREAKPOINT - 1}px)`)
 
     const handleChange = (event: MediaQueryListEvent | MediaQueryList) => {
-      setMatches(event.matches)
+      setIsPhone(event.matches)
     }
 
     // Initial check
-    handleChange(mediaQuery)
+    handleChange(phoneQuery)
 
     // Listen for changes
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleChange)
+    if (phoneQuery.addEventListener) {
+      phoneQuery.addEventListener('change', handleChange)
     } else {
       // Fallback for older browsers
-      mediaQuery.addListener(handleChange)
+      phoneQuery.addListener(handleChange)
     }
 
     return () => {
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener('change', handleChange)
+      if (phoneQuery.removeEventListener) {
+        phoneQuery.removeEventListener('change', handleChange)
       } else {
-        mediaQuery.removeListener(handleChange)
+        phoneQuery.removeListener(handleChange)
       }
     }
-  }, [query])
+  }, [])
 
-  return matches
+  return {
+    isPhone,
+    isNotPhone: !isPhone,
+  }
 }
 
 export default useMediaQuery

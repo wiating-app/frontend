@@ -24,7 +24,7 @@ const Drawer: React.FC<DrawerProps> = ({
   const location = useLocation()
   const { pathname } = location
   const coverMapOnMobile = pathname.startsWith('/search')
-  const isNotSmartphone = useMediaQuery('(min-width: 600px)')
+  const { isNotPhone } = useMediaQuery()
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
 
   const handleOnClose = () => history.push('/')
@@ -40,11 +40,13 @@ const Drawer: React.FC<DrawerProps> = ({
   return (
     <div
       className={classNames(
-        'fixed z-[1200] bg-white flex-shrink-0 transition-transform duration-300 ease-in-out shadow-2xl bottom-0',
-        isNotSmartphone ? 'top-16 left-0' : 'left-0 right-0',
+        'fixed z-[1200] bg-white flex-shrink-0 transition-transform duration-300 ease-in-out bottom-0',
+        isNotPhone
+          ? 'top-16 left-0 shadow-2xl'
+          : 'left-0 right-0 shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]',
       )}
       style={{
-        ...(isNotSmartphone
+        ...(isNotPhone
           ? {
               width: `${DRAWER_WIDTH}px`,
               transform: isDrawerOpen ? 'translateX(0)' : 'translateX(-100%)',

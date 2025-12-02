@@ -67,7 +67,7 @@ const NavBar = ({
       id='cy-navbar'
     >
       <div className="flex items-center min-h-[64px] px-4">
-        <Logo className="mr-4 hidden lg:flex" />
+        <Logo className="mr-4 hidden md:flex" />
         <Form
           fields={['phrase']}
           onChange={(fields: any) => onSearch(fields.phrase)}

@@ -35,7 +35,7 @@ const NavBarContainer = () => {
     isModerator,
     logout,
   } = useAuth0()
-  const isMobile = useMediaQuery('(max-width: 600px)')
+  const { isPhone } = useMediaQuery()
 
   React.useEffect(() => {
     const handleAsync = async () => {
@@ -102,7 +102,7 @@ const NavBarContainer = () => {
         ]
       : [],
     { label: translations.informations, url: '/info' },
-    ...isMobile ? [{ label: translations.legend, url: '/legend' }] : [],
+    ...isPhone ? [{ label: translations.legend, url: '/legend' }] : [],
     ...termsAndConditions ? [{ label: translations.termsAndConditions, url: '/terms-and-conditions' }] : [],
     { label: translations.privacyPolicy, url: '/privacy-policy' },
     ...faq ? [{ label: translations.faq, url: '/faq', divider: true }] : [],

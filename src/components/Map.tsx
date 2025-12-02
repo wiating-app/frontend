@@ -69,8 +69,7 @@ const Map = ({
   const [, setSearchResults] = useRecoilState(searchResultsState)
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
-  const isMobile = useMediaQuery('(max-width: 600px)')
-  const isPhone = useMediaQuery('(max-width: 480px)')
+  const { isPhone, isNotPhone } = useMediaQuery()
   const { translations } = useLanguage()
 
   const currentZoom = mapRef?.current?._zoom || zoom
@@ -83,7 +82,7 @@ const Map = ({
         : 32
 
   React.useEffect(() => {
-    if (activeLocation?.location && !contextMenu && initiated && !isMobile) {
+    if (activeLocation?.location && !contextMenu && initiated && isNotPhone) {
       const newZoom = currentZoom < 10 ? 11 : undefined
       mapRef.current.flyTo(activeLocation.location, newZoom)
     }
@@ -105,14 +104,14 @@ const Map = ({
   }, [center, bounds, initiated, activeLocation])
 
   React.useEffect(() => {
-    if (isMobile && mapRef.current) {
+    if (!isNotPhone && mapRef.current) {
       mapRef.current.invalidateSize()
       if (activeLocation?.location && initiated) {
         const newZoom = currentZoom < 11 ? 12 : undefined
         mapRef.current.flyTo(activeLocation.location, newZoom)
       }
     }
-  }, [activeLocation, isDrawerOpen, isMobile])
+  }, [activeLocation, isDrawerOpen, isNotPhone])
 
   const handleLoadMapMarkers = async (newZoom: number, newBounds: any) => {
     // Check whether viewport really changed to prevent multiple requests for
@@ -120,8 +119,8 @@ const Map = ({
     if (JSON.stringify(newBounds) !== JSON.stringify(previousBounds)) {
       // Prevend getMarkers on zoom in, because the current ones can be used.
       // Load them anyway if this is the first call - previousBounds is not
-      // defined, or when entering the details view on mobile - isMobile && isDrawerOpen.
-      if (newZoom <= currentZoom || !previousBounds || (isMobile && isDrawerOpen)) {
+      // defined, or when entering the details view on mobile - !isNotPhone && isDrawerOpen.
+      if (newZoom <= currentZoom || !previousBounds || (!isNotPhone && isDrawerOpen)) {
         getMarkers(newBounds)
       }
       setStoredPosition({ bounds: newBounds, zoom: newZoom })
@@ -167,7 +166,7 @@ const Map = ({
       `}</style>
       <div
         className="flex-grow relative"
-        style={isDrawerOpen && isMobile
+        style={isDrawerOpen && !isNotPhone
           ? isPhone
             ? { height: MOBILE_MINI_MAP_HEIGHT }
             : { marginLeft: LOCATION_TAB_WIDTH }
@@ -322,7 +321,7 @@ const Map = ({
           }
         </Control>
         <ScaleControl position='bottomright' imperial={false} />
-        <Control position='topleft' container={{ style: { display: (!isMobile && !editMode) ? 'block' : 'none' } }}>
+        <Control position='topleft' container={{ style: { display: (isNotPhone && !editMode) ? 'block' : 'none' } }}>
           <Legend boxed />
         </Control>
         </MapContainer>

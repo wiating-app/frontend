@@ -24,6 +24,9 @@ interface PreparedImage {
   thumbnail: string
 }
 
+// Single source of truth for photo container height (mobile-first)
+const PHOTO_CONTAINER_HEIGHT = 'h-[70vw] sm:h-[260px]'
+
 const LocationPhotos = ({
   location,
   uploading,
@@ -58,10 +61,10 @@ const LocationPhotos = ({
   }, [location])
 
   return (
-    <div className="relative bg-gray-300 h-[50vw] sm:h-[260px] animate-fade-in">
+    <div className={`relative bg-gray-300 ${PHOTO_CONTAINER_HEIGHT} animate-fade-in`}>
       {loading || uploading
         ? (
-            <div className="h-[260px] max-sm:h-[50vw]">
+            <div className={PHOTO_CONTAINER_HEIGHT}>
               <div className="h-full flex items-center justify-center">
                 <Loader big />
               </div>
@@ -122,7 +125,7 @@ const LocationPhotos = ({
                   {preparedImages.map((image, i) => (
                     <div
                       key={i}
-                      className="h-[260px] max-sm:h-[50vw] cursor-pointer"
+                      className={`${PHOTO_CONTAINER_HEIGHT} cursor-pointer`}
                       onClick={() => setOpenModal(true)}
                     >
                       <img
@@ -137,7 +140,7 @@ const LocationPhotos = ({
               </>
             )
           : (
-              <div className="h-[260px] max-sm:h-[50vw]">
+              <div className={PHOTO_CONTAINER_HEIGHT}>
                 <img
                   src="/no-image.png"
                   alt="No image"
@@ -148,7 +151,7 @@ const LocationPhotos = ({
             )
       }
         <button
-          className="absolute top-1 left-1 px-1.5 pt-1 text-gray-800 bg-gray-300 hover:bg-gray-200 border-none cursor-pointer rounded"
+          className="absolute top-1 left-1 px-1.5 pt-1 text-gray-800 bg-gray-200 hover:bg-gray-100 border-none cursor-pointer rounded"
           onClick={uploadImages}
         >
           <Tooltip content={translations.addPhoto} anchor="right-center">
