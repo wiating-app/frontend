@@ -18,7 +18,7 @@ const BackToSearch = () => {
         history.push('/search')
         setActiveLocation(null)
       }}
-      className="absolute top-4 left-4 z-10"
+      className="absolute top-2 left-14 z-10"
       variant='primary'
       size='small'
     ><List size={20} /> {translations.backToResults}</Button>
