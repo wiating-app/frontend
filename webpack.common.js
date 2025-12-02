@@ -2,7 +2,6 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
-const { InjectManifest } = require('workbox-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
@@ -105,14 +104,6 @@ module.exports = {
             ignore: ['**/index.html', '**/manifest.json', '**/favicon.png', '**/index-template.html', '**/analytics-template.html'],
           },
         },
-      ],
-    }),
-
-    new InjectManifest({
-      swSrc: './src/serviceWorker.ts',
-      swDest: 'service-worker.js',
-      exclude: [
-        /_redirects$/,
       ],
     }),
 
