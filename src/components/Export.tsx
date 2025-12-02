@@ -46,7 +46,7 @@ const Export = ({ markers, className }: ExportProps) => {
         {isOpen && (
           <>
             <div className="fixed inset-0 z-10" onClick={handleClose} />
-            <div className="absolute top-full left-0 mt-1 z-20">
+            <div className="absolute top-full right-0 mt-1 z-20">
               <Menu
                 items={items}
                 onClose={handleClose}

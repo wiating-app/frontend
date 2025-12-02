@@ -124,6 +124,7 @@ export default {
     wrongCoordsFormat: 'Niepoprawny format współrzędnych.',
     yes: 'Tak',
     you: 'Ty',
+    youAreNowUsingLatestVersion: 'Aplikacja zaktualizowana do najnowszej wersji',
     formLabels: {
       formInvalid: 'Formularz jest niepoprawnie uzupełniony. Sprawdź pola.',
       mandatoryField: 'To pole jest obowiązkowe.',
@@ -269,6 +270,7 @@ export default {
     wrongCoordsFormat: 'Wrong coordinations format.',
     yes: 'Yes',
     you: 'You',
+    youAreNowUsingLatestVersion: 'App updated to the latest version',
     formLabels: {
       formInvalid: 'Form contains errors. Check all fields.',
       mandatoryField: 'This field is mandatory.',

@@ -26,6 +26,13 @@ export const Auth0Provider = ({
   const { translations } = useLanguage()
 
   useEffect(() => {
+    // Check for service worker update notification
+    const isUpdateReload = sessionStorage.getItem('sw-update-reload')
+    if (isUpdateReload) {
+      sessionStorage.removeItem('sw-update-reload')
+      toast(translations?.youAreNowUsingLatestVersion)
+    }
+
     const initAuth0 = async () => {
       try {
         const checkModerator = (user: User | null) => {
