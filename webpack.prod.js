@@ -20,7 +20,7 @@ module.exports = merge(common, {
 
     new InjectManifest({
       swSrc: './src/serviceWorker.ts',
-      swDest: 'service-worker.ts',
+      swDest: 'service-worker.js',
       exclude: [
         /_redirects$/,
       ],
