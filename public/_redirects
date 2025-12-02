@@ -7,6 +7,7 @@
 /privacy-policy /index.html 200
 /cookies /index.html 200
 /faq  /index.html 200
+/wrapped /index.html 200
 /log/*  /index.html 200
 /history/*  /index.html 200
 /moderator/* /index.html 200

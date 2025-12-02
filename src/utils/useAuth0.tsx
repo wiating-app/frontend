@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import api from '../api'
 import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js'
 import useLanguage from './useLanguage'
 import { toast } from 'sonner'
 import { Auth0ContextInterface, User } from '../typings'
+import history from '../history'
 
 // Useful info about Auth0Provider configuration:
 // https://auth0.com/docs/quickstart/spa/react
@@ -24,6 +25,25 @@ export const Auth0Provider = ({
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isModerator, setIsModerator] = useState(false)
   const { translations } = useLanguage()
+
+  // Calculate shouldSeeWrapped: only for logged-in users in December, not dismissed
+  const shouldSeeWrapped = useMemo(() => {
+    if (!isLoggedIn) {
+      return false
+    }
+    // Only show in December (month index 11)
+    const currentMonth = new Date().getMonth()
+    if (currentMonth !== 11) {
+      return false
+    }
+    // Check if already dismissed for current year
+    const currentYear = new Date().getFullYear().toString()
+    const dismissedKey = `wrappedDismissed_${currentYear}`
+    if (localStorage.getItem(dismissedKey)) {
+      return false
+    }
+    return true
+  }, [isLoggedIn])
 
   useEffect(() => {
     // Check for service worker update notification
@@ -89,6 +109,7 @@ export const Auth0Provider = ({
     loading,
     isLoggedIn,
     isModerator,
+    shouldSeeWrapped,
     user: user || undefined,
     popupOpen: false,
     loginWithPopup: async () => {},
@@ -118,8 +139,29 @@ export const Auth0Provider = ({
         const storedPosition = JSON.parse(localStorage.getItem('lastPosition') || 'null')
         // Make sure that structure is correct.
         return storedPosition?.bounds ? storedPosition : null
-      } catch (error) {
+      } catch {
         return null
+      }
+    },
+    requireAuth: (callback: () => void, redirect: boolean = false) => {
+      if (!isLoggedIn) {
+        toast(translations?.mustLogIn, {
+          action: {
+            label: translations?.login,
+            onClick: () => {
+              if (auth0) {
+                auth0.loginWithRedirect({})
+              } else {
+                contextValue.loginWithRedirect({})
+              }
+            },
+          },
+        })
+        if (redirect) {
+          history.push('/')
+        }
+      } else {
+        callback()
       }
     },
   }

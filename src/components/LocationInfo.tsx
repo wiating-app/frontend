@@ -9,16 +9,16 @@ import Button from './Button'
 import ButtonGroup from './ButtonGroup'
 import Typography from './Typography'
 import Chip from './Chip'
+import useAuth0 from '../utils/useAuth0'
+import history from '../history'
 
 interface LocationInfoProps {
-  loggedIn: boolean
   isModerator: boolean
   selectedLocation: Location
   handleReport: (fields: { reason: string; description: string }) => void | Promise<void>
 }
 
 const LocationInfo = ({
-  loggedIn,
   isModerator,
   selectedLocation,
   handleReport,
@@ -32,12 +32,21 @@ const LocationInfo = ({
       enableWaterField,
     },
   } = useConfig()
+  const { requireAuth } = useAuth0()
   const [reportIsOpen, setReportIsOpen] = React.useState(false)
   const updatedAt = selectedLocation.last_modified_timestamp || selectedLocation.created_timestamp
   const type = locationTypes.find(item => item.id === selectedLocation.type)
   const typeLabel = selectedLocation.type ? type?.label[language] || '' : ''
   const roundedLat = roundLatLng(selectedLocation.location.lat)
   const roundedLng = roundLatLng(selectedLocation.location.lng)
+
+  const handleReportClick = () => {
+    requireAuth(() => setReportIsOpen(true))
+  }
+
+  const handleEditClick = () => {
+    requireAuth(() => history.push(`/location/${selectedLocation.id}/edit`))
+  }
 
   return (
     <div className="relative flex flex-col p-4 pt-8 shadow-md flex-grow" id='cy-locationinfo'>
@@ -119,31 +128,29 @@ const LocationInfo = ({
             {translations.lastUpdate}: {formatDate(updatedAt)}
           </div>
         )}
-        {loggedIn && (
-          <ButtonGroup>
-            {isModerator
-              ? (
-                  <Button
-                    to={`/moderator/log?id=${selectedLocation.id}`}
-                  >
-                    Wyświetl logi
-                  </Button>
-                )
-              : enableReport && (
+        <ButtonGroup>
+          {isModerator
+            ? (
                 <Button
-                  onClick={() => setReportIsOpen(true)}
+                  to={`/moderator/log?id=${selectedLocation.id}`}
                 >
-                  {translations.report}
+                  Wyświetl logi
                 </Button>
               )
-            }
-            <Button
-              to={`/location/${selectedLocation.id}/edit`}
-            >
-              {translations.edit}
-            </Button>
-          </ButtonGroup>
-        )}
+            : enableReport && (
+              <Button
+                onClick={handleReportClick}
+              >
+                {translations.report}
+              </Button>
+            )
+          }
+          <Button
+            onClick={handleEditClick}
+          >
+            {translations.edit}
+          </Button>
+        </ButtonGroup>
       </div>
       {reportIsOpen && (
         <Report

@@ -74,7 +74,7 @@ const Modal = ({ wide, short, small, children, onClose, id }: ModalProps) => {
 
       <div
         className={classNames(
-          'relative bg-gray-50 rounded max-w-full box-border overflow-hidden',
+          'relative bg-gray-50 rounded-md max-w-full box-border overflow-hidden',
           'focus:outline-none transition-all duration-300 ease-out',
           flexGrowClass,
           widthClass,

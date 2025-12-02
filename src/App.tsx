@@ -19,6 +19,7 @@ import TermsAndConditions from './components/TermsAndConditions'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import AcceptDataPrivacy from './components/AcceptDataPrivacy'
 import FaqPage from './components/FaqPage'
+// import WrappedContainer from './components/WrappedContainer'
 import ModeratorPanel from './components/ModeratorPanel'
 import NavBarContainer from './containers/NavBarContainer'
 import MapContainer from './containers/MapContainer'
@@ -27,6 +28,7 @@ import LocationFormContainer from './containers/LocationFormContainer'
 import PhotosFormContainer from './containers/PhotosFormContainer'
 import LogDetailsContainer from './containers/LogDetailsContainer'
 import HistoryContainer from '././containers/HistoryContainer'
+import RequireAuth from './utils/RequireAuth'
 
 
 const App = () => {
@@ -75,11 +77,15 @@ const App = () => {
           </Route>
 
           <Route exact path='/location/:id/edit'>
-            <LocationFormContainer />
+            <RequireAuth redirect>
+              <LocationFormContainer />
+            </RequireAuth>
           </Route>
 
           <Route exact path='/location/:id/photos'>
-            <PhotosFormContainer />
+            <RequireAuth redirect>
+              <PhotosFormContainer />
+            </RequireAuth>
           </Route>
         </Switch>
       </Drawer>
@@ -91,6 +97,7 @@ const App = () => {
       </Switch>
 
       <AcceptDataPrivacy />
+      {/* <WrappedContainer /> */}
 
       <Switch>
         <Route exact path='/info' component={Info} />
@@ -98,10 +105,10 @@ const App = () => {
         <Route exact path='/terms-and-conditions' component={TermsAndConditions} />
         <Route exact path='/privacy-policy' component={PrivacyPolicy} />
         {faq && <Route exact path='/faq' component={FaqPage} />}
+        {/* <Route exact path='/wrapped' component={WrappedContainer} /> */}
+        <Route path='/history' component={HistoryContainer} />
+        <Route exact path='/history/:id' component={LogDetailsContainer} />
       </Switch>
-
-      <Route path='/history' component={HistoryContainer} />
-      <Route exact path='/history/:id' component={LogDetailsContainer} />
 
     </Layout>
   )

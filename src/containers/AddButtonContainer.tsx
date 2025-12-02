@@ -10,13 +10,13 @@ import { editModeState, activeLocationState } from '../state'
 import AddButton from '../components/AddButton'
 import useLanguage from '../utils/useLanguage'
 import useUserLocation from '../utils/useUserLocation'
-import useAuth0 from '../utils/useAuth0'
 import history from '../history'
 import { Location } from '../typings'
+import useAuth0 from '../utils/useAuth0'
 
 const AddButtonContainer = () => {
   const { translations } = useLanguage()
-  const { isLoggedIn } = useAuth0()
+  const { requireAuth } = useAuth0()
   const { userLocation, error } = useUserLocation()
   const [editMode] = useRecoilState(editModeState)
   const [, setActiveLocation] = useRecoilState(activeLocationState)
@@ -29,17 +29,19 @@ const AddButtonContainer = () => {
           label: translations.pointOnMap,
           icon: <MapPin size={20} />,
           callback: () => {
-            setActiveLocation(null)
-            history.push('/pin')
-            toast(translations.pointOnMap, {
-              duration: Infinity,
-              action: {
-                label: translations.cancel,
-                onClick: () => {
-                  toast.dismiss()
-                  history.push('/')
+            requireAuth(() => {
+              setActiveLocation(null)
+              history.push('/pin')
+              toast(translations.pointOnMap, {
+                duration: Infinity,
+                action: {
+                  label: translations.cancel,
+                  onClick: () => {
+                    toast.dismiss()
+                    history.push('/')
+                  },
                 },
-              },
+              })
             })
           },
         },
@@ -47,8 +49,10 @@ const AddButtonContainer = () => {
           label: translations.enterCoordinates,
           icon: <Pencil size={20} />,
           callback: () => {
-            setActiveLocation(null)
-            history.push('/location/new')
+            requireAuth(() => {
+              setActiveLocation(null)
+              history.push('/location/new')
+            })
           },
         },
         ...userLocation && !error
@@ -56,15 +60,18 @@ const AddButtonContainer = () => {
               label: translations.inCurrentLocation,
               icon: <MapPinned size={20} />,
               callback: async () => {
-                const [lat, lon] = userLocation
-                await history.push('/location/new')
-                // Partial location will be completed by the form
-                setActiveLocation({ location: { lat, lng: lon } } as any as Location)
+                requireAuth(() => {
+                  async () => {
+                    const [lat, lon] = userLocation
+                    await history.push('/location/new')
+                    // Partial location will be completed by the form
+                    setActiveLocation({ location: { lat, lng: lon } } as any as Location)
+                  }
+                })
               },
             }]
           : [],
       ]}
-      isLoggedIn={isLoggedIn}
     />
   )
 }

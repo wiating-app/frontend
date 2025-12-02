@@ -19,7 +19,7 @@ const LocationInfoContainer: React.FC = () => {
   const { search } = location
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations } = useLanguage()
-  const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
+  const { loading: loadingAuth, isModerator, requireAuth } = useAuth0()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
 
@@ -31,7 +31,7 @@ const LocationInfoContainer: React.FC = () => {
           try {
             const data = await getPoint(id)
             setActiveLocation(data)
-          } catch (error) {
+          } catch (_error) {
             setError(true)
             setLoading(false)
             toast.error(translations.connectionProblemLocation)
@@ -58,11 +58,7 @@ const LocationInfoContainer: React.FC = () => {
   }
 
   const handleImageUpload = () => {
-    if (isLoggedIn) {
-      history.push(`/location/${id}/photos`)
-    } else {
-      toast.warning(translations.mustLogIn)
-    }
+    requireAuth(() => history.push(`/location/${id}/photos`))
   }
 
   return (
@@ -87,7 +83,6 @@ const LocationInfoContainer: React.FC = () => {
           />
           <LocationInfo
             selectedLocation={activeLocation!}
-            loggedIn={isLoggedIn}
             isModerator={isModerator}
             handleReport={handleReport}
           />
