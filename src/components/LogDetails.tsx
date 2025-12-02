@@ -3,20 +3,22 @@ import { diffWordsWithSpace } from 'diff'
 import Button from './Button'
 import Heading from './Heading'
 import Typography from './Typography'
-import ButtonGroup from './ButtonGroup'
-import { Check, X, Minus } from 'lucide-react'
+import { Check, X, ShieldCheck } from 'lucide-react'
 import Table from './Table'
 import Loader from './Loader'
-import OpenInNewCard from './OpenInNewCard'
+import LocationLink from './LocationLink'
+import Chip from './Chip'
 import useLanguage from '../utils/useLanguage'
 import { formatDate, formatTime } from '../utils/helpers'
-import { LogSource } from '../typings'
+import { LogSource, User } from '../typings'
+import FormActions from './Inputs/FormActions'
 
 
 interface LogDetailsProps {
   data: LogSource
   isMe: boolean
   isModerator: boolean
+  user: User
   reviewCallback: () => void | Promise<void>
   banCallback: () => void | Promise<void>
   revertCallback: () => void | Promise<void>
@@ -29,6 +31,7 @@ const LogDetails = ({
   data,
   isMe,
   isModerator,
+  user,
   reviewCallback,
   banCallback,
   revertCallback,
@@ -41,15 +44,15 @@ const LogDetails = ({
 
   const readValue = (name: string, value: any): React.ReactNode => value
     ? value === true
-      ? <Check size={20} style={{ color: '#008080' }} />
+      ? <Check size={20} className="text-gray-600" />
       : name === 'images'
         ? <img
           src={`${process.env.FRONTEND_CDN_URL}/${data.doc_id}/${value.replace('.jpg', '_m.jpg')}`}
-          width={100}
           alt=''
+          className="rounded w-24"
         />
         : value
-    : value === false ? <X size={20} style={{ color: '#f44336' }} /> : <Minus size={20} style={{ color: '#9e9e9e' }} />
+    : value === false ? <X size={20} className="text-gray-600" /> : <div className="text-gray-400">-</div>
 
 
   const renderDiff = (one: string, other: string): React.ReactNode => {
@@ -74,7 +77,7 @@ const LogDetails = ({
     ? Object.entries(data.changes)
       .filter(([name]) => name !== 'action')
       .map(([name, values]: [string, any]) => ({
-        name,
+        name: <Chip size="small" label={name} />,
         old: readValue(name, values.old_value),
         new: readValue(name, name === 'description' || name === 'directions'
           ? renderDiff(String(values.old_value || ''), String(values.new_value || ''))
@@ -89,29 +92,20 @@ const LogDetails = ({
 
   return (
     <>
-      <Heading level={5} gutterBottom>{translations.detailsOfChange} {data.id}</Heading>
-      <Typography variant='body2' gutterBottom>
-        {translations.date}: {formatDate(data.timestamp, 'verbal')}, {formatTime(data.timestamp, 'detailed')}
+      <Heading level={5} gutterBottom>
+        {translations.detailsOfChange} {formatDate(data.timestamp, 'verbal')}, {formatTime(data.timestamp, 'detailed')}
+      </Heading>
+      <Typography variant='body2'>
+        {translations.location}: <LocationLink name={data.name} id={data.doc_id} />
       </Typography>
       {isModerator &&
         <Typography variant='body2' gutterBottom>
-          {translations.user}: {isMe ? translations.you : data.modified_by}
+          {translations.authorOfChange}: {isMe ? user.name : data.modified_by}
         </Typography>
       }
-      <Typography variant='body2' gutterBottom>
-        {translations.location}: <>
-          <strong>{data.name} ({data.doc_id})</strong> <OpenInNewCard
-            path={`/location/${data.doc_id}`}
-            component={Button as any}
-            variant='primary'
-            size='small'
-          >{translations.show}</OpenInNewCard>
-        </>
-      </Typography>
       {isNew
-        ? <Heading level={6}>{translations.newLocationCreated}</Heading>
+        ? <Typography variant="subtitle1">{translations.newLocationCreated}.</Typography>
         : <>
-          <Heading level={6}>{translations.changes}</Heading>
           <Table
             data={changes}
             labels={[
@@ -123,24 +117,20 @@ const LogDetails = ({
         </>
       }
       {isModerator &&
-        <div className="flex gap-4 mt-5">
-          <div>
-            <Button
-              variant='primary'
-              onClick={reviewCallback}
-              disabled={!!data.reviewed_at}
-            >{loadingReview ? <Loader dark /> : <Check size={20} />} {data.reviewed_at ? translations.alreadyVerified : translations.markAsVerified}</Button>
-          </div>
-          <div>
-            <ButtonGroup>
-              <Button onClick={banCallback} disabled={isMe}>
-                {loadingBan && <Loader dark />}
-                {!isMe ? translations.banAuthor : translations.cannotBanYourself}
-              </Button>
-              <Button onClick={revertCallback}>{loadingRevert && <Loader dark />}{translations.revertThisChange}</Button>
-            </ButtonGroup>
-          </div>
-        </div>
+        <FormActions>
+          {!isMe &&
+            <Button onClick={banCallback}>
+              {loadingBan && <Loader dark />}
+              {translations.banAuthor}
+            </Button>
+          }
+          <Button onClick={revertCallback}>{loadingRevert && <Loader dark />}{translations.revertThisChange}</Button>
+          <Button
+            variant='success'
+            onClick={reviewCallback}
+            disabled={!!data.reviewed_at}
+          >{loadingReview ? <Loader dark /> : <ShieldCheck size={20} strokeWidth={2.5} />} {data.reviewed_at ? translations.alreadyVerified : translations.markAsVerified}</Button>
+        </FormActions>
       }
     </>
   )

@@ -31,7 +31,7 @@ const ModeratorPanel: React.FC = () => {
 
   return (
     <PerfectScrollbar className="p-6 box-border w-full relative">
-      <Heading level={5} gutterBottom>{translations.administration}</Heading>
+      <Heading level={4} gutterBottom>{translations.administration}</Heading>
 
       <Tabs
         value={`/${pathArray[1]}/${pathArray[2]}`}

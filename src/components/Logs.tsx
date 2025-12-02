@@ -1,5 +1,4 @@
 import React from 'react'
-import Heading from './Heading'
 import Typography from './Typography'
 import { Check, Minus } from 'lucide-react'
 import Table from './Table'
@@ -7,7 +6,8 @@ import Pagination from './Pagination'
 import Button from './Button'
 import ButtonGroup from './ButtonGroup'
 import Loader from './Loader'
-import OpenInNewCard from './OpenInNewCard'
+import LocationLink from './LocationLink'
+import ChangedFields from './ChangedFields'
 import useLanguage from '../utils/useLanguage'
 import { formatDate, formatTime } from '../utils/helpers'
 import useConfig from '../utils/useConfig'
@@ -44,25 +44,19 @@ const Logs = ({
     : error
       ? <Typography color='error'>{translations.connectionProblemLogs}</Typography>
       : <>
-        <Heading level={6}>{translations.itemsFound.replace('#', rowsInTotal || 0)}:</Heading>
         <Table
           data={logs.map(item => ({
             ...enableVerification ? { verified: item._source.reviewed_at ? <Check size={20} style={{ color: '#008080' }} /> : <Minus size={20} style={{ color: '#9e9e9e' }} /> } : {},
             timestamp: `${formatDate(item._source.timestamp)} ${formatTime(item._source.timestamp)}`,
             location: <>
-              <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
-              <Typography variant='caption'>
-                {item._source.changes?.action && item._source.changes.action === 'created'
-                  ? translations.newLocation
-                  : Object.keys(item._source.changes || {}).join(', ')
-                }
-              </Typography>
+              <LocationLink name={item._source.name} id={item._source.doc_id} />
+              <ChangedFields item={item} />
             </>,
             user: <div className="whitespace-nowrap">{
-              item._source.modified_by === user?.sub ? translations.you : item._source.modified_by}
+              item._source.modified_by === user?.sub ? user.name : item._source.modified_by}
             </div>,
             actions: <ButtonGroup>
-              <Button variant='primary' size='small' onClick={() => setDetails(item)}>
+              <Button variant='primary' onClick={() => setDetails(item)}>
                 {translations.details}
               </Button>
             </ButtonGroup>,

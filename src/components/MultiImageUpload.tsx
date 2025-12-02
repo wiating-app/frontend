@@ -20,8 +20,6 @@ interface MultiImageUploadProps {
   spacing?: number
   columns?: number
   uploadLabel?: string
-  smHeight?: string
-  mdHeight?: string
 }
 
 const MultiImageUpload = ({
@@ -32,45 +30,35 @@ const MultiImageUpload = ({
   spacing = 2,
   columns = 2,
   uploadLabel = 'Upload',
-  smHeight = '20vw',
-  mdHeight = '12vw',
 }: MultiImageUploadProps) => {
-  const gapClass = spacing === 1 ? 'gap-2' : spacing === 2 ? 'gap-4' : 'gap-6'
-  const colWidth = columns === 2 ? 'sm:w-6/12' : 'sm:w-full'
-
   return (
-    <div className={`flex flex-wrap ${gapClass}`}>
+    <div className={`grid grid-cols-${columns} gap-${spacing}`}>
       {value &&
         value.map((item, index) =>
-          <div className={`${colWidth}`} key={index}>
-            <div
-              className="flex items-center justify-center bg-gray-100 p-4 relative"
-              style={{
-                height: '33vw',
-                maxHeight: mdHeight,
-              }}
+          <div
+            className="flex items-center justify-center bg-gray-100 h-40 p-4 relative rounded"
+            key={index}
+          >
+            <img
+              src={item.data || item as any}
+              className="max-w-full max-h-full rounded-sm"
+              alt={`Uploaded file ${index}`}
+            />
+            <IconButton
+              size="small"
+              className="absolute top-1 right-1"
+              onClick={() => setValue(
+                name,
+                value.filter((subItem, subIndex) => subIndex !== index),
+                mandatory
+              )}
             >
-              <img
-                src={item.data || item as any}
-                className="max-w-full max-h-full"
-                alt={`Uploaded file ${index}`}
-              />
-              <IconButton
-                size="small"
-                className="absolute top-0 right-0"
-                onClick={() => setValue(
-                  name,
-                  value.filter((subItem, subIndex) => subIndex !== index),
-                  mandatory
-                )}
-              >
-                <Trash2 size={20} />
-              </IconButton>
-            </div>
+              <Trash2 size={20} />
+            </IconButton>
           </div>
         )
       }
-      <div className={colWidth}>
+      <div>
         <input
           accept='image/*'
           className="hidden"
@@ -104,11 +92,7 @@ const MultiImageUpload = ({
         />
         <label
           htmlFor={name}
-          className="flex flex-col cursor-pointer items-center justify-center bg-gray-100 p-4 text-gray-500 hover:bg-gray-200"
-          style={{
-            height: '33vw',
-            maxHeight: mdHeight,
-          }}
+          className="flex flex-col cursor-pointer items-center justify-center bg-gray-100 h-40 p-4 text-gray-500 hover:bg-gray-200"
         >
           <CloudUpload size={24} />
           <Typography variant='caption' color='inherit'>{uploadLabel}</Typography>

@@ -4,7 +4,7 @@ import Table from './Table'
 import Button from './Button'
 import ButtonGroup from './ButtonGroup'
 import Loader from './Loader'
-import OpenInNewCard from './OpenInNewCard'
+import LocationLink from './LocationLink'
 import useLanguage from '../utils/useLanguage'
 import { formatDate, formatTime } from '../utils/helpers'
 import { Location } from '../typings'
@@ -32,7 +32,7 @@ const Reports = ({
         ? <Table
           data={reports.map(item => ({
             timestamp: `${formatDate(item.last_modified_timestamp)} ${formatTime(item.last_modified_timestamp)}`,
-            location: <OpenInNewCard path={`/location/${item.id}`}>{item.name}</OpenInNewCard>,
+            location: <LocationLink name={item.name} id={item.id} />,
             report_reason: Array.isArray(item.report_reason)
               ? item.report_reason.map((item: string, index: number) =>
                 <Typography key={index} variant='caption'>{item}</Typography>

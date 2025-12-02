@@ -5,7 +5,8 @@ import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
 import Pagination from './Pagination'
-import OpenInNewCard from './OpenInNewCard'
+import LocationLink from './LocationLink'
+import ChangedFields from './ChangedFields'
 import useLanguage from '../utils/useLanguage'
 import { formatDate, formatTime } from '../utils/helpers'
 import { Log } from '../typings'
@@ -45,13 +46,8 @@ const History = ({
               data={data?.map(item => ({
                 timestamp: `${formatDate(item._source.timestamp)} ${formatTime(item._source.timestamp)}`,
                 location: <>
-                  <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>
-                  <Typography variant='caption'>
-                    {item._source.changes?.action && item._source.changes.action === 'created'
-                      ? 'Nowa lokacja'
-                      : Object.keys(item._source.changes || {}).join(', ')
-                    }
-                  </Typography>
+                  <LocationLink name={item._source.name} id={item._source.doc_id} />
+                  <ChangedFields item={item} />
                 </>,
               })) || []}
               labels={[

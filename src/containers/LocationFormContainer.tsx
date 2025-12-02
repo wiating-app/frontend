@@ -114,7 +114,10 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
     } = fields
 
     try {
+      console.log('location: ', location);
       const { lat, lon } = parse(location)
+      console.log('lon: ', lon);
+      console.log('lat: ', lat);
       const dataObject = {
         name,
         description,

@@ -4,7 +4,7 @@ import useConfig from '../utils/useConfig'
 import { Link } from 'react-router-dom'
 
 export type ButtonProps = {
-  variant?: 'default' | 'primary' | 'secondary' | 'bare' | 'outlined' | 'danger'
+  variant?: 'default' | 'primary' | 'secondary' | 'bare' | 'outlined' | 'danger' | 'success'
   size?: 'small' | 'medium' | 'large'
   href?: string
   className?: string
@@ -63,12 +63,13 @@ const Button = ({
     bare: 'bg-transparent text-gray-700 hover:bg-gray-100',
     outlined: 'border-2 border-solid border-gray-300 text-gray-700 bg-transparent hover:bg-gray-50',
     danger: 'bg-red-600 text-white hover:bg-red-700',
+    success: 'bg-green-700 text-white hover:bg-green-800',
   }
 
   // Build classes
   const allClasses = classNames(
     // Base classes
-    'inline-flex items-center justify-center font-medium rounded transition-colors no-underline border-0',
+    'inline-flex items-center justify-center gap-1 font-medium rounded transition-colors no-underline border-0',
     'focus:outline-none focus:ring-2 focus:ring-offset-2',
     // Size
     sizeClasses[size],

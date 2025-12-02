@@ -19,7 +19,7 @@ const Pagination = ({ count, rowsPerPage, page, callback }: PaginationProps) => 
   return (
     <div className="flex items-center justify-end gap-4 text-sm text-gray-700 mt-4">
       <span>
-        {from}–{to} of {count}
+        {from.toLocaleString()}–{to.toLocaleString()} of {count.toLocaleString()}
       </span>
       <div className="flex items-center gap-1">
         <IconButton

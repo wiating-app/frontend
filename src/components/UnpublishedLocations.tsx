@@ -5,7 +5,7 @@ import Table from './Table'
 import Button from './Button'
 import ButtonGroup from './ButtonGroup'
 import Loader from './Loader'
-import OpenInNewCard from './OpenInNewCard'
+import LocationLink from './LocationLink'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
 import history from '../history'
@@ -34,7 +34,7 @@ const UnpublishedLocations = ({
         <Heading level={6}>{translations.itemsFound.replace('#', locations?.length || 0)}:</Heading>
         <Table
           data={locations?.map(item => ({
-            name: <OpenInNewCard path={`/location/${item.id}`}>{item.name}</OpenInNewCard>,
+            name: <LocationLink name={item.name} id={item.id} />,
             type: item.type ? locationTypes.find(type => type.id === item.type)?.label[language] || '' : '',
             actions: <ButtonGroup>
               <Button variant='primary' size='small' onClick={() => history.push(`/location/${item.id}/edit`)}>

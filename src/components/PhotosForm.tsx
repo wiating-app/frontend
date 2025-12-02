@@ -24,8 +24,6 @@ const PhotosForm = ({ name, handleSubmit, cancel }: PhotosFormProps) => {
       <Typography gutterBottom>{name}</Typography>
       <MultiImageUpload
         name='images'
-        mdHeight='160px'
-        spacing={1}
         uploadLabel={translations.upload}
       />
       <FormActions>

@@ -128,6 +128,7 @@ const LogDetailsContainer: React.FC = () => {
             data={logDetails!._source}
             isMe={isMe || false}
             isModerator={isModerator}
+            user={user}
             reviewCallback={reviewCallback}
             banCallback={banCallback}
             revertCallback={revertCallback}

@@ -227,6 +227,7 @@ const LocationForm = ({
           variant='primary'
           onClick={async (fields: any) => {
             setLoading(true)
+            console.log('fields: ', fields);
             await onSubmitLocation(fields)
             setLoading(false)
           }}

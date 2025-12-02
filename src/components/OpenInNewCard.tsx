@@ -17,9 +17,9 @@ const OpenInNewCard = ({ path, children, component, ...otherProps }: OpenInNewCa
         to={path}
         component={component}
         target='_blank'
-        className={!component ? 'cursor-pointer font-bold text-gray-900 no-underline hover:underline' : ''}
+        className={!component ? 'group cursor-pointer font-semibold text-gray-700 no-underline hover:text-gray-800 hover:underline' : ''}
         {...otherProps}
-      >{children} <ExternalLink className="inline ml-1" size={12} />
+      >{children} <ExternalLink className="inline ml-1 text-gray-400 group-hover:text-gray-800" size={12} strokeWidth={2.5}/>
       </Link>
     </Tooltip>
   )
