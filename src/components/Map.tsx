@@ -105,7 +105,7 @@ const Map = ({
   }, [center, bounds, initiated, activeLocation])
 
   React.useEffect(() => {
-    if (isMobile) {
+    if (isMobile && mapRef.current) {
       mapRef.current.invalidateSize()
       if (activeLocation?.location && initiated) {
         const newZoom = currentZoom < 11 ? 12 : undefined
