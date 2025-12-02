@@ -57,7 +57,7 @@ const LocationInfo = ({
           )}
         </div>
         <div className="text-sm text-gray-500 mt-0.5 mb-4">
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 flex-wrap">
             <div>{typeLabel}</div>
             <div>|</div>
             <div>{roundedLat}, {roundedLng}</div>

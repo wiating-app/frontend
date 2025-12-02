@@ -1,5 +1,5 @@
 import React from 'react'
-import { ExpandMore } from '@material-ui/icons'
+import { ChevronDown } from 'lucide-react'
 import classNames from 'classnames'
 
 const AccordionContext = React.createContext<[string | false | undefined, (value: string | false) => void]>([undefined, () => {}])
@@ -59,7 +59,8 @@ export const AccordionItem = ({ title, children, initiallyExpanded }: AccordionI
         aria-expanded={isExpanded}
       >
         <span className="font-medium text-sm">{title}</span>
-        <ExpandMore
+        <ChevronDown
+          size={24}
           className={classNames(
             'transition-transform duration-200 text-gray-600',
             isExpanded && 'rotate-180'

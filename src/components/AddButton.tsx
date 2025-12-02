@@ -2,7 +2,7 @@ import React from 'react'
 import Typography from './Typography'
 import Menu, { MenuItem } from './Menu'
 import { Tooltip } from './Tooltip'
-import { AddLocation } from '@material-ui/icons'
+import { MapPinPlus } from 'lucide-react'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
 
@@ -37,7 +37,7 @@ const AddButton = ({ items, isLoggedIn }: AddButtonProps) => {
             onClick={handleOpen}
             aria-owns={isOpen ? 'plus-menu' : undefined}
             aria-haspopup='true'
-          ><AddLocation /></button>
+          ><MapPinPlus size={24} /></button>
         </Tooltip>
         {isOpen && (
           <>

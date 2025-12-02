@@ -1,7 +1,7 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
 
-import { AddAPhoto, KeyboardBackspace } from '@material-ui/icons'
+import { Camera, ArrowLeft } from 'lucide-react'
 import { Carousel } from 'react-responsive-carousel'
 import ImageGallery from 'react-image-gallery'
 import Loader from './Loader'
@@ -10,7 +10,6 @@ import { createPortal } from 'react-dom'
 import loadImage from 'image-promise'
 import useLanguage from '../utils/useLanguage'
 import { Location, Image } from '../typings'
-import Button from './Button'
 import IconButton from './IconButton'
 import { Tooltip } from './Tooltip'
 
@@ -97,9 +96,9 @@ const LocationPhotos = ({
                       <IconButton
                         className="absolute top-3 left-3 z-[1400]"
                         onClick={() => setOpenModal(false)}
-                        transparent
+                        variant="transparent"
                       >
-                        <KeyboardBackspace />
+                        <ArrowLeft size={24} />
                       </IconButton>
                   </div>,
                   document.body
@@ -108,6 +107,10 @@ const LocationPhotos = ({
                   /* react-responsive-carousel: spacing for navigation dots */
                   .carousel .control-dots {
                     margin-bottom: 24px;
+                  }
+                  .carousel .control-dots .dot {
+                    opacity: 0.5;
+                    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
                   }
                 `}</style>
                 <Carousel
@@ -145,11 +148,11 @@ const LocationPhotos = ({
             )
       }
         <button
-          className="absolute top-2 left-2 px-1.5 text-gray-800 bg-gray-200 hover:bg-gray-100 border-none cursor-pointer rounded"
+          className="absolute top-1 left-1 px-1.5 pt-1 text-gray-800 bg-gray-300 hover:bg-gray-200 border-none cursor-pointer rounded"
           onClick={uploadImages}
         >
           <Tooltip content={translations.addPhoto} anchor="right-center">
-            <AddAPhoto />
+            <Camera size={24} />
           </Tooltip>
         </button>
     </div>

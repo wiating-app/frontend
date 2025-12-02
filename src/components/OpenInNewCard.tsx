@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Tooltip } from './Tooltip'
-import { OpenInNew } from '@material-ui/icons'
+import { ExternalLink } from 'lucide-react'
 
 interface OpenInNewCardProps {
   path: string
@@ -19,7 +19,7 @@ const OpenInNewCard = ({ path, children, component, ...otherProps }: OpenInNewCa
         target='_blank'
         className={!component ? 'cursor-pointer font-bold text-gray-900 no-underline hover:underline' : ''}
         {...otherProps}
-      >{children} <OpenInNew className="text-xs ml-1" />
+      >{children} <ExternalLink className="inline ml-1" size={12} />
       </Link>
     </Tooltip>
   )

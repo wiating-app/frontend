@@ -1,7 +1,7 @@
 import React from 'react'
 import Typography from '../components/Typography'
 import Button from '../components/Button'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import Loader from '../components/Loader'
 import { getPoints } from '../api/getPoints'
 import useLanguage from '../utils/useLanguage'
@@ -9,7 +9,6 @@ import exportToKML from '../utils/exportToKML'
 import useConfig from '../utils/useConfig'
 
 const ExportContainer = () => {
-  const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
   const [loading, setLoading] = React.useState(false)
   const config = useConfig()
@@ -31,7 +30,7 @@ const ExportContainer = () => {
       setLoading(false)
     } catch (err) {
       console.error(err)
-      enqueueSnackbar('Error!', { variant: 'error' })
+      toast.error('Error!')
       setLoading(false)
     }
   }

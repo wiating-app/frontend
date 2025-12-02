@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowDropDown, Menu } from '@material-ui/icons'
+import { ChevronDown, Menu } from 'lucide-react'
 import Form from 'react-form-component'
 import classNames from 'classnames'
 import { useRecoilState } from 'recoil'
@@ -81,7 +81,7 @@ const NavBar = ({
             noBottomGutter
           />
         </Form>
-        <div className="flex-1 ml-2 opacity-30">
+        <div className="flex-1 ml-4 opacity-30">
           {showVersionInfo && <div className="hidden lg:block"><Version /></div>}
         </div>
         <div className="flex gap-4 items-center text-white">
@@ -114,9 +114,9 @@ const NavBar = ({
                     {!user?.picture && `${user?.given_name?.charAt(0) || ''}${user?.family_name?.charAt(0) || ''}`}
                   </Avatar>
                   <span className="ml-2 normal-case text-white text-md whitespace-nowrap hidden md:inline">{user?.name && user.name}</span>
-                  <ArrowDropDown className="text-white" />
+                  <ChevronDown className="text-white" size={24} />
                 </div>
-                : <Menu className="text-white" />
+                : <Menu className="text-white" size={24} />
               }
             </Dropdown>
           }

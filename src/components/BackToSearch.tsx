@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from './Button'
-import { ViewList } from '@material-ui/icons'
+import { List } from 'lucide-react'
 import { useRecoilState } from 'recoil'
 import useLanguage from '../utils/useLanguage'
 import { searchResultsState, activeLocationState } from '../state'
@@ -21,7 +21,7 @@ const BackToSearch = () => {
       className="absolute top-4 left-4 z-10"
       variant='primary'
       size='small'
-    ><ViewList /> {translations.backToResults}</Button>
+    ><List size={20} /> {translations.backToResults}</Button>
   )
 }
 

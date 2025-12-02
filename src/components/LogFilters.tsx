@@ -29,7 +29,7 @@ const LogFilters = ({ values, handleSubmit, handleReset }: LogFiltersProps) => {
         <div className="w-full sm:w-5/12 md:w-4/12">
           <Input
             name='id'
-            label={translations.findById}
+            placeholder={translations.findById}
             initialValue={values?.id}
             noBottomGutter
           />

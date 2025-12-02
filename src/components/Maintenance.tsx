@@ -1,7 +1,7 @@
 import React from 'react'
 import Heading from './Heading'
 import Typography from './Typography'
-import { Build } from '@material-ui/icons'
+import { Wrench } from 'lucide-react'
 import useConfig from '../utils/useConfig'
 
 const Maintenance = () => {
@@ -15,7 +15,7 @@ const Maintenance = () => {
       <div className="max-w-2xl mx-auto text-center">
         <div className="mb-8 flex justify-center">
           <div className="bg-white/20 rounded-full p-8 backdrop-blur-sm">
-            <Build className="text-white" style={{ fontSize: '64px' }} />
+            <Wrench className="text-white" size={64} />
           </div>
         </div>
 

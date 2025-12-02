@@ -45,7 +45,7 @@ const Legend = ({ boxed = false }: LegendProps) => {
         )}
       >
         <span className={boxed ? 'text-sm font-medium' : 'text-2xl font-medium'}>
-          {translations.legend}:
+          {translations.legend}
         </span>
       </div>
       {locationTypes.map(({ id, label }) => {
@@ -55,27 +55,16 @@ const Legend = ({ boxed = false }: LegendProps) => {
             key={id}
             className={classNames(
               'flex items-center cursor-pointer hover:bg-white',
-              {
-                'pt-1 pb-1 pl-2 pr-2': boxed,
-                'pt-2 pb-2 pl-0 pr-0': !boxed,
-                'opacity-50': !isActive,
-                'opacity-100': isActive,
-              }
+              boxed ? 'py-2 pl-2 pr-2 text-xs' : 'pt-2 pb-2 pl-0 pr-0 text-base',
+              isActive ? 'text-gray-900 opacity-100' : 'text-gray-500 opacity-50'
             )}
             onClick={() => handleOnClick(id)}
           >
             <div
               dangerouslySetInnerHTML={{ __html: generateMarkerIcon(id, boxed ? 24 : 30) }}
-              className="mr-1.5 -mb-1.5 -ml-0.5"
+              className="mr-1.5 -my-1.5"
             />
-            <span className={classNames(
-              boxed ? 'text-xs' : 'text-base',
-              {
-                'font-medium': isActive,
-              }
-            )}>
-              {label[language]}
-            </span>
+            <span>{label[language]}</span>
           </div>
         )
       })}

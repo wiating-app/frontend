@@ -1,7 +1,7 @@
 import React from 'react'
 import Menu from './Menu'
 import { Tooltip } from './Tooltip'
-import { GetApp } from '@material-ui/icons'
+import { Download } from 'lucide-react'
 import exportToKML from '../utils/exportToKML'
 import exportToGPX from '../utils/exportToGPX'
 import useConfig from '../utils/useConfig'
@@ -40,11 +40,9 @@ const Export = ({ markers, className }: ExportProps) => {
     <Tooltip content='Eksport lokacji z wyświetlanego obszaru' anchor='left-center'>
       <div className="relative">
         <a
-          aria-controls='export-menu'
-          aria-haspopup='true'
           className={className}
           onClick={handleClick}
-        ><GetApp style={{ fontSize: 20 }} /></a>
+        ><Download size={16} strokeWidth={3} /></a>
         {isOpen && (
           <>
             <div className="fixed inset-0 z-10" onClick={handleClose} />

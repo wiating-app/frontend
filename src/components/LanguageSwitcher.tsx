@@ -1,7 +1,7 @@
 import React from 'react'
 import Heading from './Heading'
 import Button from './Button'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import Modal from './Modal'
 import useLanguage from '../utils/useLanguage'
 
@@ -19,7 +19,6 @@ const LanguageSwitcher = ({
   setLanguage,
   onClose,
 }: LanguageSwitcherProps) => {
-  const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
   return (
     <Modal small onClose={onClose}>
@@ -30,7 +29,7 @@ const LanguageSwitcher = ({
             onClick={() => {
               onClose()
               setLanguage(item)
-              enqueueSnackbar(translations.languageChanged, { variant: 'success' })
+              toast.success(translations.languageChanged)
             }}
             variant={item === language ? 'primary' : 'bare'}
             disabled={item === language}

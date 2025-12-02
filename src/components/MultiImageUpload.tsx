@@ -1,8 +1,7 @@
 import React from 'react'
 import Typography from './Typography'
 import IconButton from './IconButton'
-import { CloudUpload, Delete } from '@material-ui/icons'
-import classNames from 'classnames'
+import { CloudUpload, Trash2 } from 'lucide-react'
 import withFormControl from './Inputs/withFormControl'
 
 
@@ -11,11 +10,6 @@ interface ImageFile {
   type: string
   data: string
   dataFile: File
-}
-
-interface StyleProps {
-  smHeight: string
-  mdHeight: string
 }
 
 interface MultiImageUploadProps {
@@ -70,7 +64,7 @@ const MultiImageUpload = ({
                   mandatory
                 )}
               >
-                <Delete fontSize='small' />
+                <Trash2 size={20} />
               </IconButton>
             </div>
           </div>
@@ -116,7 +110,7 @@ const MultiImageUpload = ({
             maxHeight: mdHeight,
           }}
         >
-          <CloudUpload />
+          <CloudUpload size={24} />
           <Typography variant='caption' color='inherit'>{uploadLabel}</Typography>
         </label>
       </div>

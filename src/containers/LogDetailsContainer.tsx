@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import { useRecoilState } from 'recoil'
 import Modal from '../components/Modal'
 import LogDetails from '../components/LogDetails'
@@ -12,7 +12,7 @@ import { logReviewed } from '../api/logReviewed'
 import { banUser } from '../api/banUser'
 import { revertLog } from '../api/revertLog'
 import { logsState, logDetailsState } from '../state'
-import { Log, LogDetails as LogDetailsType, LogSource } from '../typings'
+import { Log, LogSource } from '../typings'
 
 const LogDetailsContainer: React.FC = () => {
   const history = useHistory()
@@ -27,7 +27,6 @@ const LogDetailsContainer: React.FC = () => {
   const [logDetails, setLogDetails] = useRecoilState(logDetailsState)
   const [logs, setLogs] = useRecoilState(logsState)
   const { user, isModerator } = useAuth0()
-  const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
 
   // Use cached log data if avaliable, otherwise load data from endpoint.
@@ -38,10 +37,10 @@ const LogDetailsContainer: React.FC = () => {
           try {
             const data = await getLog(id)
             setLogDetails(data)
-          } catch (error) {
+          } catch (_error) {
             setError(true)
             setLoading(false)
-            enqueueSnackbar(translations.connectionProblemLogs, { variant: 'error' })
+            toast.error(translations.connectionProblemLogs)
           }
         }
         handleAsync()
@@ -79,10 +78,10 @@ const LogDetailsContainer: React.FC = () => {
         setLogs(newLogs)
       }
       goBackToLogs()
-      enqueueSnackbar('Log zweryfikowany.', { variant: 'success' })
+      toast.success('Log zweryfikowany.')
     } catch (err) {
       console.error(err)
-      enqueueSnackbar('Błąd bazy danych!', { variant: 'error' })
+      toast.error('Błąd bazy danych!')
     }
     setLoadingReview(false)
   }
@@ -92,10 +91,10 @@ const LogDetailsContainer: React.FC = () => {
     try {
       setLoadingBan(true)
       await banUser(logDetails._source.modified_by)
-      enqueueSnackbar('Autor zmiany został zbanowany.', { variant: 'success' })
+      toast.success('Autor zmiany został zbanowany.')
     } catch (err) {
       console.error(err)
-      enqueueSnackbar('Nie udało się zbanować użytkownika.', { variant: 'error' })
+      toast.error('Nie udało się zbanować użytkownika.')
     }
     setLoadingBan(false)
   }
@@ -106,10 +105,10 @@ const LogDetailsContainer: React.FC = () => {
       setLoadingRevert(true)
       await revertLog(logDetails)
       goBackToLogs(true)
-      enqueueSnackbar('Przywrócono poprzedni stan lokacji.', { variant: 'success' })
+      toast.success('Przywrócono poprzedni stan lokacji.')
     } catch (err) {
       console.error(err)
-      enqueueSnackbar('Nie udało się przywrocić poprzedniego stanu lokacji.', { variant: 'error' })
+      toast.error('Nie udało się przywrocić poprzedniego stanu lokacji.')
     }
     setLoadingRevert(false)
   }

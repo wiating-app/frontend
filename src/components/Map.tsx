@@ -10,7 +10,7 @@ import {
   ZoomControl,
   useMapEvents,
 } from 'react-leaflet'
-import { GpsFixed, GpsNotFixed } from '@material-ui/icons'
+import { LocateFixed, LocateOff } from 'lucide-react'
 import Typography from './Typography'
 import Menu from './Menu'
 import useMediaQuery from '../utils/useMediaQuery'
@@ -28,6 +28,7 @@ import { Icon, LatLngBounds } from 'leaflet'
 import Legend from './Legend'
 import PixiOverlay from 'react-leaflet-pixi-overlay'
 import React from 'react'
+import classNames from 'classnames'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import history from '../history'
 import { useRecoilState } from 'recoil'
@@ -141,6 +142,7 @@ const Map = ({
 
   const MOBILE_MINI_MAP_HEIGHT = 200
   const LOCATION_TAB_WIDTH = 400
+  const mapControlButtonClassName = 'flex items-center justify-center bg-white hover:bg-gray-100 size-[32px] !text-gray-600 rounded-sm cursor-pointer shadow-[0_0_0_2px_rgba(0,0,0,0.2)]'
 
   const mapOffsetStyle: React.CSSProperties = {
     position: 'absolute',
@@ -294,20 +296,22 @@ const Map = ({
         */}
         <Control position='topright' container={{ style: { display: (!isDrawerOpen || !isPhone) ? 'block' : 'none' } }}>
           <a
-            className="flex items-center justify-center cursor-pointer"
+            className={classNames(
+              mapControlButtonClassName,
+              userLocation ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-60'
+            )}
             onClick={() => userLocation &&
               mapRef.current.flyTo(userLocation, 14)
             }
-            style={{ pointerEvents: userLocation ? 'auto' : 'none', opacity: userLocation ? 1 : 0.33 }}
           >
             {userLocation
-              ? <GpsFixed className="text-lg" />
-              : <GpsNotFixed className="text-lg" />
+              ? <LocateFixed size={17} strokeWidth={3} />
+              : <LocateOff size={17} strokeWidth={3} />
             }
           </a>
         </Control>
         <Control position='topright' container={{ style: { display: ((!isDrawerOpen || !isPhone) && !editMode) ? 'block' : 'none' } }}>
-          <Export markers={markers} className="flex items-center justify-center cursor-pointer" />
+          <Export markers={markers} className={mapControlButtonClassName} />
         </Control>
         <Control position='bottomright'>
           {userLocation && (!isDrawerOpen || !isPhone) &&

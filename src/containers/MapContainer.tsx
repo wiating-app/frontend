@@ -1,5 +1,5 @@
 import { activeTypesState, markersState } from '../state'
-import api, { CancelToken, isCancel } from '../api'
+import { CancelToken, isCancel } from '../api'
 import { getPoints } from '../api/getPoints'
 
 import AddButtonContainer from './AddButtonContainer'
@@ -8,9 +8,8 @@ import React from 'react'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import { useRecoilState } from 'recoil'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import useUserLocation from '../utils/useUserLocation'
-import { Location } from '../typings'
 
 interface MapContainerProps {
   [key: string]: any
@@ -27,7 +26,6 @@ const MapContainer = (props: MapContainerProps) => {
   const [activeTypes] = useRecoilState(activeTypesState)
   const [markers, setMarkers] = useRecoilState(markersState)
   const { translations } = useLanguage()
-  const { enqueueSnackbar } = useSnackbar()
   const { userLocation, accuracy, loading, error } = useUserLocation()
 
   const {
@@ -60,7 +58,7 @@ const MapContainer = (props: MapContainerProps) => {
     } catch (error) {
       if (!isCancel(error)) {
         console.error(error)
-        enqueueSnackbar(translations.connectionProblemMap, { variant: 'error' })
+        toast.error(translations.connectionProblemMap)
       } else {
         process.env.NODE_ENV === 'development' && console.log('Previous request canceled.')
       }

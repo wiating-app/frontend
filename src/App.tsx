@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import useConfig from './utils/useConfig'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import {
@@ -36,7 +36,6 @@ const App = () => {
   const [, setActiveLocation] = useRecoilState(activeLocationState)
   const [editMode, setEditMode] = useRecoilState(editModeState)
   const [, setIsDrawerOpen] = useRecoilState(isDrawerOpenState)
-  const { closeSnackbar } = useSnackbar()
   const { faq } = useConfig()
 
   React.useEffect(() => {
@@ -48,7 +47,7 @@ const App = () => {
   }, [pathname])
 
   React.useEffect(() => {
-    !editMode && closeSnackbar() // Dismiss all snackbars when exiting the edit mode.
+    !editMode && toast.dismiss() // Dismiss all snackbars when exiting the edit mode.
   }, [editMode])
 
   React.useEffect(() => {

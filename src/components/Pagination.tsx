@@ -1,5 +1,5 @@
 import React from 'react'
-import { ChevronLeft, ChevronRight } from '@material-ui/icons'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import IconButton from './IconButton'
 
 interface PaginationProps {
@@ -27,14 +27,14 @@ const Pagination = ({ count, rowsPerPage, page, callback }: PaginationProps) => 
           disabled={isFirstPage}
           aria-label="Previous Page"
         >
-          <ChevronLeft />
+          <ChevronLeft size={24} />
         </IconButton>
         <IconButton
           onClick={() => callback(page + 1)}
           disabled={isLastPage}
           aria-label="Next Page"
         >
-          <ChevronRight />
+          <ChevronRight size={24} />
         </IconButton>
       </div>
     </div>

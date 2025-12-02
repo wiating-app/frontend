@@ -1,11 +1,10 @@
 import React from 'react'
-import Button from '../components/Button'
 import {
-  PinDrop,
-  BorderColor,
-  PersonPinCircle,
-} from '@material-ui/icons'
-import { useSnackbar } from 'notistack'
+  MapPin,
+  Pencil,
+  MapPinned,
+} from 'lucide-react'
+import { toast } from 'sonner'
 import { useRecoilState } from 'recoil'
 import { editModeState, activeLocationState } from '../state'
 import AddButton from '../components/AddButton'
@@ -21,7 +20,6 @@ const AddButtonContainer = () => {
   const { userLocation, error } = useUserLocation()
   const [editMode] = useRecoilState(editModeState)
   const [, setActiveLocation] = useRecoilState(activeLocationState)
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   if (editMode) return null
   return (
@@ -29,29 +27,25 @@ const AddButtonContainer = () => {
       items={[
         {
           label: translations.pointOnMap,
-          icon: <PinDrop />,
+          icon: <MapPin size={20} />,
           callback: () => {
             setActiveLocation(null)
             history.push('/pin')
-            enqueueSnackbar(translations.pointOnMap, {
-              variant: 'info',
-              anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
-              persist: true,
-              action: (key: string | number) =>
-                <Button
-                  size='small'
-                  variant='primary'
-                  onClick={() => {
-                    closeSnackbar(key)
-                    history.push('/')
-                  }}
-                >{translations.cancel}</Button>,
+            toast(translations.pointOnMap, {
+              duration: Infinity,
+              action: {
+                label: translations.cancel,
+                onClick: () => {
+                  toast.dismiss()
+                  history.push('/')
+                },
+              },
             })
           },
         },
         {
           label: translations.enterCoordinates,
-          icon: <BorderColor />,
+          icon: <Pencil size={20} />,
           callback: () => {
             setActiveLocation(null)
             history.push('/location/new')
@@ -60,7 +54,7 @@ const AddButtonContainer = () => {
         ...userLocation && !error
           ? [{
               label: translations.inCurrentLocation,
-              icon: <PersonPinCircle />,
+              icon: <MapPinned size={20} />,
               callback: async () => {
                 const [lat, lon] = userLocation
                 await history.push('/location/new')

@@ -9,7 +9,7 @@ import { reportPoint } from '../api/reportPoint'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import { useRecoilState } from 'recoil'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 const LocationInfoContainer: React.FC = () => {
@@ -20,7 +20,6 @@ const LocationInfoContainer: React.FC = () => {
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations } = useLanguage()
   const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
-  const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
 
@@ -35,7 +34,7 @@ const LocationInfoContainer: React.FC = () => {
           } catch (error) {
             setError(true)
             setLoading(false)
-            enqueueSnackbar(translations.connectionProblemLocation, { variant: 'error' })
+            toast.error(translations.connectionProblemLocation)
           }
         }
         handleAsync()
@@ -51,10 +50,10 @@ const LocationInfoContainer: React.FC = () => {
       const { reason, description } = fields
       const summary = `${translations.reportReasons[reason]}: ${description}`
       await reportPoint(activeLocation.id, summary)
-      enqueueSnackbar('Punkt zgłoszony do moderacji', { variant: 'success' })
+      toast.success('Punkt zgłoszony do moderacji')
     } catch (err) {
       console.error(err)
-      enqueueSnackbar(translations.couldNotReport, { variant: 'error' })
+      toast.error(translations.couldNotReport)
     }
   }
 
@@ -62,7 +61,7 @@ const LocationInfoContainer: React.FC = () => {
     if (isLoggedIn) {
       history.push(`/location/${id}/photos`)
     } else {
-      enqueueSnackbar(translations.mustLogIn, { variant: 'warning' })
+      toast.warning(translations.mustLogIn)
     }
   }
 

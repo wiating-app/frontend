@@ -1,23 +1,43 @@
 import React from 'react'
 import classNames from 'classnames'
+import useConfig from '../utils/useConfig'
 
 interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'small' | 'medium' | 'large'
-  transparent?: boolean
+  variant?: 'default' | 'transparent' | 'bordered'
   children: React.ReactNode
 }
 
 const IconButton = ({
   size = 'medium',
-  transparent = false,
+  variant = 'default',
   className,
+  style,
   children,
   ...props
 }: IconButtonProps) => {
+  const { branding: { themeColor, secondaryColor } } = useConfig()
   const sizeClasses = {
     small: 'p-1',
     medium: 'p-2',
     large: 'p-3',
+  }
+
+  const variantClasses = {
+    default: 'bg-gray-200 hover:bg-gray-100 text-gray-800 border-none',
+    transparent: 'bg-transparent hover:bg-white/25 text-white border-none',
+    bordered: 'bg-transparent hover:opacity-90 text-white border-2 border-white',
+  }
+
+  // For bordered variant, apply theme color as background
+  const getBorderedStyle = () => {
+    if (variant === 'bordered') {
+      return {
+        backgroundColor: secondaryColor || themeColor,
+        ...style,
+      }
+    }
+    return style
   }
 
   return (
@@ -25,11 +45,12 @@ const IconButton = ({
       type="button"
       className={classNames(
         'inline-flex items-center justify-center rounded-full transition-colors cursor-pointer',
-        'border-none outline-none focus:outline-none',
-        transparent ? 'bg-transparent hover:bg-white/25 text-white' : 'bg-gray-200 hover:bg-gray-100 text-gray-800',
+        'outline-none focus:outline-none',
+        variantClasses[variant],
         sizeClasses[size],
         className
       )}
+      style={getBorderedStyle()}
       {...props}
     >
       {children}

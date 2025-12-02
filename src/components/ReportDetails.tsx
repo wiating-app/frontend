@@ -1,9 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import Button from './Button'
 import Heading from './Heading'
 import Typography from './Typography'
-import { Check, List } from '@material-ui/icons'
+import { Check, List } from 'lucide-react'
 import Modal from './Modal'
 import Table from './Table'
 import Loader from './Loader'
@@ -59,7 +58,7 @@ const ReportDetails = ({
             target='_blank'
             variant='primary'
             className="mt-5"
-          ><List /> {translations.showLocationLogs}</Button>
+          ><List size={20} /> {translations.showLocationLogs}</Button>
         </div>
         <div>
           <Button
@@ -67,7 +66,7 @@ const ReportDetails = ({
             onClick={markAsDoneCallback}
             className="mt-5"
             disabled={loading}
-          >{loading ? <Loader dark /> : <Check />} {translations.markAsDone}</Button>
+          >{loading ? <Loader dark /> : <Check size={20} />} {translations.markAsDone}</Button>
         </div>
       </div>
     </Modal>

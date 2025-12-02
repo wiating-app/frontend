@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import { getPoint } from '../api/getPoint'
 import { addPoint } from '../api/addPoint'
 import { modifyPoint } from '../api/modifyPoint'
@@ -44,13 +44,12 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
   const [error, setError] = React.useState(false)
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const [markers, setMarkers] = useRecoilState(markersState)
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
     if (!loadingAuth) {
       if (!isLoggedIn) {
         history.push(`/location/${id}`)
-        enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
+        toast.warning('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.')
       }
       // Use cached location data if avaliable, otherwise load data from endpoint.
       // Do it after authentication check to provide bearer token in api request.
@@ -77,7 +76,7 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
   // form to new location form.
   React.useEffect(() => {
     if (isNew) {
-      closeSnackbar() // It is here only to dismiss the persising "Put point on map" snackbar.
+      toast.dismiss() // It is here only to dismiss the persising "Put point on map" snackbar.
       const handleAsync = async () => {
         setLoading(true)
         setLoading(false)
@@ -137,7 +136,7 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
         setMarkers(newMarkers)
         setActiveLocation(data)
         history.push(`/location/${data.id}`)
-        enqueueSnackbar(translations.newMarkerAdded, { variant: 'success' })
+        toast.success(translations.newMarkerAdded)
       } else {
         // Updating exisitng marker.
         const { id: locationId } = activeLocation!
@@ -151,15 +150,15 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
         setMarkers(newMarkers)
         setActiveLocation(data)
         history.push(`/location/${locationId}`)
-        enqueueSnackbar(translations.markerUpdated, { variant: 'success' })
+        toast.success(translations.markerUpdated)
       }
     } catch (error: any) {
       if (error.type === 'parseError') {
         console.error(error.value)
-        enqueueSnackbar(translations.wrongCoordsFormat, { variant: 'error' })
+        toast.error(translations.wrongCoordsFormat)
       } else {
         console.error(error)
-        enqueueSnackbar(translations.couldNotSaveMarker, { variant: 'error' })
+        toast.error(translations.couldNotSaveMarker)
       }
     }
   }
@@ -171,10 +170,10 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
       history.push('/')
       setActiveLocation(null)
       setMarkers(markers.filter((item: any) => item.id !== id) as Location[])
-      enqueueSnackbar(translations.locationDeleted, { variant: 'success' })
+      toast.success(translations.locationDeleted)
     } catch (err) {
       console.error(err)
-      enqueueSnackbar(translations.couldNotDeleteLocation, { variant: 'error' })
+      toast.error(translations.couldNotDeleteLocation)
     }
   }
 

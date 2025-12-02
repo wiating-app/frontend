@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { HelpOutlineRounded } from '@material-ui/icons'
+import { HelpCircle } from 'lucide-react'
 import { Tooltip } from './Tooltip'
 
 interface VersionProps {
@@ -18,7 +18,7 @@ const Version = ({ dark = false, className }: VersionProps) => {
       info = 'Wersja testowa, zawierająca najnowsze funkcjonalności'
       break
     case 'localhost':
-      name = 'Localhost'
+      name = 'Wersja lokalna'
       info = 'Frontend serwowany lokalnie'
       break
     default:
@@ -33,7 +33,7 @@ const Version = ({ dark = false, className }: VersionProps) => {
       className,
     )}>
       {name}{' '}
-      <HelpOutlineRounded className="inline-block align-middle text-base" />
+      <HelpCircle className="inline-block align-middle" size={16} />
     </Tooltip>
   )
 }

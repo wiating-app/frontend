@@ -1,7 +1,7 @@
 import React from 'react'
 import Heading from './Heading'
 import Typography from './Typography'
-import { Check, Remove } from '@material-ui/icons'
+import { Check, Minus } from 'lucide-react'
 import Table from './Table'
 import Pagination from './Pagination'
 import Button from './Button'
@@ -47,7 +47,7 @@ const Logs = ({
         <Heading level={6}>{translations.itemsFound.replace('#', rowsInTotal || 0)}:</Heading>
         <Table
           data={logs.map(item => ({
-            ...enableVerification ? { verified: item._source.reviewed_at ? <Check style={{ color: '#008080' }} /> : <Remove color='disabled' /> } : {},
+            ...enableVerification ? { verified: item._source.reviewed_at ? <Check size={20} style={{ color: '#008080' }} /> : <Minus size={20} style={{ color: '#9e9e9e' }} /> } : {},
             timestamp: `${formatDate(item._source.timestamp)} ${formatTime(item._source.timestamp)}`,
             location: <>
               <OpenInNewCard path={`/location/${item._source.doc_id}`}>{item._source.name}</OpenInNewCard>

@@ -15,7 +15,7 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   children,
   className,
   anchor = 'top-center',
-  delay = 750,
+  delay = 650,
   tooltipClassName = 'inline-block',
 }) => {
   const [isVisible, setIsVisible] = useState(false)

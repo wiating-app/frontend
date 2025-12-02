@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import { useRecoilState } from 'recoil'
 import { useHistory, useParams } from 'react-router-dom'
 import Resizer from 'react-image-file-resizer'
@@ -21,7 +21,6 @@ const PhotosFormContainer = () => {
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
   const { isLoggedIn, loading: loadingAuth } = useAuth0()
-  const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
 
   const asyncResizeFile = (file: File): Promise<void> => new Promise(resolve => {
@@ -54,10 +53,10 @@ const PhotosFormContainer = () => {
         file?.dataFile && await asyncResizeFile(file.dataFile)
       })
       history.push(`/location/${activeLocation.id}`)
-      enqueueSnackbar(translations.photoAdded, { variant: 'success' })
+      toast.success(translations.photoAdded)
     } catch (err) {
       console.error(err)
-      enqueueSnackbar(translations.couldNotSavePhoto, { variant: 'error' })
+      toast.error(translations.couldNotSavePhoto)
       history.push(`/location/${activeLocation.id}`)
     }
   }
@@ -65,7 +64,7 @@ const PhotosFormContainer = () => {
   React.useEffect(() => {
     if (!loadingAuth && !isLoggedIn) {
       history.push(`/location/${id}`)
-      enqueueSnackbar('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.', { variant: 'warning' })
+      toast.warning('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.')
     }
   }, [loadingAuth])
 
@@ -79,7 +78,7 @@ const PhotosFormContainer = () => {
         } catch (error) {
           setError(true)
           setLoading(false)
-          enqueueSnackbar(translations.connectionProblemLocation, { variant: 'error' })
+          toast.error(translations.connectionProblemLocation)
         }
       }
       handleAsync()

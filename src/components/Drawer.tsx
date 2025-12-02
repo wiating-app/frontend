@@ -1,4 +1,4 @@
-import { Close } from '@material-ui/icons'
+import { X } from 'lucide-react'
 import React from 'react'
 import { isDrawerOpenState } from '../state'
 import useKeyPress from '../utils/useKeyPress'
@@ -69,7 +69,7 @@ const Drawer: React.FC<DrawerProps> = ({
           aria-label='close'
           onClick={() => history.push('/')}
         >
-          <Close />
+          <X size={24} />
         </IconButton>
         {children}
       </PerfectScrollbar>

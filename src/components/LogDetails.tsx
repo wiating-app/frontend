@@ -4,7 +4,7 @@ import Button from './Button'
 import Heading from './Heading'
 import Typography from './Typography'
 import ButtonGroup from './ButtonGroup'
-import { Check, Clear, Remove } from '@material-ui/icons'
+import { Check, X, Minus } from 'lucide-react'
 import Table from './Table'
 import Loader from './Loader'
 import OpenInNewCard from './OpenInNewCard'
@@ -41,7 +41,7 @@ const LogDetails = ({
 
   const readValue = (name: string, value: any): React.ReactNode => value
     ? value === true
-      ? <Check style={{ color: '#008080' }} />
+      ? <Check size={20} style={{ color: '#008080' }} />
       : name === 'images'
         ? <img
           src={`${process.env.FRONTEND_CDN_URL}/${data.doc_id}/${value.replace('.jpg', '_m.jpg')}`}
@@ -49,7 +49,7 @@ const LogDetails = ({
           alt=''
         />
         : value
-    : value === false ? <Clear color='error' /> : <Remove color='disabled' />
+    : value === false ? <X size={20} style={{ color: '#f44336' }} /> : <Minus size={20} style={{ color: '#9e9e9e' }} />
 
 
   const renderDiff = (one: string, other: string): React.ReactNode => {
@@ -129,7 +129,7 @@ const LogDetails = ({
               variant='primary'
               onClick={reviewCallback}
               disabled={!!data.reviewed_at}
-            >{loadingReview ? <Loader dark /> : <Check />} {data.reviewed_at ? translations.alreadyVerified : translations.markAsVerified}</Button>
+            >{loadingReview ? <Loader dark /> : <Check size={20} />} {data.reviewed_at ? translations.alreadyVerified : translations.markAsVerified}</Button>
           </div>
           <div>
             <ButtonGroup>

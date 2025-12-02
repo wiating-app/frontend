@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import { getReports } from '../api/getReports'
 import { markAsDone } from '../api/markAsDone'
 import Reports from '../components/Reports'
@@ -8,8 +8,7 @@ import useAuth0 from '../utils/useAuth0'
 import { Location } from '../typings'
 
 const ReportsContainer = () => {
-  const { user, isModerator } = useAuth0()
-  const { enqueueSnackbar } = useSnackbar()
+  const { isModerator } = useAuth0()
   const [reports, setReports] = React.useState<Location[]>()
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(false)
@@ -34,14 +33,14 @@ const ReportsContainer = () => {
     setMarkAsDoneLoading(true)
     try {
       await markAsDone(details.id)
-      enqueueSnackbar('Zgłoszenie oznaczone jako załatwione.', { variant: 'success' })
+      toast.success('Zgłoszenie oznaczone jako załatwione.')
       setReports(prevState => prevState?.filter(item => item.id !== details.id))
       setMarkAsDoneLoading(false)
       setDetails(undefined)
     } catch (err) {
       console.error(err)
       setMarkAsDoneLoading(false)
-      enqueueSnackbar('Nie udało się odznaczyć zgłoszenia.', { variant: 'error' })
+      toast.error('Nie udało się odznaczyć zgłoszenia.')
     }
   }
 

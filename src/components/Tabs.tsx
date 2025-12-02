@@ -28,15 +28,15 @@ export const Tab = ({ label, value: _value, isActive, onClick }: TabProps & { is
       type="button"
       onClick={onClick}
       className={classNames(
-        'relative px-4 py-3 text-sm font-semibold',
-        'border-b-2 border-solid border-t-0 border-l-0 border-r-0',
+        'relative px-6 py-3 text-sm',
+        'border-b-4 border-solid border-t-0 border-l-0 border-r-0',
         'rounded-t bg-gray-200',
         'transition-colors duration-200',
         'outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         'cursor-pointer active:scale-[0.98]',
         isActive
-          ? themeColor ? 'border-current text-gray-900 -mb-0.5' : 'border-blue-600 text-gray-900 -mb-0.5'
-          : 'border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-400'
+          ? themeColor ? 'border-current text-gray-900 -mb-0.5 font-medium' : 'border-blue-600 text-gray-900 -mb-0.5 font-medium'
+          : 'border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-400 font-normal'
       )}
       style={activeStyle}
     >

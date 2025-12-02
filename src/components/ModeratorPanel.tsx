@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, useHistory, useLocation } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { Close } from '@material-ui/icons'
+import { X } from 'lucide-react'
 import Heading from './Heading'
 import Tabs, { Tab } from './Tabs'
 import IconButton from './IconButton'
@@ -65,7 +65,7 @@ const ModeratorPanel: React.FC = () => {
         className="absolute top-2 right-2"
         onClick={() => history.push('/')}
       >
-        <Close />
+        <X size={24} />
       </IconButton>
     </PerfectScrollbar>
   )

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import api from '../api'
 import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js'
 import useLanguage from './useLanguage'
-import { useSnackbar } from 'notistack'
+import { toast } from 'sonner'
 import { Auth0ContextInterface, User } from '../typings'
 
 // Useful info about Auth0Provider configuration:
@@ -23,7 +23,6 @@ export const Auth0Provider = ({
   const [user, setUser] = useState<User | null>()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isModerator, setIsModerator] = useState(false)
-  const { enqueueSnackbar } = useSnackbar()
   const { translations } = useLanguage()
 
   useEffect(() => {
@@ -56,7 +55,7 @@ export const Auth0Provider = ({
           setUser((user as User) || null)
           setIsLoggedIn(isAuthenticated || false)
           checkModerator((user as User) || null)
-          enqueueSnackbar(translations?.loginSuccessful, { variant: 'success' })
+          toast.success(translations?.loginSuccessful)
         } else {
           // Restore user session from auth0.
           const isAuthenticated = await auth0FromHook.isAuthenticated()
@@ -71,7 +70,7 @@ export const Auth0Provider = ({
         }
       } catch (err) {
         console.error(err)
-        enqueueSnackbar(translations?.couldNotRestoreSession, { variant: 'error' })
+        toast.error(translations?.couldNotRestoreSession)
       }
 
       setLoading(false)

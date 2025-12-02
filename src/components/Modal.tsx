@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import classNames from 'classnames'
-import { Close } from '@material-ui/icons'
+import { X } from 'lucide-react'
 import history from '../history'
 import useKeyPress from '../utils/useKeyPress'
 import IconButton from './IconButton'
@@ -93,7 +93,7 @@ const Modal = ({ wide, short, small, children, onClose, id }: ModalProps) => {
           className="absolute top-3 right-3"
           onClick={handleOnClose}
         >
-          <Close />
+          <X size={24} />
         </IconButton>
       </div>
     </div>

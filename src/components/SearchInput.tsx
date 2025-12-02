@@ -1,6 +1,6 @@
 import React from 'react'
 import withFormControl from './Inputs/withFormControl'
-import { Search } from '@material-ui/icons'
+import { Search } from 'lucide-react'
 import Loader from './Loader'
 import useConfig from '../utils/useConfig'
 import classNames from 'classnames'
@@ -36,8 +36,8 @@ const SearchInput = ({
 
   const inputClasses = classNames(
     'w-full sm:w-[200px] border-0 bg-transparent outline-none',
-    'placeholder:text-current placeholder:opacity-60',
-    'px-2 py-3 text-sm',
+    'placeholder:text-current placeholder:opacity-40',
+    'px-2 py-2.5 text-sm',
     {
       'text-gray-900': lightTheme,
       'text-white': !lightTheme,
@@ -55,7 +55,7 @@ const SearchInput = ({
   return (
     <div className={containerClasses}>
       <div className={iconClasses}>
-        {loading ? <Loader /> : <Search />}
+        {loading ? <Loader /> : <Search size={20} />}
       </div>
       <input
         id={name}
