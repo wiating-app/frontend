@@ -14,7 +14,6 @@ import Drawer from './components/Drawer'
 import SearchResults from './components/SearchResults'
 import BackToSearch from './components/BackToSearch'
 import Info from './components/Info'
-import LegendPage from './components/LegendPage'
 import TermsAndConditions from './components/TermsAndConditions'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import AcceptDataPrivacy from './components/AcceptDataPrivacy'
@@ -101,7 +100,6 @@ const App = () => {
 
       <Switch>
         <Route exact path='/info' component={Info} />
-        <Route exact path='/legend' component={LegendPage} />
         <Route exact path='/terms-and-conditions' component={TermsAndConditions} />
         <Route exact path='/privacy-policy' component={PrivacyPolicy} />
         {faq && <Route exact path='/faq' component={FaqPage} />}

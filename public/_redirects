@@ -1,7 +1,6 @@
 /location/*  /index.html  200
 /search /index.html 200
 /info /index.html 200
-/legend /index.html 200
 /regulations /index.html 200
 /terms-and-conditions /index.html 200
 /privacy-policy /index.html 200
@@ -18,7 +17,6 @@
 https://mapa.wiating.eu/* https://wiating.eu/:splat 301!
 https://wiating.netlify.app/* https://wiating.eu/:splat 301!
 
-/legenda /legend 301!
 /regulamin /regulations 301!
 /historia /history 301!
 /polityka-prywatnosci /privacy-policy 301!

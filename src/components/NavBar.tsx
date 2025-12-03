@@ -87,7 +87,7 @@ const NavBar = ({
         <div className="flex gap-4 items-center text-white">
           <Button
             variant='default'
-            className="hidden sm:block"
+            className="hidden lg:block"
             href='https://patronite.pl/Wiating.eu'
             size='medium'
             target='_blank'

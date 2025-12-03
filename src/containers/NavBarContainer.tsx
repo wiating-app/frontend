@@ -106,7 +106,6 @@ const NavBarContainer = () => {
         ]
       : [],
     { label: translations.informations, url: '/info' },
-    ...isPhone ? [{ label: translations.legend, url: '/legend' }] : [],
     ...termsAndConditions ? [{ label: translations.termsAndConditions, url: '/terms-and-conditions' }] : [],
     { label: translations.privacyPolicy, url: '/privacy-policy' },
     ...faq ? [{ label: translations.faq, url: '/faq', divider: true }] : [],

@@ -321,8 +321,8 @@ const Map = ({
           }
         </Control>
         <ScaleControl position='bottomright' imperial={false} />
-        <Control position='topleft' container={{ style: { display: (isNotPhone && !editMode) ? 'block' : 'none' } }}>
-          <Legend boxed />
+        <Control position='topleft' container={{ style: { display: activeLocation ? 'none' : 'block' } }}>
+          <Legend />
         </Control>
         </MapContainer>
       </div>

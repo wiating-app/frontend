@@ -4,7 +4,7 @@ import useConfig from '../utils/useConfig'
 import { Link } from 'react-router-dom'
 
 export type ButtonProps = {
-  variant?: 'default' | 'primary' | 'secondary' | 'bare' | 'outlined' | 'danger' | 'success'
+  variant?: 'default' | 'primary' | 'secondary' | 'bare' | 'danger' | 'success'
   size?: 'small' | 'medium' | 'large'
   href?: string
   className?: string
@@ -61,7 +61,6 @@ const Button = ({
     primary: colorValue ? 'text-white hover:opacity-90' : 'bg-blue-600 hover:bg-blue-700 text-white',
     secondary: colorValue ? 'text-white hover:opacity-90' : 'bg-blue-600 hover:bg-blue-700 text-white',
     bare: 'bg-transparent text-gray-700 hover:bg-gray-100',
-    outlined: 'border-2 border-solid border-gray-300 text-gray-700 bg-transparent hover:bg-gray-50',
     danger: 'bg-red-600 text-white hover:bg-red-700',
     success: 'bg-green-700 text-white hover:bg-green-800',
   }
