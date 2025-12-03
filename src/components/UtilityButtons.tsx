@@ -56,7 +56,6 @@ const UtilityButtons = ({ id, coords }: UtilityButtonsProps) => {
       <Tooltip content={translations.navigate} delay={200}>
         <IconButton
           variant="bordered"
-          {...({ component: 'a' } as any)}
           href={navigateLink}
           target={isMobile ? '_self' : '_blank'}
         >
