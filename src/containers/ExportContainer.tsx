@@ -1,4 +1,5 @@
 import React from 'react'
+import { useMutation } from '@tanstack/react-query'
 import Typography from '../components/Typography'
 import Button from '../components/Button'
 import { toast } from 'sonner'
@@ -10,29 +11,29 @@ import useConfig from '../utils/useConfig'
 
 const ExportContainer = () => {
   const { translations } = useLanguage()
-  const [loading, setLoading] = React.useState(false)
   const config = useConfig()
 
-  const handleExport = async () => {
-    setLoading(true)
-    try {
-      const points = await getPoints({
-        top_right: {
-          lat: 90,
-          lon: 180,
-        },
-        bottom_left: {
-          lat: -90,
-          lon: -180,
-        },
-      })
-      await exportToKML(points, config)
-      setLoading(false)
-    } catch (err) {
-      console.error(err)
+  const exportMutation = useMutation({
+    mutationFn: () => getPoints({
+      top_right: {
+        lat: 90,
+        lon: 180,
+      },
+      bottom_left: {
+        lat: -90,
+        lon: -180,
+      },
+    }),
+    onSuccess: (points) => {
+      exportToKML(points, config)
+    },
+    onError: () => {
       toast.error('Error!')
-      setLoading(false)
-    }
+    },
+  })
+
+  const handleExport = () => {
+    exportMutation.mutate()
   }
 
   return (
@@ -42,14 +43,15 @@ const ExportContainer = () => {
         <div>
           <Button
             variant='primary'
-            disabled={loading}
+            size='large'
+            disabled={exportMutation.isLoading}
             onClick={handleExport}
           >
-            {loading && <Loader />}
+            {exportMutation.isLoading && <Loader />}
             {translations.exportButton}
           </Button>
         </div>
-        {loading &&
+        {exportMutation.isLoading &&
           <div>
             <Typography>{translations.iAmWorking}</Typography>
           </div>

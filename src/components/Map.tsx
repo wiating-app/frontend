@@ -19,7 +19,6 @@ import {
   activeLocationState,
   editModeState,
   isDrawerOpenState,
-  searchResultsState,
 } from '../state'
 
 import Control from 'react-leaflet-custom-control'
@@ -32,6 +31,7 @@ import classNames from 'classnames'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import history from '../history'
 import { useRecoilState } from 'recoil'
+import { useQueryClient } from '@tanstack/react-query'
 import { Location } from '../typings'
 
 interface MapProps {
@@ -66,7 +66,7 @@ const Map = ({
   const initiated = !!mapRef?.current
   const positionInitializedRef = React.useRef(false)
   const [editMode] = useRecoilState(editModeState)
-  const [, setSearchResults] = useRecoilState(searchResultsState)
+  const queryClient = useQueryClient()
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { isPhone, isNotPhone } = useMediaQuery()
@@ -207,7 +207,7 @@ const Map = ({
               iconId: `${type}_${markerSize}`,
               position: [lat, lng],
               onClick: () => {
-                setSearchResults([])
+                queryClient.setQueryData(['searchResults'], [])
                 setActiveLocation(item)
                 history.push(`/location/${item.id}`)
                 setContextMenu(false)

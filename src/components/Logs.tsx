@@ -40,7 +40,7 @@ const Logs = ({
   const { settings: { enableVerification } } = useConfig()
 
   return loading
-    ? <Loader dark big />
+    ? <Loader dark big centered />
     : error
       ? <Typography color='error'>{translations.connectionProblemLogs}</Typography>
       : <>

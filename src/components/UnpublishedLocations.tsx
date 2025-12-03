@@ -27,7 +27,7 @@ const UnpublishedLocations = ({
   const { locationTypes } = useConfig()
 
   return loading
-    ? <Loader dark big />
+    ? <Loader dark big centered />
     : error
       ? <Typography color='error'>{translations.connectionProblemLogs}</Typography>
       : <>
@@ -37,7 +37,7 @@ const UnpublishedLocations = ({
             name: <LocationLink name={item.name} id={item.id} />,
             type: item.type ? locationTypes.find(type => type.id === item.type)?.label[language] || '' : '',
             actions: <ButtonGroup>
-              <Button variant='primary' size='small' onClick={() => history.push(`/location/${item.id}/edit`)}>
+              <Button variant='primary' onClick={() => history.push(`/location/${item.id}/edit`)}>
                 {translations.edit}
               </Button>
             </ButtonGroup>,

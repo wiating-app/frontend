@@ -27,8 +27,3 @@ export const markersState = atom<Location[]>({
   key: 'markers',
   default: [],
 })
-
-export const searchResultsState = atom<Location[]>({
-  key: 'searchResults',
-  default: [],
-})

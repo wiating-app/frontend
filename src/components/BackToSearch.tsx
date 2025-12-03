@@ -1,23 +1,18 @@
 import React from 'react'
 import Button from './Button'
 import { List } from 'lucide-react'
-import { useRecoilState } from 'recoil'
 import useLanguage from '../utils/useLanguage'
-import { searchResultsState, activeLocationState } from '../state'
-import history from '../history'
 
-const BackToSearch = () => {
-  const [searchResults] = useRecoilState(searchResultsState)
-  const [, setActiveLocation] = useRecoilState(activeLocationState)
+interface BackToSearchProps {
+  onClick: () => void
+}
+
+const BackToSearch: React.FC<BackToSearchProps> = ({ onClick }) => {
   const { translations } = useLanguage()
 
-  if (!searchResults || !searchResults.length) return null
   return (
     <Button
-      onClick={() => {
-        history.push('/search')
-        setActiveLocation(null)
-      }}
+      onClick={onClick}
       className="absolute top-2 left-14 z-10"
       variant='primary'
       size='small'

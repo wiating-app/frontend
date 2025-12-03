@@ -1,0 +1,38 @@
+import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { useRecoilState } from 'recoil'
+import { activeLocationState } from '../state'
+import SearchResults from '../components/SearchResults'
+import history from '../history'
+import { Location } from '../typings'
+
+const SearchResultsContainer = () => {
+  const queryClient = useQueryClient()
+  const [, setActiveLocation] = useRecoilState(activeLocationState)
+  const cachedResults = queryClient.getQueryData<Location[]>(['searchResults'])
+
+  // Redirect to home if page is refreshed (no cached search results)
+  React.useEffect(() => {
+    if (!cachedResults || cachedResults.length === 0) {
+      history.replace('/')
+    }
+  }, [cachedResults])
+
+  const handleLocationClick = (item: Location) => {
+    setActiveLocation(item)
+    history.push(`/location/${item.id}`)
+  }
+
+  // Don't render if no results (will redirect)
+  if (!cachedResults || cachedResults.length === 0) {
+    return null
+  }
+
+  return (
+    <SearchResults
+      searchResults={cachedResults}
+      onLocationClick={handleLocationClick}
+    />
+  )
+}
+export default SearchResultsContainer

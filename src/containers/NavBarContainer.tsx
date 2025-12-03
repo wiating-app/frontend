@@ -1,10 +1,9 @@
 import React from 'react'
 import { useRecoilState } from 'recoil'
-import useMediaQuery from '../utils/useMediaQuery'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import parse from 'coord-parser'
 import {
   activeTypesState,
-  searchResultsState,
   activeLocationState,
 } from '../state'
 import { searchPoints } from '../api/searchPoints'
@@ -20,8 +19,7 @@ const languages = ['pl', 'en']
 const NavBarContainer = () => {
   const [languageSwitch, setLanguageSwitch] = React.useState(false)
   const [searchPhrase, setSearchPhrase] = React.useState<string>()
-  const [searchLoading, setSearchLoading] = React.useState(false)
-  const [, setSearchResults] = useRecoilState(searchResultsState)
+  const queryClient = useQueryClient()
   const [, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations, language, setLanguage } = useLanguage()
   const [activeTypes] = useRecoilState(activeTypesState)
@@ -35,51 +33,60 @@ const NavBarContainer = () => {
     isModerator,
     logout,
   } = useAuth0()
-  const { isPhone } = useMediaQuery()
+
+  const searchMutation = useMutation({
+    mutationFn: (params: Parameters<typeof searchPoints>[0]) => searchPoints(params),
+    onSuccess: (points) => {
+      queryClient.setQueryData(['searchResults'], points)
+      history.push('/search')
+      setActiveLocation(null)
+    },
+  })
 
   React.useEffect(() => {
-    const handleAsync = async () => {
-      if (searchPhrase) {
-        if (searchPhrase.length > 3) {
-          setSearchLoading(true)
-          let coords: {
-            top_right: { lat: number; lon: number }
-            bottom_left: { lat: number; lon: number }
-          } | false = false
-          // Check wheter given input are geo coordinates.
-          try {
-            const { lat, lon } = parse(searchPhrase)
-            const rounded = {
-              lat: Number(lat.toFixed(1)),
-              lon: Number(lon.toFixed(1)),
-            }
-            coords = {
-              top_right: {
-                lat: rounded.lat + 0.1,
-                lon: rounded.lon + 0.1,
-              },
-              bottom_left: {
-                lat: rounded.lat - 0.1,
-                lon: rounded.lon - 0.1,
-              },
-            }
-          } catch (err) {
-          }
-          const points = await searchPoints({
-            ...coords || { phrase: searchPhrase },
-            ...activeTypes.length ? { point_type: activeTypes } : {},
-          })
-          setSearchResults(points)
-          history.push('/search')
-          setActiveLocation(null)
-          setSearchLoading(false)
-        }
-      } else if (searchPhrase !== undefined) {
-        history.push('/')
-      }
+    if (searchPhrase === undefined) return
+
+    if (!searchPhrase) {
+      history.push('/')
+      return
     }
-    handleAsync()
-  }, [searchPhrase])
+
+    if (searchPhrase.length <= 3) return
+
+    // Debounce search requests
+    const timeoutId = setTimeout(() => {
+      let coords: {
+        top_right: { lat: number; lon: number }
+        bottom_left: { lat: number; lon: number }
+      } | false = false
+      // Check wheter given input are geo coordinates.
+      try {
+        const { lat, lon } = parse(searchPhrase)
+        const rounded = {
+          lat: Number(lat.toFixed(1)),
+          lon: Number(lon.toFixed(1)),
+        }
+        coords = {
+          top_right: {
+            lat: rounded.lat + 0.1,
+            lon: rounded.lon + 0.1,
+          },
+          bottom_left: {
+            lat: rounded.lat - 0.1,
+            lon: rounded.lon - 0.1,
+          },
+        }
+      } catch {
+      }
+      searchMutation.mutate({
+        ...coords || { phrase: searchPhrase },
+        ...activeTypes.length ? { point_type: activeTypes } : {},
+      })
+    }, 500) // 500ms debounce
+
+    return () => clearTimeout(timeoutId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchPhrase, activeTypes])
 
   // Set html document language.
   React.useEffect(() => {
@@ -127,7 +134,7 @@ const NavBarContainer = () => {
       }
       <NavBar
         onSearch={setSearchPhrase}
-        searchLoading={searchLoading}
+        searchLoading={searchMutation.isLoading}
         isLoggedIn={isLoggedIn}
         user={user}
         authLoading={loading}

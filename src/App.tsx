@@ -11,8 +11,8 @@ import {
 } from './state'
 import Layout from './components/Layout'
 import Drawer from './components/Drawer'
-import SearchResults from './components/SearchResults'
-import BackToSearch from './components/BackToSearch'
+import SearchResultsContainer from './containers/SearchResultsContainer'
+import BackToSearchContainer from './containers/BackToSearchContainer'
 import Info from './components/Info'
 import TermsAndConditions from './components/TermsAndConditions'
 import PrivacyPolicy from './components/PrivacyPolicy'
@@ -64,7 +64,7 @@ const App = () => {
 
       <Drawer>
         <Switch>
-          <Route exact path='/search' component={SearchResults} />
+          <Route exact path='/search' component={SearchResultsContainer} />
 
           <Route exact path='/location/new'>
             <LocationFormContainer isNew />
@@ -72,7 +72,7 @@ const App = () => {
 
           <Route exact path='/location/:id'>
             <LocationInfoContainer />
-            <BackToSearch />
+            <BackToSearchContainer />
           </Route>
 
           <Route exact path='/location/:id/edit'>

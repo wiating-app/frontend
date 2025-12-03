@@ -1,5 +1,6 @@
 import React from 'react'
 import { toast } from 'sonner'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getReports } from '../api/getReports'
 import { markAsDone } from '../api/markAsDone'
 import Reports from '../components/Reports'
@@ -9,39 +10,32 @@ import { Location } from '../typings'
 
 const ReportsContainer = () => {
   const { isModerator } = useAuth0()
-  const [reports, setReports] = React.useState<Location[]>()
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState(false)
+  const queryClient = useQueryClient()
   const [details, setDetails] = React.useState<Location>()
-  const [markAsDoneLoading, setMarkAsDoneLoading] = React.useState(false)
 
-  const fetchReports = async () => {
-    try {
-      setLoading(true)
-      const reports = await getReports()
-      setReports(reports)
-    } catch (err) {
-      console.error(err)
-      setError(true)
-    }
-    setLoading(false)
-  }
-  React.useEffect(() => { isModerator && fetchReports() }, [isModerator])
+  const { data: reports, isLoading: loading, isError: error } = useQuery({
+    queryKey: ['reports'],
+    queryFn: getReports,
+    enabled: isModerator,
+  })
+
+  const markAsDoneMutation = useMutation({
+    mutationFn: markAsDone,
+    onSuccess: () => {
+      toast.success('Zgłoszenie oznaczone jako załatwione.')
+      queryClient.setQueryData<Location[]>(['reports'], (old) =>
+        old?.filter(item => item.id !== details?.id)
+      )
+      setDetails(undefined)
+    },
+    onError: () => {
+      toast.error('Nie udało się odznaczyć zgłoszenia.')
+    },
+  })
 
   const markAsDoneCallback = async () => {
     if (!details) return
-    setMarkAsDoneLoading(true)
-    try {
-      await markAsDone(details.id)
-      toast.success('Zgłoszenie oznaczone jako załatwione.')
-      setReports(prevState => prevState?.filter(item => item.id !== details.id))
-      setMarkAsDoneLoading(false)
-      setDetails(undefined)
-    } catch (err) {
-      console.error(err)
-      setMarkAsDoneLoading(false)
-      toast.error('Nie udało się odznaczyć zgłoszenia.')
-    }
+    markAsDoneMutation.mutate(details.id)
   }
 
   return (
@@ -57,7 +51,7 @@ const ReportsContainer = () => {
           <ReportDetails
             data={details as Location & { report_reason: string[] }}
             markAsDoneCallback={markAsDoneCallback}
-            loading={markAsDoneLoading}
+            loading={markAsDoneMutation.isLoading}
             onClose={() => setDetails(undefined)}
           />
         }

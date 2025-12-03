@@ -1,15 +1,15 @@
 import React from 'react'
 import Chip from './Chip'
-import { useRecoilState } from 'recoil'
-import { searchResultsState, activeLocationState } from '../state'
 import useLanguage from '../utils/useLanguage'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
-import history from '../history'
 import { Location } from '../typings'
 
-const SearchResults = () => {
-  const [searchResults] = useRecoilState(searchResultsState)
-  const [, setActiveLocation] = useRecoilState(activeLocationState)
+interface SearchResultsProps {
+  searchResults?: Location[]
+  onLocationClick: (item: Location) => void
+}
+
+const SearchResults: React.FC<SearchResultsProps> = ({ searchResults, onLocationClick }) => {
   const { translations } = useLanguage()
   return (
     <ul className="list-none p-0 m-0">
@@ -18,10 +18,7 @@ const SearchResults = () => {
           <React.Fragment key={index}>
             <li
               className="flex items-center p-4 cursor-pointer hover:bg-gray-100"
-              onClick={() => {
-                setActiveLocation(item as Location)
-                history.push(`/location/${item.id}`)
-              }}
+              onClick={() => onLocationClick(item)}
             >
               <div className="mr-4">
                 <div

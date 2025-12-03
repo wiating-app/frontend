@@ -39,7 +39,7 @@ const Reports = ({
               )
               : <Typography variant='caption'>{item.report_reason || ''}</Typography>,
             actions: <ButtonGroup>
-              <Button variant='primary' size='small' onClick={() => setDetails(item)}>
+              <Button variant='primary' onClick={() => setDetails(item)}>
                 {translations.details}
               </Button>
             </ButtonGroup>,
