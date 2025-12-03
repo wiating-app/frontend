@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
-import { useRecoilState } from 'recoil'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import Modal from '../components/Modal'
 import LogDetails from '../components/LogDetails'
 import Loader from '../components/Loader'
@@ -11,50 +11,39 @@ import { getLog } from '../api/getLog'
 import { logReviewed } from '../api/logReviewed'
 import { banUser } from '../api/banUser'
 import { revertLog } from '../api/revertLog'
-import { logsState, logDetailsState } from '../state'
-import { Log, LogSource } from '../typings'
+import { LogDetails as LogDetailsType, LogSource } from '../typings'
 
 const LogDetailsContainer: React.FC = () => {
   const history = useHistory()
-  const location = useLocation()
   const { id } = useParams<{ id: string }>()
-  const { search, pathname } = location
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState(false)
+  const { search, pathname } = useLocation()
   const [loadingReview, setLoadingReview] = React.useState(false)
   const [loadingBan, setLoadingBan] = React.useState(false)
   const [loadingRevert, setLoadingRevert] = React.useState(false)
-  const [logDetails, setLogDetails] = useRecoilState(logDetailsState)
-  const [logs, setLogs] = useRecoilState(logsState)
+  const queryClient = useQueryClient()
   const { user, isModerator } = useAuth0()
   const { translations } = useLanguage()
 
-  // Use cached log data if avaliable, otherwise load data from endpoint.
-  React.useEffect(() => {
-    if (isModerator) {
-      if (!logDetails) {
-        const handleAsync = async () => {
-          try {
-            const data = await getLog(id)
-            setLogDetails(data)
-          } catch (_error) {
-            setError(true)
-            setLoading(false)
-            toast.error(translations.connectionProblemLogs)
-          }
-        }
-        handleAsync()
-      } else {
-        setLoading(false)
-      }
-    }
-  }, [logDetails, isModerator])
+  const { data: logDetails, isLoading, isError } = useQuery<LogDetailsType>({
+    queryKey: ['logs', 'detail', id!],
+    queryFn: () => getLog(id!),
+    enabled: !!id && isModerator,
+  })
 
-  const goBackToLogs = (refetch?: boolean) => {
+  React.useEffect(() => {
+    if (isError) {
+      toast.error(translations.connectionProblemLogs)
+    }
+  }, [isError, translations.connectionProblemLogs])
+
+  const goBackToLogs = (invalidate?: boolean) => {
     const pathArray = pathname.split('/')
+    if (invalidate) {
+      queryClient.invalidateQueries({ queryKey: ['logs', 'list'] })
+    }
     history.push({
       pathname: `/${pathArray[1]}/${pathArray[2]}`,
-      search: `${search}${refetch ? '&refetchLogs=true' : ''}`,
+      search,
     })
   }
 
@@ -63,20 +52,10 @@ const LogDetailsContainer: React.FC = () => {
     try {
       setLoadingReview(true)
       const data = await logReviewed(logDetails._id)
-      // If reviewed filter is set to false, filter reviewed item out of a list.
-      // Otherwise just update its state.
-      if (search.includes('reviewed_at=false')) {
-        const newLogs = logs.filter((item: Log) => item._id !== logDetails._id)
-        setLogs(newLogs)
-      } else {
-        const index = logs.findIndex((item: Log) => item._id === logDetails._id)
-        const newLogs = [
-          ...logs.slice(0, index),
-          data,
-          ...logs.slice(index + 1),
-        ]
-        setLogs(newLogs)
-      }
+      // Update the log details cache
+      queryClient.setQueryData(['logs', 'detail', logDetails._id], data)
+      // Invalidate all logs list queries to refetch with updated data
+      queryClient.invalidateQueries({ queryKey: ['logs', 'list'] })
       goBackToLogs()
       toast.success('Log zweryfikowany.')
     } catch (err) {
@@ -104,6 +83,8 @@ const LogDetailsContainer: React.FC = () => {
     try {
       setLoadingRevert(true)
       await revertLog(logDetails)
+      // Invalidate logs list to refetch after revert
+      queryClient.invalidateQueries({ queryKey: ['logs', 'list'] })
       goBackToLogs(true)
       toast.success('Przywrócono poprzedni stan lokacji.')
     } catch (err) {
@@ -118,14 +99,13 @@ const LogDetailsContainer: React.FC = () => {
   return (
     <Modal short onClose={() => {
       goBackToLogs()
-      setLogDetails(null)
     }}>
-      {loading
-        ? <Loader dark big />
-        : error
+      {isLoading
+        ? <Loader dark big centered />
+        : isError
           ? <div>Error!</div>
-          : <LogDetails
-            data={logDetails!._source}
+          : logDetails && <LogDetails
+            data={logDetails._source}
             isMe={isMe || false}
             isModerator={isModerator}
             user={user}

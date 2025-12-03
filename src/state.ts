@@ -32,13 +32,3 @@ export const searchResultsState = atom<Location[]>({
   key: 'searchResults',
   default: [],
 })
-
-export const logsState = atom<any[]>({
-  key: 'logs',
-  default: [],
-})
-
-export const logDetailsState = atom<any | null>({
-  key: 'logDetails',
-  default: null,
-})
