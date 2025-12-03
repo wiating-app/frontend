@@ -63,7 +63,7 @@ const LocationInfoContainer: React.FC = () => {
 
   return (
     loading
-      ? <Loader dark big />
+      ? <Loader dark big centered />
       : error
         ? <div>Error!</div>
         : <>

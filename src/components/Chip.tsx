@@ -29,7 +29,7 @@ const Chip = ({
   // Size classes
   const sizeClasses = {
     small: 'px-2 py-0.5 text-xs',
-    medium: 'px-2.5 py-1 text-sm',
+    medium: 'px-2.5 py-1.5 text-xs',
   }
 
   // Color class mappings
@@ -42,7 +42,7 @@ const Chip = ({
   // Build classes
   const allClasses = classNames(
     // Base classes
-    'inline-flex items-center justify-center font-medium rounded-full',
+    'inline-flex items-center justify-center text-center font-medium rounded-full',
     // Size
     sizeClasses[size],
     // Color classes

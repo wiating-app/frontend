@@ -55,16 +55,14 @@ const LocationInfo = ({
         coords={selectedLocation.location}
       />
       <div className="flex-grow">
-        <div className="flex items-center gap-2">
-          <div className="text-2xl font-medium leading-tight">{selectedLocation.name}</div>
-          {selectedLocation.is_disabled && (
-            <Chip
-              size='small'
-              color='secondary'
-              label={translations.isDisabled}
-            />
-          )}
-        </div>
+        <div className="text-2xl font-medium leading-tight">{selectedLocation.name}</div>
+        {selectedLocation.is_disabled && (
+          <Chip
+            color='secondary'
+            label={translations.isDisabled}
+            className="mt-1"
+          />
+        )}
         <div className="text-sm text-gray-500 mt-0.5 mb-4">
           <div className="flex items-center gap-1.5 flex-wrap">
             <div>{typeLabel}</div>

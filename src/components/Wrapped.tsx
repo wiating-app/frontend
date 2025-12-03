@@ -17,11 +17,7 @@ const Wrapped = ({ stats, loading, error, onClose }: WrappedProps) => {
 
   return (
     <Modal onClose={onClose} short id='cy-wrapped'>
-      {loading && (
-        <div className="flex justify-center items-center py-8">
-          <Loader big />
-        </div>
-      )}
+      {loading && <Loader big dark centered />}
       {error && (
         <div className="text-center py-8">
           <div className="text-red-600">{error}</div>
