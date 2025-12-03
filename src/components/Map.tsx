@@ -259,10 +259,16 @@ const Map = ({
         }
         {userLocation &&
           <>
-            {locationAccuracy && locationAccuracy > 30 &&
+            {locationAccuracy && locationAccuracy > 150 &&
               <Circle
                 center={userLocation}
                 radius={locationAccuracy}
+                pathOptions={{
+                  weight: 1,
+                  color: '#3388ff',
+                  fillColor: '#3388ff',
+                  fillOpacity: 0.1,
+                }}
               />
             }
             <Marker
@@ -313,7 +319,7 @@ const Map = ({
           <Export markers={markers} className={mapControlButtonClassName} />
         </Control>
         <Control position='bottomright'>
-          {userLocation && (!isDrawerOpen || !isPhone) &&
+          {userLocation && (!isDrawerOpen || !isPhone) && locationAccuracy && locationAccuracy > 150 &&
             <Typography
               variant='caption'
               className="bg-white/75 px-0.5 text-[11px]"
