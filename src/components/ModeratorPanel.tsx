@@ -30,7 +30,7 @@ const ModeratorPanel: React.FC = () => {
   const pathArray = pathname.split('/')
 
   return (
-    <PerfectScrollbar className="p-6 box-border w-full relative">
+    <PerfectScrollbar className="px-4 lg:px-6 py-6 box-border w-full relative">
       <Heading level={4} gutterBottom>{translations.administration}</Heading>
 
       <Tabs

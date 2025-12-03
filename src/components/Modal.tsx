@@ -86,7 +86,7 @@ const Modal = ({ wide, short, small, children, onClose, id }: ModalProps) => {
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        <PerfectScrollbar className="px-10 py-8">
+        <PerfectScrollbar className="px-4 sm:px-10 py-8">
           {children}
         </PerfectScrollbar>
         <IconButton
