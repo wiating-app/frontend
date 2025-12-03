@@ -1,11 +1,13 @@
 import React, { FC, MouseEvent, PropsWithChildren, ReactNode, useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
+import useMediaQuery from '../utils/useMediaQuery'
 
 type TooltipProps = {
   content?: ReactNode
   className?: string
   anchor?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right' | 'left-center' | 'right-center'
+  mobileAnchor?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right' | 'left-center' | 'right-center'
   delay?: number
   tooltipClassName?: string
 }
@@ -15,13 +17,18 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   children,
   className,
   anchor = 'top-center',
+  mobileAnchor,
   delay = 650,
   tooltipClassName = 'inline-block',
 }) => {
+  const { isPhone } = useMediaQuery()
   const [isVisible, setIsVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 })
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const triggerRef = useRef<HTMLSpanElement>(null)
+
+  // Determine active anchor: use mobileAnchor if on mobile and provided, otherwise use anchor
+  const activeAnchor = isPhone && mobileAnchor ? mobileAnchor : anchor
 
   const showTooltip = (e: MouseEvent<HTMLElement>) => {
     // Clear any existing timeout
@@ -33,7 +40,7 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     let tooltipTop = 0
     let tooltipLeft = 0
 
-    switch (anchor) {
+    switch (activeAnchor) {
       case 'top-left':
         tooltipTop = rect.top - 8
         tooltipLeft = rect.left
@@ -96,7 +103,7 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   }, [])
 
   const getTransform = () => {
-    switch (anchor) {
+    switch (activeAnchor) {
       case 'top-left':
         return 'translate(0, -100%)'
       case 'top-center':
