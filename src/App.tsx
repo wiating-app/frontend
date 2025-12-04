@@ -70,7 +70,7 @@ const App = () => {
       const dismissedKey = `wrappedDismissed_${wrappedYear}`
       const isDismissed = !!localStorage.getItem(dismissedKey)
       if (!isDismissed) {
-        // history.push('/wrapped')
+        // history.push('/wrapped') TODO: After turning it on, change canSeeWrapped so it starts in 27 December and ends in end of January
       }
     }
   }, [canSeeWrapped, history, pathname])

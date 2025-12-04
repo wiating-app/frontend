@@ -2,6 +2,7 @@ import React from 'react'
 import Modal from './Modal'
 import Button from './Button'
 import Loader from './Loader'
+import Typography from './Typography'
 import FormActions from './Inputs/FormActions'
 import { WrappedStats } from '../typings'
 import useConfig from '../utils/useConfig'
@@ -71,16 +72,16 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
     <Modal onClose={onClose} short wide id='cy-wrapped'>
       {isLoading && <Loader big dark centered />}
       {isError && (
-        <div className="text-center py-8">
-          <div className="text-red-600">Nie udało się załadować statystyk.</div>
-        </div>
+        <Typography className='text-center'>
+          Chcieliśmy pokazać Ci Twoje roczne statystyki, ale coś poszło nie tak. Spróbuj ponownie później.
+        </Typography>
       )}
       {stats && !isLoading && !isError && (
         <>
           <div className="space-y-2">
             <div className="text-center">
-              <h2 className="text-4xl font-bold mb-2 text-gray-900">Twój rok {stats.year} w Wiating</h2>
-              <p className="text-gray-700 text-base">Podsumowanie Twojej aktywności</p>
+              <h2 className="text-4xl font-bold mb-1 text-gray-900">Twój rok {stats.year} w Wiating</h2>
+              <p className="text-gray-600 text-base pb-1">Podsumowanie Twojej aktywności</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -258,7 +259,7 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
               </div>
             )}
           </div>
-          <FormActions align='center'>
+          <FormActions align='center' className='sm:hidden'>
             <Button
               size='large'
               variant='primary'

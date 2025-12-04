@@ -41,7 +41,7 @@ ReactDOM.render(
                         <App />
                       </UserLocationProvider>
                     </FormThemeProvider>
-                    <Toaster position="bottom-center" richColors />
+                    <Toaster position="bottom-center" />
                   </Auth0Provider>
                 </Router>
               }

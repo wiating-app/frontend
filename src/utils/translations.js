@@ -20,7 +20,7 @@ export default {
     connectionProblemMap: 'Nie można nawiązać połączenia z bazą lokacji.',
     coordinates: 'Położenie geograficzne',
     coordinatesCopied: 'Skopiowano koordynaty do schowka.',
-    copyCoordinates: 'Skopuj koordynaty',
+    copyCoordinates: 'Skopiuj koordynaty',
     couldNotDeleteLocation: 'Nie udało się usunąć lokacji.',
     couldNotReport: 'Nie udało się przesłać zgłoszenia.',
     couldNotRestoreSession: 'Nie udało się uwierzytelnić. Spróbuj się wylogować i zalogować ponownie.',

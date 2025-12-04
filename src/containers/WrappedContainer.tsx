@@ -1,5 +1,6 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import Wrapped from '../components/Wrapped'
 import { getWrapped } from '../api/getWrapped'
 import { getPoint } from '../api/getPoint'
@@ -16,11 +17,17 @@ const WrappedContainer = () => {
     enabled: isLoggedIn && canSeeWrapped,
   })
 
-  const { data: location, isLoading: isLoadingLocation } = useQuery({
+  const { data: location, isLoading: isLoadingLocation, isError: isErrorLocation } = useQuery({
     queryKey: ['location', stats?.user_top_loc],
     queryFn: () => getPoint(stats!.user_top_loc),
     enabled: shouldFetchLocation && !!stats?.user_top_loc,
   })
+
+  React.useEffect(() => {
+    if (shouldFetchLocation && isErrorLocation) {
+      toast.error('Nie udało się załadować informacji o lokacji.')
+    }
+  }, [shouldFetchLocation, isErrorLocation])
 
   const setDismissed = React.useCallback(() => {
     if (stats) {
