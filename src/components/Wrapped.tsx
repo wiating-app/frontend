@@ -21,7 +21,8 @@ interface WrappedProps {
 
 // Helper function to generate random icon positions and rotations with minimum distance to prevent overlap
 const generateIconPositions = (count: number, minDistance: number = 25) => {
-  const positions: Array<{ top: number; left: number; rotation: number }> = []
+  const positions: Array<{ top: number; left: number; rotation: number; size: number }> = []
+  const iconSizes = [70, 90]
 
   for (let i = 0; i < count; i++) {
     let attempts = 0
@@ -48,6 +49,7 @@ const generateIconPositions = (count: number, minDistance: number = 25) => {
       top,
       left,
       rotation: Math.random() * 360,
+      size: iconSizes[Math.floor(Math.random() * iconSizes.length)],
     })
   }
 
@@ -93,7 +95,7 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                 {totalActionsIcons.map((pos, idx) => (
                   <Activity
                     key={idx}
-                    size={70}
+                    size={pos.size}
                     className="absolute opacity-10 text-white"
                     style={{
                       top: `${pos.top}%`,
@@ -117,7 +119,7 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                 {locationsCreatedIcons.map((pos, idx) => (
                   <MapPin
                     key={idx}
-                    size={70}
+                    size={pos.size}
                     className="absolute opacity-10 text-white"
                     style={{
                       top: `${pos.top}%`,
@@ -141,7 +143,7 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                 {imagesAddedIcons.map((pos, idx) => (
                   <Camera
                     key={idx}
-                    size={70}
+                    size={pos.size}
                     className="absolute opacity-10 text-white"
                     style={{
                       top: `${pos.top}%`,
@@ -165,7 +167,7 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                 {editsMadeIcons.map((pos, idx) => (
                   <Edit
                     key={idx}
-                    size={70}
+                    size={pos.size}
                     className="absolute opacity-10 text-white"
                     style={{
                       top: `${pos.top}%`,
@@ -190,7 +192,7 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
               {activityPercentageIcons.map((pos, idx) => (
                 <Award
                   key={idx}
-                  size={100}
+                  size={pos.size}
                   className="absolute opacity-10 text-white"
                   style={{
                     top: `${pos.top}%`,
@@ -215,7 +217,7 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                 {topLocationIcons.map((pos, idx) => (
                   <Map
                     key={idx}
-                    size={100}
+                    size={pos.size}
                     className="absolute opacity-10 text-white"
                     style={{
                       top: `${pos.top}%`,
