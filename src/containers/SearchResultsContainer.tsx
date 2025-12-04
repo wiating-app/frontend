@@ -5,10 +5,13 @@ import { activeLocationState } from '../state'
 import SearchResults from '../components/SearchResults'
 import history from '../history'
 import { Location } from '../typings'
+import { toast } from 'sonner'
+import useLanguage from '../utils/useLanguage'
 
 const SearchResultsContainer = () => {
   const queryClient = useQueryClient()
   const [, setActiveLocation] = useRecoilState(activeLocationState)
+  const { translations } = useLanguage()
   const cachedResults = queryClient.getQueryData<Location[]>(['searchResults'])
 
   // Redirect to home if page is refreshed (no cached search results)
@@ -16,7 +19,10 @@ const SearchResultsContainer = () => {
     if (!cachedResults || cachedResults.length === 0) {
       history.replace('/')
     }
-  }, [cachedResults])
+    if (cachedResults?.length === 0) {
+      toast.error(translations.noResults)
+    }
+  }, [cachedResults, translations])
 
   const handleLocationClick = (item: Location) => {
     setActiveLocation(item)

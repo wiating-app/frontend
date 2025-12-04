@@ -13,6 +13,7 @@ import LanguageSwitcher from '../components/LanguageSwitcher'
 import useLanguage from '../utils/useLanguage'
 import useConfig from '../utils/useConfig'
 import history from '../history'
+import { toast } from 'sonner'
 
 const languages = ['pl', 'en']
 
@@ -51,7 +52,10 @@ const NavBarContainer = () => {
       return
     }
 
-    if (searchPhrase.length <= 3) return
+    if (searchPhrase.length <= 3) {
+      toast.error(translations.atLeast4Characters)
+      return
+    }
 
     // Debounce search requests
     const timeoutId = setTimeout(() => {
