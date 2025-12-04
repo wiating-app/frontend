@@ -32,8 +32,9 @@ const Legend = () => {
       className="rounded sm:min-w-[168px] bg-white/85 py-1 sm:py-2"
     >
       <div
+        onClick={() => setIsExpanded(!isExpanded)}
         className={classNames(
-          'flex items-center justify-between gap-2 px-2',
+          'flex items-center justify-between gap-2 px-2 cursor-pointer',
           isExpanded && 'border-b border-gray-200 pb-1 sm:pb-2',
         )}
       >
@@ -52,7 +53,10 @@ const Legend = () => {
           {isExpanded && activeTypes.length > 0 && (
             <Tooltip content={translations.reset} anchor="bottom-center">
               <button
-                onClick={() => setActiveTypes([])}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setActiveTypes([])
+                }}
                 className={classNames(
                   'bg-transparent border-0 p-0 cursor-pointer',
                   'opacity-50 hover:opacity-100',
@@ -65,10 +69,7 @@ const Legend = () => {
             </Tooltip>
           )}
         </div>
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="bg-transparent border-0 p-0 cursor-pointer text-gray-700 hover:text-gray-900 transition-colors"
-        >
+        <div className="text-gray-700">
           {isExpanded
             ? (
                 <ChevronUp size={16} strokeWidth={2.5} />
@@ -76,7 +77,7 @@ const Legend = () => {
             : (
                 <ChevronDown size={16} strokeWidth={2.5} />
               )}
-        </button>
+        </div>
       </div>
       {isExpanded && locationTypes.map(({ id, label }) => {
         const isActive = activeTypes.includes(id) || !activeTypes.length
