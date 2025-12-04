@@ -99,24 +99,20 @@ const NavBar = ({
                 label: lang.toUpperCase(),
                 callback: () => setLanguage(lang),
               }))}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-            >{language ? language.toUpperCase() : ''}</Dropdown>
+            ><span className="opacity-90 hover:opacity-95">{language ? language.toUpperCase() : ''}</span></Dropdown>
           }
           {authLoading
             ? <Loader />
             : <Dropdown items={links}>
               {isLoggedIn
-                ? <div className="flex items-center">
+                ? <div className="flex items-center group">
                   <Avatar alt={user?.name} src={user?.picture}>
                     {!user?.picture && `${user?.given_name?.charAt(0) || ''}${user?.family_name?.charAt(0) || ''}`}
                   </Avatar>
-                  <span className="ml-2 normal-case text-white text-md whitespace-nowrap hidden md:inline">{user?.name && user.name}</span>
-                  <ChevronDown className="text-white" size={24} />
+                  <span className="normal-case ml-2 text-md whitespace-nowrap hidden md:inline opacity-90 group-hover:opacity-95">{user?.name && user.name}</span>
+                  <ChevronDown className="ml-1 opacity-90 group-hover:opacity-95" size={20} />
                 </div>
-                : <Menu className="text-white" size={24} />
+                : <Menu className="opacity-90 hover:opacity-95" size={24} />
               }
             </Dropdown>
           }

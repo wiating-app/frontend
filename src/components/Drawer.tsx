@@ -23,8 +23,8 @@ const Drawer: React.FC<DrawerProps> = ({
   const history = useHistory()
   const location = useLocation()
   const { pathname } = location
-  const coverMapOnMobile = pathname.startsWith('/search')
-  const { isNotPhone } = useMediaQuery()
+  const coverMinimapOnMobile = pathname.startsWith('/search')
+  const { isPhone } = useMediaQuery()
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
 
   const handleOnClose = () => history.push('/')
@@ -33,27 +33,27 @@ const Drawer: React.FC<DrawerProps> = ({
     handleOnClose()
   })
 
-  const mobileHeight = coverMapOnMobile
-    ? '100vh'
-    : `calc(100vh - ${MOBILE_MINI_MAP_HEIGHT}px)`
+  const mobileHeight = coverMinimapOnMobile
+    ? '100dvh'
+    : `calc(100dvh - ${MOBILE_MINI_MAP_HEIGHT}px)`
 
   return (
     <div
       className={classNames(
         'fixed z-[1200] bg-white flex-shrink-0 transition-transform duration-300 ease-in-out bottom-0',
-        isNotPhone
-          ? 'top-16 left-0 shadow-2xl'
-          : 'left-0 right-0 shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]',
+        isPhone
+          ? 'left-0 right-0 shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]'
+          : 'top-16 left-0 shadow-2xl'
       )}
       style={{
-        ...(isNotPhone
+        ...(isPhone
           ? {
-              width: `${DRAWER_WIDTH}px`,
-              transform: isDrawerOpen ? 'translateX(0)' : 'translateX(-100%)',
-            }
-          : {
               height: mobileHeight,
               transform: isDrawerOpen ? 'translateY(0)' : 'translateY(100%)',
+            }
+          : {
+              width: `${DRAWER_WIDTH}px`,
+              transform: isDrawerOpen ? 'translateX(0)' : 'translateX(-100%)',
             }),
       }}
     >
