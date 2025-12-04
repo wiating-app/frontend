@@ -14,7 +14,7 @@ export default function enableServiceWorker() {
       // Function to handle update prompt
       const promptForUpdate = () => {
         console.log('[SW] Prompting user for update')
-        if (confirm('A new version is available! Would you like to update?')) {
+        if (confirm('Dostępna jest nowsza wersja aplikacji. Czy chcesz przeładować widok?')) {
           wb.messageSkipWaiting()
           console.log('[SW] Sent skipWaiting message to service worker')
           return true
