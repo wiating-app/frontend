@@ -26,20 +26,14 @@ export const Auth0Provider = ({
   const [isModerator, setIsModerator] = useState(false)
   const { translations } = useLanguage()
 
-  // Calculate shouldSeeWrapped: only for logged-in users in December, not dismissed
-  const shouldSeeWrapped = useMemo(() => {
+  // Calculate canSeeWrapped: only for logged-in users in December
+  const canSeeWrapped = useMemo(() => {
     if (!isLoggedIn) {
       return false
     }
     // Only show in December (month index 11)
     const currentMonth = new Date().getMonth()
     if (currentMonth !== 11) {
-      return false
-    }
-    // Check if already dismissed for current year
-    const currentYear = new Date().getFullYear().toString()
-    const dismissedKey = `wrappedDismissed_${currentYear}`
-    if (localStorage.getItem(dismissedKey)) {
       return false
     }
     return true
@@ -109,7 +103,7 @@ export const Auth0Provider = ({
     loading,
     isLoggedIn,
     isModerator,
-    shouldSeeWrapped,
+    canSeeWrapped,
     user: user || undefined,
     popupOpen: false,
     loginWithPopup: async () => {},

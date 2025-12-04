@@ -1,56 +1,60 @@
 import React from 'react'
+import { useQuery } from '@tanstack/react-query'
 import Wrapped from '../components/Wrapped'
 import { getWrapped } from '../api/getWrapped'
-import { WrappedStats } from '../typings'
-import useLanguage from '../utils/useLanguage'
+import { getPoint } from '../api/getPoint'
 import useAuth0 from '../utils/useAuth0'
+import history from '../history'
 
 const WrappedContainer = () => {
-  const { shouldSeeWrapped } = useAuth0()
-  const [stats, setStats] = React.useState<WrappedStats | null>(null)
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState<string | null>(null)
-  const { translations } = useLanguage()
+  const { isLoggedIn, canSeeWrapped } = useAuth0()
+  const [shouldFetchLocation, setShouldFetchLocation] = React.useState(false)
 
-  React.useEffect(() => {
-    if (!shouldSeeWrapped) {
-      return
-    }
-    const fetchStats = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const data = await getWrapped()
-        setStats(data)
-      } catch (err: any) {
-        const errorMessage = err?.response?.data?.message || translations?.connectionProblemLogs || 'Nie udało się załadować statystyk.'
-        setError(errorMessage)
-        console.error('Failed to fetch wrapped stats:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
+  const { data: stats, isLoading, isError } = useQuery({
+    queryKey: ['wrapped'],
+    queryFn: getWrapped,
+    enabled: isLoggedIn && canSeeWrapped,
+  })
 
-    fetchStats()
-  }, [translations, shouldSeeWrapped])
+  const { data: location, isLoading: isLoadingLocation } = useQuery({
+    queryKey: ['location', stats?.user_top_loc],
+    queryFn: () => getPoint(stats!.user_top_loc),
+    enabled: shouldFetchLocation && !!stats?.user_top_loc,
+  })
 
-  if (!shouldSeeWrapped) {
-    return null
-  }
-
-  const handleClose = () => {
+  const setDismissed = React.useCallback(() => {
     if (stats) {
       const dismissedKey = `wrappedDismissed_${stats.year}`
       localStorage.setItem(dismissedKey, 'true')
     }
+  }, [stats])
+
+  const handleShowLocation = () => {
+    setShouldFetchLocation(true)
+  }
+
+  const handleViewLocation = () => {
+    if (stats?.user_top_loc) {
+      setDismissed()
+      history.push(`/location/${stats.user_top_loc}`)
+    }
+  }
+
+  const handleClose = () => {
+    setDismissed()
+    history.push('/')
   }
 
   return (
     <Wrapped
-      stats={stats}
-      loading={loading}
-      error={error}
+      stats={stats || null}
+      isLoading={isLoading}
+      isError={isError}
       onClose={handleClose}
+      onShowLocation={handleShowLocation}
+      onViewLocation={handleViewLocation}
+      locationName={location?.name}
+      isLoadingLocation={shouldFetchLocation && isLoadingLocation}
     />
   )
 }

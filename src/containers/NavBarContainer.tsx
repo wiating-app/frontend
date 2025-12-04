@@ -101,10 +101,10 @@ const NavBarContainer = () => {
             label: translations.history,
             url: '/history',
           },
-          // {
-          //   label: translations.wrapped,
-          //   url: '/wrapped',
-          // },
+          {
+            label: translations.wrapped,
+            url: '/wrapped',
+          },
           {
             label: <>{translations.language}: {language.toUpperCase()}</>,
             callback: () => setLanguageSwitch(true),

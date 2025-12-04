@@ -103,7 +103,7 @@ export interface Auth0ContextInterface {
   __onUnload: () => void
   isModerator: boolean
   isLoggedIn: boolean
-  shouldSeeWrapped: boolean
+  canSeeWrapped: boolean
   setStoredPosition: (position: { center?: [number, number]; zoom?: number; bounds?: L.LatLngBoundsExpression }) => void
   getStoredPosition: () => { center?: [number, number]; zoom?: number; bounds?: L.LatLngBoundsExpression } | null
   requireAuth: (callback: () => void, redirect?: boolean) => void
@@ -145,5 +145,6 @@ export interface WrappedStats {
   user_images: number
   user_edits: number
   activity_percentage: number
+  user_top_loc: string
   year: string
 }
