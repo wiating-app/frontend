@@ -1,16 +1,16 @@
-import { formatDate, roundLatLng } from '../utils/helpers'
 import React from 'react'
-import Report from './Report'
-import UtilityButtons from './UtilityButtons'
-import useLanguage from '../utils/useLanguage'
-import useConfig from '../utils/useConfig'
+import history from '../history'
 import { Location } from '../typings'
+import { formatDate, roundLatLng } from '../utils/helpers'
+import useAuth0 from '../utils/useAuth0'
+import useConfig from '../utils/useConfig'
+import useLanguage from '../utils/useLanguage'
 import Button from './Button'
 import ButtonGroup from './ButtonGroup'
-import Typography from './Typography'
 import Chip from './Chip'
-import useAuth0 from '../utils/useAuth0'
-import history from '../history'
+import Report from './Report'
+import Typography from './Typography'
+import UtilityButtons from './UtilityButtons'
 
 interface LocationInfoProps {
   isModerator: boolean
@@ -18,19 +18,11 @@ interface LocationInfoProps {
   handleReport: (fields: { reason: string; description: string }) => void | Promise<void>
 }
 
-const LocationInfo = ({
-  isModerator,
-  selectedLocation,
-  handleReport,
-}: LocationInfoProps) => {
+const LocationInfo = ({ isModerator, selectedLocation, handleReport }: LocationInfoProps) => {
   const { translations, language } = useLanguage()
   const {
-    locationTypes, settings: {
-      enableReport,
-      enableDirectionsField,
-      enableFireField,
-      enableWaterField,
-    },
+    locationTypes,
+    settings: { enableReport, enableDirectionsField, enableFireField, enableWaterField },
   } = useConfig()
   const { requireAuth } = useAuth0()
   const [reportIsOpen, setReportIsOpen] = React.useState(false)
@@ -49,43 +41,28 @@ const LocationInfo = ({
   }
 
   return (
-    <div className="relative flex flex-col p-4 pt-8 shadow-md flex-grow" id='cy-locationinfo'>
-      <UtilityButtons
-        id={selectedLocation.id}
-        coords={selectedLocation.location}
-      />
+    <div className="relative flex flex-grow flex-col p-4 pt-8 shadow-md" id="cy-locationinfo">
+      <UtilityButtons id={selectedLocation.id} coords={selectedLocation.location} />
       <div className="flex-grow">
         <div className="text-2xl font-medium leading-tight">{selectedLocation.name}</div>
-        {selectedLocation.is_disabled && (
-          <Chip
-            color='secondary'
-            label={translations.isDisabled}
-            className="mt-1"
-          />
-        )}
-        <div className="text-sm text-gray-500 mt-0.5 mb-4">
-          <div className="flex items-center gap-1.5 flex-wrap">
+        {selectedLocation.is_disabled && <Chip color="secondary" label={translations.isDisabled} className="mt-1" />}
+        <div className="mb-4 mt-0.5 text-sm text-gray-500">
+          <div className="flex flex-wrap items-center gap-1.5">
             <div>{typeLabel}</div>
             <div>|</div>
-            <div>{roundedLat}, {roundedLng}</div>
+            <div>
+              {roundedLat}, {roundedLng}
+            </div>
           </div>
         </div>
 
-        <div className="text-sm font-medium text-gray-500 mt-4 mb-4">
-          {translations.description}
-        </div>
-        <Typography gutterBottom>
-          {selectedLocation.description}
-        </Typography>
+        <div className="mb-4 mt-4 text-sm font-medium text-gray-500">{translations.description}</div>
+        <Typography gutterBottom>{selectedLocation.description}</Typography>
 
         {enableDirectionsField && selectedLocation.directions && (
           <>
-            <div className="text-sm font-medium text-gray-500 mt-4 mb-4">
-              {translations.directions}
-            </div>
-            <Typography gutterBottom>
-              {selectedLocation.directions}
-            </Typography>
+            <div className="mb-4 mt-4 text-sm font-medium text-gray-500">{translations.directions}</div>
+            <Typography gutterBottom>{selectedLocation.directions}</Typography>
           </>
         )}
 
@@ -97,9 +74,8 @@ const LocationInfo = ({
                 {selectedLocation.water_exists === null
                   ? translations.noData
                   : !selectedLocation.water_exists
-                      ? translations.unavailable
-                      : selectedLocation.water_comment || translations.available
-                }
+                    ? translations.unavailable
+                    : selectedLocation.water_comment || translations.available}
               </Typography>
             )}
 
@@ -109,53 +85,32 @@ const LocationInfo = ({
                 {selectedLocation.fire_exists === null
                   ? translations.noData
                   : !selectedLocation.fire_exists
-                      ? translations.unavailable
-                      : selectedLocation.fire_comment || translations.available
-                }
+                    ? translations.unavailable
+                    : selectedLocation.fire_comment || translations.available}
               </Typography>
             )}
           </div>
         )}
       </div>
 
-      <div className="h-px bg-gray-200 mt-5 mb-4" />
+      <div className="mb-4 mt-5 h-px bg-gray-200" />
 
       <div className="flex flex-col items-end">
         {updatedAt && (
-          <div className="text-xs text-gray-600 text-right mb-2">
+          <div className="mb-2 text-right text-xs text-gray-600">
             {translations.lastUpdate}: {formatDate(updatedAt)}
           </div>
         )}
         <ButtonGroup>
-          {isModerator
-            ? (
-                <Button
-                  to={`/moderator/log?id=${selectedLocation.id}`}
-                >
-                  Wyświetl logi
-                </Button>
-              )
-            : enableReport && (
-              <Button
-                onClick={handleReportClick}
-              >
-                {translations.report}
-              </Button>
-            )
-          }
-          <Button
-            onClick={handleEditClick}
-          >
-            {translations.edit}
-          </Button>
+          {isModerator ? (
+            <Button to={`/moderator/log?id=${selectedLocation.id}`}>Wyświetl logi</Button>
+          ) : (
+            enableReport && <Button onClick={handleReportClick}>{translations.report}</Button>
+          )}
+          <Button onClick={handleEditClick}>{translations.edit}</Button>
         </ButtonGroup>
       </div>
-      {reportIsOpen && (
-        <Report
-          handleReport={handleReport}
-          onClose={() => setReportIsOpen(false)}
-        />
-      )}
+      {reportIsOpen && <Report handleReport={handleReport} onClose={() => setReportIsOpen(false)} />}
     </div>
   )
 }

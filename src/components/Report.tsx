@@ -1,12 +1,12 @@
-import Form from 'react-form-component'
-import SubmitButton from './Inputs/SubmitButton'
+import React from 'react'
+import useLanguage from '../utils/useLanguage'
+import Heading from './Heading'
 import Input from './Inputs/Input'
 import Select from './Inputs/Select'
+import SubmitButton from './Inputs/SubmitButton'
 import Modal from './Modal'
-import React from 'react'
-import Heading from './Heading'
 import Typography from './Typography'
-import useLanguage from '../utils/useLanguage'
+import Form from 'react-form-component'
 
 interface ReportProps {
   handleReport: (fields: { reason: string; description: string }) => void | Promise<void>
@@ -22,7 +22,9 @@ const Report = ({ handleReport, onClose }: ReportProps) => {
 
   return (
     <Modal short onClose={onClose}>
-      <Heading level={4} gutterBottom>Zgłoś nieprawidłowość</Heading>
+      <Heading level={4} gutterBottom>
+        Zgłoś nieprawidłowość
+      </Heading>
       <Typography gutterBottom>Znalazłeś/aś nieprawidłowość w punkcie? </Typography>
       <Form
         fields={['reason', 'description']}
@@ -31,22 +33,18 @@ const Report = ({ handleReport, onClose }: ReportProps) => {
         runOnChangeInitially
       >
         <Select
-          name='reason'
-          label='Powód'
+          name="reason"
+          label="Powód"
           options={reasons.map(item => ({
             label: translations.reportReasons[item],
             value: item,
           }))}
         />
-        {selectedReason &&
-          <Input
-            name='description'
-            label={translations.reportDescriptions[selectedReason]}
-            multiline
-          />
-        }
+        {selectedReason && (
+          <Input name="description" label={translations.reportDescriptions[selectedReason]} multiline />
+        )}
         <SubmitButton
-          variant='primary'
+          variant="primary"
           onClick={async (fields: any) => {
             setLoading(true)
             try {
@@ -58,7 +56,9 @@ const Report = ({ handleReport, onClose }: ReportProps) => {
             }
           }}
           loading={loading}
-        >Wyślij</SubmitButton>
+        >
+          Wyślij
+        </SubmitButton>
       </Form>
     </Modal>
   )

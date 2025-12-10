@@ -1,4 +1,4 @@
-import { Location, Config } from '../typings'
+import { Config, Location } from '../typings'
 
 const exportToKML = (locations: Location[], config: Config): void => {
   const { locationTypes, branding } = config
@@ -17,51 +17,50 @@ const exportToKML = (locations: Location[], config: Config): void => {
       '  <Document>',
       `    <name>${branding.siteName}</name>`,
       `    <description>Eksport z aplikacji ${branding.siteName} Wiating z dnia ${date}.</description>`,
-      ...locationTypes.reduce((acc: string[], { id, iconId }) => [
+      ...locationTypes.reduce(
+        (acc: string[], { id, iconId }) => [
+          ...acc,
+          `    <Style id="icon-${id}">`,
+          '      <IconStyle>',
+          '        <scale>0.75</scale>',
+          '        <Icon>',
+          `          <href>https://beta.wiating.eu/location-icons/${iconId}.png</href>`,
+          '        </Icon>',
+          '      </IconStyle>',
+          '    </Style>',
+        ],
+        [],
+      ),
+    ]
+    const footer = ['  </Document>', '</kml>']
+
+    const placemarks = locations.reduce(
+      (acc: string[], location) => [
         ...acc,
-        `    <Style id="icon-${id}">`,
-        '      <IconStyle>',
-        '        <scale>0.75</scale>',
-        '        <Icon>',
-        `          <href>https://beta.wiating.eu/location-icons/${iconId}.png</href>`,
-        '        </Icon>',
-        '      </IconStyle>',
-        '    </Style>',
-      ], []),
-    ]
-    const footer = [
-      '  </Document>',
-      '</kml>',
-    ]
+        '    <Placemark>',
+        `      <name>${location.name}</name>`,
+        '      <description>',
+        '        <![CDATA[',
+        `          <p><strong>${locationTypes.find(item => item.id === location.type)?.label.pl || ''}</strong></p>`,
+        `          <p>${location.description || ''}</p>`,
+        `          <p><strong>Wskazówki dojścia:</strong> ${location.directions || 'Brak informacji.'}</p>`,
+        `          <p><strong>Dostęp do wody:</strong> ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'}</p>`,
+        `          <p><strong>Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</p>`,
+        ...(location.images
+          ? location.images.map(item => `          <img src="${baseUrl}/${location.id}/${item.name}" width="100%" />`)
+          : ['          <p>Brak zdjęć.</p>']),
+        '        ]]>',
+        '      </description>',
+        `      <styleUrl>#icon-${location.type}</styleUrl>`,
+        '      <Point>',
+        `        <coordinates>${location.location.lng},${location.location.lat},0</coordinates>`,
+        '      </Point>',
+        '    </Placemark>',
+      ],
+      [],
+    )
 
-    const placemarks = locations.reduce((acc: string[], location) => [
-      ...acc,
-      '    <Placemark>',
-      `      <name>${location.name}</name>`,
-      '      <description>',
-      '        <![CDATA[',
-      `          <p><strong>${locationTypes.find(item => item.id === location.type)?.label.pl || ''}</strong></p>`,
-      `          <p>${location.description || ''}</p>`,
-      `          <p><strong>Wskazówki dojścia:</strong> ${location.directions || 'Brak informacji.'}</p>`,
-      `          <p><strong>Dostęp do wody:</strong> ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'}</p>`,
-      `          <p><strong>Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</p>`,
-      ...location.images
-        ? location.images.map(item => `          <img src="${baseUrl}/${location.id}/${item.name}" width="100%" />`)
-        : ['          <p>Brak zdjęć.</p>'],
-      '        ]]>',
-      '      </description>',
-      `      <styleUrl>#icon-${location.type}</styleUrl>`,
-      '      <Point>',
-      `        <coordinates>${location.location.lng},${location.location.lat},0</coordinates>`,
-      '      </Point>',
-      '    </Placemark>',
-    ], [])
-
-    const xml = [
-      ...header,
-      ...placemarks,
-      ...footer,
-    ].join('\n')
+    const xml = [...header, ...placemarks, ...footer].join('\n')
 
     const type = 'text/kml'
     const blob = new Blob([xml], { type })
@@ -69,9 +68,7 @@ const exportToKML = (locations: Location[], config: Config): void => {
 
     const URL = window.URL || (window as any).webkitURL
 
-    const buildedURI = (typeof URL.createObjectURL === 'undefined')
-      ? dataURI
-      : URL.createObjectURL(blob)
+    const buildedURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob)
 
     const downloadLink = document.createElement('a')
     downloadLink.href = buildedURI

@@ -1,7 +1,7 @@
 import React from 'react'
-import ReactLoading from 'react-loading'
 import Button, { type ButtonProps } from '../Button'
 import { useSubmit } from 'react-form-component'
+import ReactLoading from 'react-loading'
 
 interface SubmitButtonProps extends Pick<ButtonProps, 'variant' | 'size' | 'className' | 'disabled'> {
   children?: React.ReactNode
@@ -36,19 +36,14 @@ const SubmitButton = ({
         }
       }}
     >
-      {loading
-        ? (
-            <span className="flex items-center gap-2">
-              <ReactLoading
-                type='spinningBubbles'
-                width={18}
-                height={18}
-                color='white'
-              />
-              {children}
-            </span>
-          )
-        : children}
+      {loading ? (
+        <span className="flex items-center gap-2">
+          <ReactLoading type="spinningBubbles" width={18} height={18} color="white" />
+          {children}
+        </span>
+      ) : (
+        children
+      )}
     </Button>
   )
 }

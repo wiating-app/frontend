@@ -12,18 +12,14 @@ const Avatar = ({ alt, src, children, className }: AvatarProps) => {
   return (
     <div
       className={classNames(
-        'flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 text-gray-700 text-sm font-medium overflow-hidden',
-        className
+        'flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300 text-sm font-medium text-gray-700',
+        className,
       )}
       role="img"
       aria-label={alt}
     >
       {src ? (
-        <img
-          src={src}
-          alt={alt}
-          className="w-full h-full object-cover"
-        />
+        <img src={src} alt={alt} className="h-full w-full object-cover" />
       ) : (
         <span className="select-none">{children}</span>
       )}
@@ -32,4 +28,3 @@ const Avatar = ({ alt, src, children, className }: AvatarProps) => {
 }
 
 export default Avatar
-

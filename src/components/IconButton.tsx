@@ -1,8 +1,11 @@
 import React from 'react'
-import classNames from 'classnames'
 import useConfig from '../utils/useConfig'
+import classNames from 'classnames'
 
-interface IconButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
+interface IconButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  'href'
+> {
   size?: 'small' | 'medium' | 'large'
   variant?: 'default' | 'transparent' | 'bordered'
   children: React.ReactNode
@@ -18,7 +21,9 @@ const IconButton = ({
   href,
   ...props
 }: IconButtonProps) => {
-  const { branding: { themeColor, secondaryColor } } = useConfig()
+  const {
+    branding: { themeColor, secondaryColor },
+  } = useConfig()
   const sizeClasses = {
     small: 'p-1',
     medium: 'p-2',
@@ -49,11 +54,11 @@ const IconButton = ({
       type={href ? undefined : 'button'}
       href={href}
       className={classNames(
-        'inline-flex items-center justify-center rounded-full transition-colors cursor-pointer',
+        'inline-flex cursor-pointer items-center justify-center rounded-full transition-colors',
         'outline-none focus:outline-none',
         variantClasses[variant],
         sizeClasses[size],
-        className
+        className,
       )}
       style={getBorderedStyle()}
       {...(props as any)}

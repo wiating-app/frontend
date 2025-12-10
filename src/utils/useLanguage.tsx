@@ -1,6 +1,6 @@
 import React from 'react'
-import translationsFile from './translations'
 import detectUserLanguage from './detectUserLanguage'
+import translationsFile from './translations'
 import useConfig from './useConfig'
 
 // Translations type that allows any string key access
@@ -40,9 +40,8 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
 
   React.useEffect(() => {
     const storedLanguage = localStorage.getItem('language')
-    setLanguage((storedLanguage && Object.keys(translationsFile).includes(storedLanguage))
-      ? storedLanguage
-      : detectUserLanguage()
+    setLanguage(
+      storedLanguage && Object.keys(translationsFile).includes(storedLanguage) ? storedLanguage : detectUserLanguage(),
     )
   }, [])
 

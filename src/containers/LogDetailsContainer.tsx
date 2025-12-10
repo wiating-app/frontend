@@ -1,17 +1,17 @@
 import React from 'react'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
-import { toast } from 'sonner'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import Modal from '../components/Modal'
-import LogDetails from '../components/LogDetails'
-import Loader from '../components/Loader'
-import useAuth0 from '../utils/useAuth0'
-import useLanguage from '../utils/useLanguage'
+import { banUser } from '../api/banUser'
 import { getLog } from '../api/getLog'
 import { logReviewed } from '../api/logReviewed'
-import { banUser } from '../api/banUser'
 import { revertLog } from '../api/revertLog'
+import Loader from '../components/Loader'
+import LogDetails from '../components/LogDetails'
+import Modal from '../components/Modal'
 import { LogDetails as LogDetailsType, LogSource } from '../typings'
+import useAuth0 from '../utils/useAuth0'
+import useLanguage from '../utils/useLanguage'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 
 const LogDetailsContainer: React.FC = () => {
   const history = useHistory()
@@ -24,7 +24,11 @@ const LogDetailsContainer: React.FC = () => {
   const { user, isModerator } = useAuth0()
   const { translations } = useLanguage()
 
-  const { data: logDetails, isLoading, isError } = useQuery<LogDetailsType>({
+  const {
+    data: logDetails,
+    isLoading,
+    isError,
+  } = useQuery<LogDetailsType>({
     queryKey: ['logs', 'detail', id!],
     queryFn: () => getLog(id!),
     enabled: !!id && isModerator,
@@ -97,14 +101,19 @@ const LogDetailsContainer: React.FC = () => {
   const isMe = logDetails && (logDetails._source as LogSource).modified_by === user?.sub
 
   return (
-    <Modal short onClose={() => {
-      goBackToLogs()
-    }}>
-      {isLoading
-        ? <Loader dark big centered />
-        : isError
-          ? <div>Error!</div>
-          : logDetails && <LogDetails
+    <Modal
+      short
+      onClose={() => {
+        goBackToLogs()
+      }}
+    >
+      {isLoading ? (
+        <Loader dark big centered />
+      ) : isError ? (
+        <div>Error!</div>
+      ) : (
+        logDetails && (
+          <LogDetails
             data={logDetails._source}
             isMe={isMe || false}
             isModerator={isModerator}
@@ -116,7 +125,8 @@ const LogDetailsContainer: React.FC = () => {
             loadingBan={loadingBan}
             loadingRevert={loadingRevert}
           />
-      }
+        )
+      )}
     </Modal>
   )
 }

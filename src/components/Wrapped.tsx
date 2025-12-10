@@ -1,12 +1,12 @@
 import React from 'react'
-import Modal from './Modal'
-import Button from './Button'
-import Loader from './Loader'
-import Typography from './Typography'
-import FormActions from './Inputs/FormActions'
 import { WrappedStats } from '../typings'
 import useConfig from '../utils/useConfig'
-import { Activity, MapPin, Camera, Edit, Award, Map } from 'lucide-react'
+import Button from './Button'
+import FormActions from './Inputs/FormActions'
+import Loader from './Loader'
+import Modal from './Modal'
+import Typography from './Typography'
+import { Activity, Award, Camera, Edit, Map, MapPin } from 'lucide-react'
 
 interface WrappedProps {
   stats: WrappedStats | null
@@ -36,9 +36,7 @@ const generateIconPositions = (count: number, minDistance: number = 25) => {
 
       // Check if this position is far enough from existing positions
       validPosition = positions.every(pos => {
-        const distance = Math.sqrt(
-          Math.pow(top - pos.top, 2) + Math.pow(left - pos.left, 2)
-        )
+        const distance = Math.sqrt(Math.pow(top - pos.top, 2) + Math.pow(left - pos.left, 2))
         return distance >= minDistance
       })
 
@@ -56,7 +54,16 @@ const generateIconPositions = (count: number, minDistance: number = 25) => {
   return positions
 }
 
-const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLocation, locationName, isLoadingLocation }: WrappedProps) => {
+const Wrapped = ({
+  stats,
+  isLoading,
+  isError,
+  onClose,
+  onShowLocation,
+  onViewLocation,
+  locationName,
+  isLoadingLocation,
+}: WrappedProps) => {
   const activityPercentage = stats ? Math.round(stats.activity_percentage * 100) : 0
   const config = useConfig()
   const themeColor = config?.branding?.themeColor || '#4c4c42'
@@ -71,10 +78,10 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
   const topLocationIcons = React.useMemo(() => generateIconPositions(3), [])
 
   return (
-    <Modal onClose={onClose} short wide id='cy-wrapped'>
+    <Modal onClose={onClose} short wide id="cy-wrapped">
       {isLoading && <Loader big dark centered />}
       {isError && (
-        <Typography className='text-center'>
+        <Typography className="text-center">
           Chcieliśmy pokazać Ci Twoje roczne statystyki, ale coś poszło nie tak. Spróbuj ponownie później.
         </Typography>
       )}
@@ -82,21 +89,21 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
         <>
           <div className="space-y-2">
             <div className="text-center">
-              <h2 className="text-4xl font-bold mb-1 text-gray-900">Twój rok {stats.year} w Wiating</h2>
-              <p className="text-gray-600 text-base pb-1">Podsumowanie Twojej aktywności</p>
+              <h2 className="mb-1 text-4xl font-bold text-gray-900">Twój rok {stats.year} w Wiating</h2>
+              <p className="pb-1 text-base text-gray-600">Podsumowanie Twojej aktywności</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
               {/* Total Actions */}
               <div
-                className="relative rounded-lg p-5 border-2 border-gray-200 shadow-lg overflow-hidden"
+                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-5 shadow-lg"
                 style={{ backgroundColor: themeColor }}
               >
                 {totalActionsIcons.map((pos, idx) => (
                   <Activity
                     key={idx}
                     size={pos.size}
-                    className="absolute opacity-10 text-white"
+                    className="absolute text-white opacity-10"
                     style={{
                       top: `${pos.top}%`,
                       left: `${pos.left}%`,
@@ -105,22 +112,22 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                   />
                 ))}
                 <div className="relative z-10 text-center">
-                  <div className="text-sm text-white/90 font-medium mb-2">Wszystkie akcje</div>
-                  <div className="text-5xl font-bold text-white mb-1">{stats.user_total}</div>
+                  <div className="mb-2 text-sm font-medium text-white/90">Wszystkie akcje</div>
+                  <div className="mb-1 text-5xl font-bold text-white">{stats.user_total}</div>
                   <div className="text-xs text-white/80">akcji w {stats.year} roku</div>
                 </div>
               </div>
 
               {/* Locations Created */}
               <div
-                className="relative rounded-lg p-5 border-2 border-gray-200 shadow-lg overflow-hidden"
+                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-5 shadow-lg"
                 style={{ backgroundColor: secondaryColor }}
               >
                 {locationsCreatedIcons.map((pos, idx) => (
                   <MapPin
                     key={idx}
                     size={pos.size}
-                    className="absolute opacity-10 text-white"
+                    className="absolute text-white opacity-10"
                     style={{
                       top: `${pos.top}%`,
                       left: `${pos.left}%`,
@@ -129,22 +136,22 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                   />
                 ))}
                 <div className="relative z-10 text-center">
-                  <div className="text-sm text-white/90 font-medium mb-2">Utworzone lokacje</div>
-                  <div className="text-5xl font-bold text-white mb-1">{stats.user_created}</div>
+                  <div className="mb-2 text-sm font-medium text-white/90">Utworzone lokacje</div>
+                  <div className="mb-1 text-5xl font-bold text-white">{stats.user_created}</div>
                   <div className="text-xs text-white/80">nowych miejsc</div>
                 </div>
               </div>
 
               {/* Images Added */}
               <div
-                className="relative rounded-lg p-5 border-2 border-gray-200 shadow-lg overflow-hidden"
+                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-5 shadow-lg"
                 style={{ backgroundColor: themeColor }}
               >
                 {imagesAddedIcons.map((pos, idx) => (
                   <Camera
                     key={idx}
                     size={pos.size}
-                    className="absolute opacity-10 text-white"
+                    className="absolute text-white opacity-10"
                     style={{
                       top: `${pos.top}%`,
                       left: `${pos.left}%`,
@@ -153,22 +160,22 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                   />
                 ))}
                 <div className="relative z-10 text-center">
-                  <div className="text-sm text-white/90 font-medium mb-2">Dodane zdjęcia</div>
-                  <div className="text-5xl font-bold text-white mb-1">{stats.user_images}</div>
+                  <div className="mb-2 text-sm font-medium text-white/90">Dodane zdjęcia</div>
+                  <div className="mb-1 text-5xl font-bold text-white">{stats.user_images}</div>
                   <div className="text-xs text-white/80">zdjęć dodanych</div>
                 </div>
               </div>
 
               {/* Edits Made */}
               <div
-                className="relative rounded-lg p-5 border-2 border-gray-200 shadow-lg overflow-hidden"
+                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-5 shadow-lg"
                 style={{ backgroundColor: secondaryColor }}
               >
                 {editsMadeIcons.map((pos, idx) => (
                   <Edit
                     key={idx}
                     size={pos.size}
-                    className="absolute opacity-10 text-white"
+                    className="absolute text-white opacity-10"
                     style={{
                       top: `${pos.top}%`,
                       left: `${pos.left}%`,
@@ -177,8 +184,8 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                   />
                 ))}
                 <div className="relative z-10 text-center">
-                  <div className="text-sm text-white/90 font-medium mb-2">Wprowadzone edycje</div>
-                  <div className="text-5xl font-bold text-white mb-1">{stats.user_edits}</div>
+                  <div className="mb-2 text-sm font-medium text-white/90">Wprowadzone edycje</div>
+                  <div className="mb-1 text-5xl font-bold text-white">{stats.user_edits}</div>
                   <div className="text-xs text-white/80">zmian w lokacjach</div>
                 </div>
               </div>
@@ -186,14 +193,14 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
 
             {/* Activity Percentage */}
             <div
-              className="relative rounded-lg p-6 border-2 border-gray-200 shadow-lg overflow-hidden text-center"
+              className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-6 text-center shadow-lg"
               style={{ backgroundColor: themeColor }}
             >
               {activityPercentageIcons.map((pos, idx) => (
                 <Award
                   key={idx}
                   size={pos.size}
-                  className="absolute opacity-10 text-white"
+                  className="absolute text-white opacity-10"
                   style={{
                     top: `${pos.top}%`,
                     left: `${pos.left}%`,
@@ -202,8 +209,8 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                 />
               ))}
               <div className="relative z-10">
-                <div className="text-base text-white/90 font-medium mb-2">Twoja pozycja</div>
-                <div className="text-6xl font-bold text-white mb-2">{activityPercentage}%</div>
+                <div className="mb-2 text-base font-medium text-white/90">Twoja pozycja</div>
+                <div className="mb-2 text-6xl font-bold text-white">{activityPercentage}%</div>
                 <div className="text-base text-white/80">najaktywniejszych użytkowników</div>
               </div>
             </div>
@@ -211,14 +218,14 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
             {/* Top Location */}
             {stats.user_top_loc && (
               <div
-                className="relative rounded-lg p-6 border-2 border-gray-200 shadow-lg overflow-hidden"
+                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-6 shadow-lg"
                 style={{ backgroundColor: secondaryColor }}
               >
                 {topLocationIcons.map((pos, idx) => (
                   <Map
                     key={idx}
                     size={pos.size}
-                    className="absolute opacity-10 text-white"
+                    className="absolute text-white opacity-10"
                     style={{
                       top: `${pos.top}%`,
                       left: `${pos.left}%`,
@@ -227,46 +234,33 @@ const Wrapped = ({ stats, isLoading, isError, onClose, onShowLocation, onViewLoc
                   />
                 ))}
                 <div className="relative z-10 text-center">
-                  <div className="text-base text-white/90 font-medium mb-3">Najczęściej edytowana lokacja</div>
-                  {locationName
-                    ? (
-                        <div className="space-y-3">
-                          <div className="text-2xl font-bold text-white">{locationName}</div>
-                          <Button
-                            variant="default"
-                            size="medium"
-                            onClick={onViewLocation}
-                            disabled={!onViewLocation}
-                            className="bg-white/20 hover:bg-white/30 text-white border-white/30"
-                          >
-                            Zobacz
-                          </Button>
-                        </div>
-                      )
-                    : isLoadingLocation
-                      ? (
-                          <Loader centered />
-                        )
-                      : (
-                          <Button
-                            variant="default"
-                            size="medium"
-                            onClick={onShowLocation}
-                            disabled={!onShowLocation}
-                          >
-                            Sprawdź
-                          </Button>
-                        )}
+                  <div className="mb-3 text-base font-medium text-white/90">Najczęściej edytowana lokacja</div>
+                  {locationName ? (
+                    <div className="space-y-3">
+                      <div className="text-2xl font-bold text-white">{locationName}</div>
+                      <Button
+                        variant="default"
+                        size="medium"
+                        onClick={onViewLocation}
+                        disabled={!onViewLocation}
+                        className="border-white/30 bg-white/20 text-white hover:bg-white/30"
+                      >
+                        Zobacz
+                      </Button>
+                    </div>
+                  ) : isLoadingLocation ? (
+                    <Loader centered />
+                  ) : (
+                    <Button variant="default" size="medium" onClick={onShowLocation} disabled={!onShowLocation}>
+                      Sprawdź
+                    </Button>
+                  )}
                 </div>
               </div>
             )}
           </div>
-          <FormActions align='center' className='sm:hidden'>
-            <Button
-              size='large'
-              variant='primary'
-              onClick={onClose}
-            >
+          <FormActions align="center" className="sm:hidden">
+            <Button size="large" variant="primary" onClick={onClose}>
               Zamknij
             </Button>
           </FormActions>

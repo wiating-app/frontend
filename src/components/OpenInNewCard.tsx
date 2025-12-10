@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Tooltip } from './Tooltip'
 import { ExternalLink } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface OpenInNewCardProps {
   path: string
@@ -12,14 +12,20 @@ interface OpenInNewCardProps {
 
 const OpenInNewCard = ({ path, children, component, ...otherProps }: OpenInNewCardProps) => {
   return (
-    <Tooltip content='Przejdź do lokacji'>
+    <Tooltip content="Przejdź do lokacji">
       <Link
         to={path}
         component={component}
-        target='_blank'
-        className={!component ? 'group cursor-pointer font-semibold text-gray-700 no-underline hover:text-gray-800 hover:underline' : ''}
+        target="_blank"
+        className={
+          !component
+            ? 'group cursor-pointer font-semibold text-gray-700 no-underline hover:text-gray-800 hover:underline'
+            : ''
+        }
         {...otherProps}
-      >{children} <ExternalLink className="inline ml-1 text-gray-400 group-hover:text-gray-800" size={12} strokeWidth={2.5}/>
+      >
+        {children}{' '}
+        <ExternalLink className="ml-1 inline text-gray-400 group-hover:text-gray-800" size={12} strokeWidth={2.5} />
       </Link>
     </Tooltip>
   )

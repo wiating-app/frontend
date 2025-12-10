@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import api from '../api'
-import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js'
-import useLanguage from './useLanguage'
-import { toast } from 'sonner'
-import { Auth0ContextInterface, User } from '../typings'
 import history from '../history'
+import { Auth0ContextInterface, User } from '../typings'
+import useLanguage from './useLanguage'
+import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js'
+import { toast } from 'sonner'
 
 // Useful info about Auth0Provider configuration:
 // https://auth0.com/docs/quickstart/spa/react
@@ -15,10 +15,7 @@ interface Auth0ProviderProps extends Auth0ClientOptions {
   children: React.ReactNode
 }
 
-export const Auth0Provider = ({
-  children,
-  ...initOptions
-}: Auth0ProviderProps) => {
+export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) => {
   const [auth0, setAuth0] = useState<any>()
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<User | null>()
@@ -50,8 +47,12 @@ export const Auth0Provider = ({
     const initAuth0 = async () => {
       try {
         const checkModerator = (user: User | null) => {
-          if (user && (user as any)[process.env.FRONTEND_AUTH0_METADATA_OBJECT_KEY as string] &&
-            (user as any)[process.env.FRONTEND_AUTH0_METADATA_OBJECT_KEY as string].role === process.env.FRONTEND_AUTH0_MODERATOR_ROLE) {
+          if (
+            user &&
+            (user as any)[process.env.FRONTEND_AUTH0_METADATA_OBJECT_KEY as string] &&
+            (user as any)[process.env.FRONTEND_AUTH0_METADATA_OBJECT_KEY as string].role ===
+              process.env.FRONTEND_AUTH0_MODERATOR_ROLE
+          ) {
             setIsModerator(true)
           }
         }
@@ -64,9 +65,7 @@ export const Auth0Provider = ({
           window.history.replaceState(
             {},
             document.title,
-            appState && appState.targetUrl
-              ? appState.targetUrl
-              : window.location.pathname
+            appState && appState.targetUrl ? appState.targetUrl : window.location.pathname,
           )
 
           const user = await auth0FromHook.getUser()
@@ -107,14 +106,21 @@ export const Auth0Provider = ({
     user: user || undefined,
     popupOpen: false,
     loginWithPopup: async () => {},
-    handleRedirectCallback: async () => ({} as any),
+    handleRedirectCallback: async () => ({}) as any,
     loginWithRedirect: async () => {},
     getTokenSilently: async () => undefined,
     getTokenWithPopup: async () => undefined,
     logout: () => {},
     getIdTokenClaims: async () => undefined,
     __onUnload: () => {},
-    setStoredPosition: ({ bounds, zoom }: { center?: [number, number]; zoom?: number; bounds?: L.LatLngBoundsExpression }) => {
+    setStoredPosition: ({
+      bounds,
+      zoom,
+    }: {
+      center?: [number, number]
+      zoom?: number
+      bounds?: L.LatLngBoundsExpression
+    }) => {
       if (bounds && 'getNorthEast' in bounds && 'getSouthWest' in bounds) {
         const _northEast = bounds.getNorthEast()
         const _southWest = bounds.getSouthWest()
@@ -122,10 +128,13 @@ export const Auth0Provider = ({
           [_northEast.lat, _northEast.lng],
           [_southWest.lat, _southWest.lng],
         ]
-        localStorage.setItem('lastPosition', JSON.stringify({
-          bounds: safeBounds,
-          zoom,
-        }))
+        localStorage.setItem(
+          'lastPosition',
+          JSON.stringify({
+            bounds: safeBounds,
+            zoom,
+          }),
+        )
       }
     },
     getStoredPosition: () => {
@@ -174,11 +183,7 @@ export const Auth0Provider = ({
     }
   }
 
-  return (
-    <Auth0Context.Provider value={contextValue}>
-      {children}
-    </Auth0Context.Provider>
-  )
+  return <Auth0Context.Provider value={contextValue}>{children}</Auth0Context.Provider>
 }
 
 const useAuth0 = (): Auth0ContextInterface => {

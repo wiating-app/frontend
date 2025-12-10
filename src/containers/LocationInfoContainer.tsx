@@ -1,16 +1,16 @@
-import { Helmet } from 'react-helmet'
+import React from 'react'
+import { getPoint } from '../api/getPoint'
+import { reportPoint } from '../api/reportPoint'
 import Loader from '../components/Loader'
 import LocationInfo from '../components/LocationInfo'
 import LocationPhotos from '../components/LocationPhotos'
-import React from 'react'
 import { activeLocationState } from '../state'
-import { getPoint } from '../api/getPoint'
-import { reportPoint } from '../api/reportPoint'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
+import { Helmet } from 'react-helmet'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { toast } from 'sonner'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 const LocationInfoContainer: React.FC = () => {
   const history = useHistory()
@@ -61,32 +61,31 @@ const LocationInfoContainer: React.FC = () => {
     requireAuth(() => history.push(`/location/${id}/photos`))
   }
 
-  return (
-    loading
-      ? <Loader dark big centered />
-      : error
-        ? <div>Error!</div>
-        : <>
-          <Helmet>
-            <title>{activeLocation?.name} | Wiating</title>
-            <meta property='og:title' content={`${activeLocation?.name} | Wiating`} />
-            <meta property='description' content={activeLocation?.description} />
-            <meta property='og:description' content={activeLocation?.description} />
-            {activeLocation?.images &&
-              <meta property='og:image' content={`${process.env.FRONTEND_CDN_URL}/${activeLocation?.id}/${activeLocation.images[0]?.name.replace('.jpg', '_m.jpg')}`} />
-            }
-          </Helmet>
-          <LocationPhotos
-            location={activeLocation!}
-            uploading={search === '?imageLoading=true'}
-            uploadImages={handleImageUpload}
+  return loading ? (
+    <Loader dark big centered />
+  ) : error ? (
+    <div>Error!</div>
+  ) : (
+    <>
+      <Helmet>
+        <title>{activeLocation?.name} | Wiating</title>
+        <meta property="og:title" content={`${activeLocation?.name} | Wiating`} />
+        <meta property="description" content={activeLocation?.description} />
+        <meta property="og:description" content={activeLocation?.description} />
+        {activeLocation?.images && (
+          <meta
+            property="og:image"
+            content={`${process.env.FRONTEND_CDN_URL}/${activeLocation?.id}/${activeLocation.images[0]?.name.replace('.jpg', '_m.jpg')}`}
           />
-          <LocationInfo
-            selectedLocation={activeLocation!}
-            isModerator={isModerator}
-            handleReport={handleReport}
-          />
-        </>
+        )}
+      </Helmet>
+      <LocationPhotos
+        location={activeLocation!}
+        uploading={search === '?imageLoading=true'}
+        uploadImages={handleImageUpload}
+      />
+      <LocationInfo selectedLocation={activeLocation!} isModerator={isModerator} handleReport={handleReport} />
+    </>
   )
 }
 

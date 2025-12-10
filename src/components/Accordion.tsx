@@ -1,9 +1,11 @@
 import React from 'react'
-import { ChevronDown } from 'lucide-react'
 import classNames from 'classnames'
+import { ChevronDown } from 'lucide-react'
 
-const AccordionContext = React.createContext<[string | false | undefined, (value: string | false) => void]>([undefined, () => {}])
-
+const AccordionContext = React.createContext<[string | false | undefined, (value: string | false) => void]>([
+  undefined,
+  () => {},
+])
 
 interface AccordionProps {
   children: React.ReactNode
@@ -44,27 +46,19 @@ export const AccordionItem = ({ title, children, initiallyExpanded }: AccordionI
   }
 
   return (
-    <div
-      className={classNames(
-        'border border-gray-200 -mb-px rounded-sm',
-        isExpanded && 'last:mb-8'
-      )}
-    >
+    <div className={classNames('-mb-px rounded-sm border border-gray-200', isExpanded && 'last:mb-8')}>
       <button
         type="button"
         onClick={handleClick}
-        className="w-full flex items-center justify-between bg-gray-100 hover:bg-gray-200 min-h-[56px] px-4 py-3 cursor-pointer transition-colors text-left outline-none focus:outline-none border-b border-t-0 border-l-0 border-r-0 border-gray-300 rounded-sm"
+        className="flex min-h-[56px] w-full cursor-pointer items-center justify-between rounded-sm border-b border-l-0 border-r-0 border-t-0 border-gray-300 bg-gray-100 px-4 py-3 text-left outline-none transition-colors hover:bg-gray-200 focus:outline-none"
         aria-controls={`${index}-content`}
         id={`${index}-header`}
         aria-expanded={isExpanded}
       >
-        <span className="font-medium text-sm">{title}</span>
+        <span className="text-sm font-medium">{title}</span>
         <ChevronDown
           size={24}
-          className={classNames(
-            'transition-transform duration-200 text-gray-600',
-            isExpanded && 'rotate-180'
-          )}
+          className={classNames('text-gray-600 transition-transform duration-200', isExpanded && 'rotate-180')}
         />
       </button>
       <div
@@ -73,12 +67,10 @@ export const AccordionItem = ({ title, children, initiallyExpanded }: AccordionI
         aria-labelledby={`${index}-header`}
         className={classNames(
           'overflow-hidden transition-all duration-200',
-          isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+          isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0',
         )}
       >
-        <div className="p-4 block">
-          {children}
-        </div>
+        <div className="block p-4">{children}</div>
       </div>
     </div>
   )

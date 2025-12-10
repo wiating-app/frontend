@@ -3,7 +3,7 @@ import useAuth0 from './useAuth0'
 
 interface RequireAuthProps {
   redirect?: boolean
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const RequireAuth = ({ redirect = false, children }: RequireAuthProps) => {

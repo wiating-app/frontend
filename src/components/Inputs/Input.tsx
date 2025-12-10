@@ -1,6 +1,6 @@
 import React from 'react'
-import classNames from 'classnames'
 import withFormControl from './withFormControl'
+import classNames from 'classnames'
 
 interface InputProps {
   name: string
@@ -34,7 +34,18 @@ const Input = ({
   const [localValue, setLocalValue] = React.useState(value || '')
 
   // Standard HTML input types
-  const htmlInputTypes = ['text', 'email', 'password', 'number', 'tel', 'url', 'search', 'date', 'time', 'datetime-local']
+  const htmlInputTypes = [
+    'text',
+    'email',
+    'password',
+    'number',
+    'tel',
+    'url',
+    'search',
+    'date',
+    'time',
+    'datetime-local',
+  ]
   const isCustomValidationType = !htmlInputTypes.includes(type)
   const inputType = isCustomValidationType ? 'text' : type
 
@@ -66,7 +77,7 @@ const Input = ({
       'border-gray-300': !validation,
       'border-red-500 bg-red-50': validation === 'error',
       'border-green-500 bg-green-50': validation === 'success',
-    }
+    },
   )
 
   if (multiline) {
@@ -80,7 +91,7 @@ const Input = ({
         disabled={disabled}
         minLength={min}
         maxLength={max}
-        className={classNames(baseInputClasses, 'min-h-[100px] resize-vertical')}
+        className={classNames(baseInputClasses, 'resize-vertical min-h-[100px]')}
       />
     )
   }

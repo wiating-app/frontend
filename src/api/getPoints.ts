@@ -1,7 +1,7 @@
 import api from '../api'
-import { AxiosRequestConfig } from 'axios'
-import serializeData from '../utils/serializeData'
 import { Location } from '../typings'
+import serializeData from '../utils/serializeData'
+import { AxiosRequestConfig } from 'axios'
 
 // Raw API response type (internal use only)
 interface GetPointsResponse {
@@ -22,12 +22,16 @@ export interface Bounds {
 export const getPoints = async (
   bounds: Bounds,
   pointTypes?: number[],
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): Promise<Location[]> => {
-  const { data } = await api.post<GetPointsResponse>('get_points', {
-    ...bounds,
-    // eslint-disable-next-line camelcase
-    ...pointTypes && pointTypes.length ? { point_type: pointTypes } : {},
-  }, config)
+  const { data } = await api.post<GetPointsResponse>(
+    'get_points',
+    {
+      ...bounds,
+      // eslint-disable-next-line camelcase
+      ...(pointTypes && pointTypes.length ? { point_type: pointTypes } : {}),
+    },
+    config,
+  )
   return data.points.map(item => serializeData(item))
 }

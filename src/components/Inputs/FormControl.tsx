@@ -32,9 +32,9 @@ const FormControl = ({
   className = '',
   children,
 }: FormControlProps) => {
-  const isCheckboxLike = displayName && ['Checkbox', 'CheckboxList', 'Radio', 'Switch', 'SwitchList'].some(item =>
-    displayName.includes(item)
-  )
+  const isCheckboxLike =
+    displayName &&
+    ['Checkbox', 'CheckboxList', 'Radio', 'Switch', 'SwitchList'].some(item => displayName.includes(item))
 
   const containerClasses = classNames(
     'group relative w-full max-w-full box-border overflow-visible',
@@ -52,7 +52,7 @@ const FormControl = ({
       // Disabled state
       'opacity-50 cursor-not-allowed': disabled,
     },
-    className
+    className,
   )
 
   const labelClasses = classNames(
@@ -64,35 +64,26 @@ const FormControl = ({
       'sm:mb-0 sm:mr-2.5 sm:min-w-[150px] sm:max-w-[150px] sm:whitespace-nowrap': inlineLabel,
       'text-red-600': validation === 'error',
       'text-green-600': validation === 'success',
-    }
+    },
   )
 
-  const helpClasses = classNames(
-    'block text-xs text-gray-600 mt-1',
-    {
-      'sm:ml-[160px]': inlineLabel,
-      'text-red-600': validation === 'error',
-      'text-green-600': validation === 'success',
-    }
-  )
+  const helpClasses = classNames('block text-xs text-gray-600 mt-1', {
+    'sm:ml-[160px]': inlineLabel,
+    'text-red-600': validation === 'error',
+    'text-green-600': validation === 'success',
+  })
 
-  const prefixClasses = classNames(
-    'absolute bottom-0 left-3 flex items-center text-sm',
-    {
-      'text-red-600': validation === 'error',
-      'text-green-600': validation === 'success',
-      'pointer-events-none': disabled,
-    }
-  )
+  const prefixClasses = classNames('absolute bottom-0 left-3 flex items-center text-sm', {
+    'text-red-600': validation === 'error',
+    'text-green-600': validation === 'success',
+    'pointer-events-none': disabled,
+  })
 
-  const suffixClasses = classNames(
-    'absolute bottom-0 right-3 flex items-center text-sm',
-    {
-      'text-red-600': validation === 'error',
-      'text-green-600': validation === 'success',
-      'pointer-events-none': disabled,
-    }
-  )
+  const suffixClasses = classNames('absolute bottom-0 right-3 flex items-center text-sm', {
+    'text-red-600': validation === 'error',
+    'text-green-600': validation === 'success',
+    'pointer-events-none': disabled,
+  })
 
   const LabelElement = isCheckboxLike ? 'span' : 'label'
 

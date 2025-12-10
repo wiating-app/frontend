@@ -1,6 +1,6 @@
 import React from 'react'
-import axios from 'axios'
 import { Config } from '../typings'
+import axios from 'axios'
 
 export const ConfigContext = React.createContext<Config | null>(null)
 
@@ -29,10 +29,13 @@ export const ConfigProvider = ({ children }: ConfigProviderProps) => {
       let locationTypes: any[] = []
       await asyncForEach(config.locationTypes, async (item: any) => {
         const iconFile = await import(`../locationIcons/${item.iconId}.svg`)
-        locationTypes = [...locationTypes, {
-          ...item,
-          icon: iconFile.default,
-        }]
+        locationTypes = [
+          ...locationTypes,
+          {
+            ...item,
+            icon: iconFile.default,
+          },
+        ]
       })
 
       // Load regulations and privacy policy content.
@@ -49,11 +52,7 @@ export const ConfigProvider = ({ children }: ConfigProviderProps) => {
     handleAsync()
   }, [])
 
-  return (
-    <ConfigContext.Provider value={config}>
-      {config && children}
-    </ConfigContext.Provider>
-  )
+  return <ConfigContext.Provider value={config}>{config && children}</ConfigContext.Provider>
 }
 
 const useConfig = (): Config | null => {

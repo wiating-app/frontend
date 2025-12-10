@@ -31,9 +31,7 @@ const generateMarkerIcon = (type: string | number, size: number = 40): string | 
     `
   } else {
     try {
-      return locationType?.icon
-        ?.replace(/\$COLOR/g, color)
-        ?.replace(/\$SIZE/g, String(size))
+      return locationType?.icon?.replace(/\$COLOR/g, color)?.replace(/\$SIZE/g, String(size))
     } catch (err) {
       console.error(err)
       return undefined

@@ -1,6 +1,6 @@
 import React from 'react'
-import classNames from 'classnames'
 import withFormControl from './withFormControl'
+import classNames from 'classnames'
 
 interface SelectOption {
   value: string | number
@@ -29,9 +29,7 @@ const Select = ({
   disabled = false,
   validation,
 }: SelectProps) => {
-  const [localValue, setLocalValue] = React.useState<string | number | null>(
-    value !== undefined ? value : null
-  )
+  const [localValue, setLocalValue] = React.useState<string | number | null>(value !== undefined ? value : null)
   const [isOpen, setIsOpen] = React.useState(false)
   const dropdownRef = React.useRef<HTMLDivElement>(null)
 
@@ -81,13 +79,11 @@ const Select = ({
   const selectedOption = options.find(opt => opt.value === localValue)
   const displayText = selectedOption ? selectedOption.label : placeholder || ''
 
-  const baseClasses = classNames(
-    {
-      'border-gray-300': !validation,
-      'border-red-500 bg-red-50': validation === 'error',
-      'border-green-500 bg-green-50': validation === 'success',
-    }
-  )
+  const baseClasses = classNames({
+    'border-gray-300': !validation,
+    'border-red-500 bg-red-50': validation === 'error',
+    'border-green-500 bg-green-50': validation === 'success',
+  })
 
   // If no icons, use native select for better UX
   if (!hasIcons) {
@@ -100,11 +96,12 @@ const Select = ({
       {
         'bg-gray-100 cursor-not-allowed': disabled,
         'bg-gray-50': !disabled && !validation,
-      }
+      },
     )
 
     const selectStyle = {
-      backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")',
+      backgroundImage:
+        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E\")",
     }
 
     return (
@@ -117,10 +114,8 @@ const Select = ({
         className={selectClasses}
         style={selectStyle}
       >
-        {placeholder && (
-          <option value="">{placeholder}</option>
-        )}
-        {options.map((option) => (
+        {placeholder && <option value="">{placeholder}</option>}
+        {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
@@ -139,67 +134,52 @@ const Select = ({
         disabled={disabled}
         className={classNames(
           baseClasses,
-          'w-full px-3 py-2.5 border rounded-md text-left',
-          'focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent',
-          'transition-colors flex items-center justify-between',
+          'w-full rounded-md border px-3 py-2.5 text-left',
+          'focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gray-700',
+          'flex items-center justify-between transition-colors',
           {
-            'bg-gray-100 cursor-not-allowed': disabled,
+            'cursor-not-allowed bg-gray-100': disabled,
             'bg-gray-50': !disabled && !validation,
             'cursor-pointer': !disabled,
-          }
+          },
         )}
       >
         <span className="flex items-center gap-2">
-          {selectedOption?.icon && (
-            <span className="flex-shrink-0">{selectedOption.icon}</span>
-          )}
-          <span className={classNames({ 'text-gray-400': !selectedOption && placeholder })}>
-            {displayText}
-          </span>
+          {selectedOption?.icon && <span className="flex-shrink-0">{selectedOption.icon}</span>}
+          <span className={classNames({ 'text-gray-400': !selectedOption && placeholder })}>{displayText}</span>
         </span>
         <svg
-          className={classNames('w-5 h-5 text-gray-400 transition-transform', {
-            'transform rotate-180': isOpen,
+          className={classNames('h-5 w-5 text-gray-400 transition-transform', {
+            'rotate-180 transform': isOpen,
           })}
           fill="none"
           viewBox="0 0 20 20"
         >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            d="M6 8l4 4 4-4"
-          />
+          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 8l4 4 4-4" />
         </svg>
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
           {placeholder && !localValue && (
             <button
               type="button"
               onClick={() => handleChange(null)}
-              className="w-full px-3 py-2 text-left hover:bg-gray-100 text-gray-400 flex items-center gap-2"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-gray-400 hover:bg-gray-100"
             >
               {placeholder}
             </button>
           )}
-          {options.map((option) => (
+          {options.map(option => (
             <button
               key={option.value}
               type="button"
               onClick={() => handleChange(option.value)}
-              className={classNames(
-                'w-full px-3 py-2 text-left hover:bg-gray-100 flex items-center gap-2',
-                {
-                  'bg-blue-50': option.value === localValue,
-                }
-              )}
+              className={classNames('flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-gray-100', {
+                'bg-blue-50': option.value === localValue,
+              })}
             >
-              {option.icon && (
-                <span className="flex-shrink-0">{option.icon}</span>
-              )}
+              {option.icon && <span className="flex-shrink-0">{option.icon}</span>}
               <span>{option.label}</span>
             </button>
           ))}

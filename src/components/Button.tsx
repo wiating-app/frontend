@@ -1,6 +1,6 @@
 import React from 'react'
-import classNames from 'classnames'
 import useConfig from '../utils/useConfig'
+import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
 export type ButtonProps = {
@@ -36,7 +36,9 @@ const Button = ({
   title,
   to,
 }: ButtonProps) => {
-  const { branding: { themeColor, secondaryColor } } = useConfig()
+  const {
+    branding: { themeColor, secondaryColor },
+  } = useConfig()
 
   // Get color value based on variant
   const getColorValue = () => {
@@ -77,7 +79,7 @@ const Button = ({
     // Disabled state
     disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer',
     // Custom classes
-    className
+    className,
   )
 
   // Inline styles for dynamic colors

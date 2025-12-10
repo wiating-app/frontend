@@ -1,35 +1,30 @@
 import React from 'react'
-import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
-import useConfig from './utils/useConfig'
-import 'react-perfect-scrollbar/dist/css/styles.css'
-import {
-  editModeState,
-  activeLocationState,
-  isDrawerOpenState,
-} from './state'
-import Layout from './components/Layout'
-import Drawer from './components/Drawer'
-import SearchResultsContainer from './containers/SearchResultsContainer'
-import BackToSearchContainer from './containers/BackToSearchContainer'
-import Info from './components/Info'
-import TermsAndConditions from './components/TermsAndConditions'
-import PrivacyPolicy from './components/PrivacyPolicy'
-import AcceptDataPrivacy from './components/AcceptDataPrivacy'
-import FaqPage from './components/FaqPage'
-import WrappedContainer from './containers/WrappedContainer'
-import ModeratorPanel from './components/ModeratorPanel'
-import NavBarContainer from './containers/NavBarContainer'
-import MapContainer from './containers/MapContainer'
-import LocationInfoContainer from './containers/LocationInfoContainer'
-import LocationFormContainer from './containers/LocationFormContainer'
-import PhotosFormContainer from './containers/PhotosFormContainer'
-import LogDetailsContainer from './containers/LogDetailsContainer'
 import HistoryContainer from '././containers/HistoryContainer'
+import AcceptDataPrivacy from './components/AcceptDataPrivacy'
+import Drawer from './components/Drawer'
+import FaqPage from './components/FaqPage'
+import Info from './components/Info'
+import Layout from './components/Layout'
+import ModeratorPanel from './components/ModeratorPanel'
+import PrivacyPolicy from './components/PrivacyPolicy'
+import TermsAndConditions from './components/TermsAndConditions'
+import BackToSearchContainer from './containers/BackToSearchContainer'
+import LocationFormContainer from './containers/LocationFormContainer'
+import LocationInfoContainer from './containers/LocationInfoContainer'
+import LogDetailsContainer from './containers/LogDetailsContainer'
+import MapContainer from './containers/MapContainer'
+import NavBarContainer from './containers/NavBarContainer'
+import PhotosFormContainer from './containers/PhotosFormContainer'
+import SearchResultsContainer from './containers/SearchResultsContainer'
+import WrappedContainer from './containers/WrappedContainer'
+import { activeLocationState, editModeState, isDrawerOpenState } from './state'
 import RequireAuth from './utils/RequireAuth'
 import useAuth0 from './utils/useAuth0'
-
+import useConfig from './utils/useConfig'
+import 'react-perfect-scrollbar/dist/css/styles.css'
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 
 const App = () => {
   const history = useHistory()
@@ -77,27 +72,26 @@ const App = () => {
 
   return (
     <Layout appBar={<NavBarContainer />}>
-
       <Drawer>
         <Switch>
-          <Route exact path='/search' component={SearchResultsContainer} />
+          <Route exact path="/search" component={SearchResultsContainer} />
 
-          <Route exact path='/location/new'>
+          <Route exact path="/location/new">
             <LocationFormContainer isNew />
           </Route>
 
-          <Route exact path='/location/:id'>
+          <Route exact path="/location/:id">
             <LocationInfoContainer />
             <BackToSearchContainer />
           </Route>
 
-          <Route exact path='/location/:id/edit'>
+          <Route exact path="/location/:id/edit">
             <RequireAuth redirect>
               <LocationFormContainer />
             </RequireAuth>
           </Route>
 
-          <Route exact path='/location/:id/photos'>
+          <Route exact path="/location/:id/photos">
             <RequireAuth redirect>
               <PhotosFormContainer />
             </RequireAuth>
@@ -107,22 +101,21 @@ const App = () => {
 
       {/* Show only map or moderator panel at once. */}
       <Switch>
-        <Route path='/moderator' component={ModeratorPanel} />
+        <Route path="/moderator" component={ModeratorPanel} />
         <Route component={MapContainer} />
       </Switch>
 
       <AcceptDataPrivacy />
 
       <Switch>
-        <Route exact path='/info' component={Info} />
-        <Route exact path='/terms-and-conditions' component={TermsAndConditions} />
-        <Route exact path='/privacy-policy' component={PrivacyPolicy} />
-        {faq && <Route exact path='/faq' component={FaqPage} />}
-        <Route exact path='/wrapped' component={WrappedContainer} />
-        <Route path='/history' component={HistoryContainer} />
-        <Route exact path='/history/:id' component={LogDetailsContainer} />
+        <Route exact path="/info" component={Info} />
+        <Route exact path="/terms-and-conditions" component={TermsAndConditions} />
+        <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+        {faq && <Route exact path="/faq" component={FaqPage} />}
+        <Route exact path="/wrapped" component={WrappedContainer} />
+        <Route path="/history" component={HistoryContainer} />
+        <Route exact path="/history/:id" component={LogDetailsContainer} />
       </Switch>
-
     </Layout>
   )
 }

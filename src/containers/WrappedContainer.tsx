@@ -1,23 +1,31 @@
 import React from 'react'
+import { getPoint } from '../api/getPoint'
+import { getWrapped } from '../api/getWrapped'
+import Wrapped from '../components/Wrapped'
+import history from '../history'
+import useAuth0 from '../utils/useAuth0'
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import Wrapped from '../components/Wrapped'
-import { getWrapped } from '../api/getWrapped'
-import { getPoint } from '../api/getPoint'
-import useAuth0 from '../utils/useAuth0'
-import history from '../history'
 
 const WrappedContainer = () => {
   const { isLoggedIn, canSeeWrapped } = useAuth0()
   const [shouldFetchLocation, setShouldFetchLocation] = React.useState(false)
 
-  const { data: stats, isLoading, isError } = useQuery({
+  const {
+    data: stats,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ['wrapped'],
     queryFn: getWrapped,
     enabled: isLoggedIn && canSeeWrapped,
   })
 
-  const { data: location, isLoading: isLoadingLocation, isError: isErrorLocation } = useQuery({
+  const {
+    data: location,
+    isLoading: isLoadingLocation,
+    isError: isErrorLocation,
+  } = useQuery({
     queryKey: ['location', stats?.user_top_loc],
     queryFn: () => getPoint(stats!.user_top_loc),
     enabled: shouldFetchLocation && !!stats?.user_top_loc,

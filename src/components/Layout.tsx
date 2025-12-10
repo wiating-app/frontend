@@ -7,11 +7,9 @@ interface LayoutProps {
 
 const Layout = ({ appBar, children }: LayoutProps) => {
   return (
-    <div className="flex flex-col h-screen h-dvh">
+    <div className="flex h-dvh h-screen flex-col">
       {appBar}
-      <div className="flex-1 flex overflow-hidden">
-        {children}
-      </div>
+      <div className="flex flex-1 overflow-hidden">{children}</div>
     </div>
   )
 }

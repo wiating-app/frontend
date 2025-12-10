@@ -1,9 +1,9 @@
 import React from 'react'
+import useLanguage from '../utils/useLanguage'
 import Button from './Button'
 import ButtonGroup from './ButtonGroup'
-import Typography from './Typography'
 import Modal from './Modal'
-import useLanguage from '../utils/useLanguage'
+import Typography from './Typography'
 
 interface ConfirmDeleteProps {
   id: string | number
@@ -11,11 +11,7 @@ interface ConfirmDeleteProps {
   deleteCallback: (id: string | number, name: string) => void | Promise<void>
 }
 
-const ConfirmDelete = ({
-  id,
-  name,
-  deleteCallback,
-}: ConfirmDeleteProps) => {
+const ConfirmDelete = ({ id, name, deleteCallback }: ConfirmDeleteProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
   const { translations } = useLanguage()
@@ -32,26 +28,22 @@ const ConfirmDelete = ({
   }
   return (
     <>
-      <Button
-        variant='danger'
-        onClick={() => setIsOpen(true)}
-      >{translations.delete}</Button>
-      {isOpen &&
+      <Button variant="danger" onClick={() => setIsOpen(true)}>
+        {translations.delete}
+      </Button>
+      {isOpen && (
         <Modal small>
           <Typography gutterBottom>{translations.confirmDeleteLocation}</Typography>
           <ButtonGroup>
-            <Button
-              variant='bare'
-              onClick={() => setIsOpen(false)}
-            >{translations.cancel}</Button>
-            <Button
-              variant='primary'
-              onClick={handleDelete}
-              disabled={loading}
-            >{translations.delete}</Button>
+            <Button variant="bare" onClick={() => setIsOpen(false)}>
+              {translations.cancel}
+            </Button>
+            <Button variant="primary" onClick={handleDelete} disabled={loading}>
+              {translations.delete}
+            </Button>
           </ButtonGroup>
         </Modal>
-      }
+      )}
     </>
   )
 }

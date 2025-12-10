@@ -1,10 +1,9 @@
 import React from 'react'
-import Heading from './Heading'
-import Button from './Button'
-import { toast } from 'sonner'
-import Modal from './Modal'
 import useLanguage from '../utils/useLanguage'
-
+import Button from './Button'
+import Heading from './Heading'
+import Modal from './Modal'
+import { toast } from 'sonner'
 
 interface LanguageSwitcherProps {
   language: string
@@ -13,18 +12,15 @@ interface LanguageSwitcherProps {
   onClose: () => void
 }
 
-const LanguageSwitcher = ({
-  language,
-  languages,
-  setLanguage,
-  onClose,
-}: LanguageSwitcherProps) => {
+const LanguageSwitcher = ({ language, languages, setLanguage, onClose }: LanguageSwitcherProps) => {
   const { translations } = useLanguage()
   return (
     <Modal small onClose={onClose}>
       <div className="text-center">
-        <Heading level={6} gutterBottom>{translations.selectLanguage}:</Heading>
-        {languages.map(item =>
+        <Heading level={6} gutterBottom>
+          {translations.selectLanguage}:
+        </Heading>
+        {languages.map(item => (
           <Button
             onClick={() => {
               onClose()
@@ -34,8 +30,10 @@ const LanguageSwitcher = ({
             variant={item === language ? 'primary' : 'bare'}
             disabled={item === language}
             key={item}
-          >{item.toUpperCase()}</Button>
-        )}
+          >
+            {item.toUpperCase()}
+          </Button>
+        ))}
       </div>
     </Modal>
   )

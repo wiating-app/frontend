@@ -32,18 +32,9 @@ const Typography = ({
   }
 
   // Build classes
-  const allClasses = classNames(
-    variantClasses[variant],
-    colorClasses[color],
-    gutterBottom && 'mb-4',
-    className
-  )
+  const allClasses = classNames(variantClasses[variant], colorClasses[color], gutterBottom && 'mb-4', className)
 
-  return (
-    <div className={allClasses}>
-      {children}
-    </div>
-  )
+  return <div className={allClasses}>{children}</div>
 }
 
 export default Typography

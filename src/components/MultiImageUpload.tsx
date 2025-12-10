@@ -1,9 +1,8 @@
 import React from 'react'
-import Typography from './Typography'
 import IconButton from './IconButton'
-import { CloudUpload, Trash2 } from 'lucide-react'
 import withFormControl from './Inputs/withFormControl'
-
+import Typography from './Typography'
+import { CloudUpload, Trash2 } from 'lucide-react'
 
 interface ImageFile {
   fileName: string
@@ -34,37 +33,35 @@ const MultiImageUpload = ({
   return (
     <div className={`grid grid-cols-${columns} gap-${spacing}`}>
       {value &&
-        value.map((item, index) =>
-          <div
-            className="flex items-center justify-center bg-gray-100 h-40 p-4 relative rounded"
-            key={index}
-          >
+        value.map((item, index) => (
+          <div className="relative flex h-40 items-center justify-center rounded bg-gray-100 p-4" key={index}>
             <img
-              src={item.data || item as any}
-              className="max-w-full max-h-full rounded-sm"
+              src={item.data || (item as any)}
+              className="max-h-full max-w-full rounded-sm"
               alt={`Uploaded file ${index}`}
             />
             <IconButton
               size="small"
-              className="absolute top-1 right-1"
-              onClick={() => setValue(
-                name,
-                value.filter((subItem, subIndex) => subIndex !== index),
-                mandatory
-              )}
+              className="absolute right-1 top-1"
+              onClick={() =>
+                setValue(
+                  name,
+                  value.filter((subItem, subIndex) => subIndex !== index),
+                  mandatory,
+                )
+              }
             >
               <Trash2 size={20} />
             </IconButton>
           </div>
-        )
-      }
+        ))}
       <div>
         <input
-          accept='image/*'
+          accept="image/*"
           className="hidden"
           id={name}
           multiple
-          type='file'
+          type="file"
           onChange={e => {
             let oldValue = value || []
             Object.values(e.target.files || {}).forEach(async (file: File) => {
@@ -80,11 +77,7 @@ const MultiImageUpload = ({
                   data,
                   dataFile,
                 }
-                setValue(
-                  name,
-                  [...oldValue, newItem],
-                  mandatory
-                )
+                setValue(name, [...oldValue, newItem], mandatory)
                 oldValue = [...oldValue, newItem]
               }
             })
@@ -92,10 +85,12 @@ const MultiImageUpload = ({
         />
         <label
           htmlFor={name}
-          className="flex flex-col cursor-pointer items-center justify-center bg-gray-100 h-40 p-4 text-gray-500 hover:bg-gray-200"
+          className="flex h-40 cursor-pointer flex-col items-center justify-center bg-gray-100 p-4 text-gray-500 hover:bg-gray-200"
         >
           <CloudUpload size={24} />
-          <Typography variant='caption' color='inherit'>{uploadLabel}</Typography>
+          <Typography variant="caption" color="inherit">
+            {uploadLabel}
+          </Typography>
         </label>
       </div>
     </div>

@@ -1,5 +1,5 @@
-import useConfig from './useConfig'
 import { Location } from '../typings'
+import useConfig from './useConfig'
 
 const exportToGPX = (locations: Location[]): void => {
   const config = useConfig()
@@ -25,27 +25,24 @@ const exportToGPX = (locations: Location[]): void => {
       `    <time>${date}</time>`,
       '  </metadata>',
     ]
-    const footer = [
-      '</gpx>',
-    ]
+    const footer = ['</gpx>']
 
-    const placemarks = locations.reduce((acc: string[], location) => [
-      ...acc,
-      `  <wpt lat="${location.location.lat}" lon="${location.location.lng}">`,
-      `    <name>${location.name}</name>`,
-      `    <link href="https://wiating.eu/location/${location.id}">`,
-      '      <text>wiating.eu</text>',
-      '    </link>',
-      `    <sym>https://wiating.eu/location-icons/${location.type}.svg</sym>`,
-      `    <desc>[${locationTypes.find(item => item.id === location.type)?.label.pl || ''}] ${location.description || ''} || Wskazówki dojścia: ${location.directions || 'Brak informacji.'} || Dostęp do wody: ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'} || Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</desc>`,
-      '  </wpt>',
-    ], [])
+    const placemarks = locations.reduce(
+      (acc: string[], location) => [
+        ...acc,
+        `  <wpt lat="${location.location.lat}" lon="${location.location.lng}">`,
+        `    <name>${location.name}</name>`,
+        `    <link href="https://wiating.eu/location/${location.id}">`,
+        '      <text>wiating.eu</text>',
+        '    </link>',
+        `    <sym>https://wiating.eu/location-icons/${location.type}.svg</sym>`,
+        `    <desc>[${locationTypes.find(item => item.id === location.type)?.label.pl || ''}] ${location.description || ''} || Wskazówki dojścia: ${location.directions || 'Brak informacji.'} || Dostęp do wody: ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'} || Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</desc>`,
+        '  </wpt>',
+      ],
+      [],
+    )
 
-    const xml = [
-      ...header,
-      ...placemarks,
-      ...footer,
-    ].join('\n')
+    const xml = [...header, ...placemarks, ...footer].join('\n')
 
     const type = 'text/gpx'
     const blob = new Blob([xml], { type })
@@ -53,9 +50,7 @@ const exportToGPX = (locations: Location[]): void => {
 
     const URL = window.URL || (window as any).webkitURL
 
-    const buildedURI = (typeof URL.createObjectURL === 'undefined')
-      ? dataURI
-      : URL.createObjectURL(blob)
+    const buildedURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob)
 
     const downloadLink = document.createElement('a')
     downloadLink.href = buildedURI

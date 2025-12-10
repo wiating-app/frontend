@@ -1,18 +1,18 @@
 import React from 'react'
-import { toast } from 'sonner'
-import { useRecoilState } from 'recoil'
-import { useHistory, useParams } from 'react-router-dom'
-import Resizer from 'react-image-file-resizer'
-import dataUriToBuffer from 'data-uri-to-buffer'
-import ContentWrapper from '../components/ContentWrapper'
-import PhotosForm from '../components/PhotosForm'
-import Loader from '../components/Loader'
-import useAuth0 from '../utils/useAuth0'
-import useLanguage from '../utils/useLanguage'
-import { asyncForEach } from '../utils/helpers'
 import { addImage } from '../api/addImage'
 import { getPoint } from '../api/getPoint'
+import ContentWrapper from '../components/ContentWrapper'
+import Loader from '../components/Loader'
+import PhotosForm from '../components/PhotosForm'
 import { activeLocationState } from '../state'
+import { asyncForEach } from '../utils/helpers'
+import useAuth0 from '../utils/useAuth0'
+import useLanguage from '../utils/useLanguage'
+import dataUriToBuffer from 'data-uri-to-buffer'
+import Resizer from 'react-image-file-resizer'
+import { useHistory, useParams } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 
 const PhotosFormContainer = () => {
   const history = useHistory()
@@ -23,34 +23,35 @@ const PhotosFormContainer = () => {
   const { isLoggedIn, loading: loadingAuth } = useAuth0()
   const { translations } = useLanguage()
 
-  const asyncResizeFile = (file: File): Promise<void> => new Promise(resolve => {
-    Resizer.imageFileResizer(
-      file,
-      1080, // Maximum width
-      1080, // Maximum height
-      'JPEG', // Format
-      80, // Quality 1-100
-      0, // Rotation
-      async (uri: string) => {
-        const decoded = dataUriToBuffer(uri)
-        const resizedFile = new File([decoded as any], file.name, { type: file.type })
-        if (!activeLocation?.id) {
+  const asyncResizeFile = (file: File): Promise<void> =>
+    new Promise(resolve => {
+      Resizer.imageFileResizer(
+        file,
+        1080, // Maximum width
+        1080, // Maximum height
+        'JPEG', // Format
+        80, // Quality 1-100
+        0, // Rotation
+        async (uri: string) => {
+          const decoded = dataUriToBuffer(uri)
+          const resizedFile = new File([decoded as any], file.name, { type: file.type })
+          if (!activeLocation?.id) {
+            resolve()
+            return
+          }
+          const data = await addImage(activeLocation.id, resizedFile)
+          setActiveLocation(data)
           resolve()
-          return
-        }
-        const data = await addImage(activeLocation.id, resizedFile)
-        setActiveLocation(data)
-        resolve()
-      },
-    )
-  })
+        },
+      )
+    })
 
   const handleImageUpload = async (files: any[]) => {
     if (!activeLocation) return
     try {
       history.push(`/location/${activeLocation.id}?imageLoading=true`)
       await asyncForEach(files, async (file: any) => {
-        file?.dataFile && await asyncResizeFile(file.dataFile)
+        file?.dataFile && (await asyncResizeFile(file.dataFile))
       })
       history.push(`/location/${activeLocation.id}`)
       toast.success(translations.photoAdded)
@@ -89,20 +90,21 @@ const PhotosFormContainer = () => {
 
   return (
     <ContentWrapper>
-      {loading || loadingAuth
-        ? <Loader dark big />
-        : error
-          ? <div>Error!</div>
-          : <>
-            <PhotosForm
-              name={activeLocation?.name}
-              handleSubmit={handleImageUpload}
-              cancel={() => {
-                history.push(`/location/${id}`)
-              }}
-            />
-          </>
-      }
+      {loading || loadingAuth ? (
+        <Loader dark big />
+      ) : error ? (
+        <div>Error!</div>
+      ) : (
+        <>
+          <PhotosForm
+            name={activeLocation?.name}
+            handleSubmit={handleImageUpload}
+            cancel={() => {
+              history.push(`/location/${id}`)
+            }}
+          />
+        </>
+      )}
     </ContentWrapper>
   )
 }

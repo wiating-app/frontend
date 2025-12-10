@@ -32,7 +32,9 @@ export const UserLocationProvider = ({ children }: UserLocationProviderProps) =>
       navigator.geolocation.getCurrentPosition(
         function success(location: GeolocationPosition) {
           // For when getting location is a success.
-          const { coords: { latitude, longitude, accuracy } } = location
+          const {
+            coords: { latitude, longitude, accuracy },
+          } = location
           setUserLocation({
             userLocation: [latitude, longitude],
             accuracy,
@@ -49,7 +51,7 @@ export const UserLocationProvider = ({ children }: UserLocationProviderProps) =>
             loading: false,
             error: true,
           })
-        }
+        },
       )
     } else {
       console.warn('Geolocation is not enabled on this browser.')
@@ -73,11 +75,7 @@ export const UserLocationProvider = ({ children }: UserLocationProviderProps) =>
     return () => clearInterval(interval)
   }, [])
 
-  return (
-    <CurrentLocationContext.Provider value={userLocation}>
-      {children}
-    </CurrentLocationContext.Provider>
-  )
+  return <CurrentLocationContext.Provider value={userLocation}>{children}</CurrentLocationContext.Provider>
 }
 
 const useUserLocation = (): UserLocationState => {

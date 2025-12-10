@@ -19,9 +19,7 @@ export default (data: any): Location => {
       lng: rawData.location?.lon || 0,
     },
     // Convert dates to the same format like in logs.
-    created_timestamp: rawData.created_timestamp
-      ? new Date(rawData.created_timestamp * 1000)
-      : new Date(),
+    created_timestamp: rawData.created_timestamp ? new Date(rawData.created_timestamp * 1000) : new Date(),
     last_modified_timestamp: rawData.last_modified_timestamp
       ? new Date(rawData.last_modified_timestamp * 1000)
       : new Date(),

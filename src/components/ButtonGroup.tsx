@@ -6,20 +6,15 @@ interface ButtonGroupProps {
   className?: string
 }
 
-const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ children, className }, ref) => {
-    const allClasses = classNames(
-      'inline-flex gap-1',
-      className
-    )
+const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(({ children, className }, ref) => {
+  const allClasses = classNames('inline-flex gap-1', className)
 
-    return (
-      <div ref={ref} className={allClasses} role="group">
-        {children}
-      </div>
-    )
-  }
-)
+  return (
+    <div ref={ref} className={allClasses} role="group">
+      {children}
+    </div>
+  )
+})
 
 ButtonGroup.displayName = 'ButtonGroup'
 

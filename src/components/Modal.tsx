@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import PerfectScrollbar from 'react-perfect-scrollbar'
-import classNames from 'classnames'
-import { X } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
 import history from '../history'
 import useKeyPress from '../utils/useKeyPress'
 import IconButton from './IconButton'
+import classNames from 'classnames'
+import { X } from 'lucide-react'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 
 interface ModalProps {
   wide?: boolean
@@ -65,34 +65,27 @@ const Modal = ({ wide, short, small, children, onClose, id }: ModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-[1300] flex flex-col justify-center items-center bg-black/50"
+      className="fixed inset-0 z-[1300] flex flex-col items-center justify-center bg-black/50"
       onClick={handleBackdropClick}
       id={id}
     >
       {/* Toolbar spacing for md+ screens (64px height) */}
-      <div className="hidden md:block h-16 flex-shrink-0" />
+      <div className="hidden h-16 flex-shrink-0 md:block" />
 
       <div
         className={classNames(
-          'relative bg-gray-50 rounded-md max-w-full box-border overflow-hidden',
-          'focus:outline-none transition-all duration-300 ease-out',
+          'relative box-border max-w-full overflow-hidden rounded-md bg-gray-50',
+          'transition-all duration-300 ease-out focus:outline-none',
           flexGrowClass,
           widthClass,
           maxHeightClass,
           marginClass,
-          isVisible
-            ? 'translate-y-0 opacity-100'
-            : 'translate-y-8 opacity-0'
+          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0',
         )}
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
-        <PerfectScrollbar className="px-4 sm:px-10 py-8">
-          {children}
-        </PerfectScrollbar>
-        <IconButton
-          className="absolute top-3 right-3"
-          onClick={handleOnClose}
-        >
+        <PerfectScrollbar className="px-4 py-8 sm:px-10">{children}</PerfectScrollbar>
+        <IconButton className="absolute right-3 top-3" onClick={handleOnClose}>
           <X size={24} />
         </IconButton>
       </div>

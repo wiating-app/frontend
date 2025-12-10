@@ -1,38 +1,23 @@
-import 'leaflet/dist/leaflet.css'
-
-import {
-  Circle,
-  MapContainer,
-  Marker,
-  Popup,
-  ScaleControl,
-  TileLayer,
-  ZoomControl,
-  useMapEvents,
-} from 'react-leaflet'
-import { LocateFixed, LocateOff } from 'lucide-react'
-import Typography from './Typography'
-import Menu from './Menu'
-import useMediaQuery from '../utils/useMediaQuery'
-import useLanguage from '../utils/useLanguage'
-import {
-  activeLocationState,
-  editModeState,
-  isDrawerOpenState,
-} from '../state'
-
-import Control from 'react-leaflet-custom-control'
-import Export from './Export'
-import { Icon, LatLngBounds } from 'leaflet'
-import Legend from './Legend'
-import PixiOverlay from 'react-leaflet-pixi-overlay'
 import React from 'react'
-import classNames from 'classnames'
-import generateMarkerIcon from '../utils/generateMarkerIcon'
 import history from '../history'
-import { useRecoilState } from 'recoil'
-import { useQueryClient } from '@tanstack/react-query'
+import { activeLocationState, editModeState, isDrawerOpenState } from '../state'
 import { Location } from '../typings'
+import generateMarkerIcon from '../utils/generateMarkerIcon'
+import useLanguage from '../utils/useLanguage'
+import useMediaQuery from '../utils/useMediaQuery'
+import Export from './Export'
+import Legend from './Legend'
+import Menu from './Menu'
+import Typography from './Typography'
+import { useQueryClient } from '@tanstack/react-query'
+import classNames from 'classnames'
+import { Icon, LatLngBounds } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import { LocateFixed, LocateOff } from 'lucide-react'
+import { Circle, MapContainer, Marker, Popup, ScaleControl, TileLayer, ZoomControl, useMapEvents } from 'react-leaflet'
+import Control from 'react-leaflet-custom-control'
+import PixiOverlay from 'react-leaflet-pixi-overlay'
+import { useRecoilState } from 'recoil'
 
 interface MapProps {
   center?: [number, number]
@@ -73,13 +58,7 @@ const Map = ({
   const { translations } = useLanguage()
 
   const currentZoom = mapRef?.current?._zoom || zoom
-  const markerSize = currentZoom < 7
-    ? 6
-    : currentZoom < 10
-      ? currentZoom - 1
-      : currentZoom < 11
-        ? 20
-        : 32
+  const markerSize = currentZoom < 7 ? 6 : currentZoom < 10 ? currentZoom - 1 : currentZoom < 11 ? 20 : 32
 
   React.useEffect(() => {
     if (activeLocation?.location && !contextMenu && initiated && isNotPhone) {
@@ -141,7 +120,8 @@ const Map = ({
 
   const MOBILE_MINI_MAP_HEIGHT = 200
   const LOCATION_TAB_WIDTH = 400
-  const mapControlButtonClassName = 'flex items-center justify-center bg-white hover:bg-gray-100 size-[32px] !text-gray-600 rounded-sm cursor-pointer shadow-[0_0_0_2px_rgba(0,0,0,0.2)]'
+  const mapControlButtonClassName =
+    'flex items-center justify-center bg-white hover:bg-gray-100 size-[32px] !text-gray-600 rounded-sm cursor-pointer shadow-[0_0_0_2px_rgba(0,0,0,0.2)]'
 
   const mapOffsetStyle: React.CSSProperties = {
     position: 'absolute',
@@ -165,125 +145,137 @@ const Map = ({
         .map-popup .leaflet-popup-content { margin: 0; border-radius: 0; border: none; }
       `}</style>
       <div
-        className="flex-grow relative"
-        style={isDrawerOpen && !isNotPhone
-          ? isPhone
-            ? { height: MOBILE_MINI_MAP_HEIGHT }
-            : { marginLeft: LOCATION_TAB_WIDTH }
-          : {}
+        className="relative flex-grow"
+        style={
+          isDrawerOpen && !isNotPhone
+            ? isPhone
+              ? { height: MOBILE_MINI_MAP_HEIGHT }
+              : { marginLeft: LOCATION_TAB_WIDTH }
+            : {}
         }
       >
         <MapContainer
-          whenCreated={(mapInstance: any) => { mapRef.current = mapInstance }}
+          whenCreated={(mapInstance: any) => {
+            mapRef.current = mapInstance
+          }}
           className="map-container"
           style={mapOffsetStyle}
           center={center}
           zoom={zoom}
           minZoom={5}
           maxZoom={18}
-          maxBounds={[[-90, -180], [90, 180]]}
+          maxBounds={[
+            [-90, -180],
+            [90, 180],
+          ]}
           zoomControl={false}
-          id='cy-map'
+          id="cy-map"
         >
-        <MapEvents
-          editMode={editMode}
-          isLoggedIn={isLoggedIn}
-          contextMenu={contextMenu}
-          setContextMenu={setContextMenu}
-          activeLocation={activeLocation}
-          setActiveLocation={setActiveLocation}
-          handleLoadMapMarkers={handleLoadMapMarkers}
-        />
-        <TileLayer
-          url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-          attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
-        />
-        <PixiOverlay
-          markers={markers.map(item => {
-            const { location: { lat, lng }, id, type } = item
-            return {
-              id,
-              customIcon: generateMarkerIcon(type, markerSize),
-              iconId: `${type}_${markerSize}`,
-              position: [lat, lng],
-              onClick: () => {
-                queryClient.setQueryData(['searchResults'], [])
-                setActiveLocation(item)
-                history.push(`/location/${item.id}`)
-                setContextMenu(false)
-              },
-            }
-          }) || []}
-        />
-        {activeLocation &&
-          <Marker
-            icon={new Icon({
-              iconUrl: '/active-location.svg',
-              iconSize: [40, 40],
-              iconAnchor: [20, 40],
-            })}
-            zIndexOffset={1100}
-            position={activeLocation.location}
-            draggable={editMode}
-            eventHandlers={{
-              moveend: (e: any) => {
-                if (editMode) {
-                  setActiveLocation({
-                    ...activeLocation,
-                    location: e.target.getLatLng(),
-                  } as Location)
-                }
-              },
-            }}
+          <MapEvents
+            editMode={editMode}
+            isLoggedIn={isLoggedIn}
+            contextMenu={contextMenu}
+            setContextMenu={setContextMenu}
+            activeLocation={activeLocation}
+            setActiveLocation={setActiveLocation}
+            handleLoadMapMarkers={handleLoadMapMarkers}
           />
-        }
-        {activeLocation && contextMenu &&
-          <Popup
-            position={activeLocation.location}
-            closeButton={false}
-            className="map-popup"
-          >
-            <Menu
-              items={[
-                {
-                  label: translations.addMarkerHere,
-                  callback: () => {
+          <TileLayer
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
+          />
+          <PixiOverlay
+            markers={
+              markers.map(item => {
+                const {
+                  location: { lat, lng },
+                  id,
+                  type,
+                } = item
+                return {
+                  id,
+                  customIcon: generateMarkerIcon(type, markerSize),
+                  iconId: `${type}_${markerSize}`,
+                  position: [lat, lng],
+                  onClick: () => {
+                    queryClient.setQueryData(['searchResults'], [])
+                    setActiveLocation(item)
+                    history.push(`/location/${item.id}`)
                     setContextMenu(false)
-                    history.push('/location/new')
-                    mapRef.current.setView(activeLocation.location)
                   },
-                },
-              ]}
-            />
-          </Popup>
-        }
-        {userLocation &&
-          <>
-            {locationAccuracy && locationAccuracy > 150 &&
-              <Circle
-                center={userLocation}
-                radius={locationAccuracy}
-                pathOptions={{
-                  weight: 1,
-                  color: '#3388ff',
-                  fillColor: '#3388ff',
-                  fillOpacity: 0.1,
-                }}
-              />
+                }
+              }) || []
             }
+          />
+          {activeLocation && (
             <Marker
-              icon={new Icon({
-                iconUrl: '/current-location.svg',
-                iconSize: [24, 24],
-                iconAnchor: [12, 12],
-              })}
-              zIndexOffset={1000}
-              position={userLocation}
+              icon={
+                new Icon({
+                  iconUrl: '/active-location.svg',
+                  iconSize: [40, 40],
+                  iconAnchor: [20, 40],
+                })
+              }
+              zIndexOffset={1100}
+              position={activeLocation.location}
+              draggable={editMode}
+              eventHandlers={{
+                moveend: (e: any) => {
+                  if (editMode) {
+                    setActiveLocation({
+                      ...activeLocation,
+                      location: e.target.getLatLng(),
+                    } as Location)
+                  }
+                },
+              }}
             />
-          </>
-        }
-        {(!isDrawerOpen || !isPhone) && <ZoomControl position='topright' />}
-        {/*
+          )}
+          {activeLocation && contextMenu && (
+            <Popup position={activeLocation.location} closeButton={false} className="map-popup">
+              <Menu
+                items={[
+                  {
+                    label: translations.addMarkerHere,
+                    callback: () => {
+                      setContextMenu(false)
+                      history.push('/location/new')
+                      mapRef.current.setView(activeLocation.location)
+                    },
+                  },
+                ]}
+              />
+            </Popup>
+          )}
+          {userLocation && (
+            <>
+              {locationAccuracy && locationAccuracy > 150 && (
+                <Circle
+                  center={userLocation}
+                  radius={locationAccuracy}
+                  pathOptions={{
+                    weight: 1,
+                    color: '#3388ff',
+                    fillColor: '#3388ff',
+                    fillOpacity: 0.1,
+                  }}
+                />
+              )}
+              <Marker
+                icon={
+                  new Icon({
+                    iconUrl: '/current-location.svg',
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12],
+                  })
+                }
+                zIndexOffset={1000}
+                position={userLocation}
+              />
+            </>
+          )}
+          {(!isDrawerOpen || !isPhone) && <ZoomControl position="topright" />}
+          {/*
           NOTE: We use container={{ style: { display: ... } }} instead of conditional rendering
           for Control components from react-leaflet-custom-control.
 
@@ -299,43 +291,39 @@ const Map = ({
           Note: Standard react-leaflet components like ZoomControl can be conditionally rendered
           safely as they properly handle React lifecycle and Leaflet's control API.
         */}
-        <Control position='topright' container={{ style: { display: (!isDrawerOpen || !isPhone) ? 'block' : 'none' } }}>
-          <a
-            className={classNames(
-              mapControlButtonClassName,
-              userLocation ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-60'
-            )}
-            onClick={() => userLocation &&
-              mapRef.current.flyTo(userLocation, 14)
-            }
+          <Control position="topright" container={{ style: { display: !isDrawerOpen || !isPhone ? 'block' : 'none' } }}>
+            <a
+              className={classNames(
+                mapControlButtonClassName,
+                userLocation ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-60',
+              )}
+              onClick={() => userLocation && mapRef.current.flyTo(userLocation, 14)}
+            >
+              {userLocation ? <LocateFixed size={17} strokeWidth={3} /> : <LocateOff size={17} strokeWidth={3} />}
+            </a>
+          </Control>
+          <Control
+            position="topright"
+            container={{ style: { display: (!isDrawerOpen || !isPhone) && !editMode ? 'block' : 'none' } }}
           >
-            {userLocation
-              ? <LocateFixed size={17} strokeWidth={3} />
-              : <LocateOff size={17} strokeWidth={3} />
-            }
-          </a>
-        </Control>
-        <Control position='topright' container={{ style: { display: ((!isDrawerOpen || !isPhone) && !editMode) ? 'block' : 'none' } }}>
-          <Export markers={markers} className={mapControlButtonClassName} />
-        </Control>
-        <Control position='bottomright'>
-          {userLocation && (!isDrawerOpen || !isPhone) && locationAccuracy && locationAccuracy > 150 &&
-            <Typography
-              variant='caption'
-              className="bg-white/75 px-0.5 text-[11px]"
-            >Dokładność GPS: {Math.round(locationAccuracy || 0)} m</Typography>
-          }
-        </Control>
-        <ScaleControl position='bottomright' imperial={false} />
-        <Control position='topleft' container={{ style: { display: activeLocation ? 'none' : 'block' } }}>
-          <Legend />
-        </Control>
+            <Export markers={markers} className={mapControlButtonClassName} />
+          </Control>
+          <Control position="bottomright">
+            {userLocation && (!isDrawerOpen || !isPhone) && locationAccuracy && locationAccuracy > 150 && (
+              <Typography variant="caption" className="bg-white/75 px-0.5 text-[11px]">
+                Dokładność GPS: {Math.round(locationAccuracy || 0)} m
+              </Typography>
+            )}
+          </Control>
+          <ScaleControl position="bottomright" imperial={false} />
+          <Control position="topleft" container={{ style: { display: activeLocation ? 'none' : 'block' } }}>
+            <Legend />
+          </Control>
         </MapContainer>
       </div>
     </>
   )
 }
-
 
 interface MapEventsProps {
   editMode: boolean
@@ -365,7 +353,7 @@ const MapEvents = ({
       if (!editMode) {
         if (isLoggedIn) {
           setContextMenu(!contextMenu)
-          setActiveLocation(contextMenu ? null : { location: e.latlng } as Location)
+          setActiveLocation(contextMenu ? null : ({ location: e.latlng } as Location))
         }
         history.push('/')
       }

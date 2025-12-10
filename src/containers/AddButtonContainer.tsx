@@ -1,18 +1,14 @@
 import React from 'react'
-import {
-  MapPin,
-  Pencil,
-  MapPinned,
-} from 'lucide-react'
-import { toast } from 'sonner'
-import { useRecoilState } from 'recoil'
-import { editModeState, activeLocationState } from '../state'
 import AddButton from '../components/AddButton'
-import useLanguage from '../utils/useLanguage'
-import useUserLocation from '../utils/useUserLocation'
 import history from '../history'
+import { activeLocationState, editModeState } from '../state'
 import { Location } from '../typings'
 import useAuth0 from '../utils/useAuth0'
+import useLanguage from '../utils/useLanguage'
+import useUserLocation from '../utils/useUserLocation'
+import { MapPin, MapPinned, Pencil } from 'lucide-react'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 
 const AddButtonContainer = () => {
   const { translations } = useLanguage()
@@ -55,22 +51,24 @@ const AddButtonContainer = () => {
             })
           },
         },
-        ...userLocation && !error
-          ? [{
-              label: translations.inCurrentLocation,
-              icon: <MapPinned size={20} />,
-              callback: async () => {
-                requireAuth(() => {
-                  async () => {
-                    const [lat, lon] = userLocation
-                    await history.push('/location/new')
-                    // Partial location will be completed by the form
-                    setActiveLocation({ location: { lat, lng: lon } } as any as Location)
-                  }
-                })
+        ...(userLocation && !error
+          ? [
+              {
+                label: translations.inCurrentLocation,
+                icon: <MapPinned size={20} />,
+                callback: async () => {
+                  requireAuth(() => {
+                    ;async () => {
+                      const [lat, lon] = userLocation
+                      await history.push('/location/new')
+                      // Partial location will be completed by the form
+                      setActiveLocation({ location: { lat, lng: lon } } as any as Location)
+                    }
+                  })
+                },
               },
-            }]
-          : [],
+            ]
+          : []),
       ]}
     />
   )

@@ -1,17 +1,17 @@
 import React from 'react'
-import { Route, useHistory, useLocation } from 'react-router-dom'
-import PerfectScrollbar from 'react-perfect-scrollbar'
-import { X } from 'lucide-react'
-import Heading from './Heading'
-import Tabs, { Tab } from './Tabs'
-import IconButton from './IconButton'
-import ReportsContainer from '../containers/ReportsContainer'
-import LogsContainer from '../containers/LogsContainer'
-import LogDetailsContainer from '../containers/LogDetailsContainer'
 import ExportContainer from '../containers/ExportContainer'
+import LogDetailsContainer from '../containers/LogDetailsContainer'
+import LogsContainer from '../containers/LogsContainer'
+import ReportsContainer from '../containers/ReportsContainer'
 import UnpublishedContainer from '../containers/UnpublishedContainer'
-import useLanguage from '../utils/useLanguage'
 import useAuth0 from '../utils/useAuth0'
+import useLanguage from '../utils/useLanguage'
+import Heading from './Heading'
+import IconButton from './IconButton'
+import Tabs, { Tab } from './Tabs'
+import { X } from 'lucide-react'
+import PerfectScrollbar from 'react-perfect-scrollbar'
+import { Route, useHistory, useLocation } from 'react-router-dom'
 
 const ModeratorPanel: React.FC = () => {
   const history = useHistory()
@@ -30,41 +30,40 @@ const ModeratorPanel: React.FC = () => {
   const pathArray = pathname.split('/')
 
   return (
-    <PerfectScrollbar className="px-4 lg:px-6 py-6 box-border w-full relative">
-      <Heading level={4} gutterBottom>{translations.administration}</Heading>
+    <PerfectScrollbar className="relative box-border w-full px-4 py-6 lg:px-6">
+      <Heading level={4} gutterBottom>
+        {translations.administration}
+      </Heading>
 
       <Tabs
         value={`/${pathArray[1]}/${pathArray[2]}`}
         className="mb-6"
         onChange={(e: React.ChangeEvent<{}>, value: string) => history.push(value)}
       >
-        <Tab label={translations.changeLog} value='/moderator/log' />
-        <Tab label={translations.reports} value='/moderator/reports' />
-        <Tab label={translations.export} value='/moderator/export' />
-        <Tab label={translations.unpublished} value='/moderator/unpublished' />
+        <Tab label={translations.changeLog} value="/moderator/log" />
+        <Tab label={translations.reports} value="/moderator/reports" />
+        <Tab label={translations.export} value="/moderator/export" />
+        <Tab label={translations.unpublished} value="/moderator/unpublished" />
       </Tabs>
 
-      <Route path='/moderator/log'>
+      <Route path="/moderator/log">
         <LogsContainer />
       </Route>
-      <Route path='/moderator/reports'>
+      <Route path="/moderator/reports">
         <ReportsContainer />
       </Route>
-      <Route path='/moderator/export'>
+      <Route path="/moderator/export">
         <ExportContainer />
       </Route>
-      <Route path='/moderator/unpublished'>
+      <Route path="/moderator/unpublished">
         <UnpublishedContainer />
       </Route>
 
-      <Route exact path='/moderator/log/:id'>
+      <Route exact path="/moderator/log/:id">
         <LogDetailsContainer />
       </Route>
 
-      <IconButton
-        className="absolute top-2 right-2"
-        onClick={() => history.push('/')}
-      >
+      <IconButton className="absolute right-2 top-2" onClick={() => history.push('/')}>
         <X size={24} />
       </IconButton>
     </PerfectScrollbar>

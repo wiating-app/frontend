@@ -1,13 +1,12 @@
-import { parse, stringify } from 'querystringify'
-
+import React from 'react'
+import { LogParams, getLogs } from '../api/getLogs'
 import LogFilters from '../components/LogFilters'
 import Logs from '../components/Logs'
-import React from 'react'
-import { getLogs, LogParams } from '../api/getLogs'
+import { LogDetails } from '../typings'
 import useAuth0 from '../utils/useAuth0'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { parse, stringify } from 'querystringify'
 import { useHistory, useLocation } from 'react-router-dom'
-import { LogDetails } from '../typings'
 
 /* eslint-disable camelcase */
 
@@ -18,7 +17,7 @@ const LogsContainer: React.FC = () => {
   const queryClient = useQueryClient()
 
   const [params, setParams] = React.useState<LogParams>({
-    ...parse(search) as any,
+    ...(parse(search) as any),
     page: 0, // Page numeration starts at 0.
     size: 10, // Rows per page.
   })
@@ -33,10 +32,13 @@ const LogsContainer: React.FC = () => {
   const logsTotal = data?.total
 
   const updateSearch = (newParams: Partial<LogParams>) => {
-    const newFiltersQueryString = stringify({
-      ...params,
-      ...newParams,
-    }, true)
+    const newFiltersQueryString = stringify(
+      {
+        ...params,
+        ...newParams,
+      },
+      true,
+    )
     history.replace(`/moderator/log${newFiltersQueryString}`)
   }
 
@@ -53,8 +55,8 @@ const LogsContainer: React.FC = () => {
     setParams(prevState => ({
       page: page !== undefined ? parseInt(page) : prevState.page,
       size: parseInt(size) || prevState.size,
-      ...id && { id },
-      ...reviewed_at && { reviewed_at: JSON.parse(reviewed_at) },
+      ...(id && { id }),
+      ...(reviewed_at && { reviewed_at: JSON.parse(reviewed_at) }),
     }))
   }, [search, pathname, history])
 
@@ -65,31 +67,29 @@ const LogsContainer: React.FC = () => {
     })
   }
 
-  return (
-    isModerator
-      ? <>
-        <LogFilters
-          values={params}
-          handleSubmit={handleFitlersSubmit}
-          handleReset={() => history.replace({ pathname })}
-        />
-        <Logs
-          logs={logs}
-          loading={isLoading}
-          error={isError}
-          page={params.page}
-          setPage={(page: number) => updateSearch({ page })}
-          rowsInTotal={logsTotal}
-          rowsPerPage={params.size}
-          user={user || undefined}
-          setDetails={async (data: LogDetails) => {
-            queryClient.setQueryData(['logs', 'detail', data._id], data)
-            history.push(`/moderator/log/${data._id}${search || ''}`)
-          }}
-        />
-      </>
-      : null
-  )
+  return isModerator ? (
+    <>
+      <LogFilters
+        values={params}
+        handleSubmit={handleFitlersSubmit}
+        handleReset={() => history.replace({ pathname })}
+      />
+      <Logs
+        logs={logs}
+        loading={isLoading}
+        error={isError}
+        page={params.page}
+        setPage={(page: number) => updateSearch({ page })}
+        rowsInTotal={logsTotal}
+        rowsPerPage={params.size}
+        user={user || undefined}
+        setDetails={async (data: LogDetails) => {
+          queryClient.setQueryData(['logs', 'detail', data._id], data)
+          history.push(`/moderator/log/${data._id}${search || ''}`)
+        }}
+      />
+    </>
+  ) : null
 }
 
 export default LogsContainer

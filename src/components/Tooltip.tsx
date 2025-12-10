@@ -1,13 +1,29 @@
-import React, { FC, MouseEvent, PropsWithChildren, ReactNode, useState, useRef, useEffect } from 'react'
-import { createPortal } from 'react-dom'
-import classNames from 'classnames'
+import React, { FC, MouseEvent, PropsWithChildren, ReactNode, useEffect, useRef, useState } from 'react'
 import useMediaQuery from '../utils/useMediaQuery'
+import classNames from 'classnames'
+import { createPortal } from 'react-dom'
 
 type TooltipProps = {
   content?: ReactNode
   className?: string
-  anchor?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right' | 'left-center' | 'right-center'
-  mobileAnchor?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right' | 'left-center' | 'right-center'
+  anchor?:
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right'
+    | 'left-center'
+    | 'right-center'
+  mobileAnchor?:
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right'
+    | 'left-center'
+    | 'right-center'
   delay?: number
   tooltipClassName?: string
 }
@@ -125,32 +141,26 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     }
   }
 
-  const tooltipElement = isVisible && content
-    ? (
-        <div
-          className={classNames(
-            'pointer-events-none fixed z-[10000] max-w-[50%] overflow-hidden whitespace-normal break-words rounded px-2 py-1 text-sm shadow-md bg-gray-500 text-white',
-            className
-          )}
-          style={{
-            top: `${tooltipPosition.top}px`,
-            left: `${tooltipPosition.left}px`,
-            transform: getTransform(),
-          }}
-        >
-          {content}
-        </div>
-      )
-    : null
+  const tooltipElement =
+    isVisible && content ? (
+      <div
+        className={classNames(
+          'pointer-events-none fixed z-[10000] max-w-[50%] overflow-hidden whitespace-normal break-words rounded bg-gray-500 px-2 py-1 text-sm text-white shadow-md',
+          className,
+        )}
+        style={{
+          top: `${tooltipPosition.top}px`,
+          left: `${tooltipPosition.left}px`,
+          transform: getTransform(),
+        }}
+      >
+        {content}
+      </div>
+    ) : null
 
   return (
     <>
-      <span
-        ref={triggerRef}
-        className={tooltipClassName}
-        onMouseEnter={showTooltip}
-        onMouseLeave={hideTooltip}
-      >
+      <span ref={triggerRef} className={tooltipClassName} onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
         {children}
       </span>
       {createPortal(tooltipElement, document.body)}

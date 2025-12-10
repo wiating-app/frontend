@@ -31,11 +31,13 @@ export default {
     dateOfLastEdit: 'Data ostatniej edycji lokacji',
     delete: 'Usuń',
     description: 'Opis',
-    descriptionHint: 'Podaj przydatne dla odwiedzających informacje, takie jak wielkość, liczbę miejsc, dostępność, ochrona przed deszczem, jakie są zasady korzystania, dane właściciela i inne adekwatne do dodawanej lokacji. W opisie nie podawaj: współrzędnych lokacji (jest na nie osobne pole), wskazówek dojścia na miejsce (również jest na to osobne pole), informacji o dostępności wody i ognia (są na to osobne pola na końcu formularza).',
+    descriptionHint:
+      'Podaj przydatne dla odwiedzających informacje, takie jak wielkość, liczbę miejsc, dostępność, ochrona przed deszczem, jakie są zasady korzystania, dane właściciela i inne adekwatne do dodawanej lokacji. W opisie nie podawaj: współrzędnych lokacji (jest na nie osobne pole), wskazówek dojścia na miejsce (również jest na to osobne pole), informacji o dostępności wody i ognia (są na to osobne pola na końcu formularza).',
     details: 'Szczegóły',
     detailsOfChange: 'Zmiana z',
     directions: 'Usytuowanie i wskazówki dojścia',
-    directionsHint: 'Wpisz szczegóły gdzie leży dane miejsce i jak do niego dotrzeć, np. "chatkowym szlakiem od odejścia zielonego", "w kępie krzaków na łące", "mostkiem od północy" itp. Pomyśl, że jesteś już blisko, ale jest środek nocy i nic nie widać i ta informacja ma Cię doprowadzić do celu.',
+    directionsHint:
+      'Wpisz szczegóły gdzie leży dane miejsce i jak do niego dotrzeć, np. "chatkowym szlakiem od odejścia zielonego", "w kępie krzaków na łące", "mostkiem od północy" itp. Pomyśl, że jesteś już blisko, ale jest środek nocy i nic nie widać i ta informacja ma Cię doprowadzić do celu.',
     edit: 'Edytuj',
     editMarker: 'Edycja lokacji',
     enterCoordinates: 'Wprowadź współrzędne',
@@ -67,11 +69,14 @@ export default {
     location: 'Lokacja',
     locationAndFields: 'Lokacja i edytowane pola',
     locationDeleted: 'Lokacja została usunięta.',
-    locationHint: 'Postaraj się jak najdokładniej umieścić pinezkę lokacji na mapie. Podczas dodawania nowej lokacji możesz przesuwać pinezkę, aby wyznaczyć lokalizację jak najdokładniej. Możesz też wpisać współrzędne w odpowiednie pole, wtedy pinezka przeniesie się w podane miejsce.',
+    locationHint:
+      'Postaraj się jak najdokładniej umieścić pinezkę lokacji na mapie. Podczas dodawania nowej lokacji możesz przesuwać pinezkę, aby wyznaczyć lokalizację jak najdokładniej. Możesz też wpisać współrzędne w odpowiednie pole, wtedy pinezka przeniesie się w podane miejsce.',
     locationName: 'Nazwa lokacji',
-    locationNameHint: 'Postaraj się aby nazwa lokacji była krótka i unikatowa, związana z konkretnym miejscem które dodajesz, tak aby potem można je było łatwo znaleźć. Jeśli lokacja nie ma nazwy własnej (np. Schron Czumak) to warto nawiązać do charakterystycznych punktów znajdujących się w pobliżu. Staraj się unikać ogólnych nazw, takich jak „Wiata przy jeziorze”. Zamiast tego możesz napisać „Wiata przy jeziorze Bukowskim” albo „Chatka przy zielonym szlaku na Turbacz” co ułatwi przeglądanie i wyszukiwanie.',
+    locationNameHint:
+      'Postaraj się aby nazwa lokacji była krótka i unikatowa, związana z konkretnym miejscem które dodajesz, tak aby potem można je było łatwo znaleźć. Jeśli lokacja nie ma nazwy własnej (np. Schron Czumak) to warto nawiązać do charakterystycznych punktów znajdujących się w pobliżu. Staraj się unikać ogólnych nazw, takich jak „Wiata przy jeziorze”. Zamiast tego możesz napisać „Wiata przy jeziorze Bukowskim” albo „Chatka przy zielonym szlaku na Turbacz” co ułatwi przeglądanie i wyszukiwanie.',
     locationType: 'Typ lokacji',
-    locationTypeHint: 'Wybierz odpowiedni typ miejsca. Dzięki temu na mapie pokaże się odpowiednia ikona i osoby zainteresowane, na przykład tylko wieżami widokowymi, będą mogły łatwo znaleźć to miejsce.',
+    locationTypeHint:
+      'Wybierz odpowiedni typ miejsca. Dzięki temu na mapie pokaże się odpowiednia ikona i osoby zainteresowane, na przykład tylko wieżami widokowymi, będą mogły łatwo znaleźć to miejsce.',
     login: 'Logowanie',
     loginSuccessful: 'Zalogowano pomyślnie',
     logout: 'Wyloguj',
@@ -146,7 +151,6 @@ export default {
     },
   },
 
-
   en: {
     addMarker: 'Add new location',
     addMarkerHere: 'Add location here',
@@ -189,7 +193,8 @@ export default {
     enterCoordinates: 'Enter coordinates',
     export: 'Export',
     exportButton: 'Export database to KML',
-    exportSentence: 'The button below makes a backup of whole locations database and exports it to downloadable KML file.',
+    exportSentence:
+      'The button below makes a backup of whole locations database and exports it to downloadable KML file.',
     faq: 'FAQ',
     field: 'Field',
     filter: 'Filter',

@@ -3,7 +3,7 @@ import { precacheAndRoute } from 'workbox-precaching'
 
 // TypeScript declarations for Workbox
 declare const self: ServiceWorkerGlobalScope & {
-  __WB_MANIFEST: any;
+  __WB_MANIFEST: any
 }
 
 precacheAndRoute(self.__WB_MANIFEST)

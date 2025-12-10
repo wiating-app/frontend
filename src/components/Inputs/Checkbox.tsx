@@ -1,6 +1,6 @@
 import React from 'react'
-import classNames from 'classnames'
 import withFormControl from './withFormControl'
+import classNames from 'classnames'
 
 interface CheckboxProps {
   name: string
@@ -11,14 +11,7 @@ interface CheckboxProps {
   disabled?: boolean
 }
 
-const Checkbox = ({
-  name,
-  value = false,
-  text,
-  setValue,
-  mandatory,
-  disabled = false,
-}: CheckboxProps) => {
+const Checkbox = ({ name, value = false, text, setValue, mandatory, disabled = false }: CheckboxProps) => {
   const [localValue, setLocalValue] = React.useState(value)
 
   React.useEffect(() => {
@@ -45,12 +38,12 @@ const Checkbox = ({
         onChange={handleChange}
         disabled={disabled}
         className={classNames(
-          'w-4 h-4 text-gray-700 border-gray-300 rounded',
+          'h-4 w-4 rounded border-gray-300 text-gray-700',
           'focus:ring-2 focus:ring-gray-700',
           'cursor-pointer',
           {
-            'opacity-50 cursor-not-allowed': disabled,
-          }
+            'cursor-not-allowed opacity-50': disabled,
+          },
         )}
       />
       {text && (

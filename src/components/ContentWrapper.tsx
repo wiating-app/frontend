@@ -5,9 +5,7 @@ interface ContentWrapperProps {
 }
 
 const ContentWrapper = ({ children }: ContentWrapperProps) => {
-  return (
-    <div className="p-4 relative flex-grow xs:pr-6">{children}</div>
-  )
+  return <div className="xs:pr-6 relative flex-grow p-4">{children}</div>
 }
 
 export default ContentWrapper

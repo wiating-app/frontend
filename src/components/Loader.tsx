@@ -1,6 +1,6 @@
 import React from 'react'
-import ReactLoading from 'react-loading'
 import classNames from 'classnames'
+import ReactLoading from 'react-loading'
 
 interface LoaderProps {
   dark?: boolean
@@ -11,22 +11,15 @@ interface LoaderProps {
 const Loader = ({ dark, big, centered }: LoaderProps) => {
   const loader = (
     <ReactLoading
-      type='spinningBubbles'
+      type="spinningBubbles"
       width={big ? 80 : 18}
       height={big ? 80 : 18}
-      className={classNames(
-        '[&_svg]:fill-current',
-        dark ? 'text-gray-400' : 'text-white'
-      )}
+      className={classNames('[&_svg]:fill-current', dark ? 'text-gray-400' : 'text-white')}
     />
   )
 
   if (centered) {
-    return (
-      <div className="flex items-center justify-center w-full h-full">
-        {loader}
-      </div>
-    )
+    return <div className="flex h-full w-full items-center justify-center">{loader}</div>
   }
 
   return loader

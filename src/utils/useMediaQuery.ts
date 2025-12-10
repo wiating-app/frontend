@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // Breakpoint defined inside the hook
 const PHONE_BREAKPOINT = 640

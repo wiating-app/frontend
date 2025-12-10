@@ -1,9 +1,9 @@
 import React from 'react'
 import { getUserLogs } from '../api/getUserLogs'
-import useAuth0 from '../utils/useAuth0'
 import History from '../components/History'
 import history from '../history'
 import { Log } from '../typings'
+import useAuth0 from '../utils/useAuth0'
 
 const HistoryContainer = () => {
   const { loading: loadingAuth } = useAuth0()
@@ -31,7 +31,9 @@ const HistoryContainer = () => {
     }
   }
 
-  React.useEffect(() => { !loadingAuth && fetchHistory() }, [loadingAuth, page])
+  React.useEffect(() => {
+    !loadingAuth && fetchHistory()
+  }, [loadingAuth, page])
 
   return (
     <History

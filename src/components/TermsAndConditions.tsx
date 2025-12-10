@@ -1,6 +1,6 @@
 import React from 'react'
-import Modal from './Modal'
 import useConfig from '../utils/useConfig'
+import Modal from './Modal'
 
 const TermsAndConditions = () => {
   const { termsAndConditions } = useConfig()

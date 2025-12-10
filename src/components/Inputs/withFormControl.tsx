@@ -1,6 +1,6 @@
 import React from 'react'
-import { useControlLogic } from 'react-form-component'
 import FormControl from './FormControl'
+import { useControlLogic } from 'react-form-component'
 
 interface ControlLogicProps {
   name: string
@@ -12,15 +12,10 @@ interface InputProps {
   [key: string]: any
 }
 
-function withFormControl<T>(
-  InputComponent: React.ComponentType<T | InputProps>,
-) {
+function withFormControl<T>(InputComponent: React.ComponentType<T | InputProps>) {
   // eslint-disable-next-line react/display-name
   return (props: ControlLogicProps) => {
-    const {
-      formControlProps,
-      inputProps,
-    } = useControlLogic(InputComponent, props)
+    const { formControlProps, inputProps } = useControlLogic(InputComponent, props)
 
     return (
       <FormControl {...formControlProps}>

@@ -1,10 +1,10 @@
 import React from 'react'
-import Typography from './Typography'
+import useConfig from '../utils/useConfig'
+import useLanguage from '../utils/useLanguage'
 import Menu, { MenuItem } from './Menu'
 import { Tooltip } from './Tooltip'
+import Typography from './Typography'
 import { MapPinPlus } from 'lucide-react'
-import useLanguage from '../utils/useLanguage'
-import useConfig from '../utils/useConfig'
 
 interface AddButtonProps {
   items: MenuItem[]
@@ -12,7 +12,9 @@ interface AddButtonProps {
 
 const AddButton = ({ items }: AddButtonProps) => {
   const { translations } = useLanguage()
-  const { branding: { themeColor } } = useConfig()
+  const {
+    branding: { themeColor },
+  } = useConfig()
   const [isOpen, setIsOpen] = React.useState<null | HTMLElement>(null)
   const [menuPosition, setMenuPosition] = React.useState({ top: 0, left: 0 })
 
@@ -26,16 +28,18 @@ const AddButton = ({ items }: AddButtonProps) => {
   }
 
   return (
-    <div className="fixed right-2 bottom-20 z-[1050]">
+    <div className="fixed bottom-20 right-2 z-[1050]">
       <Tooltip content={translations.addMarker}>
         <button
-          className="w-14 h-14 rounded-full shadow-lg text-white flex items-center justify-center hover:shadow-xl transition-shadow"
+          className="flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-shadow hover:shadow-xl"
           style={{ backgroundColor: themeColor }}
-          aria-label='Add'
+          aria-label="Add"
           onClick={handleOpen}
           aria-owns={isOpen ? 'plus-menu' : undefined}
-          aria-haspopup='true'
-        ><MapPinPlus size={24} /></button>
+          aria-haspopup="true"
+        >
+          <MapPinPlus size={24} />
+        </button>
       </Tooltip>
       {isOpen && (
         <>
@@ -51,7 +55,7 @@ const AddButton = ({ items }: AddButtonProps) => {
             <Menu
               items={items}
               onClose={() => setIsOpen(null)}
-              header={<Typography variant='subtitle2'>{translations.addMarker}</Typography>}
+              header={<Typography variant="subtitle2">{translations.addMarker}</Typography>}
               className="min-w-[240px]"
             />
           </div>

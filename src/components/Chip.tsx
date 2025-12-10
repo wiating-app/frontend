@@ -1,6 +1,6 @@
 import React from 'react'
-import classNames from 'classnames'
 import useConfig from '../utils/useConfig'
+import classNames from 'classnames'
 
 interface ChipProps {
   size?: 'small' | 'medium'
@@ -9,13 +9,10 @@ interface ChipProps {
   className?: string
 }
 
-const Chip = ({
-  size = 'medium',
-  color = 'default',
-  label,
-  className,
-}: ChipProps) => {
-  const { branding: { themeColor, secondaryColor } } = useConfig()
+const Chip = ({ size = 'medium', color = 'default', label, className }: ChipProps) => {
+  const {
+    branding: { themeColor, secondaryColor },
+  } = useConfig()
 
   // Get color value based on color prop
   const getColorValue = () => {
@@ -48,7 +45,7 @@ const Chip = ({
     // Color classes
     colorClasses[color],
     // Custom classes
-    className
+    className,
   )
 
   // Inline styles for dynamic colors

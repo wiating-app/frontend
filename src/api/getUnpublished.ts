@@ -1,6 +1,6 @@
 import api from '../api'
-import serializeData from '../utils/serializeData'
 import { Location } from '../typings'
+import serializeData from '../utils/serializeData'
 
 // Raw API response type (internal use only)
 interface GetUnpublishedResponse {

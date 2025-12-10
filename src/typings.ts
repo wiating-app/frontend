@@ -41,13 +41,15 @@ export interface LogSource {
   name?: string
   timestamp?: string | number
   changes?: {
-    [fieldName: string]: {
-      old_value?: any
-      new_value?: any
-    } | {
-      old_value?: any
-      new_value?: string
-    }
+    [fieldName: string]:
+      | {
+          old_value?: any
+          new_value?: any
+        }
+      | {
+          old_value?: any
+          new_value?: string
+        }
   } & {
     images?: {
       old_value?: any

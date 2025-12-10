@@ -1,18 +1,15 @@
 import React from 'react'
-import { useRecoilState } from 'recoil'
+import { searchPoints } from '../api/searchPoints'
+import LanguageSwitcher from '../components/LanguageSwitcher'
+import NavBar from '../components/NavBar'
+import history from '../history'
+import { activeLocationState, activeTypesState } from '../state'
+import useAuth0 from '../utils/useAuth0'
+import useConfig from '../utils/useConfig'
+import useLanguage from '../utils/useLanguage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import parse from 'coord-parser'
-import {
-  activeTypesState,
-  activeLocationState,
-} from '../state'
-import { searchPoints } from '../api/searchPoints'
-import useAuth0 from '../utils/useAuth0'
-import NavBar from '../components/NavBar'
-import LanguageSwitcher from '../components/LanguageSwitcher'
-import useLanguage from '../utils/useLanguage'
-import useConfig from '../utils/useConfig'
-import history from '../history'
+import { useRecoilState } from 'recoil'
 import { toast } from 'sonner'
 
 const languages = ['pl', 'en']
@@ -26,18 +23,11 @@ const NavBarContainer = () => {
   const [activeTypes] = useRecoilState(activeTypesState)
   const { faq, termsAndConditions } = useConfig()
 
-  const {
-    loading,
-    loginWithRedirect,
-    user,
-    isLoggedIn,
-    isModerator,
-    logout,
-  } = useAuth0()
+  const { loading, loginWithRedirect, user, isLoggedIn, isModerator, logout } = useAuth0()
 
   const searchMutation = useMutation({
     mutationFn: (params: Parameters<typeof searchPoints>[0]) => searchPoints(params),
-    onSuccess: (points) => {
+    onSuccess: points => {
       queryClient.setQueryData(['searchResults'], points)
       history.push('/search')
       setActiveLocation(null)
@@ -59,10 +49,12 @@ const NavBarContainer = () => {
 
     // Debounce search requests
     const timeoutId = setTimeout(() => {
-      let coords: {
-        top_right: { lat: number; lon: number }
-        bottom_left: { lat: number; lon: number }
-      } | false = false
+      let coords:
+        | {
+            top_right: { lat: number; lon: number }
+            bottom_left: { lat: number; lon: number }
+          }
+        | false = false
       // Check wheter given input are geo coordinates.
       try {
         const { lat, lon } = parse(searchPhrase)
@@ -80,11 +72,10 @@ const NavBarContainer = () => {
             lon: rounded.lon - 0.1,
           },
         }
-      } catch {
-      }
+      } catch {}
       searchMutation.mutate({
-        ...coords || { phrase: searchPhrase },
-        ...activeTypes.length ? { point_type: activeTypes } : {},
+        ...(coords || { phrase: searchPhrase }),
+        ...(activeTypes.length ? { point_type: activeTypes } : {}),
       })
     }, 500) // 500ms debounce
 
@@ -98,8 +89,8 @@ const NavBarContainer = () => {
   }, [language])
 
   const links = [
-    ...isModerator ? [{ label: translations.administration, url: '/moderator/log' }] : [],
-    ...isLoggedIn
+    ...(isModerator ? [{ label: translations.administration, url: '/moderator/log' }] : []),
+    ...(isLoggedIn
       ? [
           {
             label: translations.history,
@@ -110,32 +101,36 @@ const NavBarContainer = () => {
             url: '/wrapped',
           },
           {
-            label: <>{translations.language}: {language.toUpperCase()}</>,
+            label: (
+              <>
+                {translations.language}: {language.toUpperCase()}
+              </>
+            ),
             callback: () => setLanguageSwitch(true),
             divider: true,
           },
         ]
-      : [],
+      : []),
     { label: translations.informations, url: '/info' },
-    ...termsAndConditions ? [{ label: translations.termsAndConditions, url: '/terms-and-conditions' }] : [],
+    ...(termsAndConditions ? [{ label: translations.termsAndConditions, url: '/terms-and-conditions' }] : []),
     { label: translations.privacyPolicy, url: '/privacy-policy' },
-    ...faq ? [{ label: translations.faq, url: '/faq', divider: true }] : [],
+    ...(faq ? [{ label: translations.faq, url: '/faq', divider: true }] : []),
     {
       label: translations[isLoggedIn ? 'logout' : 'login'],
-      callback: () => isLoggedIn ? logout() : loginWithRedirect({}),
+      callback: () => (isLoggedIn ? logout() : loginWithRedirect({})),
     },
   ]
 
   return (
     <>
-      {languageSwitch &&
+      {languageSwitch && (
         <LanguageSwitcher
           language={language}
           languages={languages}
           setLanguage={setLanguage}
           onClose={() => setLanguageSwitch(false)}
         />
-      }
+      )}
       <NavBar
         onSearch={setSearchPhrase}
         searchLoading={searchMutation.isLoading}

@@ -1,19 +1,19 @@
 import React from 'react'
-import { toast } from 'sonner'
-import { getPoint } from '../api/getPoint'
 import { addPoint } from '../api/addPoint'
-import { modifyPoint } from '../api/modifyPoint'
 import { deletePoint } from '../api/deletePoint'
+import { getPoint } from '../api/getPoint'
+import { modifyPoint } from '../api/modifyPoint'
+import ContentWrapper from '../components/ContentWrapper'
+import Loader from '../components/Loader'
+import LocationForm from '../components/LocationForm'
+import { activeLocationState, markersState } from '../state'
+import { Location } from '../typings'
+import useAuth0 from '../utils/useAuth0'
+import useLanguage from '../utils/useLanguage'
+import parse from 'coord-parser'
 import { useHistory, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
-import parse from 'coord-parser'
-import { activeLocationState, markersState } from '../state'
-import ContentWrapper from '../components/ContentWrapper'
-import LocationForm from '../components/LocationForm'
-import Loader from '../components/Loader'
-import useLanguage from '../utils/useLanguage'
-import useAuth0 from '../utils/useAuth0'
-import { Location } from '../typings'
+import { toast } from 'sonner'
 
 interface LocationFormContainerProps {
   isNew?: boolean
@@ -33,9 +33,7 @@ interface LocationFormFields {
   unpublished?: boolean
 }
 
-const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
-  isNew,
-}) => {
+const LocationFormContainer: React.FC<LocationFormContainerProps> = ({ isNew }) => {
   const history = useHistory()
   const { id } = useParams<{ id?: string }>()
   const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
@@ -114,10 +112,10 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
     } = fields
 
     try {
-      console.log('location: ', location);
+      console.log('location: ', location)
       const { lat, lon } = parse(location)
-      console.log('lon: ', lon);
-      console.log('lat: ', lat);
+      console.log('lon: ', lon)
+      console.log('lat: ', lat)
       const dataObject = {
         name,
         description,
@@ -145,11 +143,7 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
         const { id: locationId } = activeLocation!
         const data = await modifyPoint(locationId, dataObject)
         const index = markers.findIndex((item: any) => item.id === data.id)
-        const newMarkers = [
-          ...markers.slice(0, index),
-          data,
-          ...markers.slice(index + 1),
-        ]
+        const newMarkers = [...markers.slice(0, index), data, ...markers.slice(index + 1)]
         setMarkers(newMarkers)
         setActiveLocation(data)
         history.push(`/location/${locationId}`)
@@ -182,38 +176,42 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({
 
   return (
     <ContentWrapper>
-      {loading || loadingAuth
-        ? <Loader dark big />
-        : error
-          ? <div>Error!</div>
-          : <LocationForm
-            locationData={activeLocation}
-            onSubmitLocation={onSubmitLocation}
-            updateCurrentMarker={(coords: string) => {
-              try {
-                const { lat, lon } = parse(coords)
-                if (
-                  (typeof lat !== 'undefined' && typeof lon !== 'undefined') &&
-                  (!activeLocation?.location || activeLocation.location.lat !== lat || activeLocation.location.lng !== lon)
-                ) {
-                  setActiveLocation({ ...activeLocation, location: { lat, lng: lon } } as Location)
-                }
-              } catch (err) {
-                console.error(err)
+      {loading || loadingAuth ? (
+        <Loader dark big />
+      ) : error ? (
+        <div>Error!</div>
+      ) : (
+        <LocationForm
+          locationData={activeLocation}
+          onSubmitLocation={onSubmitLocation}
+          updateCurrentMarker={(coords: string) => {
+            try {
+              const { lat, lon } = parse(coords)
+              if (
+                typeof lat !== 'undefined' &&
+                typeof lon !== 'undefined' &&
+                (!activeLocation?.location ||
+                  activeLocation.location.lat !== lat ||
+                  activeLocation.location.lng !== lon)
+              ) {
+                setActiveLocation({ ...activeLocation, location: { lat, lng: lon } } as Location)
               }
-            }}
-            cancel={() => {
-              if (activeLocation?.id) {
-                history.goBack()
-              } else {
-                history.push('/')
-              }
-            }}
-            isModerator={isModerator}
-            onDeleteLocation={onDeleteLocation}
-            isNew={isNew}
-          />
-      }
+            } catch (err) {
+              console.error(err)
+            }
+          }}
+          cancel={() => {
+            if (activeLocation?.id) {
+              history.goBack()
+            } else {
+              history.push('/')
+            }
+          }}
+          isModerator={isModerator}
+          onDeleteLocation={onDeleteLocation}
+          isNew={isNew}
+        />
+      )}
     </ContentWrapper>
   )
 }

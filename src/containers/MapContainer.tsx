@@ -1,15 +1,14 @@
-import { activeTypesState, markersState } from '../state'
+import React from 'react'
 import { CancelToken, isCancel } from '../api'
 import { getPoints } from '../api/getPoints'
-
-import AddButtonContainer from './AddButtonContainer'
 import Map from '../components/Map'
-import React from 'react'
+import { activeTypesState, markersState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
+import useUserLocation from '../utils/useUserLocation'
+import AddButtonContainer from './AddButtonContainer'
 import { useRecoilState } from 'recoil'
 import { toast } from 'sonner'
-import useUserLocation from '../utils/useUserLocation'
 
 interface MapContainerProps {
   [key: string]: any
@@ -28,32 +27,32 @@ const MapContainer = (props: MapContainerProps) => {
   const { translations } = useLanguage()
   const { userLocation, accuracy, loading, error } = useUserLocation()
 
-  const {
-    isLoggedIn,
-    setStoredPosition,
-    getStoredPosition,
-  } = useAuth0()
+  const { isLoggedIn, setStoredPosition, getStoredPosition } = useAuth0()
 
   const getMarkers = async (bounds: any) => {
     const { _northEast, _southWest } = bounds
     try {
       // Cancel the previous request if it is still running.
       cancelRequest && cancelRequest()
-      const points = await getPoints({
-        top_right: {
-          lat: _northEast.lat,
-          lon: _northEast.lng,
+      const points = await getPoints(
+        {
+          top_right: {
+            lat: _northEast.lat,
+            lon: _northEast.lng,
+          },
+          bottom_left: {
+            lat: _southWest.lat,
+            lon: _southWest.lng,
+          },
         },
-        bottom_left: {
-          lat: _southWest.lat,
-          lon: _southWest.lng,
+        activeTypes.length ? activeTypes : undefined,
+        {
+          cancelToken: new CancelToken(function executor(c) {
+            // An executor function receives a cancel function as a parameter
+            cancelRequest = c
+          }),
         },
-      }, activeTypes.length ? activeTypes : undefined, {
-        cancelToken: new CancelToken(function executor(c) {
-          // An executor function receives a cancel function as a parameter
-          cancelRequest = c
-        }),
-      })
+      )
       setMarkers(points)
     } catch (error) {
       if (!isCancel(error)) {
@@ -80,22 +79,24 @@ const MapContainer = (props: MapContainerProps) => {
     }
   }, [loading])
 
-  return <>
-    <Map
-      isLoggedIn={isLoggedIn}
-      setStoredPosition={(coords: any) => setStoredPosition(coords)}
-      getMarkers={getMarkers}
-      markers={markers}
-      userLocation={userLocation}
-      locationAccuracy={accuracy}
-      center={initialPosition.center}
-      bounds={initialPosition.bounds}
-      zoom={initialPosition.zoom}
-      {...props}
-      activeTypes={activeTypes}
-    />
-    <AddButtonContainer />
-  </>
+  return (
+    <>
+      <Map
+        isLoggedIn={isLoggedIn}
+        setStoredPosition={(coords: any) => setStoredPosition(coords)}
+        getMarkers={getMarkers}
+        markers={markers}
+        userLocation={userLocation}
+        locationAccuracy={accuracy}
+        center={initialPosition.center}
+        bounds={initialPosition.bounds}
+        zoom={initialPosition.zoom}
+        {...props}
+        activeTypes={activeTypes}
+      />
+      <AddButtonContainer />
+    </>
+  )
 }
 
 export default MapContainer

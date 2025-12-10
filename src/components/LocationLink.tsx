@@ -1,6 +1,6 @@
 import React from 'react'
-import OpenInNewCard from './OpenInNewCard'
 import { Location } from '../typings'
+import OpenInNewCard from './OpenInNewCard'
 
 interface LocationLinkProps {
   name: Location['name']
@@ -8,9 +8,7 @@ interface LocationLinkProps {
 }
 
 const LocationLink = ({ name, id }: LocationLinkProps) => {
-  return (
-    <OpenInNewCard path={`/location/${id}`}>{name}</OpenInNewCard>
-  )
+  return <OpenInNewCard path={`/location/${id}`}>{name}</OpenInNewCard>
 }
 
 export default LocationLink

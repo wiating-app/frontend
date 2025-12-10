@@ -6,7 +6,6 @@
   "arrowParens": "avoid",
   "semi": false,
   "bracketSpacing": true,
-  "spaceBeforeFunctionParen": false,
   "importOrder": [
     "^react$",
     "<THIRD_PARTY_MODULES>",

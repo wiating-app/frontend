@@ -1,14 +1,14 @@
-import { X } from 'lucide-react'
 import React from 'react'
 import { isDrawerOpenState } from '../state'
 import useKeyPress from '../utils/useKeyPress'
 import useMediaQuery from '../utils/useMediaQuery'
-import { useRecoilState } from 'recoil'
-import { useHistory, useLocation } from 'react-router-dom'
 import IconButton from './IconButton'
 import classNames from 'classnames'
+import { X } from 'lucide-react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css'
+import { useHistory, useLocation } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 
 interface DrawerProps {
   children: React.ReactNode
@@ -17,9 +17,7 @@ interface DrawerProps {
 export const DRAWER_WIDTH = 400
 const MOBILE_MINI_MAP_HEIGHT = 200
 
-const Drawer: React.FC<DrawerProps> = ({
-  children,
-}) => {
+const Drawer: React.FC<DrawerProps> = ({ children }) => {
   const history = useHistory()
   const location = useLocation()
   const { pathname } = location
@@ -33,17 +31,13 @@ const Drawer: React.FC<DrawerProps> = ({
     handleOnClose()
   })
 
-  const mobileHeight = coverMinimapOnMobile
-    ? '100dvh'
-    : `calc(100dvh - ${MOBILE_MINI_MAP_HEIGHT}px)`
+  const mobileHeight = coverMinimapOnMobile ? '100dvh' : `calc(100dvh - ${MOBILE_MINI_MAP_HEIGHT}px)`
 
   return (
     <div
       className={classNames(
-        'fixed z-[1200] bg-white flex-shrink-0 transition-transform duration-300 ease-in-out bottom-0',
-        isPhone
-          ? 'left-0 right-0 shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]'
-          : 'top-16 left-0 shadow-2xl'
+        'fixed bottom-0 z-[1200] flex-shrink-0 bg-white transition-transform duration-300 ease-in-out',
+        isPhone ? 'left-0 right-0 shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]' : 'left-0 top-16 shadow-2xl',
       )}
       style={{
         ...(isPhone
@@ -57,18 +51,17 @@ const Drawer: React.FC<DrawerProps> = ({
             }),
       }}
     >
-
       {/* Scrollable content */}
       <PerfectScrollbar
         options={{
           suppressScrollX: true,
         }}
-        className="flex flex-col min-h-full"
+        className="flex min-h-full flex-col"
       >
         <IconButton
-          size='small'
-          className="absolute top-2 right-2 z-[1000] bg-white/67 hover:bg-white/90"
-          aria-label='close'
+          size="small"
+          className="bg-white/67 absolute right-2 top-2 z-[1000] hover:bg-white/90"
+          aria-label="close"
           onClick={() => history.push('/')}
         >
           <X size={24} />
