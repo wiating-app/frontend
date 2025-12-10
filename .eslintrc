@@ -3,27 +3,55 @@
   "parserOptions": {
     "requireConfigFile": false,
     "babelOptions": {
-      "presets": ["@babel/preset-env", "@babel/preset-react"]
+      "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+      ]
     }
   },
-  "extends": ["standard", "standard-react"],
+  "extends": [
+    "standard",
+    "standard-react",
+    "prettier"
+  ],
   "rules": {
-    "comma-dangle": [1, {
-      "arrays": "always-multiline",
-      "objects": "always-multiline",
-      "imports": "always-multiline",
-      "exports": "always-multiline",
-      "functions": "ignore"
-    }],
-    "keyword-spacing": [2],
-    "no-console": [1, { "allow": ["error"] }],
-    "no-multiple-empty-lines": [2, { "max": 2, "maxEOF": 0 }],
+    "comma-dangle": [
+      1,
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "ignore"
+      }
+    ],
+    "keyword-spacing": [
+      2
+    ],
+    "no-console": [
+      1,
+      {
+        "allow": [
+          "error"
+        ]
+      }
+    ],
+    "no-multiple-empty-lines": [
+      2,
+      {
+        "max": 2,
+        "maxEOF": 0
+      }
+    ],
     "no-undef": 0,
-    "space-before-function-paren": [2, {
-      "anonymous": "never",
-      "named": "never",
-      "asyncArrow": "always"
-    }],
+    "space-before-function-paren": [
+      2,
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
     "react/jsx-no-bind": 1,
     "react/jsx-no-undef": 0,
     "react/no-did-update-set-state": 1,
@@ -40,7 +68,10 @@
   ],
   "overrides": [
     {
-      "files": ["**/*.ts", "**/*.tsx"],
+      "files": [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "ecmaVersion": 2020,
@@ -50,27 +81,36 @@
         },
         "project": "./tsconfig.json"
       },
-      "plugins": ["@typescript-eslint"],
+      "plugins": [
+        "@typescript-eslint"
+      ],
       "rules": {
         "no-undef": "off",
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": ["error", {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_",
-          "caughtErrorsIgnorePattern": "^_"
-        }],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_"
+          }
+        ],
         "@typescript-eslint/no-use-before-define": "off"
       }
     },
     {
-      "files": ["**/typings.ts"],
+      "files": [
+        "**/typings.ts"
+      ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "ecmaVersion": 2020,
         "sourceType": "module",
         "project": "./tsconfig.json"
       },
-      "plugins": ["@typescript-eslint"],
+      "plugins": [
+        "@typescript-eslint"
+      ],
       "rules": {
         "@typescript-eslint/no-use-before-define": "off",
         "no-use-before-define": "off"
