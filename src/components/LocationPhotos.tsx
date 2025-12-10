@@ -1,9 +1,4 @@
 import React from 'react'
-import { Image, Location } from '../typings'
-import useLanguage from '../utils/useLanguage'
-import IconButton from './IconButton'
-import Loader from './Loader'
-import { Tooltip } from './Tooltip'
 import loadImage from 'image-promise'
 import { ArrowLeft, Camera } from 'lucide-react'
 import { createPortal } from 'react-dom'
@@ -11,6 +6,11 @@ import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { Image, Location } from '../typings'
+import useLanguage from '../utils/useLanguage'
+import IconButton from './IconButton'
+import Loader from './Loader'
+import { Tooltip } from './Tooltip'
 
 interface LocationPhotosProps {
   location: Location

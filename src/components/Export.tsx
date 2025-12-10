@@ -1,11 +1,11 @@
 import React from 'react'
+import { Download } from 'lucide-react'
 import { Location } from '../typings'
 import exportToGPX from '../utils/exportToGPX'
 import exportToKML from '../utils/exportToKML'
 import useConfig from '../utils/useConfig'
 import Menu from './Menu'
 import { Tooltip } from './Tooltip'
-import { Download } from 'lucide-react'
 
 interface ExportProps {
   markers: Location[]

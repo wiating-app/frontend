@@ -1,4 +1,8 @@
 import React from 'react'
+import classNames from 'classnames'
+import { ChevronDown, Menu } from 'lucide-react'
+import Form from 'react-form-component'
+import { useRecoilState } from 'recoil'
 import { isDrawerOpenState } from '../state'
 import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
@@ -9,10 +13,6 @@ import Loader from './Loader'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
 import Version from './Version'
-import classNames from 'classnames'
-import { ChevronDown, Menu } from 'lucide-react'
-import Form from 'react-form-component'
-import { useRecoilState } from 'recoil'
 
 interface NavBarLink {
   label: React.ReactNode

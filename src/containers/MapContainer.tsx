@@ -1,4 +1,6 @@
 import React from 'react'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 import { CancelToken, isCancel } from '../api'
 import { getPoints } from '../api/getPoints'
 import Map from '../components/Map'
@@ -7,8 +9,6 @@ import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import useUserLocation from '../utils/useUserLocation'
 import AddButtonContainer from './AddButtonContainer'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 
 interface MapContainerProps {
   [key: string]: any

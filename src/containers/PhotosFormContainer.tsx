@@ -1,4 +1,9 @@
 import React from 'react'
+import dataUriToBuffer from 'data-uri-to-buffer'
+import Resizer from 'react-image-file-resizer'
+import { useHistory, useParams } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 import { addImage } from '../api/addImage'
 import { getPoint } from '../api/getPoint'
 import ContentWrapper from '../components/ContentWrapper'
@@ -8,11 +13,6 @@ import { activeLocationState } from '../state'
 import { asyncForEach } from '../utils/helpers'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
-import dataUriToBuffer from 'data-uri-to-buffer'
-import Resizer from 'react-image-file-resizer'
-import { useHistory, useParams } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 
 const PhotosFormContainer = () => {
   const history = useHistory()

@@ -1,4 +1,5 @@
 import React from 'react'
+import Form from 'react-form-component'
 import useLanguage from '../utils/useLanguage'
 import Button from './Button'
 import Heading from './Heading'
@@ -6,7 +7,6 @@ import FormActions from './Inputs/FormActions'
 import SubmitButton from './Inputs/SubmitButton'
 import MultiImageUpload from './MultiImageUpload'
 import Typography from './Typography'
-import Form from 'react-form-component'
 
 interface PhotosFormProps {
   name?: string

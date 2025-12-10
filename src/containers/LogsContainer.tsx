@@ -1,12 +1,12 @@
 import React from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { parse, stringify } from 'querystringify'
+import { useHistory, useLocation } from 'react-router-dom'
 import { LogParams, getLogs } from '../api/getLogs'
 import LogFilters from '../components/LogFilters'
 import Logs from '../components/Logs'
 import { LogDetails } from '../typings'
 import useAuth0 from '../utils/useAuth0'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { parse, stringify } from 'querystringify'
-import { useHistory, useLocation } from 'react-router-dom'
 
 /* eslint-disable camelcase */
 

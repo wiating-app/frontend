@@ -1,4 +1,5 @@
 import React from 'react'
+import Form from 'react-form-component'
 import { Location } from '../typings'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import { locationToString } from '../utils/helpers'
@@ -13,7 +14,6 @@ import FormActions from './Inputs/FormActions'
 import Input from './Inputs/Input'
 import Select from './Inputs/Select'
 import SubmitButton from './Inputs/SubmitButton'
-import Form from 'react-form-component'
 
 interface LocationFormProps {
   locationData?: Location

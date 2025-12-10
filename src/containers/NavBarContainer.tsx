@@ -1,4 +1,8 @@
 import React from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import parse from 'coord-parser'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 import { searchPoints } from '../api/searchPoints'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import NavBar from '../components/NavBar'
@@ -7,10 +11,6 @@ import { activeLocationState, activeTypesState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import parse from 'coord-parser'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 
 const languages = ['pl', 'en']
 

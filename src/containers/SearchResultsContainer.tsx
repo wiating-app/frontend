@@ -1,12 +1,12 @@
 import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 import SearchResults from '../components/SearchResults'
 import history from '../history'
 import { activeLocationState } from '../state'
 import { Location } from '../typings'
 import useLanguage from '../utils/useLanguage'
-import { useQueryClient } from '@tanstack/react-query'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 
 const SearchResultsContainer = () => {
   const queryClient = useQueryClient()

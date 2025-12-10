@@ -1,10 +1,10 @@
 import React from 'react'
+import Form from 'react-form-component'
 import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
 import Input from './Inputs/Input'
 import Select from './Inputs/Select'
 import SubmitButton from './Inputs/SubmitButton'
-import Form from 'react-form-component'
 
 interface LogFiltersProps {
   values?: {

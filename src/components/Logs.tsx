@@ -1,4 +1,5 @@
 import React from 'react'
+import { Check, Minus } from 'lucide-react'
 import { Log, User } from '../typings'
 import { formatDate, formatTime } from '../utils/helpers'
 import useConfig from '../utils/useConfig'
@@ -11,7 +12,6 @@ import LocationLink from './LocationLink'
 import Pagination from './Pagination'
 import Table from './Table'
 import Typography from './Typography'
-import { Check, Minus } from 'lucide-react'
 
 interface LogsProps {
   logs: Log[]

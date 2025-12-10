@@ -1,9 +1,9 @@
 import React from 'react'
+import { toast } from 'sonner'
 import useLanguage from '../utils/useLanguage'
 import Button from './Button'
 import Heading from './Heading'
 import Modal from './Modal'
-import { toast } from 'sonner'
 
 interface LanguageSwitcherProps {
   language: string

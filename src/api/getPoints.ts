@@ -1,7 +1,7 @@
+import { AxiosRequestConfig } from 'axios'
 import api from '../api'
 import { Location } from '../typings'
 import serializeData from '../utils/serializeData'
-import { AxiosRequestConfig } from 'axios'
 
 // Raw API response type (internal use only)
 interface GetPointsResponse {

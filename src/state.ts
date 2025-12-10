@@ -1,5 +1,5 @@
-import { Location } from './typings'
 import { atom } from 'recoil'
+import { Location } from './typings'
 
 // Global app state.
 

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
+import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js'
+import { toast } from 'sonner'
 import api from '../api'
 import history from '../history'
 import { Auth0ContextInterface, User } from '../typings'
 import useLanguage from './useLanguage'
-import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js'
-import { toast } from 'sonner'
 
 // Useful info about Auth0Provider configuration:
 // https://auth0.com/docs/quickstart/spa/react

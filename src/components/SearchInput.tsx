@@ -1,9 +1,9 @@
 import React from 'react'
+import classNames from 'classnames'
+import { Search } from 'lucide-react'
 import useConfig from '../utils/useConfig'
 import withFormControl from './Inputs/withFormControl'
 import Loader from './Loader'
-import classNames from 'classnames'
-import { Search } from 'lucide-react'
 
 interface SearchInputProps {
   name: string

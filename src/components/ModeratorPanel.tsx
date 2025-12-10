@@ -1,4 +1,7 @@
 import React from 'react'
+import { X } from 'lucide-react'
+import PerfectScrollbar from 'react-perfect-scrollbar'
+import { Route, useHistory, useLocation } from 'react-router-dom'
 import ExportContainer from '../containers/ExportContainer'
 import LogDetailsContainer from '../containers/LogDetailsContainer'
 import LogsContainer from '../containers/LogsContainer'
@@ -9,9 +12,6 @@ import useLanguage from '../utils/useLanguage'
 import Heading from './Heading'
 import IconButton from './IconButton'
 import Tabs, { Tab } from './Tabs'
-import { X } from 'lucide-react'
-import PerfectScrollbar from 'react-perfect-scrollbar'
-import { Route, useHistory, useLocation } from 'react-router-dom'
 
 const ModeratorPanel: React.FC = () => {
   const history = useHistory()

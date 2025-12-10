@@ -1,4 +1,7 @@
 import React from 'react'
+import { MapPin, MapPinned, Pencil } from 'lucide-react'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 import AddButton from '../components/AddButton'
 import history from '../history'
 import { activeLocationState, editModeState } from '../state'
@@ -6,9 +9,6 @@ import { Location } from '../typings'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import useUserLocation from '../utils/useUserLocation'
-import { MapPin, MapPinned, Pencil } from 'lucide-react'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 
 const AddButtonContainer = () => {
   const { translations } = useLanguage()

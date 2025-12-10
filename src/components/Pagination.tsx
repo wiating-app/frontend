@@ -1,6 +1,6 @@
 import React from 'react'
-import IconButton from './IconButton'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import IconButton from './IconButton'
 
 interface PaginationProps {
   count: number

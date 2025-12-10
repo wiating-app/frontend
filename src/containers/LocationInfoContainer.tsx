@@ -1,4 +1,8 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 import { getPoint } from '../api/getPoint'
 import { reportPoint } from '../api/reportPoint'
 import Loader from '../components/Loader'
@@ -7,10 +11,6 @@ import LocationPhotos from '../components/LocationPhotos'
 import { activeLocationState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
-import { Helmet } from 'react-helmet'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 
 const LocationInfoContainer: React.FC = () => {
   const history = useHistory()

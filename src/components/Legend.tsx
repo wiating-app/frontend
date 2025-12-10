@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
+import classNames from 'classnames'
+import { ChevronDown, ChevronUp, Undo2 } from 'lucide-react'
+import { useRecoilState } from 'recoil'
 import { activeTypesState } from '../state'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
 import useMediaQuery from '../utils/useMediaQuery'
 import { Tooltip } from './Tooltip'
-import classNames from 'classnames'
-import { ChevronDown, ChevronUp, Undo2 } from 'lucide-react'
-import { useRecoilState } from 'recoil'
 
 const Legend = () => {
   const [activeTypes, setActiveTypes] = useRecoilState(activeTypesState)

@@ -1,6 +1,6 @@
 import React from 'react'
-import FormControl from './FormControl'
 import { useControlLogic } from 'react-form-component'
+import FormControl from './FormControl'
 
 interface ControlLogicProps {
   name: string

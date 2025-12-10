@@ -1,7 +1,7 @@
 import React from 'react'
-import { Tooltip } from './Tooltip'
 import classNames from 'classnames'
 import { HelpCircle } from 'lucide-react'
+import { Tooltip } from './Tooltip'
 
 interface VersionProps {
   dark?: boolean

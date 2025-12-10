@@ -1,10 +1,10 @@
 import React from 'react'
+import { MapPinPlus } from 'lucide-react'
 import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
 import Menu, { MenuItem } from './Menu'
 import { Tooltip } from './Tooltip'
 import Typography from './Typography'
-import { MapPinPlus } from 'lucide-react'
 
 interface AddButtonProps {
   items: MenuItem[]

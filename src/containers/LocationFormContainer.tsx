@@ -1,4 +1,8 @@
 import React from 'react'
+import parse from 'coord-parser'
+import { useHistory, useParams } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 import { addPoint } from '../api/addPoint'
 import { deletePoint } from '../api/deletePoint'
 import { getPoint } from '../api/getPoint'
@@ -10,10 +14,6 @@ import { activeLocationState, markersState } from '../state'
 import { Location } from '../typings'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
-import parse from 'coord-parser'
-import { useHistory, useParams } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 
 interface LocationFormContainerProps {
   isNew?: boolean

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Check, List } from 'lucide-react'
 import { Location } from '../typings'
 import { formatDate, formatTime } from '../utils/helpers'
 import useLanguage from '../utils/useLanguage'
@@ -9,7 +10,6 @@ import Modal from './Modal'
 import OpenInNewCard from './OpenInNewCard'
 import Table from './Table'
 import Typography from './Typography'
-import { Check, List } from 'lucide-react'
 
 interface ReportDetailsProps {
   data: Location & {

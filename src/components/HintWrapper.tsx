@@ -1,6 +1,6 @@
 import React from 'react'
-import { Tooltip } from './Tooltip'
 import { Info } from 'lucide-react'
+import { Tooltip } from './Tooltip'
 
 interface HintWrapperProps {
   message: string

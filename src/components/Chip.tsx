@@ -1,6 +1,6 @@
 import React from 'react'
-import useConfig from '../utils/useConfig'
 import classNames from 'classnames'
+import useConfig from '../utils/useConfig'
 
 interface ChipProps {
   size?: 'small' | 'medium'

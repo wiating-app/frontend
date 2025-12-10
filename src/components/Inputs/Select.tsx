@@ -1,6 +1,6 @@
 import React from 'react'
-import withFormControl from './withFormControl'
 import classNames from 'classnames'
+import withFormControl from './withFormControl'
 
 interface SelectOption {
   value: string | number

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Activity, Award, Camera, Edit, Map, MapPin } from 'lucide-react'
 import { WrappedStats } from '../typings'
 import useConfig from '../utils/useConfig'
 import Button from './Button'
@@ -6,7 +7,6 @@ import FormActions from './Inputs/FormActions'
 import Loader from './Loader'
 import Modal from './Modal'
 import Typography from './Typography'
-import { Activity, Award, Camera, Edit, Map, MapPin } from 'lucide-react'
 
 interface WrappedProps {
   stats: WrappedStats | null

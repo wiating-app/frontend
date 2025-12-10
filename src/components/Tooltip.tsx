@@ -1,7 +1,7 @@
 import React, { FC, MouseEvent, PropsWithChildren, ReactNode, useEffect, useRef, useState } from 'react'
-import useMediaQuery from '../utils/useMediaQuery'
 import classNames from 'classnames'
 import { createPortal } from 'react-dom'
+import useMediaQuery from '../utils/useMediaQuery'
 
 type TooltipProps = {
   content?: ReactNode

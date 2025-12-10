@@ -1,4 +1,7 @@
 import React from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 import { banUser } from '../api/banUser'
 import { getLog } from '../api/getLog'
 import { logReviewed } from '../api/logReviewed'
@@ -9,9 +12,6 @@ import Modal from '../components/Modal'
 import { LogDetails as LogDetailsType, LogSource } from '../typings'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
-import { toast } from 'sonner'
 
 const LogDetailsContainer: React.FC = () => {
   const history = useHistory()

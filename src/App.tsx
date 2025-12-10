@@ -1,4 +1,8 @@
 import React from 'react'
+import 'react-perfect-scrollbar/dist/css/styles.css'
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { toast } from 'sonner'
 import HistoryContainer from '././containers/HistoryContainer'
 import AcceptDataPrivacy from './components/AcceptDataPrivacy'
 import Drawer from './components/Drawer'
@@ -21,10 +25,6 @@ import { activeLocationState, editModeState, isDrawerOpenState } from './state'
 import RequireAuth from './utils/RequireAuth'
 import useAuth0 from './utils/useAuth0'
 import useConfig from './utils/useConfig'
-import 'react-perfect-scrollbar/dist/css/styles.css'
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 
 const App = () => {
   const history = useHistory()

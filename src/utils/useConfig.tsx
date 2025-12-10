@@ -1,6 +1,6 @@
 import React from 'react'
-import { Config } from '../typings'
 import axios from 'axios'
+import { Config } from '../typings'
 
 export const ConfigContext = React.createContext<Config | null>(null)
 

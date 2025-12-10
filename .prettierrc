@@ -6,15 +6,7 @@
   "arrowParens": "avoid",
   "semi": false,
   "bracketSpacing": true,
-  "importOrder": [
-    "^react$",
-    "<THIRD_PARTY_MODULES>",
-    "^~/components/",
-    "^~/containers/",
-    "^~/utils/",
-    "^~/(?!(components/|containers/|utils/|typings/))",
-    "^~/typings/"
-  ],
+  "importOrder": ["^react$", "<THIRD_PARTY_MODULES>", "^../", "^./"],
   "importOrderSortSpecifiers": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
 }

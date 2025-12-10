@@ -1,7 +1,7 @@
 import React from 'react'
-import { Tooltip } from './Tooltip'
 import { ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Tooltip } from './Tooltip'
 
 interface OpenInNewCardProps {
   path: string

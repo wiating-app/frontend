@@ -1,4 +1,5 @@
 import React from 'react'
+import Form from 'react-form-component'
 import useLanguage from '../utils/useLanguage'
 import Heading from './Heading'
 import Input from './Inputs/Input'
@@ -6,7 +7,6 @@ import Select from './Inputs/Select'
 import SubmitButton from './Inputs/SubmitButton'
 import Modal from './Modal'
 import Typography from './Typography'
-import Form from 'react-form-component'
 
 interface ReportProps {
   handleReport: (fields: { reason: string; description: string }) => void | Promise<void>

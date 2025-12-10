@@ -1,12 +1,12 @@
 import React from 'react'
-import { locationToString } from '../utils/helpers'
-import useLanguage from '../utils/useLanguage'
-import IconButton from './IconButton'
-import { Tooltip } from './Tooltip'
 import { Link, Locate, Navigation } from 'lucide-react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { isMobile } from 'react-device-detect'
 import { toast } from 'sonner'
+import { locationToString } from '../utils/helpers'
+import useLanguage from '../utils/useLanguage'
+import IconButton from './IconButton'
+import { Tooltip } from './Tooltip'
 
 interface UtilityButtonsProps {
   id: string | number

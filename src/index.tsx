@@ -1,4 +1,10 @@
 import React from 'react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import ReactDOM from 'react-dom'
+import { Router } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
+import { Toaster } from 'sonner'
 import './App.css'
 import enableServiceWorker from './enableServiceWorker'
 import history from './history'
@@ -9,12 +15,6 @@ import { Auth0Provider } from './utils/useAuth0'
 import { ConfigProvider } from './utils/useConfig'
 import { LanguageProvider } from './utils/useLanguage'
 import { UserLocationProvider } from './utils/useUserLocation'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import ReactDOM from 'react-dom'
-import { Router } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
-import { Toaster } from 'sonner'
 
 const App = React.lazy(() => import('./App'))
 const Maintenance = React.lazy(() => import('./components/Maintenance'))

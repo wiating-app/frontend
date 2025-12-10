@@ -1,11 +1,11 @@
 import React from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { getPoint } from '../api/getPoint'
 import { getWrapped } from '../api/getWrapped'
 import Wrapped from '../components/Wrapped'
 import history from '../history'
 import useAuth0 from '../utils/useAuth0'
-import { useQuery } from '@tanstack/react-query'
-import { toast } from 'sonner'
 
 const WrappedContainer = () => {
   const { isLoggedIn, canSeeWrapped } = useAuth0()

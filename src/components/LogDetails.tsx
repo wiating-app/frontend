@@ -1,4 +1,6 @@
 import React from 'react'
+import { diffWordsWithSpace } from 'diff'
+import { Check, ShieldCheck, X } from 'lucide-react'
 import { LogSource, User } from '../typings'
 import { formatDate, formatTime } from '../utils/helpers'
 import useLanguage from '../utils/useLanguage'
@@ -10,8 +12,6 @@ import Loader from './Loader'
 import LocationLink from './LocationLink'
 import Table from './Table'
 import Typography from './Typography'
-import { diffWordsWithSpace } from 'diff'
-import { Check, ShieldCheck, X } from 'lucide-react'
 
 interface LogDetailsProps {
   data: LogSource

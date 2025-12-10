@@ -1,7 +1,7 @@
 import React from 'react'
-import Button, { type ButtonProps } from '../Button'
 import { useSubmit } from 'react-form-component'
 import ReactLoading from 'react-loading'
+import Button, { type ButtonProps } from '../Button'
 
 interface SubmitButtonProps extends Pick<ButtonProps, 'variant' | 'size' | 'className' | 'disabled'> {
   children?: React.ReactNode

@@ -1,7 +1,7 @@
 import React from 'react'
-import useConfig from '../utils/useConfig'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
+import useConfig from '../utils/useConfig'
 
 export type ButtonProps = {
   variant?: 'default' | 'primary' | 'secondary' | 'bare' | 'danger' | 'success'

@@ -1,6 +1,6 @@
 import React from 'react'
-import Menu, { MenuItem } from './Menu'
 import classNames from 'classnames'
+import Menu, { MenuItem } from './Menu'
 
 interface DropdownProps {
   children: React.ReactNode

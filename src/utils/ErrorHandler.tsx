@@ -1,6 +1,6 @@
 import React from 'react'
-import Typography from '../components/Typography'
 import useErrorBoundary from 'use-error-boundary'
+import Typography from '../components/Typography'
 
 interface ErrorHandlerProps {
   children: React.ReactNode

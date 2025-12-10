@@ -1,8 +1,8 @@
 import React from 'react'
+import { CloudUpload, Trash2 } from 'lucide-react'
 import IconButton from './IconButton'
 import withFormControl from './Inputs/withFormControl'
 import Typography from './Typography'
-import { CloudUpload, Trash2 } from 'lucide-react'
 
 interface ImageFile {
   fileName: string

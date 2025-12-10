@@ -1,7 +1,7 @@
 import React from 'react'
+import { List } from 'lucide-react'
 import useLanguage from '../utils/useLanguage'
 import Button from './Button'
-import { List } from 'lucide-react'
 
 interface BackToSearchProps {
   onClick: () => void

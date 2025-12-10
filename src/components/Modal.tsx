@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import history from '../history'
-import useKeyPress from '../utils/useKeyPress'
-import IconButton from './IconButton'
 import classNames from 'classnames'
 import { X } from 'lucide-react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import history from '../history'
+import useKeyPress from '../utils/useKeyPress'
+import IconButton from './IconButton'
 
 interface ModalProps {
   wide?: boolean
