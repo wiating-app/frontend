@@ -1,20 +1,18 @@
 import React from 'react'
+import { LatLngBounds } from 'leaflet'
 import { useRecoilState } from 'recoil'
 import { toast } from 'sonner'
-import { CancelToken, isCancel } from '../api'
-import { getPoints } from '../api/getPoints'
 import Map from '../components/Map'
-import { activeTypesState, markersState } from '../state'
+import { activeTypesState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
+import { useMapMarkers } from '../utils/useMapMarkers'
 import useUserLocation from '../utils/useUserLocation'
 import AddButtonContainer from './AddButtonContainer'
 
 interface MapContainerProps {
   [key: string]: any
 }
-
-let cancelRequest: (() => void) | undefined
 
 const MapContainer = (props: MapContainerProps) => {
   const [initialPosition, setInitialPosition] = React.useState<{
@@ -23,52 +21,34 @@ const MapContainer = (props: MapContainerProps) => {
     zoom?: number
   }>({})
   const [activeTypes] = useRecoilState(activeTypesState)
-  const [markers, setMarkers] = useRecoilState(markersState)
+  const [currentBounds, setCurrentBounds] = React.useState<LatLngBounds | null>(null)
   const { translations } = useLanguage()
   const { userLocation, accuracy, loading, error } = useUserLocation()
 
   const { isLoggedIn, setStoredPosition, getStoredPosition } = useAuth0()
 
-  const getMarkers = async (bounds: any) => {
-    const { _northEast, _southWest } = bounds
-    try {
-      // Cancel the previous request if it is still running.
-      cancelRequest && cancelRequest()
-      const points = await getPoints(
-        {
-          top_right: {
-            lat: _northEast.lat,
-            lon: _northEast.lng,
-          },
-          bottom_left: {
-            lat: _southWest.lat,
-            lon: _southWest.lng,
-          },
-        },
-        activeTypes.length ? activeTypes : undefined,
-        {
-          cancelToken: new CancelToken(function executor(c) {
-            // An executor function receives a cancel function as a parameter
-            cancelRequest = c
-          }),
-        },
-      )
-      setMarkers(points)
-    } catch (error) {
-      if (!isCancel(error)) {
-        console.error(error)
-        toast.error(translations.connectionProblemMap)
-      } else {
-        process.env.NODE_ENV === 'development' && console.log('Previous request canceled.')
-      }
+  // Use the grid-based markers hook
+  const { markers, isLoading: markersLoading, isError: markersError } = useMapMarkers(currentBounds)
+
+  // Show error toast if markers fail to load
+  React.useEffect(() => {
+    if (markersError) {
+      toast.error(translations.connectionProblemMap)
     }
-  }
+  }, [markersError, translations.connectionProblemMap])
+
+  // Callback to update bounds when map moves
+  // React-query handles caching, so no debouncing needed
+  const handleBoundsChange = React.useCallback((bounds: LatLngBounds) => {
+    setCurrentBounds(bounds)
+  }, [])
 
   React.useEffect(() => {
     // Check stored position before userLocation recognition, becuse it may take
     // more time to get it.
     const storedPosition = getStoredPosition()
     if (storedPosition) setInitialPosition(storedPosition)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   React.useEffect(() => {
@@ -77,20 +57,22 @@ const MapContainer = (props: MapContainerProps) => {
     if (!loading && !error && !initialPosition.bounds && userLocation) {
       setInitialPosition({ center: userLocation, zoom: 10 })
     }
-  }, [loading])
+  }, [loading, error, initialPosition.bounds, userLocation])
 
   return (
     <>
       <Map
         isLoggedIn={isLoggedIn}
         setStoredPosition={(coords: any) => setStoredPosition(coords)}
-        getMarkers={getMarkers}
+        onBoundsChange={handleBoundsChange}
         markers={markers}
+        markersLoading={markersLoading}
         userLocation={userLocation}
         locationAccuracy={accuracy}
         center={initialPosition.center}
         bounds={initialPosition.bounds}
         zoom={initialPosition.zoom}
+        currentBounds={currentBounds}
         {...props}
         activeTypes={activeTypes}
       />

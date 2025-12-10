@@ -12,6 +12,7 @@
     "image-promise": "^7.0.1",
     "leaflet": "^1.7.1",
     "lucide-react": "^0.555.0",
+    "p-limit": "^7.2.0",
     "querystringify": "^2.2.0",
     "react": "^17.0.2",
     "react-copy-to-clipboard": "^5.0.2",

@@ -2,11 +2,11 @@
 // These represent serialized data after serializeData() transformation
 
 export interface Location {
-  id: string | number
+  id: string
   name: string
   description?: string
   directions?: string
-  type?: string | number
+  type?: string
   location: {
     lat: number
     lng: number
@@ -36,7 +36,7 @@ export interface Log {
 }
 
 export interface LogSource {
-  doc_id: string | number
+  doc_id: string
   modified_by: string
   name?: string
   timestamp?: string | number
@@ -73,7 +73,7 @@ export interface Report {
 }
 
 export interface LocationType {
-  id: string | number
+  id: string
   label: {
     [language: string]: string
   }

@@ -15,7 +15,9 @@ import generateMarkerIcon from '../utils/generateMarkerIcon'
 import useLanguage from '../utils/useLanguage'
 import useMediaQuery from '../utils/useMediaQuery'
 import Export from './Export'
+import GridDebugLayer from './GridDebugLayer'
 import Legend from './Legend'
+import MapLoadingIndicator from './MapLoadingIndicator'
 import Menu from './Menu'
 import Typography from './Typography'
 
@@ -26,10 +28,12 @@ interface MapProps {
   isLoggedIn: boolean
   userLocation?: [number, number]
   markers: Location[]
+  markersLoading?: boolean
   locationAccuracy?: number
-  getMarkers: (bounds: any) => void
+  onBoundsChange?: (bounds: LatLngBounds) => void
   setStoredPosition: (coords: any) => void
   activeTypes: any[]
+  currentBounds?: LatLngBounds | null
 }
 
 const Map = ({
@@ -39,17 +43,31 @@ const Map = ({
   isLoggedIn,
   userLocation,
   markers,
+  markersLoading = false,
   locationAccuracy,
-  getMarkers,
+  onBoundsChange,
   setStoredPosition,
   activeTypes,
+  currentBounds,
 }: MapProps) => {
   const [contextMenu, setContextMenu] = React.useState<boolean>(false)
   const [previousBounds, setPreviousBounds] = React.useState<LatLngBounds | undefined>()
 
+  // Filter markers by activeTypes
+  const filteredMarkers = React.useMemo(() => {
+    // If activeTypes is empty, show all markers
+    if (activeTypes.length === 0) {
+      return markers
+    }
+
+    return markers.filter(marker => {
+      return marker.type !== undefined && activeTypes.includes(marker.type)
+    })
+  }, [markers, activeTypes])
+
   const mapRef = React.useRef<any>()
   const initiated = !!mapRef?.current
-  const positionInitializedRef = React.useRef(false)
+  const initialPositioningStateRef = React.useRef<'not_started' | 'in_progress' | 'complete'>('not_started')
   const [editMode] = useRecoilState(editModeState)
   const queryClient = useQueryClient()
   const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
@@ -70,17 +88,36 @@ const Map = ({
   // Only apply center/bounds on initial mount, not on every prop change
   // This prevents the map from jumping back to stored position when user pans
   React.useEffect(() => {
-    if (!positionInitializedRef.current && initiated) {
+    if (initialPositioningStateRef.current === 'not_started' && initiated) {
+      const handleAnimationComplete = () => {
+        if (initialPositioningStateRef.current !== 'complete') {
+          initialPositioningStateRef.current = 'complete'
+          // Get bounds and trigger marker loading after initial positioning is complete
+          const initialBounds = mapRef.current.getBounds()
+          onBoundsChange?.(initialBounds)
+        }
+      }
+
       if (bounds && !activeLocation) {
         // Bounds take precedence over center
         mapRef.current.flyToBounds(bounds)
-        positionInitializedRef.current = true
+        initialPositioningStateRef.current = 'in_progress'
+        // Listen for moveend event to detect when animation completes
+        mapRef.current.once('moveend', handleAnimationComplete)
       } else if (center && !activeLocation) {
         mapRef.current.flyTo(center)
-        positionInitializedRef.current = true
+        initialPositioningStateRef.current = 'in_progress'
+        // Listen for moveend event to detect when animation completes
+        mapRef.current.once('moveend', handleAnimationComplete)
+      } else {
+        // No initial positioning needed, mark as complete immediately
+        initialPositioningStateRef.current = 'complete'
+        // Get initial bounds and trigger marker loading
+        const initialBounds = mapRef.current.getBounds()
+        onBoundsChange?.(initialBounds)
       }
     }
-  }, [center, bounds, initiated, activeLocation])
+  }, [center, bounds, initiated, activeLocation, onBoundsChange])
 
   React.useEffect(() => {
     if (!isNotPhone && mapRef.current) {
@@ -92,36 +129,32 @@ const Map = ({
     }
   }, [activeLocation, isDrawerOpen, isNotPhone])
 
-  const handleLoadMapMarkers = async (newZoom: number, newBounds: any) => {
-    // Check whether viewport really changed to prevent multiple requests for
-    // the same data.
-    if (JSON.stringify(newBounds) !== JSON.stringify(previousBounds)) {
-      // Prevend getMarkers on zoom in, because the current ones can be used.
-      // Load them anyway if this is the first call - previousBounds is not
-      // defined, or when entering the details view on mobile - !isNotPhone && isDrawerOpen.
-      if (newZoom <= currentZoom || !previousBounds || (!isNotPhone && isDrawerOpen)) {
-        getMarkers(newBounds)
-      }
-      setStoredPosition({ bounds: newBounds, zoom: newZoom })
-      setPreviousBounds(newBounds)
+  const handleLoadMapMarkers = async (newZoom: number, newBounds: LatLngBounds) => {
+    // Don't trigger marker loading during initial positioning animation
+    // Use ref for synchronous check to avoid race conditions
+    if (initialPositioningStateRef.current !== 'complete') {
+      return
     }
+
+    onBoundsChange?.(newBounds)
+    setStoredPosition({ bounds: newBounds, zoom: newZoom })
+    setPreviousBounds(newBounds)
   }
 
   React.useEffect(() => {
     // Refresh markers when active types change.
-    const handleAsync = async () => {
-      if (initiated) {
-        const bounds = await mapRef.current.getBounds()
-        getMarkers(bounds)
-      }
+    // Only do this after initial positioning is complete
+    if (initialPositioningStateRef.current === 'complete' && initiated && onBoundsChange) {
+      const bounds = mapRef.current.getBounds()
+      // Trigger bounds change to reload markers with new activeTypes
+      onBoundsChange(bounds)
     }
-    handleAsync()
-  }, [activeTypes])
+  }, [activeTypes, initiated, onBoundsChange])
 
   const MOBILE_MINI_MAP_HEIGHT = 200
   const LOCATION_TAB_WIDTH = 400
   const mapControlButtonClassName =
-    'flex items-center justify-center bg-white hover:bg-gray-100 size-[32px] !text-gray-600 rounded-sm cursor-pointer shadow-[0_0_0_2px_rgba(0,0,0,0.2)]'
+    'flex items-center justify-center bg-white hover:bg-gray-100 size-[32px] !text-gray-600 rounded-full cursor-pointer shadow-[0_0_0_2px_rgba(0,0,0,0.2)]'
 
   const mapOffsetStyle: React.CSSProperties = {
     position: 'absolute',
@@ -154,6 +187,7 @@ const Map = ({
             : {}
         }
       >
+        <MapLoadingIndicator isLoading={markersLoading} />
         <MapContainer
           whenCreated={(mapInstance: any) => {
             mapRef.current = mapInstance
@@ -184,9 +218,10 @@ const Map = ({
             url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
           />
+          <GridDebugLayer bounds={currentBounds || previousBounds || bounds} />
           <PixiOverlay
             markers={
-              markers.map(item => {
+              filteredMarkers.map(item => {
                 const {
                   location: { lat, lng },
                   id,
@@ -299,14 +334,14 @@ const Map = ({
               )}
               onClick={() => userLocation && mapRef.current.flyTo(userLocation, 14)}
             >
-              {userLocation ? <LocateFixed size={17} strokeWidth={3} /> : <LocateOff size={17} strokeWidth={3} />}
+              {userLocation ? <LocateFixed size={17} strokeWidth={2.5} /> : <LocateOff size={17} strokeWidth={2.5} />}
             </a>
           </Control>
           <Control
             position="topright"
             container={{ style: { display: (!isDrawerOpen || !isPhone) && !editMode ? 'block' : 'none' } }}
           >
-            <Export markers={markers} className={mapControlButtonClassName} />
+            <Export markers={filteredMarkers} className={mapControlButtonClassName} />
           </Control>
           <Control position="bottomright">
             {userLocation && (!isDrawerOpen || !isPhone) && locationAccuracy && locationAccuracy > 150 && (
@@ -332,7 +367,7 @@ interface MapEventsProps {
   setContextMenu: (value: boolean) => void
   activeLocation: Location | null
   setActiveLocation: (location: Location | null) => void
-  handleLoadMapMarkers: (zoom: number, bounds: any) => void
+  handleLoadMapMarkers: (zoom: number, bounds: LatLngBounds) => void
 }
 
 const MapEvents = ({

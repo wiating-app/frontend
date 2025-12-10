@@ -19,17 +19,14 @@ export interface Bounds {
   }
 }
 
-export const getPoints = async (
-  bounds: Bounds,
-  pointTypes?: number[],
-  config?: AxiosRequestConfig,
-): Promise<Location[]> => {
+export const getPoints = async (bounds: Bounds, config?: AxiosRequestConfig): Promise<Location[]> => {
   const { data } = await api.post<GetPointsResponse>(
     'get_points',
     {
       ...bounds,
       // eslint-disable-next-line camelcase
-      ...(pointTypes && pointTypes.length ? { point_type: pointTypes } : {}),
+      // Always send point_type as empty array to get all points
+      point_type: [],
     },
     config,
   )

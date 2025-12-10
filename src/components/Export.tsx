@@ -40,7 +40,7 @@ const Export = ({ markers, className }: ExportProps) => {
     <Tooltip content="Eksport lokacji z wyświetlanego obszaru" anchor="left-center">
       <div className="relative">
         <a className={className} onClick={handleClick}>
-          <Download size={16} strokeWidth={3} />
+          <Download size={16} strokeWidth={2.5} />
         </a>
         {isOpen && (
           <>
