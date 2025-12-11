@@ -1,5 +1,7 @@
+import { QueryClient } from '@tanstack/react-query'
 import { LatLngBounds } from 'leaflet'
 import { Bounds } from '../api/getPoints'
+import { Location } from '../typings'
 
 /**
  * Grid cell sizes in degrees.
@@ -103,4 +105,47 @@ export function getVisibleGridCells(bounds: LatLngBounds): string[] {
   }
 
   return cells
+}
+
+/**
+ * Updates the cacheGrid cache for a given location.
+ * If the cell doesn't exist in cache, creates it. If it exists, updates or adds the location.
+ */
+export function updateCacheGridCell(queryClient: QueryClient, location: Location): void {
+  const { lat, lng } = location.location
+  const cellId = getGridCellId(lat, lng)
+  const queryKey = ['cacheGrid', cellId] as const
+
+  queryClient.setQueryData<Location[]>(queryKey, oldData => {
+    if (!oldData) {
+      // Cell doesn't exist in cache, create new array with this location
+      return [location]
+    }
+
+    // Cell exists, find if location with this id is already present
+    const existingIndex = oldData.findIndex(loc => loc.id === location.id)
+    if (existingIndex >= 0) {
+      // Update existing location
+      const newData = [...oldData]
+      newData[existingIndex] = location
+      return newData
+    } else {
+      // Add new location to the array
+      return [...oldData, location]
+    }
+  })
+}
+
+/**
+ * Removes a location from the cacheGrid cache.
+ */
+export function removeLocationFromCacheGrid(queryClient: QueryClient, location: Location): void {
+  const { lat, lng } = location.location
+  const cellId = getGridCellId(lat, lng)
+  const queryKey = ['cacheGrid', cellId] as const
+
+  queryClient.setQueryData<Location[]>(queryKey, oldData => {
+    if (!oldData) return oldData
+    return oldData.filter(loc => loc.id !== location.id)
+  })
 }

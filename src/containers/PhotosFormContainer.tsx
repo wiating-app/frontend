@@ -10,6 +10,7 @@ import ContentWrapper from '../components/ContentWrapper'
 import Loader from '../components/Loader'
 import PhotosForm from '../components/PhotosForm'
 import { asyncForEach } from '../utils/helpers'
+import { updateCacheGridCell } from '../utils/mapGrid'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 
@@ -42,6 +43,7 @@ const PhotosFormContainer = () => {
     mutationFn: ({ locationId, file }: { locationId: string | number; file: File }) => addImage(locationId, file),
     onSuccess: data => {
       queryClient.setQueryData(['activeLocation'], data)
+      updateCacheGridCell(queryClient, data)
     },
   })
 

@@ -23,17 +23,24 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
   const [isModerator, setIsModerator] = useState(false)
   const { translations } = useLanguage()
 
-  // Calculate canSeeWrapped: only for logged-in users in December
+  // Calculate canSeeWrapped: only for logged-in users from December 13th to January 31st
   const canSeeWrapped = useMemo(() => {
     if (!isLoggedIn) {
       return false
     }
-    // Only show in December (month index 11)
-    const currentMonth = new Date().getMonth()
-    if (currentMonth !== 11) {
-      return false
+    const now = new Date()
+    const currentMonth = now.getMonth() // 0-11 (0 = January, 11 = December)
+    const currentDay = now.getDate() // 1-31
+
+    // December 13-31
+    if (currentMonth === 11 && currentDay >= 13) {
+      return true
     }
-    return true
+    // January 1-31
+    if (currentMonth === 0 && currentDay <= 31) {
+      return true
+    }
+    return false
   }, [isLoggedIn])
 
   useEffect(() => {

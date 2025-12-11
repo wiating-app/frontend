@@ -26,7 +26,7 @@ const Chip = ({ size = 'medium', color = 'default', label, className }: ChipProp
   // Size classes
   const sizeClasses = {
     small: 'px-2 py-0.5 text-xs',
-    medium: 'px-2.5 py-1.5 text-xs',
+    medium: 'px-2.5 py-1 text-xs',
   }
 
   // Color class mappings

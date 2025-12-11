@@ -76,8 +76,12 @@ const LogDetailsContainer: React.FC = () => {
   const revertMutation = useMutation({
     mutationFn: (logDetails: LogDetailsType) => revertLog(logDetails),
     onSuccess: () => {
-      // Invalidate logs list to refetch after revert
-      queryClient.invalidateQueries({ queryKey: ['logs', 'list'] })
+      // Invalidate logs list to refetch after revert (with small delay to give backend time to process)
+      // TODO: Ensure that backend returns 200 only after ensuring that db update has really finished.
+      // This workaround may introduce a race condition.
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['logs', 'list'] })
+      }, 1000)
       goBackToLogs(true)
       toast.success('Przywrócono poprzedni stan lokacji.')
     },

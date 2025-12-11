@@ -45,7 +45,7 @@ const LocationInfo = ({ isModerator, selectedLocation, handleReport }: LocationI
       <UtilityButtons id={selectedLocation.id} coords={selectedLocation.location} />
       <div className="flex-grow">
         <div className="text-2xl font-medium leading-tight">{selectedLocation.name}</div>
-        {selectedLocation.is_disabled && <Chip color="secondary" label={translations.isDisabled} className="mt-1" />}
+        {selectedLocation.is_disabled && <Chip color="secondary" label={translations.isDisabled} />}
         <div className="mb-4 mt-0.5 text-sm text-gray-500">
           <div className="flex flex-wrap items-center gap-1.5">
             <div>{typeLabel}</div>

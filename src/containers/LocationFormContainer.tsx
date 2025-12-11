@@ -11,6 +11,7 @@ import ContentWrapper from '../components/ContentWrapper'
 import Loader from '../components/Loader'
 import LocationForm from '../components/LocationForm'
 import { Location } from '../typings'
+import { getGridCellId, removeLocationFromCacheGrid, updateCacheGridCell } from '../utils/mapGrid'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 
@@ -77,7 +78,7 @@ const LocationFormContainer: React.FC = () => {
     mutationFn: (data: LocationFormData) => addPoint(data),
     onSuccess: data => {
       queryClient.setQueryData(['activeLocation'], data)
-      queryClient.invalidateQueries({ queryKey: ['cacheGrid'] })
+      updateCacheGridCell(queryClient, data)
       history.push(`/location/${data.id}`)
       toast.success(translations.newMarkerAdded)
     },
@@ -97,7 +98,30 @@ const LocationFormContainer: React.FC = () => {
       modifyPoint(locationId, data),
     onSuccess: (data, variables) => {
       queryClient.setQueryData(['activeLocation'], data)
-      queryClient.invalidateQueries({ queryKey: ['cacheGrid'] })
+
+      // Get old location data to check if cell changed or for removal
+      const oldLocation = locationData
+
+      if (oldLocation?.location) {
+        // If location is unpublished and user is not a moderator, remove from cache
+        if (data.unpublished && !isModerator) {
+          removeLocationFromCacheGrid(queryClient, oldLocation)
+          history.push(`/location/${variables.id}`)
+          toast.success(translations.markerUpdated)
+          return
+        }
+
+        // Otherwise, check if cell changed and update cache
+        const oldCellId = getGridCellId(oldLocation.location.lat, oldLocation.location.lng)
+        const newCellId = getGridCellId(data.location.lat, data.location.lng)
+        // If cell changed, remove from old cell
+        if (oldCellId !== newCellId) {
+          removeLocationFromCacheGrid(queryClient, oldLocation)
+        }
+      }
+
+      // Update or add to the new cell
+      updateCacheGridCell(queryClient, data)
       history.push(`/location/${variables.id}`)
       toast.success(translations.markerUpdated)
     },
@@ -115,9 +139,10 @@ const LocationFormContainer: React.FC = () => {
   const deletePointMutation = useMutation({
     mutationFn: (pointId: string) => deletePoint(pointId),
     onSuccess: () => {
-      if (id) {
+      if (id && locationData) {
+        // Remove from cacheGrid before removing activeLocation
+        removeLocationFromCacheGrid(queryClient, locationData)
         queryClient.removeQueries({ queryKey: ['activeLocation'] })
-        queryClient.invalidateQueries({ queryKey: ['cacheGrid'] })
         history.push('/')
         toast.success(translations.locationDeleted)
       }
@@ -156,10 +181,7 @@ const LocationFormContainer: React.FC = () => {
     } = fields
 
     try {
-      console.log('location: ', location)
       const { lat, lon } = parse(location)
-      console.log('lon: ', lon)
-      console.log('lat: ', lat)
       const dataObject: LocationFormData = {
         name,
         description,
@@ -218,7 +240,6 @@ const LocationFormContainer: React.FC = () => {
               ) {
                 const updatedLocation = { ...locationData, location: { lat, lng: lon } } as Location
                 queryClient.setQueryData(['activeLocation'], updatedLocation)
-                // TODO: Invalidate map grid cache
               }
             } catch (err) {
               console.error(err)

@@ -29,7 +29,7 @@ const AddButton = ({ items }: AddButtonProps) => {
 
   return (
     <div className="fixed bottom-20 right-2 z-[1050]">
-      <Tooltip content={translations.addMarker}>
+      <Tooltip content={translations.addMarker} anchor="left-center">
         <button
           className="flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-shadow hover:shadow-xl"
           style={{ backgroundColor: themeColor }}
