@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { getPoint } from '../api/getPoint'
 import { getWrapped } from '../api/getWrapped'
@@ -10,6 +10,7 @@ import useAuth0 from '../utils/useAuth0'
 const WrappedContainer = () => {
   const { isLoggedIn, canSeeWrapped } = useAuth0()
   const [shouldFetchLocation, setShouldFetchLocation] = React.useState(false)
+  const queryClient = useQueryClient()
 
   const {
     data: stats,
@@ -52,6 +53,7 @@ const WrappedContainer = () => {
     if (stats?.user_top_loc) {
       setDismissed()
       history.push(`/location/${stats.user_top_loc}`)
+      queryClient.setQueryData(['activeLocation'], location)
     }
   }
 
