@@ -35,7 +35,7 @@ const ReportsContainer = () => {
     },
   })
 
-  const markAsDoneCallback = async () => {
+  const markAsDoneCallback = () => {
     if (!details) return
     markAsDoneMutation.mutate(details.id)
   }
@@ -47,7 +47,7 @@ const ReportsContainer = () => {
         <ReportDetails
           data={details as Location & { report_reason: string[] }}
           markAsDoneCallback={markAsDoneCallback}
-          loading={markAsDoneMutation.isLoading}
+          loading={markAsDoneMutation.isPending}
           onClose={() => setDetails(undefined)}
         />
       )}

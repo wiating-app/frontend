@@ -83,22 +83,6 @@ const GridDebugLayer: React.FC<GridDebugLayerProps> = ({ bounds: propsBounds }) 
               weight: 1,
               opacity: 0.15,
             }}
-            eventHandlers={{
-              mouseover: e => {
-                const layer = e.target
-                layer.setStyle({
-                  fillOpacity: 0.2,
-                  weight: 2,
-                })
-              },
-              mouseout: e => {
-                const layer = e.target
-                layer.setStyle({
-                  fillOpacity: 0.1,
-                  weight: 1,
-                })
-              },
-            }}
           />
         )
       })}

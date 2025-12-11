@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { banUser } from '../api/banUser'
@@ -17,9 +17,6 @@ const LogDetailsContainer: React.FC = () => {
   const history = useHistory()
   const { id } = useParams<{ id: string }>()
   const { search, pathname } = useLocation()
-  const [loadingReview, setLoadingReview] = React.useState(false)
-  const [loadingBan, setLoadingBan] = React.useState(false)
-  const [loadingRevert, setLoadingRevert] = React.useState(false)
   const queryClient = useQueryClient()
   const { user, isModerator } = useAuth0()
   const { translations } = useLanguage()
@@ -51,51 +48,57 @@ const LogDetailsContainer: React.FC = () => {
     })
   }
 
-  const reviewCallback = async () => {
-    if (!logDetails) return
-    try {
-      setLoadingReview(true)
-      const data = await logReviewed(logDetails._id)
+  const reviewMutation = useMutation({
+    mutationFn: (logId: string) => logReviewed(logId),
+    onSuccess: (data, logId) => {
       // Update the log details cache
-      queryClient.setQueryData(['logs', 'detail', logDetails._id], data)
+      queryClient.setQueryData(['logs', 'detail', logId], data)
       // Invalidate all logs list queries to refetch with updated data
       queryClient.invalidateQueries({ queryKey: ['logs', 'list'] })
       goBackToLogs()
       toast.success('Log zweryfikowany.')
-    } catch (err) {
-      console.error(err)
+    },
+    onError: () => {
       toast.error('Błąd bazy danych!')
-    }
-    setLoadingReview(false)
-  }
+    },
+  })
 
-  const banCallback = async () => {
-    if (!logDetails) return
-    try {
-      setLoadingBan(true)
-      await banUser(logDetails._source.modified_by)
+  const banMutation = useMutation({
+    mutationFn: (userId: string) => banUser(userId),
+    onSuccess: () => {
       toast.success('Autor zmiany został zbanowany.')
-    } catch (err) {
-      console.error(err)
+    },
+    onError: () => {
       toast.error('Nie udało się zbanować użytkownika.')
-    }
-    setLoadingBan(false)
-  }
+    },
+  })
 
-  const revertCallback = async () => {
-    if (!logDetails) return
-    try {
-      setLoadingRevert(true)
-      await revertLog(logDetails)
+  const revertMutation = useMutation({
+    mutationFn: (logDetails: LogDetailsType) => revertLog(logDetails),
+    onSuccess: () => {
       // Invalidate logs list to refetch after revert
       queryClient.invalidateQueries({ queryKey: ['logs', 'list'] })
       goBackToLogs(true)
       toast.success('Przywrócono poprzedni stan lokacji.')
-    } catch (err) {
-      console.error(err)
+    },
+    onError: () => {
       toast.error('Nie udało się przywrocić poprzedniego stanu lokacji.')
-    }
-    setLoadingRevert(false)
+    },
+  })
+
+  const reviewCallback = () => {
+    if (!logDetails) return
+    reviewMutation.mutate(logDetails._id)
+  }
+
+  const banCallback = () => {
+    if (!logDetails) return
+    banMutation.mutate(logDetails._source.modified_by)
+  }
+
+  const revertCallback = () => {
+    if (!logDetails) return
+    revertMutation.mutate(logDetails)
   }
 
   const isMe = logDetails && (logDetails._source as LogSource).modified_by === user?.sub
@@ -121,9 +124,9 @@ const LogDetailsContainer: React.FC = () => {
             reviewCallback={reviewCallback}
             banCallback={banCallback}
             revertCallback={revertCallback}
-            loadingReview={loadingReview}
-            loadingBan={loadingBan}
-            loadingRevert={loadingRevert}
+            loadingReview={reviewMutation.isPending}
+            loadingBan={banMutation.isPending}
+            loadingRevert={revertMutation.isPending}
           />
         )
       )}

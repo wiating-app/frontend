@@ -1,5 +1,4 @@
 import React from 'react'
-import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { Icon, LatLngBounds } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -8,8 +7,7 @@ import { Circle, MapContainer, Marker, Popup, ScaleControl, TileLayer, ZoomContr
 import Control from 'react-leaflet-custom-control'
 import PixiOverlay from 'react-leaflet-pixi-overlay'
 import { useRecoilState } from 'recoil'
-import history from '../history'
-import { activeLocationState, editModeState, isDrawerOpenState } from '../state'
+import { editModeState, isDrawerOpenState } from '../state'
 import { Location } from '../typings'
 import generateMarkerIcon from '../utils/generateMarkerIcon'
 import useLanguage from '../utils/useLanguage'
@@ -30,10 +28,17 @@ interface MapProps {
   markers: Location[]
   markersLoading?: boolean
   locationAccuracy?: number
-  onBoundsChange?: (bounds: LatLngBounds) => void
   setStoredPosition: (coords: any) => void
   activeTypes: any[]
   currentBounds?: LatLngBounds | null
+  markerLocation?: Location | null
+  hasContextMenu?: boolean
+  onBoundsChange?: (bounds: LatLngBounds) => void
+  onLocationClick?: (location: Location) => void
+  onMapRightClick?: (lat: number, lng: number) => void
+  onMapClick?: (lat: number, lng: number) => void
+  onCurrentMoveEnd?: (lat: number, lng: number) => void
+  onAddLocationHere?: (lat: number, lng: number) => void
 }
 
 const Map = ({
@@ -45,12 +50,18 @@ const Map = ({
   markers,
   markersLoading = false,
   locationAccuracy,
-  onBoundsChange,
   setStoredPosition,
   activeTypes,
   currentBounds,
+  markerLocation,
+  hasContextMenu = false,
+  onBoundsChange,
+  onLocationClick,
+  onMapRightClick,
+  onMapClick,
+  onCurrentMoveEnd,
+  onAddLocationHere,
 }: MapProps) => {
-  const [contextMenu, setContextMenu] = React.useState<boolean>(false)
   const [previousBounds, setPreviousBounds] = React.useState<LatLngBounds | undefined>()
 
   // Filter markers by activeTypes
@@ -67,10 +78,8 @@ const Map = ({
 
   const mapRef = React.useRef<any>()
   const initiated = !!mapRef?.current
-  const initialPositioningStateRef = React.useRef<'not_started' | 'in_progress' | 'complete'>('not_started')
+  const mapPositioningStateRef = React.useRef<'not_started' | 'in_progress' | 'complete'>('not_started')
   const [editMode] = useRecoilState(editModeState)
-  const queryClient = useQueryClient()
-  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { isPhone, isNotPhone } = useMediaQuery()
   const { translations } = useLanguage()
@@ -78,73 +87,90 @@ const Map = ({
   const currentZoom = mapRef?.current?._zoom || zoom
   const markerSize = currentZoom < 7 ? 6 : currentZoom < 10 ? currentZoom - 1 : currentZoom < 11 ? 20 : 32
 
-  React.useEffect(() => {
-    if (activeLocation?.location && !contextMenu && initiated && isNotPhone) {
-      const newZoom = currentZoom < 10 ? 11 : undefined
-      mapRef.current.flyTo(activeLocation.location, newZoom)
+  const MapEventsComponent = React.useMemo(() => {
+    const MapEvents = () => {
+      useMapEvents({
+        moveend: async (e: any) => {
+          const bounds = await e.target.getBounds()
+          const zoom = e.sourceTarget._zoom
+          // Don't trigger marker loading during initial positioning animation
+          // Use ref for synchronous check to avoid race conditions
+          if (mapPositioningStateRef.current !== 'complete') {
+            return
+          }
+          onBoundsChange?.(bounds)
+          setStoredPosition({ bounds, zoom })
+          setPreviousBounds(bounds)
+        },
+        contextmenu: (e: any) => {
+          if (!editMode && isLoggedIn) {
+            onMapRightClick?.(e.latlng.lat, e.latlng.lng)
+          }
+        },
+        click: (e: any) => {
+          onMapClick?.(e.latlng.lat, e.latlng.lng)
+        },
+      })
+      return null
     }
-  }, [activeLocation])
+    return MapEvents
+  }, [editMode, isLoggedIn, onBoundsChange, setStoredPosition, setPreviousBounds, onMapRightClick, onMapClick])
+
+  React.useEffect(() => {
+    if (markerLocation?.location && !hasContextMenu && initiated && isNotPhone) {
+      const newZoom = currentZoom < 10 ? 11 : undefined
+      mapRef.current.flyTo([markerLocation.location.lat, markerLocation.location.lng], newZoom)
+    }
+  }, [markerLocation, hasContextMenu, initiated, isNotPhone, currentZoom])
 
   // Only apply center/bounds on initial mount, not on every prop change
   // This prevents the map from jumping back to stored position when user pans
   React.useEffect(() => {
-    if (initialPositioningStateRef.current === 'not_started' && initiated) {
+    if (mapPositioningStateRef.current === 'not_started' && initiated) {
       const handleAnimationComplete = () => {
-        if (initialPositioningStateRef.current !== 'complete') {
-          initialPositioningStateRef.current = 'complete'
+        if (mapPositioningStateRef.current !== 'complete') {
+          mapPositioningStateRef.current = 'complete'
           // Get bounds and trigger marker loading after initial positioning is complete
           const initialBounds = mapRef.current.getBounds()
           onBoundsChange?.(initialBounds)
         }
       }
 
-      if (bounds && !activeLocation) {
+      if (bounds && !markerLocation) {
         // Bounds take precedence over center
         mapRef.current.flyToBounds(bounds)
-        initialPositioningStateRef.current = 'in_progress'
+        mapPositioningStateRef.current = 'in_progress'
         // Listen for moveend event to detect when animation completes
         mapRef.current.once('moveend', handleAnimationComplete)
-      } else if (center && !activeLocation) {
+      } else if (center && !markerLocation) {
         mapRef.current.flyTo(center)
-        initialPositioningStateRef.current = 'in_progress'
+        mapPositioningStateRef.current = 'in_progress'
         // Listen for moveend event to detect when animation completes
         mapRef.current.once('moveend', handleAnimationComplete)
       } else {
         // No initial positioning needed, mark as complete immediately
-        initialPositioningStateRef.current = 'complete'
+        mapPositioningStateRef.current = 'complete'
         // Get initial bounds and trigger marker loading
         const initialBounds = mapRef.current.getBounds()
         onBoundsChange?.(initialBounds)
       }
     }
-  }, [center, bounds, initiated, activeLocation, onBoundsChange])
+  }, [center, bounds, initiated, markerLocation, onBoundsChange])
 
   React.useEffect(() => {
     if (!isNotPhone && mapRef.current) {
       mapRef.current.invalidateSize()
-      if (activeLocation?.location && initiated) {
+      if (markerLocation?.location && initiated) {
         const newZoom = currentZoom < 11 ? 12 : undefined
-        mapRef.current.flyTo(activeLocation.location, newZoom)
+        mapRef.current.flyTo([markerLocation.location.lat, markerLocation.location.lng], newZoom)
       }
     }
-  }, [activeLocation, isDrawerOpen, isNotPhone])
-
-  const handleLoadMapMarkers = async (newZoom: number, newBounds: LatLngBounds) => {
-    // Don't trigger marker loading during initial positioning animation
-    // Use ref for synchronous check to avoid race conditions
-    if (initialPositioningStateRef.current !== 'complete') {
-      return
-    }
-
-    onBoundsChange?.(newBounds)
-    setStoredPosition({ bounds: newBounds, zoom: newZoom })
-    setPreviousBounds(newBounds)
-  }
+  }, [markerLocation, isDrawerOpen, isNotPhone])
 
   React.useEffect(() => {
     // Refresh markers when active types change.
     // Only do this after initial positioning is complete
-    if (initialPositioningStateRef.current === 'complete' && initiated && onBoundsChange) {
+    if (mapPositioningStateRef.current === 'complete' && initiated && onBoundsChange) {
       const bounds = mapRef.current.getBounds()
       // Trigger bounds change to reload markers with new activeTypes
       onBoundsChange(bounds)
@@ -205,15 +231,7 @@ const Map = ({
           zoomControl={false}
           id="cy-map"
         >
-          <MapEvents
-            editMode={editMode}
-            isLoggedIn={isLoggedIn}
-            contextMenu={contextMenu}
-            setContextMenu={setContextMenu}
-            activeLocation={activeLocation}
-            setActiveLocation={setActiveLocation}
-            handleLoadMapMarkers={handleLoadMapMarkers}
-          />
+          <MapEventsComponent />
           <TileLayer
             url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
@@ -232,55 +250,55 @@ const Map = ({
                   customIcon: generateMarkerIcon(type, markerSize),
                   iconId: `${type}_${markerSize}`,
                   position: [lat, lng],
-                  onClick: () => {
-                    queryClient.setQueryData(['searchResults'], [])
-                    setActiveLocation(item)
-                    history.push(`/location/${item.id}`)
-                    setContextMenu(false)
-                  },
+                  onClick: () => onLocationClick?.(item),
                 }
               }) || []
             }
           />
-          {activeLocation && (
-            <Marker
-              icon={
-                new Icon({
-                  iconUrl: '/active-location.svg',
-                  iconSize: [40, 40],
-                  iconAnchor: [20, 40],
-                })
-              }
-              zIndexOffset={1100}
-              position={activeLocation.location}
-              draggable={editMode}
-              eventHandlers={{
-                moveend: (e: any) => {
-                  if (editMode) {
-                    setActiveLocation({
-                      ...activeLocation,
-                      location: e.target.getLatLng(),
-                    } as Location)
-                  }
-                },
-              }}
-            />
-          )}
-          {activeLocation && contextMenu && (
-            <Popup position={activeLocation.location} closeButton={false} className="map-popup">
-              <Menu
-                items={[
-                  {
-                    label: translations.addMarkerHere,
-                    callback: () => {
-                      setContextMenu(false)
-                      history.push('/location/new')
-                      mapRef.current.setView(activeLocation.location)
-                    },
+          {markerLocation && markerLocation.location && (
+            <>
+              <Marker
+                icon={
+                  new Icon({
+                    iconUrl: '/active-location.svg',
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 40],
+                  })
+                }
+                zIndexOffset={1100}
+                position={[markerLocation.location.lat, markerLocation.location.lng]}
+                draggable={editMode}
+                eventHandlers={{
+                  moveend: (e: any) => {
+                    if (editMode) {
+                      const latlng = e.target.getLatLng()
+                      onCurrentMoveEnd?.(latlng.lat, latlng.lng)
+                    }
                   },
-                ]}
+                }}
               />
-            </Popup>
+              {hasContextMenu && (
+                <Popup
+                  position={[markerLocation.location.lat, markerLocation.location.lng]}
+                  closeButton={false}
+                  className="map-popup"
+                >
+                  <Menu
+                    items={[
+                      {
+                        label: translations.addLocationHere,
+                        callback: () => {
+                          if (markerLocation?.location) {
+                            const { lat, lng } = markerLocation.location
+                            onAddLocationHere?.(lat, lng)
+                          }
+                        },
+                      },
+                    ]}
+                  />
+                </Popup>
+              )}
+            </>
           )}
           {userLocation && (
             <>
@@ -351,61 +369,13 @@ const Map = ({
             )}
           </Control>
           <ScaleControl position="bottomright" imperial={false} />
-          <Control position="topleft" container={{ style: { display: activeLocation ? 'none' : 'block' } }}>
+          <Control position="topleft" container={{ style: { display: markerLocation ? 'none' : 'block' } }}>
             <Legend />
           </Control>
         </MapContainer>
       </div>
     </>
   )
-}
-
-interface MapEventsProps {
-  editMode: boolean
-  isLoggedIn: boolean
-  contextMenu: boolean
-  setContextMenu: (value: boolean) => void
-  activeLocation: Location | null
-  setActiveLocation: (location: Location | null) => void
-  handleLoadMapMarkers: (zoom: number, bounds: LatLngBounds) => void
-}
-
-const MapEvents = ({
-  editMode,
-  isLoggedIn,
-  contextMenu,
-  setContextMenu,
-  activeLocation,
-  setActiveLocation,
-  handleLoadMapMarkers,
-}: MapEventsProps) => {
-  useMapEvents({
-    moveend: async (e: any) => {
-      const bounds = await e.target.getBounds()
-      handleLoadMapMarkers(e.sourceTarget._zoom, bounds)
-    },
-    contextmenu: (e: any) => {
-      if (!editMode) {
-        if (isLoggedIn) {
-          setContextMenu(!contextMenu)
-          setActiveLocation(contextMenu ? null : ({ location: e.latlng } as Location))
-        }
-        history.push('/')
-      }
-    },
-    click: (e: any) => {
-      if (contextMenu) {
-        // If context menu is opened, close it.
-        setContextMenu(false)
-        setActiveLocation(null)
-      } else if (editMode && isLoggedIn && !activeLocation) {
-        // Handle mode of setting location by pinning on map.
-        setActiveLocation({ location: e.latlng } as Location)
-        history.push('/location/new')
-      }
-    },
-  })
-  return null
 }
 
 export default Map

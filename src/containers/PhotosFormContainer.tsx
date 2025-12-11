@@ -1,15 +1,14 @@
 import React from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import dataUriToBuffer from 'data-uri-to-buffer'
 import Resizer from 'react-image-file-resizer'
 import { useHistory, useParams } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
 import { toast } from 'sonner'
 import { addImage } from '../api/addImage'
 import { getPoint } from '../api/getPoint'
 import ContentWrapper from '../components/ContentWrapper'
 import Loader from '../components/Loader'
 import PhotosForm from '../components/PhotosForm'
-import { activeLocationState } from '../state'
 import { asyncForEach } from '../utils/helpers'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
@@ -17,14 +16,37 @@ import useLanguage from '../utils/useLanguage'
 const PhotosFormContainer = () => {
   const history = useHistory()
   const { id } = useParams<{ id: string }>()
-  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState(false)
+  const queryClient = useQueryClient()
   const { isLoggedIn, loading: loadingAuth } = useAuth0()
   const { translations } = useLanguage()
 
-  const asyncResizeFile = (file: File): Promise<void> =>
-    new Promise(resolve => {
+  // Use cached location data from react-query cache
+  const {
+    data: locationData,
+    isLoading: loadingLocation,
+    isError: locationError,
+  } = useQuery({
+    queryKey: ['activeLocation'],
+    queryFn: () => getPoint(id!),
+    enabled: !!id && !loadingAuth,
+  })
+
+  // Show error toast when query fails
+  React.useEffect(() => {
+    if (locationError && !loadingAuth) {
+      toast.error(translations.connectionProblemLocation)
+    }
+  }, [locationError, loadingAuth, translations.connectionProblemLocation])
+
+  const addImageMutation = useMutation({
+    mutationFn: ({ locationId, file }: { locationId: string | number; file: File }) => addImage(locationId, file),
+    onSuccess: data => {
+      queryClient.setQueryData(['activeLocation'], data)
+    },
+  })
+
+  const asyncResizeFile = (file: File, locationId: string | number): Promise<void> =>
+    new Promise((resolve, reject) => {
       Resizer.imageFileResizer(
         file,
         1080, // Maximum width
@@ -33,32 +55,33 @@ const PhotosFormContainer = () => {
         80, // Quality 1-100
         0, // Rotation
         async (uri: string) => {
-          const decoded = dataUriToBuffer(uri)
-          const resizedFile = new File([decoded as any], file.name, { type: file.type })
-          if (!activeLocation?.id) {
+          try {
+            const decoded = dataUriToBuffer(uri)
+            const resizedFile = new File([decoded as any], file.name, { type: file.type })
+            await addImageMutation.mutateAsync({ locationId, file: resizedFile })
             resolve()
-            return
+          } catch (err) {
+            reject(err)
           }
-          const data = await addImage(activeLocation.id, resizedFile)
-          setActiveLocation(data)
-          resolve()
         },
       )
     })
 
   const handleImageUpload = async (files: any[]) => {
-    if (!activeLocation) return
+    if (!locationData || !id) return
     try {
-      history.push(`/location/${activeLocation.id}?imageLoading=true`)
+      history.push(`/location/${id}?imageLoading=true`)
       await asyncForEach(files, async (file: any) => {
-        file?.dataFile && (await asyncResizeFile(file.dataFile))
+        if (file?.dataFile) {
+          await asyncResizeFile(file.dataFile, id)
+        }
       })
-      history.push(`/location/${activeLocation.id}`)
+      history.push(`/location/${id}`)
       toast.success(translations.photoAdded)
     } catch (err) {
       console.error(err)
       toast.error(translations.couldNotSavePhoto)
-      history.push(`/location/${activeLocation.id}`)
+      history.push(`/location/${id}`)
     }
   }
 
@@ -67,37 +90,18 @@ const PhotosFormContainer = () => {
       history.push(`/location/${id}`)
       toast.warning('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.')
     }
-  }, [loadingAuth])
-
-  // Use cached location data if avaliable, otherwise load data from endpoint.
-  React.useEffect(() => {
-    if (!activeLocation) {
-      const handleAsync = async () => {
-        try {
-          const data = await getPoint(id)
-          setActiveLocation(data)
-        } catch (error) {
-          setError(true)
-          setLoading(false)
-          toast.error(translations.connectionProblemLocation)
-        }
-      }
-      handleAsync()
-    } else {
-      setLoading(false)
-    }
-  }, [activeLocation])
+  }, [loadingAuth, isLoggedIn, id, history])
 
   return (
     <ContentWrapper>
-      {loading || loadingAuth ? (
+      {loadingLocation ? (
         <Loader dark big />
-      ) : error ? (
+      ) : locationError ? (
         <div>Error!</div>
       ) : (
         <>
           <PhotosForm
-            name={activeLocation?.name}
+            name={locationData?.name}
             handleSubmit={handleImageUpload}
             cancel={() => {
               history.push(`/location/${id}`)

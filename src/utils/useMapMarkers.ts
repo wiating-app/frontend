@@ -36,7 +36,7 @@ export function useMapMarkers(bounds: LatLngBounds | null | undefined): UseMapMa
   // Create query options for each visible grid cell
   const queries = React.useMemo(() => {
     return visibleCells.map(cellId => ({
-      queryKey: ['points', 'grid', cellId] as const,
+      queryKey: ['cacheGrid', cellId] as const,
       queryFn: async (): Promise<Location[]> => {
         // Wrap the async function with p-limit to control concurrency
         return limit(async () => {

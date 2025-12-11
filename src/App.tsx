@@ -1,8 +1,8 @@
 import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
-import { toast } from 'sonner'
 import HistoryContainer from '././containers/HistoryContainer'
 import AcceptDataPrivacy from './components/AcceptDataPrivacy'
 import Drawer from './components/Drawer'
@@ -21,7 +21,7 @@ import NavBarContainer from './containers/NavBarContainer'
 import PhotosFormContainer from './containers/PhotosFormContainer'
 import SearchResultsContainer from './containers/SearchResultsContainer'
 import WrappedContainer from './containers/WrappedContainer'
-import { activeLocationState, editModeState, isDrawerOpenState } from './state'
+import { editModeState, isDrawerOpenState } from './state'
 import RequireAuth from './utils/RequireAuth'
 import useAuth0 from './utils/useAuth0'
 import useConfig from './utils/useConfig'
@@ -30,8 +30,8 @@ const App = () => {
   const history = useHistory()
   const location = useLocation()
   const { pathname } = location
-  const [, setActiveLocation] = useRecoilState(activeLocationState)
-  const [editMode, setEditMode] = useRecoilState(editModeState)
+  const queryClient = useQueryClient()
+  const [, setEditMode] = useRecoilState(editModeState)
   const [, setIsDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { faq } = useConfig()
   const { canSeeWrapped } = useAuth0()
@@ -39,14 +39,14 @@ const App = () => {
   React.useEffect(() => {
     setEditMode(pathname.endsWith('/edit') || pathname.endsWith('/new') || pathname.endsWith('/pin'))
     setIsDrawerOpen(pathname.startsWith('/location') || pathname.startsWith('/search'))
-    if (!pathname.startsWith('/location')) {
-      setActiveLocation(null)
-    }
   }, [pathname])
 
   React.useEffect(() => {
-    !editMode && toast.dismiss() // Dismiss all snackbars when exiting the edit mode.
-  }, [editMode])
+    // Clear location queries when navigating away from location pages
+    if (!pathname.startsWith('/location')) {
+      queryClient.setQueryData(['activeLocation'], null)
+    }
+  }, [pathname, queryClient])
 
   React.useEffect(() => {
     // Show info screen when user visits a site for the first time,
@@ -77,7 +77,7 @@ const App = () => {
           <Route exact path="/search" component={SearchResultsContainer} />
 
           <Route exact path="/location/new">
-            <LocationFormContainer isNew />
+            <LocationFormContainer />
           </Route>
 
           <Route exact path="/location/:id">

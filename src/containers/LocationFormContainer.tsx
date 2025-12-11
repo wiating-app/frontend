@@ -1,23 +1,18 @@
 import React from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import parse from 'coord-parser'
-import { useHistory, useParams } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
-import { addPoint } from '../api/addPoint'
+import { LocationFormData, addPoint } from '../api/addPoint'
 import { deletePoint } from '../api/deletePoint'
 import { getPoint } from '../api/getPoint'
 import { modifyPoint } from '../api/modifyPoint'
 import ContentWrapper from '../components/ContentWrapper'
 import Loader from '../components/Loader'
 import LocationForm from '../components/LocationForm'
-import { activeLocationState, markersState } from '../state'
 import { Location } from '../typings'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
-
-interface LocationFormContainerProps {
-  isNew?: boolean
-}
 
 interface LocationFormFields {
   name: string
@@ -33,55 +28,104 @@ interface LocationFormFields {
   unpublished?: boolean
 }
 
-const LocationFormContainer: React.FC<LocationFormContainerProps> = ({ isNew }) => {
+const LocationFormContainer: React.FC = () => {
   const history = useHistory()
+  const location = useLocation()
   const { id } = useParams<{ id?: string }>()
-  const { isLoggedIn, loading: loadingAuth, isModerator } = useAuth0()
+  const { isModerator } = useAuth0()
   const { translations } = useLanguage()
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState(false)
-  const [activeLocation, setActiveLocation] = useRecoilState(activeLocationState)
-  const [markers, setMarkers] = useRecoilState(markersState)
+  const queryClient = useQueryClient()
 
+  // Check if this is a new location by checking for lat/lng query params or absence of id
+  const searchParams = new URLSearchParams(location.search)
+  const latParam = searchParams.get('lat')
+  const lngParam = searchParams.get('lng')
+  const isNew = !id || (latParam !== null && lngParam !== null)
+
+  // If lat/lng are present, set partial location data in cache
   React.useEffect(() => {
-    if (!loadingAuth) {
-      if (!isLoggedIn) {
-        history.push(`/location/${id}`)
-        toast.warning('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.')
-      }
-      // Use cached location data if avaliable, otherwise load data from endpoint.
-      // Do it after authentication check to provide bearer token in api request.
-      if (!isNew) {
-        if (!activeLocation && id) {
-          const handleAsync = async () => {
-            try {
-              const data = await getPoint(id)
-              setActiveLocation(data)
-            } catch (_error) {
-              setError(true)
-            }
-            setLoading(false)
-          }
-          handleAsync()
-        } else {
-          setLoading(false)
-        }
+    if (isNew && latParam && lngParam) {
+      const lat = parseFloat(latParam)
+      const lng = parseFloat(lngParam)
+      if (!isNaN(lat) && !isNaN(lng)) {
+        queryClient.setQueryData(['activeLocation'], { location: { lat, lng } } as unknown as any)
       }
     }
-  }, [loadingAuth])
+  }, [isNew, latParam, lngParam, queryClient])
+
+  // Use cached location data from react-query cache
+  // For forms, always fetch fresh data when editing to ensure we have the latest version
+  // For new locations, it will read from cache (set by the effect above or AddButtonContainer)
+  const {
+    data: locationData,
+    isLoading: loadingLocation,
+    isError: locationError,
+  } = useQuery({
+    queryKey: ['activeLocation'],
+    queryFn: () => (id ? getPoint(id) : null),
+  })
 
   // Make sure that form is cleaned up eg. when navigating from edit location
   // form to new location form.
   React.useEffect(() => {
     if (isNew) {
       toast.dismiss() // It is here only to dismiss the persising "Put point on map" snackbar.
-      const handleAsync = async () => {
-        setLoading(true)
-        setLoading(false)
-      }
-      handleAsync()
     }
   }, [isNew])
+
+  const addPointMutation = useMutation({
+    mutationFn: (data: LocationFormData) => addPoint(data),
+    onSuccess: data => {
+      queryClient.setQueryData(['activeLocation'], data)
+      queryClient.invalidateQueries({ queryKey: ['cacheGrid'] })
+      history.push(`/location/${data.id}`)
+      toast.success(translations.newMarkerAdded)
+    },
+    onError: (error: any) => {
+      if (error.type === 'parseError') {
+        console.error(error.value)
+        toast.error(translations.wrongCoordsFormat)
+      } else {
+        console.error(error)
+        toast.error(translations.couldNotSaveMarker)
+      }
+    },
+  })
+
+  const modifyPointMutation = useMutation({
+    mutationFn: ({ id: locationId, data }: { id: string | number; data: LocationFormData }) =>
+      modifyPoint(locationId, data),
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(['activeLocation'], data)
+      queryClient.invalidateQueries({ queryKey: ['cacheGrid'] })
+      history.push(`/location/${variables.id}`)
+      toast.success(translations.markerUpdated)
+    },
+    onError: (error: any) => {
+      if (error.type === 'parseError') {
+        console.error(error.value)
+        toast.error(translations.wrongCoordsFormat)
+      } else {
+        console.error(error)
+        toast.error(translations.couldNotSaveMarker)
+      }
+    },
+  })
+
+  const deletePointMutation = useMutation({
+    mutationFn: (pointId: string) => deletePoint(pointId),
+    onSuccess: () => {
+      if (id) {
+        queryClient.removeQueries({ queryKey: ['activeLocation'] })
+        queryClient.invalidateQueries({ queryKey: ['cacheGrid'] })
+        history.push('/')
+        toast.success(translations.locationDeleted)
+      }
+    },
+    onError: () => {
+      toast.error(translations.couldNotDeleteLocation)
+    },
+  })
 
   // Convert Select option to bool. undefined = null, 1 = true, 2 = false.
   const mapOptionToBool = (value?: number): boolean | null => {
@@ -95,7 +139,7 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({ isNew }) 
     }
   }
 
-  const onSubmitLocation = async (fields: LocationFormFields) => {
+  const onSubmitLocation = (fields: LocationFormFields) => {
     /* eslint-disable camelcase */
     const {
       name,
@@ -116,7 +160,7 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({ isNew }) 
       const { lat, lon } = parse(location)
       console.log('lon: ', lon)
       console.log('lat: ', lat)
-      const dataObject = {
+      const dataObject: LocationFormData = {
         name,
         description,
         directions,
@@ -132,22 +176,11 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({ isNew }) 
 
       if (isNew) {
         // New marker creation.
-        const data = await addPoint(dataObject)
-        const newMarkers = [...markers, data]
-        setMarkers(newMarkers)
-        setActiveLocation(data)
-        history.push(`/location/${data.id}`)
-        toast.success(translations.newMarkerAdded)
+        addPointMutation.mutate(dataObject)
       } else {
-        // Updating exisitng marker.
-        const { id: locationId } = activeLocation!
-        const data = await modifyPoint(locationId, dataObject)
-        const index = markers.findIndex((item: any) => item.id === data.id)
-        const newMarkers = [...markers.slice(0, index), data, ...markers.slice(index + 1)]
-        setMarkers(newMarkers)
-        setActiveLocation(data)
-        history.push(`/location/${locationId}`)
-        toast.success(translations.markerUpdated)
+        // Updating existing marker.
+        if (!id || !locationData) return
+        modifyPointMutation.mutate({ id, data: dataObject })
       }
     } catch (error: any) {
       if (error.type === 'parseError') {
@@ -160,48 +193,39 @@ const LocationFormContainer: React.FC<LocationFormContainerProps> = ({ isNew }) 
     }
   }
 
-  const onDeleteLocation = async () => {
+  const onDeleteLocation = () => {
     if (!id) return
-    try {
-      await deletePoint(id)
-      history.push('/')
-      setActiveLocation(null)
-      setMarkers(markers.filter((item: any) => item.id !== id) as Location[])
-      toast.success(translations.locationDeleted)
-    } catch (err) {
-      console.error(err)
-      toast.error(translations.couldNotDeleteLocation)
-    }
+    deletePointMutation.mutate(id)
   }
 
   return (
     <ContentWrapper>
-      {loading || loadingAuth ? (
+      {loadingLocation ? (
         <Loader dark big />
-      ) : error ? (
+      ) : locationError ? (
         <div>Error!</div>
       ) : (
         <LocationForm
-          locationData={activeLocation}
+          locationData={locationData}
           onSubmitLocation={onSubmitLocation}
-          updateCurrentMarker={(coords: string) => {
+          onCorodinatesChange={(coords: string) => {
             try {
               const { lat, lon } = parse(coords)
               if (
                 typeof lat !== 'undefined' &&
                 typeof lon !== 'undefined' &&
-                (!activeLocation?.location ||
-                  activeLocation.location.lat !== lat ||
-                  activeLocation.location.lng !== lon)
+                (locationData?.location?.lat !== lat || locationData?.location?.lng !== lon)
               ) {
-                setActiveLocation({ ...activeLocation, location: { lat, lng: lon } } as Location)
+                const updatedLocation = { ...locationData, location: { lat, lng: lon } } as Location
+                queryClient.setQueryData(['activeLocation'], updatedLocation)
+                // TODO: Invalidate map grid cache
               }
             } catch (err) {
               console.error(err)
             }
           }}
           cancel={() => {
-            if (activeLocation?.id) {
+            if (locationData?.id) {
               history.goBack()
             } else {
               history.push('/')

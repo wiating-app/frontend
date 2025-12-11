@@ -1,7 +1,7 @@
 export default {
   pl: {
     addMarker: 'Dodaj nową lokację',
-    addMarkerHere: 'Dodaj tu lokację',
+    addLocationHere: 'Dodaj tu lokację',
     addPhoto: 'Dodaj zdjęcia',
     administration: 'Zarządzanie',
     all: 'Wszystkie',
@@ -153,7 +153,7 @@ export default {
 
   en: {
     addMarker: 'Add new location',
-    addMarkerHere: 'Add location here',
+    addLocationHere: 'Add location here',
     addPhoto: 'Add photos',
     administration: 'Management',
     all: 'All',

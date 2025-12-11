@@ -7,7 +7,7 @@ import { searchPoints } from '../api/searchPoints'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import NavBar from '../components/NavBar'
 import history from '../history'
-import { activeLocationState, activeTypesState } from '../state'
+import { activeTypesState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
@@ -18,7 +18,6 @@ const NavBarContainer = () => {
   const [languageSwitch, setLanguageSwitch] = React.useState(false)
   const [searchPhrase, setSearchPhrase] = React.useState<string>()
   const queryClient = useQueryClient()
-  const [, setActiveLocation] = useRecoilState(activeLocationState)
   const { translations, language, setLanguage } = useLanguage()
   const [activeTypes] = useRecoilState(activeTypesState)
   const { faq, termsAndConditions } = useConfig()
@@ -30,7 +29,6 @@ const NavBarContainer = () => {
     onSuccess: points => {
       queryClient.setQueryData(['searchResults'], points)
       history.push('/search')
-      setActiveLocation(null)
     },
   })
 

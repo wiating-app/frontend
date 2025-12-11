@@ -26,7 +26,7 @@ const WrappedContainer = () => {
     isLoading: isLoadingLocation,
     isError: isErrorLocation,
   } = useQuery({
-    queryKey: ['location', stats?.user_top_loc],
+    queryKey: ['wrappedLocation'],
     queryFn: () => getPoint(stats!.user_top_loc),
     enabled: shouldFetchLocation && !!stats?.user_top_loc,
   })

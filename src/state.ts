@@ -1,5 +1,4 @@
 import { atom } from 'recoil'
-import { Location } from './typings'
 
 // Global app state.
 
@@ -15,15 +14,5 @@ export const isDrawerOpenState = atom<boolean>({
 
 export const activeTypesState = atom<any[]>({
   key: 'activeTypes',
-  default: [],
-})
-
-export const activeLocationState = atom<Location | null>({
-  key: 'activeLocation',
-  default: null,
-})
-
-export const markersState = atom<Location[]>({
-  key: 'markers',
   default: [],
 })

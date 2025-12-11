@@ -1,11 +1,11 @@
 import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { MapPin, MapPinned, Pencil } from 'lucide-react'
 import { useRecoilState } from 'recoil'
 import { toast } from 'sonner'
 import AddButton from '../components/AddButton'
 import history from '../history'
-import { activeLocationState, editModeState } from '../state'
-import { Location } from '../typings'
+import { editModeState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 import useUserLocation from '../utils/useUserLocation'
@@ -15,7 +15,7 @@ const AddButtonContainer = () => {
   const { requireAuth } = useAuth0()
   const { userLocation, error } = useUserLocation()
   const [editMode] = useRecoilState(editModeState)
-  const [, setActiveLocation] = useRecoilState(activeLocationState)
+  const queryClient = useQueryClient()
 
   if (editMode) return null
   return (
@@ -26,7 +26,7 @@ const AddButtonContainer = () => {
           icon: <MapPin size={20} />,
           callback: () => {
             requireAuth(() => {
-              setActiveLocation(null)
+              queryClient.removeQueries({ queryKey: ['location'] })
               history.push('/pin')
               toast(translations.pointOnMap, {
                 duration: Infinity,
@@ -46,7 +46,7 @@ const AddButtonContainer = () => {
           icon: <Pencil size={20} />,
           callback: () => {
             requireAuth(() => {
-              setActiveLocation(null)
+              queryClient.removeQueries({ queryKey: ['location'] })
               history.push('/location/new')
             })
           },
@@ -56,14 +56,10 @@ const AddButtonContainer = () => {
               {
                 label: translations.inCurrentLocation,
                 icon: <MapPinned size={20} />,
-                callback: async () => {
+                callback: () => {
                   requireAuth(() => {
-                    ;async () => {
-                      const [lat, lon] = userLocation
-                      await history.push('/location/new')
-                      // Partial location will be completed by the form
-                      setActiveLocation({ location: { lat, lng: lon } } as any as Location)
-                    }
+                    const [lat, lon] = userLocation
+                    history.push(`/location/new?lat=${lat}&lng=${lon}`)
                   })
                 },
               },

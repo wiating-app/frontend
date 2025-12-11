@@ -18,7 +18,7 @@ import SubmitButton from './Inputs/SubmitButton'
 interface LocationFormProps {
   locationData?: Location
   onSubmitLocation: (fields: any) => void | Promise<void>
-  updateCurrentMarker: (coords: string) => void
+  onCorodinatesChange: (coords: string) => void
   cancel: () => void
   isModerator: boolean
   onDeleteLocation: () => void | Promise<void>
@@ -28,7 +28,7 @@ interface LocationFormProps {
 const LocationForm = ({
   locationData,
   onSubmitLocation,
-  updateCurrentMarker,
+  onCorodinatesChange,
   cancel,
   isModerator,
   onDeleteLocation,
@@ -89,7 +89,7 @@ const LocationForm = ({
             initialValue={locationData && locationToString(locationData.location)}
             type="coordinates"
             onChange={value => {
-              updateCurrentMarker(value)
+              onCorodinatesChange(value)
             }}
           />
         </HintWrapper>
