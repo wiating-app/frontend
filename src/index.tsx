@@ -6,6 +6,7 @@ import { Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { Toaster } from 'sonner'
 import './App.css'
+import Loader from './components/Loader'
 import enableServiceWorker from './enableServiceWorker'
 import history from './history'
 import ErrorHandler from './utils/ErrorHandler'
@@ -20,7 +21,7 @@ const App = React.lazy(() => import('./App'))
 const Maintenance = React.lazy(() => import('./components/Maintenance'))
 
 ReactDOM.render(
-  <React.Suspense fallback={<div>Loading...</div>}>
+  <React.Suspense fallback={<Loader dark big centered />}>
     <ErrorHandler>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
