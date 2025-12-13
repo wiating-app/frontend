@@ -22,7 +22,7 @@ const Export = ({ markers, className }: ExportProps) => {
     },
     {
       label: 'Pobierz plik GPX',
-      callback: () => exportToGPX(markers),
+      callback: () => exportToGPX(markers, config),
     },
   ]
 

@@ -1,9 +1,6 @@
-import { Location } from '../typings'
-import useConfig from './useConfig'
+import { Config, Location } from '../typings'
 
-const exportToGPX = (locations: Location[]): void => {
-  const config = useConfig()
-  if (!config) return
+const exportToGPX = (locations: Location[], config: Config): void => {
   const { locationTypes } = config
   // Currently only polish language is supported.
   try {
