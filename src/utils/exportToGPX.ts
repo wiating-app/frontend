@@ -5,10 +5,8 @@ const exportToGPX = (locations: Location[], config: Config): void => {
   // Currently only polish language is supported.
   try {
     const today = new Date()
-    const dd = String(today.getDate()).padStart(2, '0')
-    const mm = String(today.getMonth() + 1).padStart(2, '0')
-    const yyyy = today.getFullYear()
-    const date = `${yyyy}-${mm}-${dd}`
+    const isoTime = today.toISOString() // ISO 8601 format: YYYY-MM-DDTHH:MM:SS.sssZ
+    const date = isoTime.split('T')[0] // YYYY-MM-DD for display/filename
 
     const header = [
       '<?xml version="1.0" encoding="UTF-8"?>',
@@ -19,7 +17,7 @@ const exportToGPX = (locations: Location[], config: Config): void => {
       '    <link href="https://wiating.eu">',
       '      <text>Wiating</text>',
       '    </link>',
-      `    <time>${date}</time>`,
+      `    <time>${isoTime}</time>`,
       '  </metadata>',
     ]
     const footer = ['</gpx>']

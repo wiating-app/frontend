@@ -359,7 +359,11 @@ const Map = ({
             position="topright"
             container={{ style: { display: (!isDrawerOpen || !isPhone) && !editMode ? 'block' : 'none' } }}
           >
-            <Export markers={filteredMarkers} className={mapControlButtonClassName} />
+            <Export
+              markers={filteredMarkers}
+              bounds={currentBounds || previousBounds}
+              className={mapControlButtonClassName}
+            />
           </Control>
           <Control position="bottomright">
             {userLocation && (!isDrawerOpen || !isPhone) && locationAccuracy && locationAccuracy > 150 && (

@@ -1,4 +1,5 @@
 import React from 'react'
+import { LatLngBounds } from 'leaflet'
 import { Download } from 'lucide-react'
 import { Location } from '../typings'
 import exportToGPX from '../utils/exportToGPX'
@@ -9,20 +10,48 @@ import { Tooltip } from './Tooltip'
 
 interface ExportProps {
   markers: Location[]
+  bounds?: LatLngBounds | null
   className?: string
 }
 
-const Export = ({ markers, className }: ExportProps) => {
+const Export = ({ markers, bounds, className }: ExportProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const config = useConfig()
+
+  // Filter markers by viewport bounds only when exporting
+  const getVisibleMarkers = (): Location[] => {
+    if (!bounds) {
+      return markers
+    }
+
+    // Extract bounds values to avoid circular reference issues
+    try {
+      const northEast = bounds.getNorthEast()
+      const southWest = bounds.getSouthWest()
+      const minLat = southWest.lat
+      const maxLat = northEast.lat
+      const minLng = southWest.lng
+      const maxLng = northEast.lng
+
+      return markers.filter(marker => {
+        const { lat, lng } = marker.location
+        return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng
+      })
+    } catch (error) {
+      // If bounds is invalid, return all markers
+      console.error('Error filtering markers by bounds:', error)
+      return markers
+    }
+  }
+
   const items = [
     {
       label: 'Pobierz plik KML',
-      callback: () => exportToKML(markers, config),
+      callback: () => exportToKML(getVisibleMarkers(), config),
     },
     {
       label: 'Pobierz plik GPX',
-      callback: () => exportToGPX(markers, config),
+      callback: () => exportToGPX(getVisibleMarkers(), config),
     },
   ]
 
