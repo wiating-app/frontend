@@ -33,7 +33,7 @@ const exportToGPX = (locations: Location[], config: Config): void => {
         '      <text>wiating.eu</text>',
         '    </link>',
         `    <sym>https://wiating.eu/location-icons/${location.type}.svg</sym>`,
-        `    <desc>[${locationTypes.find(item => item.id === location.type)?.label.pl || ''}] ${location.description || ''} || Wskazówki dojścia: ${location.directions || 'Brak informacji.'} || Dostęp do wody: ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'} || Dostęp do ognia:</strong> ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</desc>`,
+        `    <desc>[${locationTypes.find(item => item.id === location.type)?.label.pl || ''}] ${location.description || ''} || Wskazówki dojścia: ${location.directions || 'Brak informacji.'} || Dostęp do wody: ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'} || Dostęp do ognia: ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</desc>`,
         '  </wpt>',
       ],
       [],
