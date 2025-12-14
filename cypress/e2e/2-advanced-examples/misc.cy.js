@@ -75,13 +75,13 @@ context('Misc', () => {
     cy.focused().should('have.id', 'description')
   })
 
-  context('Cypress.Screenshot', function () {
+  context('Cypress.Screenshot', function() {
     it('cy.screenshot() - take a screenshot', () => {
       // https://on.cypress.io/screenshot
       cy.screenshot('my-image')
     })
 
-    it('Cypress.Screenshot.defaults() - change default config of screenshots', function () {
+    it('Cypress.Screenshot.defaults() - change default config of screenshots', function() {
       Cypress.Screenshot.defaults({
         blackout: ['.foo'],
         capture: 'viewport',
@@ -89,8 +89,8 @@ context('Misc', () => {
         scale: false,
         disableTimersAndAnimations: true,
         screenshotOnRunFailure: true,
-        onBeforeScreenshot () { },
-        onAfterScreenshot () { },
+        onBeforeScreenshot() { },
+        onAfterScreenshot() { },
       })
     })
   })

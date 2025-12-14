@@ -1,0 +1,61 @@
+import { Config, Location } from '../typings'
+
+const exportToGPX = (locations: Location[], config: Config): void => {
+  const { locationTypes } = config
+  // Currently only polish language is supported.
+  try {
+    const today = new Date()
+    const isoTime = today.toISOString() // ISO 8601 format: YYYY-MM-DDTHH:MM:SS.sssZ
+    const date = isoTime.split('T')[0] // YYYY-MM-DD for display/filename
+
+    const header = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<gpx version="1.1" creator="Wiating" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">',
+      '  <metadata>',
+      '    <name>Wiating</name>',
+      `    <desc>Eksport z aplikacji Wiating z dnia ${date}.</desc>`,
+      '    <link href="https://wiating.eu">',
+      '      <text>Wiating</text>',
+      '    </link>',
+      `    <time>${isoTime}</time>`,
+      '  </metadata>',
+    ]
+    const footer = ['</gpx>']
+
+    const placemarks = locations.reduce(
+      (acc: string[], location) => [
+        ...acc,
+        `  <wpt lat="${location.location.lat}" lon="${location.location.lng}">`,
+        `    <name>${location.name}</name>`,
+        `    <link href="https://wiating.eu/location/${location.id}">`,
+        '      <text>wiating.eu</text>',
+        '    </link>',
+        `    <sym>https://wiating.eu/location-icons/${location.type}.svg</sym>`,
+        `    <desc>[${locationTypes.find(item => item.id === location.type)?.label.pl || ''}] ${location.description || ''} || Wskazówki dojścia: ${location.directions || 'Brak informacji.'} || Dostęp do wody: ${!location.water_exists ? 'brak.' : location.water_comment || 'jest.'} || Dostęp do ognia: ${!location.fire_exists ? 'brak.' : location.fire_comment || 'jest.'}</desc>`,
+        '  </wpt>',
+      ],
+      [],
+    )
+
+    const xml = [...header, ...placemarks, ...footer].join('\n')
+
+    const type = 'text/gpx'
+    const blob = new Blob([xml], { type })
+    const dataURI = `data:${type};charset=utf-8,${xml}`
+
+    const URL = window.URL || (window as any).webkitURL
+
+    const buildedURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob)
+
+    const downloadLink = document.createElement('a')
+    downloadLink.href = buildedURI
+    downloadLink.download = `wiating-${date}.gpx`
+    document.body.appendChild(downloadLink)
+    downloadLink.click()
+    document.body.removeChild(downloadLink)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export default exportToGPX

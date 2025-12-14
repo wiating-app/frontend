@@ -3,6 +3,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { WebpackBundleSizeAnalyzerPlugin } = require('webpack-bundle-size-analyzer')
 const common = require('./webpack.common.js')
+const { InjectManifest } = require('workbox-webpack-plugin')
 
 
 module.exports = merge(common, {
@@ -16,5 +17,13 @@ module.exports = merge(common, {
   plugins: [
     new OptimizeCssAssetsPlugin(),
     new WebpackBundleSizeAnalyzerPlugin('./plain-report.txt'),
+
+    new InjectManifest({
+      swSrc: './src/serviceWorker.ts',
+      swDest: 'service-worker.js',
+      exclude: [
+        /_redirects$/,
+      ],
+    }),
   ],
 })

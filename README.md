@@ -37,6 +37,13 @@ Start the app in a dockerized mode. The app should be available on http://localh
 
 
 
+## Branches
+
+The project uses the following branch strategy:
+
+- **master**: Used for production releases. This branch is deployed to the production environment.
+- **develop**: Used for development and beta releases. This branch is used for dev, experimental features and testing before merging to master.
+
 ## Domains
 
 Project is continuously deployed to following domains:
@@ -44,5 +51,5 @@ Project is continuously deployed to following domains:
 | Domain                     | Role       | Explanation                                                                 |
 |----------------------------|------------|-----------------------------------------------------------------------------|
 | https://wiating.eu         | Production | `master` branch with a production database. Stable release.                   |
-| https://beta.wiating.eu    | Canary     | `develop` branch with a production database. Experimental release.            |
+| https://beta.wiating.eu    | Beta       | `develop` branch with a production database. Experimental release.            |
 | https://staging.wiating.eu | Staging    | `develop` branch with a production database (temporary solution due to migration) |

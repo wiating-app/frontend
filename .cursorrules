@@ -1,0 +1,23 @@
+# React TypeScript Project
+
+This is a React TypeScript project using webpack, yarn, and Node 20.
+
+## Directory Structure
+
+- `src/components/` - React UI components
+- `src/containers/` - Container components (connect components to state/logic)
+- `src/api/` - API functions for backend communication
+- `src/utils/` - Utility functions, hooks, and helpers
+- `public/` - Static assets
+- `cypress/` - E2E tests
+
+## Common Scripts
+
+- `yarn start` - Development server (localhost:3000)
+- `yarn build` - Production build
+- `yarn lint` / `yarn lint:fix` - Linting
+- `yarn format` / `yarn format:check` - Code formatting
+
+## Important
+
+Always run `nvm use` before yarn operations (Node 20 required).

@@ -1,0 +1,59 @@
+import React from 'react'
+import { Location } from '../typings'
+import { formatDate, formatTime } from '../utils/helpers'
+import useLanguage from '../utils/useLanguage'
+import Button from './Button'
+import ButtonGroup from './ButtonGroup'
+import Loader from './Loader'
+import LocationLink from './LocationLink'
+import Table from './Table'
+import Typography from './Typography'
+
+interface ReportsProps {
+  reports?: Location[]
+  loading: boolean
+  error: boolean
+  setDetails: (data: Location) => void
+}
+
+const Reports = ({ reports, loading, error, setDetails }: ReportsProps) => {
+  const { translations } = useLanguage()
+  return loading ? (
+    <Loader dark big />
+  ) : error ? (
+    <Typography color="error">{translations.connectionProblemLogs}</Typography>
+  ) : reports && reports.length ? (
+    <Table
+      data={reports.map(item => ({
+        timestamp: `${formatDate(item.last_modified_timestamp)} ${formatTime(item.last_modified_timestamp)}`,
+        location: <LocationLink name={item.name} id={item.id} />,
+        report_reason: Array.isArray(item.report_reason) ? (
+          item.report_reason.map((item: string, index: number) => (
+            <Typography key={index} variant="caption">
+              {item}
+            </Typography>
+          ))
+        ) : (
+          <Typography variant="caption">{item.report_reason || ''}</Typography>
+        ),
+        actions: (
+          <ButtonGroup>
+            <Button variant="primary" onClick={() => setDetails(item)}>
+              {translations.details}
+            </Button>
+          </ButtonGroup>
+        ),
+      }))}
+      labels={[
+        { name: translations.date, field: 'timestamp' },
+        { name: translations.location, field: 'location', wide: true },
+        { name: translations.reportReason, field: 'report_reason', wide: true },
+        { name: '', field: 'actions', wide: true },
+      ]}
+    />
+  ) : (
+    <Typography>{translations.noReportsAvailable}</Typography>
+  )
+}
+
+export default Reports

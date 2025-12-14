@@ -1,0 +1,36 @@
+import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import SearchResults from '../components/SearchResults'
+import history from '../history'
+import { Location } from '../typings'
+import useLanguage from '../utils/useLanguage'
+
+const SearchResultsContainer = () => {
+  const queryClient = useQueryClient()
+  const { translations } = useLanguage()
+  const cachedResults = queryClient.getQueryData<Location[]>(['searchResults'])
+
+  // Redirect to home if page is refreshed (no cached search results)
+  React.useEffect(() => {
+    if (!cachedResults || cachedResults.length === 0) {
+      history.replace('/')
+    }
+    if (cachedResults?.length === 0) {
+      toast.error(translations.noResults)
+    }
+  }, [cachedResults, translations])
+
+  const handleLocationClick = (item: Location) => {
+    queryClient.setQueryData(['activeLocation'], item)
+    history.push(`/location/${item.id}`)
+  }
+
+  // Don't render if no results (will redirect)
+  if (!cachedResults || cachedResults.length === 0) {
+    return null
+  }
+
+  return <SearchResults searchResults={cachedResults} onLocationClick={handleLocationClick} />
+}
+export default SearchResultsContainer
