@@ -39,11 +39,10 @@ const WrappedContainer = () => {
   }, [shouldFetchLocation, isErrorLocation])
 
   const setDismissed = React.useCallback(() => {
-    if (stats) {
-      const dismissedKey = `wrappedDismissed_${stats.year}`
-      localStorage.setItem(dismissedKey, 'true')
-    }
-  }, [stats])
+    const year = stats?.year || new Date().getFullYear() // Handle also the case when stats are not loaded because of exception
+    const dismissedKey = `wrappedDismissed_${year}`
+    localStorage.setItem(dismissedKey, 'true')
+  }, [stats?.year])
 
   const handleShowLocation = () => {
     setShouldFetchLocation(true)
