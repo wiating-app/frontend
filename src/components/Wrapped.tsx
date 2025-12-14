@@ -96,7 +96,7 @@ const Wrapped = ({
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
               {/* Total Actions */}
               <div
-                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-5 shadow-lg"
+                className="relative overflow-hidden rounded-lg p-5 opacity-90 shadow-lg"
                 style={{ backgroundColor: themeColor }}
               >
                 {totalActionsIcons.map((pos, idx) => (
@@ -120,7 +120,7 @@ const Wrapped = ({
 
               {/* Locations Created */}
               <div
-                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-5 shadow-lg"
+                className="relative overflow-hidden rounded-lg p-5 opacity-90 shadow-lg"
                 style={{ backgroundColor: secondaryColor }}
               >
                 {locationsCreatedIcons.map((pos, idx) => (
@@ -144,7 +144,7 @@ const Wrapped = ({
 
               {/* Images Added */}
               <div
-                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-5 shadow-lg"
+                className="relative overflow-hidden rounded-lg p-5 opacity-90 shadow-lg"
                 style={{ backgroundColor: themeColor }}
               >
                 {imagesAddedIcons.map((pos, idx) => (
@@ -168,7 +168,7 @@ const Wrapped = ({
 
               {/* Edits Made */}
               <div
-                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-5 shadow-lg"
+                className="relative overflow-hidden rounded-lg p-5 opacity-90 shadow-lg"
                 style={{ backgroundColor: secondaryColor }}
               >
                 {editsMadeIcons.map((pos, idx) => (
@@ -193,7 +193,7 @@ const Wrapped = ({
 
             {/* Activity Percentage */}
             <div
-              className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-6 text-center shadow-lg"
+              className="relative overflow-hidden rounded-lg p-6 text-center opacity-90 shadow-lg"
               style={{ backgroundColor: themeColor }}
             >
               {activityPercentageIcons.map((pos, idx) => (
@@ -218,7 +218,7 @@ const Wrapped = ({
             {/* Top Location */}
             {stats.user_top_loc && (
               <div
-                className="relative overflow-hidden rounded-lg border-2 border-gray-200 p-6 shadow-lg"
+                className="relative overflow-hidden rounded-lg p-6 opacity-90 shadow-lg"
                 style={{ backgroundColor: secondaryColor }}
               >
                 {topLocationIcons.map((pos, idx) => (
