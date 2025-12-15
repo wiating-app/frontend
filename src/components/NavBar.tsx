@@ -76,7 +76,7 @@ const NavBar = ({
         >
           <SearchInput name="phrase" placeholder={translations.search} loading={searchLoading} noBottomGutter />
         </Form>
-        <div className="mx-4 flex flex-1 items-center gap-2 opacity-30">
+        <div className="mx-2 flex flex-1 items-center gap-2 opacity-30 sm:mx-4">
           {showVersionInfo && <Version className="hidden lg:flex" />}
           {isOffline && (
             <Tooltip content={translations.offlineModeTooltip} anchor="bottom-center">
