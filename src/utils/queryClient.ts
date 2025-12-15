@@ -10,7 +10,7 @@ const CACHE_MAX_AGE = 1000 * 60 * 60 * 24 * 7 // 7 days
 const CACHE_BUSTER = '' // Change this string to invalidate cache (e.g., on app version change)
 const IDB_KEY = 'REACT_QUERY_OFFLINE_CACHE'
 // Query keys that should be persisted to IndexedDB for offline support
-const PERSISTED_QUERY_KEYS = ['cacheGrid', 'userLogs', 'wrapped', 'wrappedLocation'] as const
+const PERSISTED_QUERY_KEYS = ['cacheGrid', 'user', 'userLogs', 'wrapped', 'wrappedLocation'] as const
 
 export const queryClient = new QueryClient({
   defaultOptions: {

@@ -95,7 +95,7 @@ export default {
     noResults: 'Brak wyników dla danej frazy wyszukiwania',
     offlineMode: 'Tryb offline',
     offlineModeTooltip:
-      'Używanie danych z lokalnej pamięci. Edycja i dodawanie miejsc, oraz wyszukiwanie nie działa prawidłowo',
+      'Używanie danych z lokalnej pamięci. Edycja, dodawanie miejsc, pobieranie zdjęć oraz wyszukiwanie nie działa prawidłowo',
     oldContent: 'Stara treść',
     photoAdded: 'Zdjęcia dodane pomyślnie.',
     pointOnMap: 'Wskaż na mapie',
@@ -245,7 +245,8 @@ export default {
     noReportsAvailable: 'Currently there are no open reports in the system.',
     noResults: 'No results for given search phrase',
     offlineMode: 'Offline mode',
-    offlineModeTooltip: 'Using data from local memory. Editing and adding places, and searching will fail',
+    offlineModeTooltip:
+      'Using data from local memory. Editing, adding places, downloading photos, and searching will fail',
     oldContent: 'Old content',
     photoAdded: 'Photos uploaded successfully.',
     pointOnMap: 'Point on map',
