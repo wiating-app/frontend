@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import history from '../history'
 import { Auth0ContextInterface, User } from '../typings'
 import useLanguage from './useLanguage'
+import { useOfflineStatus } from './useOfflineStatus'
 
 // Useful info about Auth0Provider configuration:
 // https://auth0.com/docs/quickstart/spa/react
@@ -23,6 +24,7 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null)
   const [isModerator, setIsModerator] = useState(false)
   const { translations } = useLanguage()
+  const isOffline = useOfflineStatus()
 
   const user = queryClient.getQueryData<User | null>(['user']) ?? null
   const setUser = useCallback(
@@ -72,42 +74,55 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
             setIsModerator(true)
           }
         }
-        const auth0FromHook = await createAuth0Client(initOptions)
-        setAuth0(auth0FromHook)
 
-        // Log in with redirect after successfull authentication
-        if (window.location.search.includes('code=')) {
-          const { appState } = await auth0FromHook.handleRedirectCallback()
-          window.history.replaceState(
-            {},
-            document.title,
-            appState && appState.targetUrl ? appState.targetUrl : window.location.pathname,
-          )
-
-          const userData = await auth0FromHook.getUser()
-          const token = await auth0FromHook.getTokenSilently()
-          const isAuthenticated = await auth0FromHook.isAuthenticated()
-          if (isAuthenticated) {
-            api.defaults.headers.common.Authorization = `Bearer ${token}`
-            setUser((userData as User) || null)
+        // Offline mode: if offline and user data exists, set logged in
+        if (isOffline) {
+          const cachedUser = queryClient.getQueryData<User | null>(['user'])
+          if (cachedUser) {
             setIsLoggedIn(true)
-            checkModerator((userData as User) || null)
-            toast.success(translations?.loginSuccessful)
+            checkModerator(cachedUser)
           } else {
             setIsLoggedIn(false)
           }
         } else {
-          // Restore user session from auth0.
-          const isAuthenticated = await auth0FromHook.isAuthenticated()
-          if (isAuthenticated) {
+          // Online mode: proceed with normal Auth0 authentication
+          const auth0FromHook = await createAuth0Client(initOptions)
+          setAuth0(auth0FromHook)
+
+          // Log in with redirect after successfull authentication
+          if (window.location.search.includes('code=')) {
+            const { appState } = await auth0FromHook.handleRedirectCallback()
+            window.history.replaceState(
+              {},
+              document.title,
+              appState && appState.targetUrl ? appState.targetUrl : window.location.pathname,
+            )
+
             const userData = await auth0FromHook.getUser()
             const token = await auth0FromHook.getTokenSilently()
-            api.defaults.headers.common.Authorization = `Bearer ${token}`
-            setUser((userData as User) || null)
-            setIsLoggedIn(true)
-            checkModerator((userData as User) || null)
+            const isAuthenticated = await auth0FromHook.isAuthenticated()
+            if (isAuthenticated) {
+              api.defaults.headers.common.Authorization = `Bearer ${token}`
+              setUser((userData as User) || null)
+              setIsLoggedIn(true)
+              checkModerator((userData as User) || null)
+              toast.success(translations?.loginSuccessful)
+            } else {
+              setIsLoggedIn(false)
+            }
           } else {
-            setIsLoggedIn(false)
+            // Restore user session from auth0.
+            const isAuthenticated = await auth0FromHook.isAuthenticated()
+            if (isAuthenticated) {
+              const userData = await auth0FromHook.getUser()
+              const token = await auth0FromHook.getTokenSilently()
+              api.defaults.headers.common.Authorization = `Bearer ${token}`
+              setUser((userData as User) || null)
+              setIsLoggedIn(true)
+              checkModerator((userData as User) || null)
+            } else {
+              setIsLoggedIn(false)
+            }
           }
         }
       } catch (err) {
@@ -118,7 +133,7 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
     }
     initAuth0()
     // eslint-disable-next-line react-hooks/exhaustive-deps -- initOptions and translations are stable, effect should only run on mount
-  }, [setUser])
+  }, [setUser, isOffline])
 
   const contextValue: Auth0ContextInterface = {
     isLoggedIn,
