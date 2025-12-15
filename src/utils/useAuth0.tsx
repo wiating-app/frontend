@@ -87,11 +87,15 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
           const userData = await auth0FromHook.getUser()
           const token = await auth0FromHook.getTokenSilently()
           const isAuthenticated = await auth0FromHook.isAuthenticated()
-          api.defaults.headers.common.Authorization = `Bearer ${token}`
-          setUser((userData as User) || null)
-          setIsLoggedIn(isAuthenticated || false)
-          checkModerator((userData as User) || null)
-          toast.success(translations?.loginSuccessful)
+          if (isAuthenticated) {
+            api.defaults.headers.common.Authorization = `Bearer ${token}`
+            setUser((userData as User) || null)
+            setIsLoggedIn(true)
+            checkModerator((userData as User) || null)
+            toast.success(translations?.loginSuccessful)
+          } else {
+            setIsLoggedIn(false)
+          }
         } else {
           // Restore user session from auth0.
           const isAuthenticated = await auth0FromHook.isAuthenticated()
@@ -100,8 +104,10 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
             const token = await auth0FromHook.getTokenSilently()
             api.defaults.headers.common.Authorization = `Bearer ${token}`
             setUser((userData as User) || null)
-            setIsLoggedIn(isAuthenticated || false)
+            setIsLoggedIn(true)
             checkModerator((userData as User) || null)
+          } else {
+            setIsLoggedIn(false)
           }
         }
       } catch (err) {
