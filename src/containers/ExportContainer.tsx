@@ -43,7 +43,7 @@ const ExportContainer = () => {
       <div className="flex items-center gap-2">
         <div>
           <Button variant="primary" size="large" disabled={exportMutation.isLoading} onClick={handleExport}>
-            {exportMutation.isLoading && <Loader />}
+            {exportMutation.isLoading && <Loader light />}
             {translations.exportButton}
           </Button>
         </div>

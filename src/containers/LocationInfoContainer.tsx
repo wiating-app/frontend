@@ -59,7 +59,7 @@ const LocationInfoContainer: React.FC = () => {
   }
 
   if (loadingLocation) {
-    return <Loader dark big centered />
+    return <Loader big />
   }
 
   if (locationError || !locationData) {

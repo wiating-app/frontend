@@ -93,7 +93,6 @@ export interface User {
 
 export interface Auth0ContextInterface {
   user?: User
-  loading: boolean
   popupOpen: boolean
   loginWithPopup: (options?: any) => Promise<void>
   handleRedirectCallback: () => Promise<any>

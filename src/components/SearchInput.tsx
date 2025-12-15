@@ -43,7 +43,7 @@ const SearchInput = ({ name, value, mandatory, setValue, placeholder, loading }:
 
   return (
     <div className={containerClasses}>
-      <div className={iconClasses}>{loading ? <Loader /> : <Search size={20} />}</div>
+      <div className={iconClasses}>{loading ? <Loader light /> : <Search size={20} />}</div>
       <input
         id={name}
         name={name}

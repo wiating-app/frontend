@@ -9,7 +9,6 @@ import useLanguage from '../utils/useLanguage'
 import Avatar from './Avatar'
 import Button from './Button'
 import Dropdown from './Dropdown'
-import Loader from './Loader'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
 import Version from './Version'
@@ -33,7 +32,6 @@ interface NavBarProps {
   isLoggedIn: boolean
   onSearch: (phrase: string) => void
   searchLoading: boolean
-  authLoading: boolean
   language: string
   languages: string[]
   setLanguage: (lang: string) => void
@@ -45,7 +43,6 @@ const NavBar = ({
   isLoggedIn,
   onSearch,
   searchLoading,
-  authLoading,
   language,
   languages,
   setLanguage,
@@ -93,7 +90,7 @@ const NavBar = ({
           >
             Wesprzyj nas
           </Button>
-          {!authLoading && !isLoggedIn && (
+          {!isLoggedIn && (
             <Dropdown
               items={languages.map(lang => ({
                 label: lang.toUpperCase(),
@@ -103,25 +100,21 @@ const NavBar = ({
               <span className="opacity-90 hover:opacity-95">{language ? language.toUpperCase() : ''}</span>
             </Dropdown>
           )}
-          {authLoading ? (
-            <Loader />
-          ) : (
-            <Dropdown items={links}>
-              {isLoggedIn ? (
-                <div className="group flex items-center">
-                  <Avatar alt={user?.name} src={user?.picture}>
-                    {!user?.picture && `${user?.given_name?.charAt(0) || ''}${user?.family_name?.charAt(0) || ''}`}
-                  </Avatar>
-                  <span className="text-md ml-2 hidden whitespace-nowrap normal-case opacity-90 group-hover:opacity-95 md:inline">
-                    {user?.name && user.name}
-                  </span>
-                  <ChevronDown className="ml-1 opacity-90 group-hover:opacity-95" size={20} />
-                </div>
-              ) : (
-                <Menu className="opacity-90 hover:opacity-95" size={24} />
-              )}
-            </Dropdown>
-          )}
+          <Dropdown items={links}>
+            {isLoggedIn ? (
+              <div className="group flex items-center">
+                <Avatar alt={user?.name} src={user?.picture}>
+                  {!user?.picture && `${user?.given_name?.charAt(0) || ''}${user?.family_name?.charAt(0) || ''}`}
+                </Avatar>
+                <span className="text-md ml-2 hidden whitespace-nowrap normal-case opacity-90 group-hover:opacity-95 md:inline">
+                  {user?.name && user.name}
+                </span>
+                <ChevronDown className="ml-1 opacity-90 group-hover:opacity-95" size={20} />
+              </div>
+            ) : (
+              <Menu className="opacity-90 hover:opacity-95" size={24} />
+            )}
+          </Dropdown>
         </div>
       </div>
     </div>

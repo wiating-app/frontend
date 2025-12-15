@@ -31,7 +31,7 @@ const History = ({ data, loading, error, page, setPage, rowsInTotal, rowsPerPage
       </Heading>
       <Typography gutterBottom>{translations.historyDescription}</Typography>
       {loading ? (
-        <Loader dark big centered />
+        <Loader big />
       ) : error ? (
         <Typography color="error">{translations.connectionProblemLogs}</Typography>
       ) : (

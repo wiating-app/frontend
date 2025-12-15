@@ -21,7 +21,7 @@ const App = React.lazy(() => import('./App'))
 const Maintenance = React.lazy(() => import('./components/Maintenance'))
 
 ReactDOM.render(
-  <React.Suspense fallback={<Loader dark big centered />}>
+  <React.Suspense fallback={<Loader big fullscreen />}>
     <ErrorHandler>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>

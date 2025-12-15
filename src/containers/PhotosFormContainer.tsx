@@ -11,14 +11,12 @@ import Loader from '../components/Loader'
 import PhotosForm from '../components/PhotosForm'
 import { asyncForEach } from '../utils/helpers'
 import { updateCacheGridCell } from '../utils/mapGrid'
-import useAuth0 from '../utils/useAuth0'
 import useLanguage from '../utils/useLanguage'
 
 const PhotosFormContainer = () => {
   const history = useHistory()
   const { id } = useParams<{ id: string }>()
   const queryClient = useQueryClient()
-  const { isLoggedIn, loading: loadingAuth } = useAuth0()
   const { translations } = useLanguage()
 
   // Use cached location data from react-query cache
@@ -29,15 +27,15 @@ const PhotosFormContainer = () => {
   } = useQuery({
     queryKey: ['activeLocation'],
     queryFn: () => getPoint(id!),
-    enabled: !!id && !loadingAuth,
+    enabled: !!id,
   })
 
   // Show error toast when query fails
   React.useEffect(() => {
-    if (locationError && !loadingAuth) {
+    if (locationError) {
       toast.error(translations.connectionProblemLocation)
     }
-  }, [locationError, loadingAuth, translations.connectionProblemLocation])
+  }, [locationError, translations.connectionProblemLocation])
 
   const addImageMutation = useMutation({
     mutationFn: ({ locationId, file }: { locationId: string | number; file: File }) => addImage(locationId, file),
@@ -87,17 +85,10 @@ const PhotosFormContainer = () => {
     }
   }
 
-  React.useEffect(() => {
-    if (!loadingAuth && !isLoggedIn) {
-      history.push(`/location/${id}`)
-      toast.warning('Dodawanie lub edycja lokalizacji wymaga bycia zalogowanym.')
-    }
-  }, [loadingAuth, isLoggedIn, id, history])
-
   return (
     <ContentWrapper>
       {loadingLocation ? (
-        <Loader dark big />
+        <Loader big />
       ) : locationError ? (
         <div>Error!</div>
       ) : (

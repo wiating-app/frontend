@@ -113,8 +113,16 @@ const App = () => {
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         {faq && <Route exact path="/faq" component={FaqPage} />}
         <Route exact path="/wrapped" component={WrappedContainer} />
-        <Route path="/history" component={HistoryContainer} />
-        <Route exact path="/history/:id" component={LogDetailsContainer} />
+        <Route path="/history">
+          <RequireAuth redirect>
+            <HistoryContainer />
+          </RequireAuth>
+        </Route>
+        <Route exact path="/history/:id">
+          <RequireAuth redirect>
+            <LogDetailsContainer />
+          </RequireAuth>
+        </Route>
       </Switch>
     </Layout>
   )

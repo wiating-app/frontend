@@ -32,7 +32,7 @@ const Logs = ({ logs, user, loading, error, page, setPage, rowsInTotal, rowsPerP
   } = useConfig()
 
   return loading ? (
-    <Loader dark big centered />
+    <Loader big />
   ) : error ? (
     <Typography color="error">{translations.connectionProblemLogs}</Typography>
   ) : (

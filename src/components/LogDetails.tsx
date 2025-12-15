@@ -135,16 +135,16 @@ const LogDetails = ({
         <FormActions>
           {!isMe && (
             <Button onClick={banCallback}>
-              {loadingBan && <Loader dark />}
+              {loadingBan && <Loader />}
               {translations.banAuthor}
             </Button>
           )}
           <Button onClick={revertCallback}>
-            {loadingRevert && <Loader dark />}
+            {loadingRevert && <Loader />}
             {translations.revertThisChange}
           </Button>
           <Button variant="success" onClick={reviewCallback} disabled={!!data.reviewed_at}>
-            {loadingReview ? <Loader dark /> : <ShieldCheck size={20} strokeWidth={2.5} />}{' '}
+            {loadingReview ? <Loader /> : <ShieldCheck size={20} strokeWidth={2.5} />}{' '}
             {data.reviewed_at ? translations.alreadyVerified : translations.markAsVerified}
           </Button>
         </FormActions>

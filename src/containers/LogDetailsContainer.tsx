@@ -115,7 +115,7 @@ const LogDetailsContainer: React.FC = () => {
       }}
     >
       {isLoading ? (
-        <Loader dark big centered />
+        <Loader big />
       ) : isError ? (
         <div>Error!</div>
       ) : (

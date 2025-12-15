@@ -22,7 +22,7 @@ const NavBarContainer = () => {
   const [activeTypes] = useRecoilState(activeTypesState)
   const { faq, termsAndConditions } = useConfig()
 
-  const { loading, loginWithRedirect, user, isLoggedIn, isModerator, logout } = useAuth0()
+  const { loginWithRedirect, user, isLoggedIn, isModerator, logout } = useAuth0()
 
   const searchMutation = useMutation({
     mutationFn: (params: Parameters<typeof searchPoints>[0]) => searchPoints(params),
@@ -134,7 +134,6 @@ const NavBarContainer = () => {
         searchLoading={searchMutation.isLoading}
         isLoggedIn={isLoggedIn}
         user={user}
-        authLoading={loading}
         links={links}
         language={language}
         languages={languages}

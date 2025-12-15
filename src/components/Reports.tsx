@@ -19,7 +19,7 @@ interface ReportsProps {
 const Reports = ({ reports, loading, error, setDetails }: ReportsProps) => {
   const { translations } = useLanguage()
   return loading ? (
-    <Loader dark big />
+    <Loader big />
   ) : error ? (
     <Typography color="error">{translations.connectionProblemLogs}</Typography>
   ) : reports && reports.length ? (
