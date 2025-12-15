@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react'
 import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js'
 import { toast } from 'sonner'
 import api from '../api'
+import Loader from '../components/Loader'
 import history from '../history'
 import { Auth0ContextInterface, User } from '../typings'
 import useLanguage from './useLanguage'
@@ -17,9 +18,8 @@ interface Auth0ProviderProps extends Auth0ClientOptions {
 
 export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) => {
   const [auth0, setAuth0] = useState<any>()
-  const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<User | null>()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null)
   const [isModerator, setIsModerator] = useState(false)
   const { translations } = useLanguage()
 
@@ -98,15 +98,13 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
       } catch (err) {
         console.error(err)
         toast.error(translations?.couldNotRestoreSession)
+        setIsLoggedIn(false)
       }
-
-      setLoading(false)
     }
     initAuth0()
   }, [])
 
   const contextValue: Auth0ContextInterface = {
-    loading,
     isLoggedIn,
     isModerator,
     canSeeWrapped,
@@ -188,6 +186,10 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
     contextValue.getTokenSilently = async (options?: any) => {
       return await auth0.getTokenSilently(options)
     }
+  }
+
+  if (isLoggedIn === null) {
+    return <Loader big fullscreen />
   }
 
   return <Auth0Context.Provider value={contextValue}>{children}</Auth0Context.Provider>

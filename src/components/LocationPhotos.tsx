@@ -61,7 +61,7 @@ const LocationPhotos = ({ location, uploading, uploadImages }: LocationPhotosPro
       {loading || uploading ? (
         <div className={PHOTO_CONTAINER_HEIGHT}>
           <div className="flex h-full items-center justify-center">
-            <Loader big />
+            <Loader big light />
           </div>
         </div>
       ) : location.images?.length ? (

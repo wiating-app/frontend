@@ -3,26 +3,28 @@ import classNames from 'classnames'
 import ReactLoading from 'react-loading'
 
 interface LoaderProps {
-  dark?: boolean
+  light?: boolean
   big?: boolean
-  centered?: boolean
+  fullscreen?: boolean
 }
 
-const Loader = ({ dark, big, centered }: LoaderProps) => {
-  const loader = (
-    <ReactLoading
-      type="spinningBubbles"
-      width={big ? 80 : 18}
-      height={big ? 80 : 18}
-      className={classNames('[&_svg]:fill-current', dark ? 'text-gray-400' : 'text-white')}
-    />
+const Loader = ({ light, big, fullscreen }: LoaderProps) => {
+  return (
+    <div
+      className={classNames(
+        'flex items-center justify-center',
+        fullscreen ? 'h-screen w-full' : 'h-full w-full',
+        light ? 'text-white' : 'text-gray-400',
+      )}
+    >
+      <ReactLoading
+        type="spinningBubbles"
+        width={big ? 80 : 18}
+        height={big ? 80 : 18}
+        className="[&_svg]:fill-current"
+      />
+    </div>
   )
-
-  if (centered) {
-    return <div className="flex h-full w-full items-center justify-center">{loader}</div>
-  }
-
-  return loader
 }
 
 export default Loader

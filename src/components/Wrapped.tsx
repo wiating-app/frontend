@@ -79,7 +79,7 @@ const Wrapped = ({
 
   return (
     <Modal onClose={onClose} short wide id="cy-wrapped">
-      {isLoading && <Loader big dark centered />}
+      {isLoading && <Loader big />}
       {isError && (
         <Typography className="text-center">
           Chcieliśmy pokazać Ci Twoje roczne statystyki, ale coś poszło nie tak. Spróbuj ponownie później.
@@ -249,7 +249,7 @@ const Wrapped = ({
                       </Button>
                     </div>
                   ) : isLoadingLocation ? (
-                    <Loader centered />
+                    <Loader light />
                   ) : (
                     <Button variant="default" size="medium" onClick={onShowLocation} disabled={!onShowLocation}>
                       Sprawdź

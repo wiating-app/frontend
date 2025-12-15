@@ -18,14 +18,14 @@ const ModeratorPanel: React.FC = () => {
   const location = useLocation()
   const { pathname } = location
   const { translations } = useLanguage()
-  const { loading: loadingAuth, isModerator } = useAuth0()
+  const { isModerator } = useAuth0()
 
   React.useEffect(() => {
     // Invisible guarding.
-    if (!loadingAuth && !isModerator) {
+    if (!isModerator) {
       history.push('/')
     }
-  }, [loadingAuth, isModerator, history])
+  }, [isModerator, history])
 
   const pathArray = pathname.split('/')
 

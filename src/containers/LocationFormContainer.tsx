@@ -223,7 +223,7 @@ const LocationFormContainer: React.FC = () => {
   return (
     <ContentWrapper>
       {loadingLocation ? (
-        <Loader dark big />
+        <Loader big />
       ) : locationError ? (
         <div>Error!</div>
       ) : (

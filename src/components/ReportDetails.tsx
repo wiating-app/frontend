@@ -57,7 +57,7 @@ const ReportDetails = ({ data, markAsDoneCallback, loading, onClose }: ReportDet
         </div>
         <div>
           <Button variant="default" onClick={markAsDoneCallback} className="mt-5" disabled={loading}>
-            {loading ? <Loader dark /> : <Check size={20} />} {translations.markAsDone}
+            {loading ? <Loader /> : <Check size={20} />} {translations.markAsDone}
           </Button>
         </div>
       </div>

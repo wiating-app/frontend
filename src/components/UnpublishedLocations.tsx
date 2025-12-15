@@ -22,7 +22,7 @@ const UnpublishedLocations = ({ loading, error, locations }: UnpublishedLocation
   const { locationTypes } = useConfig()
 
   return loading ? (
-    <Loader dark big centered />
+    <Loader big />
   ) : error ? (
     <Typography color="error">{translations.connectionProblemLogs}</Typography>
   ) : (
