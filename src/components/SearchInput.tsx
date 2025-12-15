@@ -27,7 +27,7 @@ const SearchInput = ({ name, value, mandatory, setValue, placeholder, loading }:
   })
 
   const inputClasses = classNames(
-    'w-full sm:w-[200px] border-0 bg-transparent outline-none',
+    'w-full border-0 bg-transparent outline-none',
     'placeholder:text-current placeholder:opacity-40',
     'px-2 py-2.5 text-sm',
     {

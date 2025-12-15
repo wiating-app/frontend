@@ -8,6 +8,8 @@ import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Image, Location } from '../typings'
 import useLanguage from '../utils/useLanguage'
+import { useOfflineStatus } from '../utils/useOfflineStatus'
+import Chip from './Chip'
 import IconButton from './IconButton'
 import Loader from './Loader'
 import { Tooltip } from './Tooltip'
@@ -28,6 +30,7 @@ const PHOTO_CONTAINER_HEIGHT = 'h-[70vw] sm:h-[260px]'
 
 const LocationPhotos = ({ location, uploading, uploadImages }: LocationPhotosProps) => {
   const { translations } = useLanguage()
+  const isOffline = useOfflineStatus()
   const [openModal, setOpenModal] = React.useState(false)
   const [currentPhoto, setCurrentPhoto] = React.useState(0)
   const [loading, setLoading] = React.useState(true)
@@ -58,7 +61,13 @@ const LocationPhotos = ({ location, uploading, uploadImages }: LocationPhotosPro
 
   return (
     <div className={`relative bg-gray-300 ${PHOTO_CONTAINER_HEIGHT} animate-fade-in`}>
-      {loading || uploading ? (
+      {isOffline ? (
+        <div className={PHOTO_CONTAINER_HEIGHT}>
+          <div className="flex h-full items-center justify-center">
+            <Chip label={translations.photosUnavailableOffline} color="default" />
+          </div>
+        </div>
+      ) : loading || uploading ? (
         <div className={PHOTO_CONTAINER_HEIGHT}>
           <div className="flex h-full items-center justify-center">
             <Loader big light />

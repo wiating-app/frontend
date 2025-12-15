@@ -72,11 +72,11 @@ const NavBar = ({
           fields={['phrase']}
           onChange={(fields: any) => onSearch(fields.phrase)}
           runOnChangeInitially
-          className="w-[202px] md:w-auto"
+          className="w-52 lg:w-60"
         >
           <SearchInput name="phrase" placeholder={translations.search} loading={searchLoading} noBottomGutter />
         </Form>
-        <div className="ml-4 flex flex-1 items-center gap-2 opacity-30">
+        <div className="mx-4 flex flex-1 items-center gap-2 opacity-30">
           {showVersionInfo && <Version className="hidden lg:flex" />}
           {isOffline && (
             <Tooltip content={translations.offlineModeTooltip} anchor="bottom-center">

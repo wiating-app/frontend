@@ -97,6 +97,7 @@ export default {
     offlineModeTooltip:
       'Używanie danych z lokalnej pamięci. Edycja, dodawanie miejsc, pobieranie zdjęć oraz wyszukiwanie nie działa prawidłowo',
     oldContent: 'Stara treść',
+    photosUnavailableOffline: 'Zdjęcia niedostępne w trybie offline',
     photoAdded: 'Zdjęcia dodane pomyślnie.',
     pointOnMap: 'Wskaż na mapie',
     privacyPolicy: 'Polityka prywatności',
@@ -248,6 +249,7 @@ export default {
     offlineModeTooltip:
       'Using data from local memory. Editing, adding places, downloading photos, and searching will fail',
     oldContent: 'Old content',
+    photosUnavailableOffline: 'Photos unavailable in offline mode',
     photoAdded: 'Photos uploaded successfully.',
     pointOnMap: 'Point on map',
     privacyPolicy: 'Privacy policy',
