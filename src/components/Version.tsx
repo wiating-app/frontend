@@ -30,9 +30,13 @@ const Version = ({ dark = false, className }: VersionProps) => {
     <Tooltip
       content={info}
       anchor="right-center"
-      tooltipClassName={classNames('text-xs cursor-help', dark ? 'text-gray-800' : 'text-white', className)}
+      tooltipClassName={classNames(
+        'text-xs cursor-help flex items-center gap-1',
+        dark ? 'text-gray-800' : 'text-white',
+        className,
+      )}
     >
-      {name} <HelpCircle className="inline-block align-middle" size={16} />
+      {name} <HelpCircle size={16} />
     </Tooltip>
   )
 }

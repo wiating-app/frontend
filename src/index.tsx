@@ -1,6 +1,6 @@
 import React from 'react'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import ReactDOM from 'react-dom'
 import { Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
@@ -11,7 +11,7 @@ import enableServiceWorker from './enableServiceWorker'
 import history from './history'
 import ErrorHandler from './utils/ErrorHandler'
 import FormThemeProvider from './utils/FormThemeProvider'
-import { queryClient } from './utils/queryClient'
+import { persistOptions, queryClient } from './utils/queryClient'
 import { Auth0Provider } from './utils/useAuth0'
 import { ConfigProvider } from './utils/useConfig'
 import { LanguageProvider } from './utils/useLanguage'
@@ -24,7 +24,7 @@ ReactDOM.render(
   <React.Suspense fallback={<Loader dark big centered />}>
     <ErrorHandler>
       <RecoilRoot>
-        <QueryClientProvider client={queryClient}>
+        <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
           <ConfigProvider>
             <LanguageProvider>
               {process.env.FRONTEND_MAINTENANCE === 'true' ? (
@@ -50,7 +50,7 @@ ReactDOM.render(
             </LanguageProvider>
           </ConfigProvider>
           {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
-        </QueryClientProvider>
+        </PersistQueryClientProvider>
       </RecoilRoot>
     </ErrorHandler>
   </React.Suspense>,

@@ -6,12 +6,15 @@ import { useRecoilState } from 'recoil'
 import { isDrawerOpenState } from '../state'
 import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
+import { useOfflineStatus } from '../utils/useOfflineStatus'
 import Avatar from './Avatar'
 import Button from './Button'
+import Chip from './Chip'
 import Dropdown from './Dropdown'
 import Loader from './Loader'
 import Logo from './Logo'
 import SearchInput from './SearchInput'
+import { Tooltip } from './Tooltip'
 import Version from './Version'
 
 interface NavBarLink {
@@ -52,6 +55,7 @@ const NavBar = ({
 }: NavBarProps) => {
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { translations } = useLanguage()
+  const isOffline = useOfflineStatus()
   const {
     branding: { themeColor, lightTheme },
     settings: { showVersionInfo },
@@ -75,11 +79,12 @@ const NavBar = ({
         >
           <SearchInput name="phrase" placeholder={translations.search} loading={searchLoading} noBottomGutter />
         </Form>
-        <div className="ml-4 flex-1 opacity-30">
-          {showVersionInfo && (
-            <div className="hidden lg:block">
-              <Version />
-            </div>
+        <div className="ml-4 flex flex-1 items-center gap-2 opacity-30">
+          {showVersionInfo && <Version className="hidden lg:flex" />}
+          {isOffline && (
+            <Tooltip content={translations.offlineModeTooltip} anchor="bottom-center">
+              <Chip label={translations.offlineMode} size="small" />
+            </Tooltip>
           )}
         </div>
         <div className="flex items-center gap-4 text-white">

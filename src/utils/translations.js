@@ -93,6 +93,9 @@ export default {
     noData: 'Nie podano',
     noReportsAvailable: 'Obecnie nie ma w systemie żadnych otwartych zgłoszeń.',
     noResults: 'Brak wyników dla danej frazy wyszukiwania',
+    offlineMode: 'Tryb offline',
+    offlineModeTooltip:
+      'Używanie danych z lokalnej pamięci. Edycja i dodawanie miejsc, oraz wyszukiwanie nie działa prawidłowo',
     oldContent: 'Stara treść',
     photoAdded: 'Zdjęcia dodane pomyślnie.',
     pointOnMap: 'Wskaż na mapie',
@@ -241,6 +244,8 @@ export default {
     noData: 'No data',
     noReportsAvailable: 'Currently there are no open reports in the system.',
     noResults: 'No results for given search phrase',
+    offlineMode: 'Offline mode',
+    offlineModeTooltip: 'Using data from local memory. Editing and adding places, and searching will fail',
     oldContent: 'Old content',
     photoAdded: 'Photos uploaded successfully.',
     pointOnMap: 'Point on map',
