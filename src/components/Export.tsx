@@ -5,8 +5,8 @@ import { Location } from '../typings'
 import exportToGPX from '../utils/exportToGPX'
 import exportToKML from '../utils/exportToKML'
 import useConfig from '../utils/useConfig'
+import useLanguage from '../utils/useLanguage'
 import Menu from './Menu'
-import { Tooltip } from './Tooltip'
 
 interface ExportProps {
   markers: Location[]
@@ -17,6 +17,7 @@ interface ExportProps {
 const Export = ({ markers, bounds, className }: ExportProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const config = useConfig()
+  const { translations } = useLanguage()
 
   // Filter markers by viewport bounds only when exporting
   const getVisibleMarkers = (): Location[] => {
@@ -38,19 +39,17 @@ const Export = ({ markers, bounds, className }: ExportProps) => {
         return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng
       })
     } catch (error) {
-      // If bounds is invalid, return all markers
-      console.error('Error filtering markers by bounds:', error)
-      return markers
+      console.error('Error:', error)
     }
   }
 
   const items = [
     {
-      label: 'Pobierz plik KML',
+      label: translations?.downloadLocationsAsKML,
       callback: () => exportToKML(getVisibleMarkers(), config),
     },
     {
-      label: 'Pobierz plik GPX',
+      label: translations?.downloadLocationsAsGPX,
       callback: () => exportToGPX(getVisibleMarkers(), config),
     },
   ]
@@ -66,21 +65,24 @@ const Export = ({ markers, bounds, className }: ExportProps) => {
   if (!config.settings.enableExport) return null
 
   return (
-    <Tooltip content="Eksport lokacji z wyświetlanego obszaru" anchor="left-center">
-      <div className="relative">
-        <a className={className} onClick={handleClick}>
-          <Download size={16} strokeWidth={2.5} />
-        </a>
-        {isOpen && (
-          <>
-            <div className="fixed inset-0 z-10" onClick={handleClose} />
-            <div className="absolute right-0 top-full z-20 mt-1">
-              <Menu items={items} onClose={handleClose} className="min-w-[200px]" />
-            </div>
-          </>
-        )}
-      </div>
-    </Tooltip>
+    <div className="relative">
+      <a className={className} onClick={handleClick}>
+        <Download size={16} strokeWidth={2.5} />
+      </a>
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={handleClose} />
+          <div className="absolute right-0 top-full z-20 mt-1">
+            <Menu
+              header={translations?.exportAreaHeader}
+              items={items}
+              onClose={handleClose}
+              className="min-w-[200px]"
+            />
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 

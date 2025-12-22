@@ -28,7 +28,9 @@ const Menu = ({ items, onClose, className, header }: MenuProps) => {
       role="menu"
       aria-orientation="vertical"
     >
-      {header && <div className="pointer-events-none mb-1 border-b border-gray-200 px-4 py-2">{header}</div>}
+      {header && (
+        <div className="pointer-events-none mb-1 border-b border-gray-200 px-4 py-2 text-sm font-medium">{header}</div>
+      )}
       {items.map((item, index) => {
         const showDivider = item.divider && index > 0
         const classes = classNames(

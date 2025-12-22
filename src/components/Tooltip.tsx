@@ -26,6 +26,7 @@ type TooltipProps = {
     | 'right-center'
   delay?: number
   tooltipClassName?: string
+  desktopOnly?: boolean
 }
 
 export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
@@ -36,6 +37,7 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   mobileAnchor,
   delay = 650,
   tooltipClassName = 'inline-block',
+  desktopOnly = false,
 }) => {
   const { isPhone } = useMediaQuery()
   const [isVisible, setIsVisible] = useState(false)
@@ -47,6 +49,11 @@ export const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   const activeAnchor = isPhone && mobileAnchor ? mobileAnchor : anchor
 
   const showTooltip = (e: MouseEvent<HTMLElement>) => {
+    // If desktopOnly is true and we're on a phone, don't show the tooltip
+    if (desktopOnly && isPhone) {
+      return
+    }
+
     // Clear any existing timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)

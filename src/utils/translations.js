@@ -33,6 +33,8 @@ export default {
     description: 'Opis',
     descriptionHint:
       'Podaj przydatne dla odwiedzających informacje, takie jak wielkość, liczbę miejsc, dostępność, ochrona przed deszczem, jakie są zasady korzystania, dane właściciela i inne adekwatne do dodawanej lokacji. W opisie nie podawaj: współrzędnych lokacji (jest na nie osobne pole), wskazówek dojścia na miejsce (również jest na to osobne pole), informacji o dostępności wody i ognia (są na to osobne pola na końcu formularza).',
+    downloadLocationsAsGPX: 'Pobierz lokacje jako GPX',
+    downloadLocationsAsKML: 'Pobierz lokacje jako KML',
     details: 'Szczegóły',
     detailsOfChange: 'Zmiana z',
     directions: 'Usytuowanie i wskazówki dojścia',
@@ -42,6 +44,7 @@ export default {
     editMarker: 'Edycja lokacji',
     enterCoordinates: 'Wprowadź współrzędne',
     export: 'Eksport',
+    exportAreaHeader: 'Eksport obszaru',
     exportButton: 'Eksportuj bazę do KML',
     exportSentence: 'Przycisk poniżej wykonuje kopię zapasową całej bazy lokacji i eksportuje ją do pliku KML.',
     faq: 'Pytania i odpowiedzi',
@@ -188,6 +191,8 @@ export default {
     delete: 'Delete',
     description: 'Description',
     descriptionHint: 'English hints.',
+    downloadLocationsAsGPX: 'Download locations as GPX',
+    downloadLocationsAsKML: 'Download locations as KML',
     details: 'Details',
     detailsOfChange: 'Change from',
     directions: 'How to reach the place',
@@ -196,6 +201,7 @@ export default {
     editMarker: 'Editing location',
     enterCoordinates: 'Enter coordinates',
     export: 'Export',
+    exportAreaHeader: 'Export area',
     exportButton: 'Export database to KML',
     exportSentence:
       'The button below makes a backup of whole locations database and exports it to downloadable KML file.',

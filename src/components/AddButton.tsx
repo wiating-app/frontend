@@ -4,7 +4,6 @@ import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
 import Menu, { MenuItem } from './Menu'
 import { Tooltip } from './Tooltip'
-import Typography from './Typography'
 
 interface AddButtonProps {
   items: MenuItem[]
@@ -29,7 +28,7 @@ const AddButton = ({ items }: AddButtonProps) => {
 
   return (
     <div className="fixed bottom-20 right-2 z-[1050]">
-      <Tooltip content={translations.addMarker} anchor="left-center">
+      <Tooltip content={translations.addMarker} anchor="left-center" desktopOnly>
         <button
           className="flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-shadow hover:shadow-xl"
           style={{ backgroundColor: themeColor }}
@@ -55,7 +54,7 @@ const AddButton = ({ items }: AddButtonProps) => {
             <Menu
               items={items}
               onClose={() => setIsOpen(null)}
-              header={<Typography variant="subtitle2">{translations.addMarker}</Typography>}
+              header={translations.addMarker}
               className="min-w-[240px]"
             />
           </div>

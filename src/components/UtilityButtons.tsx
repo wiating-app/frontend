@@ -26,7 +26,7 @@ const UtilityButtons = ({ id, coords }: UtilityButtonsProps) => {
 
   return (
     <div className="absolute -top-2.5 left-0 right-0 -m-2 flex items-center justify-center space-x-3">
-      <Tooltip content={translations.share} delay={200}>
+      <Tooltip content={translations.share} delay={200} desktopOnly>
         <CopyToClipboard text={locationUrl} onCopy={() => toast(translations.urlCopied)}>
           <div>
             <IconButton variant="bordered">
@@ -35,7 +35,7 @@ const UtilityButtons = ({ id, coords }: UtilityButtonsProps) => {
           </div>
         </CopyToClipboard>
       </Tooltip>
-      <Tooltip content={translations.copyCoordinates} delay={200}>
+      <Tooltip content={translations.copyCoordinates} delay={200} desktopOnly>
         <CopyToClipboard text={locationString} onCopy={() => toast(translations.coordinatesCopied)}>
           <div>
             <IconButton variant="bordered">
@@ -44,7 +44,7 @@ const UtilityButtons = ({ id, coords }: UtilityButtonsProps) => {
           </div>
         </CopyToClipboard>
       </Tooltip>
-      <Tooltip content={translations.navigate} delay={200}>
+      <Tooltip content={translations.navigate} delay={200} desktopOnly>
         <IconButton variant="bordered" href={navigateLink} target={isMobile ? '_self' : '_blank'}>
           <Navigation size={17} strokeWidth={2.5} />
         </IconButton>
