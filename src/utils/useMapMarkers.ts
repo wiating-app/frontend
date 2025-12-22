@@ -5,6 +5,7 @@ import pLimit from 'p-limit'
 import { getPoints } from '../api/getPoints'
 import { Location } from '../typings'
 import { getGridCellBounds, getVisibleGridCells } from './mapGrid'
+import { useOfflineStatus } from './useOfflineStatus'
 
 // Create a limiter instance to control concurrency
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,6 +23,8 @@ interface UseMapMarkersResult {
  * enabling effective caching with react-query.
  */
 export function useMapMarkers(bounds: LatLngBounds | null | undefined): UseMapMarkersResult {
+  const isOffline = useOfflineStatus()
+
   // Calculate visible grid cells
   const visibleCells = React.useMemo(() => {
     if (!bounds) return []
@@ -44,8 +47,9 @@ export function useMapMarkers(bounds: LatLngBounds | null | undefined): UseMapMa
           return getPoints(cellBounds)
         })
       },
+      enabled: !isOffline,
     }))
-  }, [visibleCells])
+  }, [visibleCells, isOffline])
 
   // Execute all queries
   const queryResults = useQueries({
