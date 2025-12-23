@@ -23,7 +23,7 @@ interface UseMapMarkersResult {
  * enabling effective caching with react-query.
  */
 export function useMapMarkers(bounds: LatLngBounds | null | undefined): UseMapMarkersResult {
-  const isOffline = useOfflineStatus()
+  const { isOffline } = useOfflineStatus()
 
   // Calculate visible grid cells
   const visibleCells = React.useMemo(() => {

@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import useLanguage from './useLanguage'
 
 /**
  * Hook to detect online/offline status
@@ -8,8 +10,9 @@ import { useEffect, useState } from 'react'
  * - Disabling features that require internet
  * - Adjusting retry logic in queries
  */
-export function useOfflineStatus(): boolean {
+export function useOfflineStatus(): { isOffline: boolean; requireOnline: (callback: () => void) => void } {
   const [isOffline, setIsOffline] = useState(!navigator.onLine)
+  const { translations } = useLanguage()
 
   useEffect(() => {
     const handleOnline = () => {
@@ -31,5 +34,16 @@ export function useOfflineStatus(): boolean {
     }
   }, [])
 
-  return isOffline
+  const requireOnline = useCallback(
+    (callback: () => void) => {
+      if (isOffline) {
+        toast(translations?.mustBeOnline)
+      } else {
+        callback()
+      }
+    },
+    [isOffline, translations],
+  )
+
+  return { isOffline, requireOnline }
 }

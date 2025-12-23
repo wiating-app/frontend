@@ -52,7 +52,7 @@ const NavBar = ({
 }: NavBarProps) => {
   const [isDrawerOpen] = useRecoilState(isDrawerOpenState)
   const { translations } = useLanguage()
-  const isOffline = useOfflineStatus()
+  const { isOffline } = useOfflineStatus()
   const {
     branding: { themeColor, lightTheme },
     settings: { showVersionInfo },

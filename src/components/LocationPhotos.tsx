@@ -30,7 +30,7 @@ const PHOTO_CONTAINER_HEIGHT = 'h-[70vw] sm:h-[260px]'
 
 const LocationPhotos = ({ location, uploading, uploadImages }: LocationPhotosProps) => {
   const { translations } = useLanguage()
-  const isOffline = useOfflineStatus()
+  const { isOffline } = useOfflineStatus()
   const [openModal, setOpenModal] = React.useState(false)
   const [currentPhoto, setCurrentPhoto] = React.useState(0)
   const [loading, setLoading] = React.useState(true)

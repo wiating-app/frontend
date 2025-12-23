@@ -24,7 +24,7 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null)
   const [isModerator, setIsModerator] = useState(false)
   const { translations } = useLanguage()
-  const isOffline = useOfflineStatus()
+  const { isOffline, requireOnline } = useOfflineStatus()
 
   const user = queryClient.getQueryData<User | null>(['user']) ?? null
   const setUser = useCallback(
@@ -200,7 +200,8 @@ export const Auth0Provider = ({ children, ...initOptions }: Auth0ProviderProps) 
           history.push('/')
         }
       } else {
-        callback()
+        // All logged in user operations require internet connection.
+        requireOnline(callback)
       }
     },
   }
