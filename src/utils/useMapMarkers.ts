@@ -76,10 +76,12 @@ export function useMapMarkers(bounds: LatLngBounds | null | undefined): UseMapMa
   }, [queryResults])
 
   // Determine loading state (at least one query is loading)
-  const isLoading = queryResults.some(result => result.isLoading)
+  // Don't report loading when offline, even if queries are in loading state
+  const isLoading = !isOffline && queryResults.some(result => result.isLoading)
 
   // Determine error state (at least one query has error)
-  const isError = queryResults.some(result => result.isError)
+  // Don't report errors when offline, as we're not attempting to fetch
+  const isError = !isOffline && queryResults.some(result => result.isError)
 
   return {
     markers,

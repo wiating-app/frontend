@@ -11,6 +11,7 @@ import { activeTypesState } from '../state'
 import useAuth0 from '../utils/useAuth0'
 import useConfig from '../utils/useConfig'
 import useLanguage from '../utils/useLanguage'
+import { useOfflineStatus } from '../utils/useOfflineStatus'
 
 const languages = ['pl', 'en']
 
@@ -23,6 +24,7 @@ const NavBarContainer = () => {
   const { faq, termsAndConditions } = useConfig()
 
   const { loginWithRedirect, user, isLoggedIn, isModerator, logout } = useAuth0()
+  const { requireOnline } = useOfflineStatus()
 
   const searchMutation = useMutation({
     mutationFn: (params: Parameters<typeof searchPoints>[0]) => searchPoints(params),
@@ -71,9 +73,11 @@ const NavBarContainer = () => {
           },
         }
       } catch {}
-      searchMutation.mutate({
-        ...(coords || { phrase: searchPhrase }),
-        ...(activeTypes.length ? { point_type: activeTypes } : {}),
+      requireOnline(() => {
+        searchMutation.mutate({
+          ...(coords || { phrase: searchPhrase }),
+          ...(activeTypes.length ? { point_type: activeTypes } : {}),
+        })
       })
     }, 500) // 500ms debounce
 

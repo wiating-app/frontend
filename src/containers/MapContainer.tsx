@@ -29,6 +29,7 @@ const MapContainer = () => {
 
   // Use the grid-based markers hook
   const { markers, isLoading: markersLoading, isError: markersError } = useMapMarkers(currentBounds)
+  console.log('markersLoading: ', markersLoading)
 
   // Observe temp location (for context menu) from react-query cache
   const { data: tempLocation } = useQuery({
