@@ -121,7 +121,8 @@ const Map = ({
       const newZoom = currentZoom < 10 ? 11 : undefined
       mapRef.current.flyTo([markerLocation.location.lat, markerLocation.location.lng], newZoom)
     }
-  }, [markerLocation, hasContextMenu, initiated, isNotPhone, currentZoom])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [markerLocation, hasContextMenu, initiated, isNotPhone])
 
   // Only apply center/bounds on initial mount, not on every prop change
   // This prevents the map from jumping back to stored position when user pans
